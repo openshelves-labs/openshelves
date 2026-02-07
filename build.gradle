@@ -10,6 +10,97 @@ plugins {
     id 'idea'
 }
 
+group = 'io.katalog'
+version = '0.0.1-SNAPSHOT'
+
+description = 'Katalog - A book management system for College Libraries'
+
+
+// Requires Java 25 from Azul Systems
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+        vendor = JvmVendorSpec.AZUL
+    }
+}
+
+
+// Dependency management and Repository configuration
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    // Spring Web
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+    // HTTP Client
+    implementation 'com.squareup.okhttp3:okhttp'
+    implementation 'com.jayway.jsonpath:json-path'
+
+    // Resilience4j for fault tolerance
+    implementation 'io.github.resilience4j:resilience4j-ratelimiter'
+    implementation 'io.github.resilience4j:resilience4j-retry'
+
+    // Annotation processors
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Testing dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:4.0.2'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.0'
+        mavenBom 'org.springdoc:springdoc-openapi-bom:3.0.0'
+        mavenBom 'com.squareup.okhttp3:okhttp-bom:5.3.2'
+        mavenBom 'io.github.resilience4j:resilience4j-bom:2.3.0'
+        mavenBom 'org.testcontainers:testcontainers-bom:2.0.3'
+    }
+}
+
+
+// Java compilation and testing configuration
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += [
+        '-parameters',          // Preserves parameter names for reflection
+        '-Xlint:unchecked',     // Enables unchecked operation warnings
+        '-Xlint:deprecation'    // Enables deprecation warnings
+    ]
+}
+
+test {
+    useJUnitPlatform()      // Using JUnit Platform for testing
+}
+
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+tasks.named("dependencyUpdates").configure {
+//    checkConstraints = true
+//    checkBuildEnvironmentConstraints = true
+
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
+}
+
 wrapper {
     gradleVersion = 'latest'
     distributionType = Wrapper.DistributionType.BIN

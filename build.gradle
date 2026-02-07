@@ -1,0 +1,6 @@
+
+// Always upgrade to latest version
+wrapper {
+    gradleVersion = 'latest'
+    distributionType = Wrapper.DistributionType.BIN
+}

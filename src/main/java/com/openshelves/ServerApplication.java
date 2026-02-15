@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
-public class OpenShelvesApplication {
+public class ServerApplication {
 
     static void main(String... args) {
-        SpringApplication.run(OpenShelvesApplication.class, args);
+        SpringApplication.run(ServerApplication.class, args);
     }
 }

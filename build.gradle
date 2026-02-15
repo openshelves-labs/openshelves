@@ -10,10 +10,10 @@ plugins {
     id 'idea'
 }
 
-group = 'io.katalog'
-version = '0.0.1-SNAPSHOT'
+group = 'com.openshelves'
+version = '0.0.1-alpha'
 
-description = 'Katalog - A book management system for College Libraries'
+description = 'Modernizing the university library experience. OpenShelves turns complex academic catalogs into intuitive, open discovery platforms for the digital age.'
 
 
 // Requires Java 25 from Azul Systems

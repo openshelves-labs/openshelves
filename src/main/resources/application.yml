@@ -1,12 +1,18 @@
-# -----------------------------------------
-# Application Configuration
-# -----------------------------------------
+# Default configuration for the OpenShelves Core application.
 
-# Server Configuration
+# Server Settings
 server:
   port: 8080
+  servlet:
+    context-path: /
 
-# Spring Configuration
+# Spring Application Settings
 spring:
   application:
-    name: katalog-api
+    name: openshelves-core
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.openshelves: DEBUG

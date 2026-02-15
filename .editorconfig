@@ -22,3 +22,6 @@ tab_width = 2
 
 [Makefile]
 indent_style = tab
+
+[banner.txt]
+insert_final_newline = false

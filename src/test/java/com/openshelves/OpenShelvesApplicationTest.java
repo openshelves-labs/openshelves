@@ -1,10 +1,10 @@
-package io.katalog;
+package com.openshelves;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServerApplicationTest {
+class OpenShelvesApplicationTest {
 
     @Test
     void contextLoads() {

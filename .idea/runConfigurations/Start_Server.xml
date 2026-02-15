@@ -5,7 +5,7 @@
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.openshelves.ServerApplication" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="io.katalog.*" />
+        <option name="PATTERN" value="com.openshelves.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

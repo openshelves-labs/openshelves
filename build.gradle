@@ -95,6 +95,7 @@ def isNonStable = { String version ->
 tasks.named("dependencyUpdates").configure {
 //    checkConstraints = true
 //    checkBuildEnvironmentConstraints = true
+    gradleReleaseChannel="current"
 
     rejectVersionIf {
         isNonStable(it.candidate.version)

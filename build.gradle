@@ -50,6 +50,9 @@ dependencies {
     implementation 'io.github.resilience4j:resilience4j-ratelimiter'
     implementation 'io.github.resilience4j:resilience4j-retry'
 
+    // Apache Commons Libraries
+    implementation 'org.apache.commons:commons-lang3'
+
     // Annotation processors
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

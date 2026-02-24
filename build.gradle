@@ -95,6 +95,25 @@ def isNonStable = { String version ->
     return !stableKeyword && !(version ==~ regex)
 }
 
+tasks.register("downloadDependencies") {
+    group = "build setup"
+    description = "Downloads all dependencies to the local Gradle cache."
+
+    doFirst {
+        println "Downloading dependencies for all configurations..."
+        configurations.asMap.each { name, configuration ->
+            if (configuration.canBeResolved) {
+                try {
+                    configuration.resolve()
+                    println "Resolved configuration: $name"
+                } catch (Exception e) {
+                    println "Failed to resolve configuration: $name - ${e.message}"
+                }
+            }
+        }
+    }
+}
+
 tasks.named("dependencyUpdates").configure {
 //    checkConstraints = true
 //    checkBuildEnvironmentConstraints = true

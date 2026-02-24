@@ -5,6 +5,11 @@ labels: ["enhancement"]
 projects: [ "openshelves-labs/3" ]
 type: "Feature"
 body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: A clear and concise description of what the feature is.
+
   - type: markdown
     attributes:
       value: |

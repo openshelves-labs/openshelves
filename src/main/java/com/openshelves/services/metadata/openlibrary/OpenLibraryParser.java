@@ -1,6 +1,7 @@
 package com.openshelves.services.metadata.openlibrary;
 
 import com.openshelves.exception.ThirdPartyClientException;
+import com.openshelves.models.dto.BookMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.security.InvalidParameterException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -43,23 +44,26 @@ public class OpenLibraryParser implements ApplicationRunner {
 
         Request request = new Request.Builder().url(url).build();
 
-        String response = performApiRequest(request);
-        if (StringUtils.isBlank(response)) {
+        Optional<String> response = performApiRequest(request);
+        if (response.isEmpty()) {
             log.warn("No results found for query: Anne Frank");
             return;
         }
 
-        String str = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.readTree(response));
+        String str = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.readTree(response.get()));
         log.info("Response: {}", str);
     }
 
+    public Optional<BookMetadata> fetchBookMetadata(BookMetadata preview) throws IllegalArgumentException, ThirdPartyClientException {
+        return Optional.empty();
+    }
 
     // *************************************************************
     // Helper Methods
     // *************************************************************
 
     // Execute the HTTP request and return the response body as a String
-    private String performApiRequest(Request request) throws ThirdPartyClientException {
+    private Optional<String> performApiRequest(Request request) throws ThirdPartyClientException {
         try (Response response = httpClient.newCall(request).execute()) {
             log.debug("Open Library API response: {}", response);
 
@@ -69,18 +73,18 @@ public class OpenLibraryParser implements ApplicationRunner {
             }
 
             // Return the response body as a String
-            return response.body().string();
+            return Optional.of(response.body().string());
         } catch (IOException e) {
             throw new ThirdPartyClientException("Error occurred while making request to Open Library API", e);
         }
     }
 
     // Handle unsuccessful HTTP responses and return appropriate results or throw exceptions
-    private String handleUnsuccessfulResponse(Response response) throws ThirdPartyClientException {
+    private Optional<String> handleUnsuccessfulResponse(Response response) throws ThirdPartyClientException {
         int statusCode = response.code();
 
         if (statusCode == 404) {       // No results found
-            return null;
+            return Optional.empty();
         }
 
         throw new ThirdPartyClientException("Unexpected response from Open Library API: " + response);
@@ -98,7 +102,7 @@ public class OpenLibraryParser implements ApplicationRunner {
     // Validate parameters are null or empty
     private void validateStringParameter(String paramName, String paramValue) throws IllegalArgumentException {
         if (StringUtils.isBlank(paramValue)) {
-            throw new InvalidParameterException(paramName + " cannot be null or empty");
+            throw new IllegalArgumentException(paramName + " cannot be null or empty");
         }
     }
 

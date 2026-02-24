@@ -1,0 +1,94 @@
+name: Bug Report
+description: Report a bug to help us improve
+title: "[Bug]: "
+labels: [ "bug" ]
+projects: [ "openshelves-labs/3" ]
+type: "Bug"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the details below so we can investigate and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What Went Wrong?
+      description: Give us a clear and concise description of what went wrong.
+      placeholder: "Example: When I try to borrow a book, I get an error message saying '...'."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: How Can We Reproduce This?
+      description: Tell us the steps we need to take to reproduce this issue.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+
+        Result: The application crashes or displays an error message.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What Should Happen?
+      description: Tell us what you expected to happen instead.
+      placeholder: "Example: I should be able to view the book without any errors."
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots, Videos, or Logs (Optional)
+      description: If applicable, add screenshots, videos, or logs to help explain your problem.
+      placeholder: "Attach any relevant files here."
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Probable Cause or Suggested Fix (Optional)
+      description: If you have any ideas on how to fix this issue, please let us know.
+      placeholder: "Example: I think the issue is caused by the '...' function."
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and Setup Details
+      description: Please provide details about your environment and setup.
+      placeholder: |
+        - App Version: [e.g. 0.1.0]
+        - OS: [e.g. Windows 10]
+        - Browser: [e.g. Chrome, Safari]
+        - Version: [e.g. 91.0.4472.124]
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes (Optional)
+      description: If you have any other notes to add, please do so here.
+      placeholder: "Example: I want to mention that..."
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before Submitting
+      description: Please confirm that you have completed these steps.
+      options:
+        - label: I've searched for any related issues, and confirmed that this issue has not already been reported.
+          required: true
+        - label: I agree to follow the project's [Code of Conduct](https://github.com/openshelves-labs/openshelves/blob/main/CODE_OF_CONDUCT.md).
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!

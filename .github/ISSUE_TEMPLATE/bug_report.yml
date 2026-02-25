@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug to help us improve
+description: Report a bug to help us improve, and make OpenShelves better.
 title: "[Bug]: "
 labels: [ "bug" ]
 projects: [ "openshelves-labs/3" ]

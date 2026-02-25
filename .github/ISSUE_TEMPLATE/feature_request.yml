@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest a new idea for this project
+description: Suggest a new idea for this project, or a way to improve the existing features.
 title: "[Feature]: "
 labels: [ "enhancement" ]
 projects: [ "openshelves-labs/3" ]

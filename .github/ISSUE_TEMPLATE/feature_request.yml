@@ -1,16 +1,76 @@
 name: Feature Request
-description: Suggest an idea for this project
+description: Suggest a new idea for this project
 title: "[Feature]: "
-labels: ["enhancement"]
+labels: [ "enhancement" ]
 projects: [ "openshelves-labs/3" ]
 type: "Feature"
 body:
-  - type: textarea
+  - type: markdown
     attributes:
-      label: Description
-      description: A clear and concise description of what the feature is.
+      value: |
+        Please fill out the details below to help us understand your request.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What's Your Idea?
+      description: Tell us about the feature you'd like to see.
+      placeholder: "Example: I would like to see a feature that allows users to save their favorite books for easy access later."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What Problem Does This Solve?
+      description: Explain the problem that this feature would solve or the benefit it would provide.
+      placeholder: "Example: This would help users quickly find and access the books they are interested in without having to search for them every time."
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Information (Optional)
+      description: Feel free to add screenshots, prototypes, example from other apps, or any other relevant information.
+      placeholder: |
+        You might want to include:
+        - Screenshots or prototypes showing what you're thinking.
+        - Examples from other apps or websites.
+        - Ideas for how this feature could be implemented.
+        - Any other relevant information.
+
+  - type: dropdown
+    id: willing-to-contribute
+    attributes:
+      label: Are You Willing To Contribute?
+      description: Let us know if you're willing to contribute in implementing this feature.
+      options:
+        - "Yes! I'd love to help implement this"
+        - "I'm not sure, but I can help with testing or providing feedback"
+        - "No, I just wanted to share my idea with you"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Any other alternatives you've considered? (Optional)
+      description: Let us know if there are any other ways you could solve this problem or achieve the same goal that you've considered.
+      placeholder: "Example: I considered using a third-party bookmarking service, but it would be more convenient to have this feature built directly into the app."
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before Submitting
+      description: Please confirm that you have completed these steps.
+      options:
+        - label: I've searched for any related issues, and confirmed that this feature is not requested yet.
+          required: true
+        - label: I agree to follow the project's [Code of Conduct](https://github.com/openshelves-labs/openshelves/blob/main/CODE_OF_CONDUCT.md).
+          required: true
 
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to suggest a feature for this project!
+        Thanks for taking the time to share your idea with us! We appreciate your contribution to making this project better.

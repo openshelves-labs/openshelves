@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-public class HttpClientConfig {
+public class RestClientConfig {
 
     private static final OkHttpClient httpClient = new OkHttpClient();
 

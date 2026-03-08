@@ -1,4 +1,4 @@
-package com.openshelves.models.dto;
+package com.openshelves.model.dto;
 
 import lombok.Data;
 

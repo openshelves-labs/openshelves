@@ -1,15 +1,15 @@
-# Default configuration for the OpenShelves Core application.
+# Default configuration for the OpenShelves
 
-# Server Settings
+# Server Configuration
 server:
   port: 8080
   servlet:
     context-path: /
 
-# Spring Application Settings
+# Spring Configuration
 spring:
   application:
-    name: openshelves-core
+    name: openshelves-api
 
 # Logging Configuration
 logging:

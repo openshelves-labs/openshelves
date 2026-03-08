@@ -8,6 +8,9 @@ plugins {
 
     // IDEs
     id 'idea'
+
+    // Test Coverage
+    id 'jacoco'
 }
 
 group = 'com.openshelves'
@@ -87,6 +90,15 @@ tasks.withType(JavaCompile).configureEach {
 
 test {
     useJUnitPlatform()      // Using JUnit Platform for testing
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
 
 def isNonStable = { String version ->

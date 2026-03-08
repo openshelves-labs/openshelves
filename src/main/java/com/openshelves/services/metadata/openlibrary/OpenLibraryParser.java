@@ -1,7 +1,7 @@
 package com.openshelves.services.metadata.openlibrary;
 
 import com.openshelves.exception.ThirdPartyClientException;
-import com.openshelves.models.dto.BookMetadata;
+import com.openshelves.model.dto.BookMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;

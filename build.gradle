@@ -8,9 +8,6 @@ plugins {
 
     // IDEs
     id 'idea'
-
-    // Test Coverage
-    id 'jacoco'
 }
 
 group = 'com.openshelves'
@@ -90,15 +87,6 @@ tasks.withType(JavaCompile).configureEach {
 
 test {
     useJUnitPlatform()      // Using JUnit Platform for testing
-    finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
-        html.required = true
-    }
 }
 
 def isNonStable = { String version ->
@@ -107,12 +95,12 @@ def isNonStable = { String version ->
     return !stableKeyword && !(version ==~ regex)
 }
 
-tasks.register("downloadDependencies") {
-    group = "build setup"
-    description = "Downloads all dependencies to the local Gradle cache."
+tasks.register('downloadDependencies') {
+    group = 'build setup'
+    description = 'Downloads all dependencies to the local Gradle cache.'
 
     doFirst {
-        println "Downloading dependencies for all configurations..."
+        println 'Downloading dependencies for all configurations...'
         configurations.asMap.each { name, configuration ->
             if (configuration.canBeResolved) {
                 try {
@@ -126,10 +114,10 @@ tasks.register("downloadDependencies") {
     }
 }
 
-tasks.named("dependencyUpdates").configure {
+tasks.named('dependencyUpdates').configure {
 //    checkConstraints = true
 //    checkBuildEnvironmentConstraints = true
-    gradleReleaseChannel="current"
+    gradleReleaseChannel = 'current'
 
     rejectVersionIf {
         isNonStable(it.candidate.version)

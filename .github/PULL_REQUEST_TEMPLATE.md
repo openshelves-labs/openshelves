@@ -81,6 +81,14 @@ Why is this change required? What problem does it solve? Explain your changes in
 
 ---
 
+## 🤝 Contributor License Agreement
+
+> **Note:** By submitting this PR, you agree to the terms of the Contributor License Agreement (CLA) for this project. If you have not already signed the CLA, please do so before your PR can be merged.
+
+- [ ] I have **read and agree** to the [OpenShelves Contributor License Agreement (CLA)](../CLA.md).
+
+---
+
 ## 💬 Additional Context (Optional)
 
 Please include any additional context that is necessary for reviewers to understand your changes.

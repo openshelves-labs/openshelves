@@ -59,6 +59,9 @@ public class BookEntity extends BaseEntity<Long> {
     @Column(name = "asin")
     private String asin;
 
+    @Column(name = "olid")
+    private String olid;
+
     @Column(name = "dewey_decimal")
     private Integer deweyDecimal;
 

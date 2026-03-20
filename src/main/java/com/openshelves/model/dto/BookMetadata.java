@@ -23,6 +23,7 @@ public class BookMetadata {
     // Identifiers
     private String isbn10;
     private String isbn13;
+    private String asin;
     private String olid;
 
     // Classification

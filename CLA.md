@@ -1,6 +1,6 @@
 # OpenShelves Contributor License Agreement (CLA)
 
-**Version 1.0 — Effective: 2026** <br>
+**Version 1.0 — Effective: January 1, 2026** <br>
 **Project:** OpenShelves (`https://github.com/openshelves-labs/openshelves`) <br>
 **Steward:** OpenShelves Labs (`openshelves-labs`)
 

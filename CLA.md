@@ -85,15 +85,18 @@ The intent of this clause is not to exploit contributors, but to prevent licensi
 
 ---
 
-## 6. Protection Against Re-branding Without Attribution
+## 6. Protection Against Renaming and Misrepresentation
 
 Any individual, organization, or legal entity that forks, clones, redistributes, or otherwise derives a product from the OpenShelves Project — in whole or in part — **must**:
 
-1. Provide clear, visible, and explicit attribution to the original OpenShelves project, including a link to `https://github.com/openshelves-labs/openshelves`;
-2. Not represent a derivative work as the original OpenShelves product, nor use the "OpenShelves" name or branding in a manner that implies official endorsement by OpenShelves Labs, without prior written permission;
-3. Retain all copyright, attribution, and license notices present in the original source.
+1. Display a visible **"Powered by OpenShelves"** notice in the deployed product — in the UI, documentation, or about page — along with a link to `https://github.com/openshelves-labs/openshelves`;
+2. Not rename the software or present it as an independently originated product;
+3. Not claim to be the original source of the software, nor imply official endorsement or authorization by OpenShelves Labs without prior written permission;
+4. Retain all copyright, attribution, and license notices present in the original source, as required by the Apache License 2.0 (Section 4(c)).
 
-Failure to provide such attribution constitutes a material breach of this Agreement and of the underlying Apache 2.0 License terms (Section 4(c) of Apache 2.0).
+Institutional or organizational deployments may use their own name and logo for their portal or service — provided the **"Powered by OpenShelves"** notice remains visible and the software is not represented as their own original work.
+
+Failure to comply with these terms constitutes a material breach of this Agreement and of the underlying Apache 2.0 License.
 
 ---
 

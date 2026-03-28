@@ -67,7 +67,7 @@ body:
       options:
         - label: I've searched for any related issues, and confirmed that this feature is not requested yet.
           required: true
-        - label: I agree to follow the project's [Code of Conduct](https://github.com/openshelves-labs/openshelves/blob/main/CODE_OF_CONDUCT.md).
+        - label: I agree to follow the project's [Code of Conduct](https://github.com/openshelves-labs/openshelves/blob/HEAD/CODE_OF_CONDUCT.md).
           required: true
 
   - type: markdown

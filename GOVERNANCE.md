@@ -82,7 +82,7 @@ Additions and removals from the Core Team are reflected immediately in the table
 ## Changes to This Document
 
 This document may be updated by the Core Team. All changes will be:
-1. Announced via a [GitHub Discussion](https://github.com/openshelves-labs/openshelves/discussions) before taking effect, where legally and practically possible. For non-urgent changes, the Core Team aims to provide at least 14 days notice. Urgent changes — such as those required for legal, security, or compliance reasons — may take effect without advance notice.
+1. Announced via a [GitHub Discussion](https://github.com/openshelves-labs/openshelves/discussions) before taking effect, where legally and practically possible. Urgent changes — such as those required for legal, security, or compliance reasons — may take effect without advance notice.
 2. Recorded in the repository's commit history
 3. Reflected in the version number at the top of this file
 

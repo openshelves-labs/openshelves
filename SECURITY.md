@@ -18,7 +18,7 @@ We use GitHub's private vulnerability reporting feature. To report a vulnerabili
 2. Click **"Report a vulnerability"**.
 3. Fill in the details — what the vulnerability is, how to reproduce it, and its potential impact.
 
-TThe Core Team will review and investigate your report and keep you updated throughout the process.
+The Core Team will review and investigate your report and keep you updated throughout the process.
 
 ## Responsible Disclosure
 
@@ -32,7 +32,7 @@ We appreciate your help in keeping OpenShelves and its users safe.
 
 ## Scope
 
-This policy covers the OpenShelves application code in this repository. It does not cover third-party dependencies; please report those vulnerabilities to their respective maintainers.
+This policy covers the OpenShelves application code in this repository. If you discover a vulnerability in a third-party dependency used by this project, please report it to the respective maintainer. If you are unsure whether the vulnerability is in OpenShelves or a dependency, report it here and we will triage accordingly.
 
 ## Attribution
 

@@ -1,5 +1,6 @@
 package com.openshelves.model.entity;
 
+import com.openshelves.model.enums.AuthorRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +35,9 @@ public class BookAuthorEntity extends BaseEntity<Long> {
     // Additional Metadata
     // -------------------------------------------------------------------------
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private String role;
+    private AuthorRole role;
 
     @Column(name = "sort_order", nullable = false)
     private Short sortOrder;

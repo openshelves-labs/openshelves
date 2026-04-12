@@ -1,17 +1,16 @@
 package com.openshelves.model.entity;
 
 import jakarta.persistence.MappedSuperclass;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@SuperBuilder
-@NoArgsConstructor
 @MappedSuperclass
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseEntity<ID> implements Serializable {
 
     @Serial

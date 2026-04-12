@@ -1,18 +1,21 @@
 package com.openshelves.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "authors")
 public class AuthorEntity extends BaseEntity<Long> {
 
@@ -20,6 +23,11 @@ public class AuthorEntity extends BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+
+    // -------------------------------------------------------------------------
+    // Core metadata
+    // -------------------------------------------------------------------------
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -30,24 +38,62 @@ public class AuthorEntity extends BaseEntity<Long> {
     @Column(name = "nationality")
     private String nationality;
 
+
+    // -------------------------------------------------------------------------
+    // Dates
+    // -------------------------------------------------------------------------
+
     @Column(name = "birth_year")
-    private Integer birthYear;
+    private Short birthYear;
 
     @Column(name = "death_year")
-    private Integer deathYear;
+    private Short deathYear;
+
+
+    // -------------------------------------------------------------------------
+    // Identifiers
+    // -------------------------------------------------------------------------
 
     @Column(name = "asin")
     private String asin;
 
+    @Column(name = "olid")
+    private String olid;
+
+
+    // -------------------------------------------------------------------------
+    // Media
+    // -------------------------------------------------------------------------
+
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<BookAuthorMappingEntity> bookMappings = new ArrayList<>();
+
+    // -------------------------------------------------------------------------
+    // Audit
+    // -------------------------------------------------------------------------
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
 
 
-    /// Data Pre-Processing
+    // -------------------------------------------------------------------------
+    // Relationships
+    // -------------------------------------------------------------------------
+
+    // Restrict deletion of author if they are associated with any books to maintain referential integrity
+    @OneToMany(mappedBy = "author")
+    private List<BookAuthorEntity> bookAuthors = new ArrayList<>();
+
+
+    // -------------------------------------------------------------------------
+    // Data Pre-Processing
+    // -------------------------------------------------------------------------
 
     @PrePersist
     @PreUpdate
@@ -55,12 +101,12 @@ public class AuthorEntity extends BaseEntity<Long> {
         trimStringFields();
     }
 
-    // Cleans unwanted spaces in metadata fields to ensure consistent storage and searching
     private void trimStringFields() {
         this.name = StringUtils.trimToNull(this.name);
         this.bio = StringUtils.trimToNull(this.bio);
         this.nationality = StringUtils.trimToNull(this.nationality);
         this.asin = StringUtils.trimToNull(this.asin);
+        this.olid = StringUtils.trimToNull(this.olid);
         this.profileImageUrl = StringUtils.trimToNull(this.profileImageUrl);
     }
 }

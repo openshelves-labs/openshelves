@@ -91,6 +91,9 @@ tasks.withType(JavaCompile).configureEach {
 
 test {
     useJUnitPlatform()      // Using JUnit Platform for testing
+    jvmArgs += [
+        '-XX:+EnableDynamicAgentLoading',  // Required for dynamic agent loading in newer JDK versions
+    ]
 }
 
 def isNonStable = { String version ->

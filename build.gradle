@@ -1,10 +1,10 @@
 plugins {
-    id 'org.springframework.boot' version '4.0.5'
+    id 'org.springframework.boot' version '4.0.6'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
 
     // Dependency Updater
-    id 'com.github.ben-manes.versions' version '0.53.0'
+    id 'com.github.ben-manes.versions' version '0.54.0'
 
     // IDEs
     id 'idea'
@@ -68,12 +68,12 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.boot:spring-boot-dependencies:4.0.5'
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:4.0.6'
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.1'
-        mavenBom 'org.springdoc:springdoc-openapi-bom:3.0.2'
+        mavenBom 'org.springdoc:springdoc-openapi-bom:3.0.3'
         mavenBom 'com.squareup.okhttp3:okhttp-bom:5.3.2'
         mavenBom 'io.github.resilience4j:resilience4j-bom:2.4.0'
-        mavenBom 'org.testcontainers:testcontainers-bom:2.0.4'
+        mavenBom 'org.testcontainers:testcontainers-bom:2.0.5'
     }
 }
 

@@ -13,7 +13,8 @@ plugins {
 group = 'com.openshelves'
 version = '0.0.1-alpha'
 
-description = 'Modernizing the university library experience. OpenShelves turns complex academic catalogs into intuitive, open discovery platforms for the digital age.'
+description = 'Modernizing the university library experience. OpenShelves turns complex academic catalogs ' +
+    'into intuitive, open discovery platforms for the digital age.'
 
 
 // Requires Java 25 from Azul Systems
@@ -122,8 +123,6 @@ tasks.register('downloadDependencies') {
 }
 
 tasks.named('dependencyUpdates').configure {
-//    checkConstraints = true
-//    checkBuildEnvironmentConstraints = true
     gradleReleaseChannel = 'current'
 
     rejectVersionIf {

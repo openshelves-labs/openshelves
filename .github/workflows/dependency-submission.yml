@@ -1,0 +1,23 @@
+name: Dependency Submission
+
+on:
+  push:
+    branches: ["develop"]
+
+jobs:
+  dependency-submission:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 25 (Zulu)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'zulu'
+
+      - name: Submit dependency graph
+        uses: gradle/actions/dependency-submission@v4

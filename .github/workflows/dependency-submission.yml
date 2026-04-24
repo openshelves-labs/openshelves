@@ -21,3 +21,5 @@ jobs:
 
       - name: Submit dependency graph
         uses: gradle/actions/dependency-submission@v4
+        with:
+          build-root-directory: backend

@@ -10,9 +10,9 @@ GRANT ALL ON SCHEMA public TO public;
 
 
 -- -------------------------------------------------------
--- author_roles: lookup table for author roles
+-- Author Roles: lookup table for author roles
 -- -------------------------------------------------------
-CREATE TABLE author_roles (
+CREATE TABLE lu_author_roles (
     -- key
     code                VARCHAR(20)     NOT NULL,
 
@@ -21,11 +21,11 @@ CREATE TABLE author_roles (
     description         TEXT,
 
     -- constraints
-    CONSTRAINT author_roles_pk       PRIMARY KEY (code),
-    CONSTRAINT author_roles_label_uk UNIQUE (label)
+    CONSTRAINT lu_author_roles_pk       PRIMARY KEY (code),
+    CONSTRAINT lu_author_roles_label_uk UNIQUE (label)
 );
 
-INSERT INTO author_roles (code, label, description) VALUES
+INSERT INTO lu_author_roles (code, label, description) VALUES
     ('AUTHOR',       'Author',       'Primary writer of the work'),
     ('CO_AUTHOR',    'Co-Author',    'Joint primary writer of the work'),
     ('EDITOR',       'Editor',       'Responsible for editing and curating the content'),
@@ -42,7 +42,7 @@ INSERT INTO author_roles (code, label, description) VALUES
 
 
 -- -------------------------------------------------------
--- books: the catalog record
+-- Books: the catalog record
 -- -------------------------------------------------------
 CREATE TABLE books (
     -- identity
@@ -92,7 +92,7 @@ CREATE TABLE books (
 
 
 -- -------------------------------------------------------
--- authors: people who wrote the books
+-- Authors: people who wrote the books
 -- -------------------------------------------------------
 CREATE TABLE authors (
     -- identity
@@ -132,7 +132,7 @@ CREATE TABLE authors (
 
 
 -- -------------------------------------------------------
--- book_authors: many-to-many between books and authors
+-- Book Authors: many-to-many between books and authors
 -- -------------------------------------------------------
 CREATE TABLE book_authors (
     -- identity
@@ -154,11 +154,10 @@ CREATE TABLE book_authors (
     CONSTRAINT book_authors_author_fk
         FOREIGN KEY (author_id)         REFERENCES authors         (id) ON DELETE RESTRICT,
     CONSTRAINT book_authors_role_fk
-        FOREIGN KEY (role)              REFERENCES author_roles (code),
+        FOREIGN KEY (role)              REFERENCES lu_author_roles (code),
     CONSTRAINT book_authors_sort_order_chk
         CHECK (sort_order >= 1)
 );
 
-CREATE INDEX book_authors_book_idx      ON book_authors (book_id);
-CREATE INDEX book_authors_author_idx    ON book_authors (author_id);
-CREATE INDEX book_authors_role_idx      ON book_authors (role);
+CREATE INDEX book_authors_book_role_idx    ON book_authors (book_id, role, sort_order);
+CREATE INDEX book_authors_author_idx       ON book_authors (author_id);

@@ -22,7 +22,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OpenLibraryParser implements ApplicationRunner {
+public class OpenLibraryParser {
 
     private static final String OPEN_LIBRARY_BASE_URL = "https://openlibrary.org";
 
@@ -31,8 +31,7 @@ public class OpenLibraryParser implements ApplicationRunner {
 
     private final ObjectMapper mapper;
 
-    @Override
-    public void run(@NonNull ApplicationArguments args) throws Exception {
+    public void run() {
         // Search for a book by title
         HttpUrl url = parseAndGetNewURLBuilder("/search.json")
             .addQueryParameter("q", "Anne Frank")

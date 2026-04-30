@@ -9,12 +9,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -28,30 +24,6 @@ public class OpenLibraryParser {
 
     @Qualifier("openLibrary")
     private final OkHttpClient httpClient;
-
-    private final ObjectMapper mapper;
-
-    public void run() {
-        // Search for a book by title
-        HttpUrl url = parseAndGetNewURLBuilder("/search.json")
-            .addQueryParameter("q", "Anne Frank")
-            .addQueryParameter("fields", "key,editions")
-            .addQueryParameter("page", String.valueOf(1))
-            .addQueryParameter("limit", String.valueOf(100))
-            .addQueryParameter("lang", "en")
-            .build();
-
-        Request request = new Request.Builder().url(url).build();
-
-        Optional<String> response = performApiRequest(request);
-        if (response.isEmpty()) {
-            log.warn("No results found for query: Anne Frank");
-            return;
-        }
-
-        String str = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.readTree(response.get()));
-        log.info("Response: {}", str);
-    }
 
     public Optional<BookMetadata> fetchBookMetadata(BookMetadata preview) throws IllegalArgumentException, ThirdPartyClientException {
         return Optional.empty();

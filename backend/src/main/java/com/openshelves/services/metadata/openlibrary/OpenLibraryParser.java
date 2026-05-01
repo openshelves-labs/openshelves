@@ -1,7 +1,6 @@
 package com.openshelves.services.metadata.openlibrary;
 
 import com.openshelves.exception.ThirdPartyClientException;
-import com.openshelves.model.dto.BookMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
@@ -24,10 +23,6 @@ public class OpenLibraryParser {
 
     @Qualifier("openLibrary")
     private final OkHttpClient httpClient;
-
-    public Optional<BookMetadata> fetchBookMetadata(BookMetadata preview) throws IllegalArgumentException, ThirdPartyClientException {
-        return Optional.empty();
-    }
 
     // *************************************************************
     // Helper Methods

@@ -16,6 +16,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Duration;
 
+/**
+ * OkHttp Interceptor for the Open Library API.
+ * Handles rate limiting, retry logic, and adding standard headers (e.g., User-Agent)
+ * to comply with Open Library's usage policies.
+ */
 @Slf4j
 @Component
 public class OpenLibraryInterceptor implements Interceptor {

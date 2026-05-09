@@ -50,7 +50,7 @@ The CLA is a legal agreement between you and OpenShelves Labs. Here is a plain-l
 
 Acceptance is done directly in your pull request. When you open a PR, the template will include the following checkbox at the bottom:
 
-> I have read and agree to the OpenShelves Contributor License Agreement (CLA).
+> I agree to the OpenShelves Contributor License Agreement (CLA).
 
 **Check that box before submitting.** An automated check runs on every PR and will set a failing status if the box is unchecked, blocking the PR from being merged until it is ticked.
 
@@ -74,12 +74,16 @@ Have an idea? We'd love to hear it. Open a [Discussion](https://github.com/opens
 
 ### Submitting Code
 
+> [!IMPORTANT]
+> **Checklists First!**
+> Before you open your pull request, please review the **[PR Checklists](./.github/PR_CHECKLISTS.md)** to ensure your code meets our project standards and AI-assistance rules.
+
 1. **Fork the repository** and create a branch from `develop`.
 2. **Write your code.** Follow the existing code style and conventions.
 3. **Write tests** where applicable.
 4. **Commit your changes** with a clear, descriptive commit message.
 5. **Open a pull request** against the `develop` branch.
-6. **Check the CLA checkbox** in the PR description before submitting.
+6. **Check the CLA and Checklist boxes** in the PR description to confirm you've met the requirements.
 7. **Respond to review feedback** — a maintainer will review your PR and may request changes.
 
 Pull requests that pass review and CI will be merged by a maintainer. We aim to review PRs within a reasonable timeframe, though this may vary depending on the complexity and the team's availability.

@@ -4,8 +4,8 @@ module.exports = async ({ github, context, core }) => {
     const body = context.payload.pull_request.body || '';
     const sha  = context.payload.pull_request.head.sha;
 
-    // Match: - [x] I have **read and agree** to the [OpenShelves Contributor License Agreement (CLA)]
-    const claChecked = /- \[x\] I have \*\*read and agree\*\* to the \[OpenShelves Contributor License Agreement \(CLA\)\]/i.test(body);
+    // Match: - [x] I agree to the [OpenShelves Contributor License Agreement (CLA)]
+    const claChecked = /- \[x\] I agree to the \[OpenShelves Contributor License Agreement \(CLA\)\]/i.test(body);
 
     const status = {
         owner:      context.repo.owner,

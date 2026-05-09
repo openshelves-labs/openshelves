@@ -1,12 +1,12 @@
-name: CLA Check
+name: PR Checks
 
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
 
 jobs:
-  cla-check:
-    name: Contributor License Agreement
+  verify-requirements:
+    name: Verify PR Requirements
     runs-on: ubuntu-latest
     permissions:
       statuses: write
@@ -20,4 +20,12 @@ jobs:
         with:
           script: |
             const check = require('./.github/scripts/cla-check.js');
+            await check({ github, context, core });
+
+      - name: Check PR Checklists checkbox
+        if: always() # Run even if CLA fails so the user sees all missing requirements at once
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const check = require('./.github/scripts/pr-checklist-check.js');
             await check({ github, context, core });

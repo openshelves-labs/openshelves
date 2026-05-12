@@ -1,9 +1,9 @@
 package com.openshelves.services.metadata;
 
-import com.openshelves.model.dto.metadata.ExternalBook;
+import com.openshelves.model.dto.metadata.*;
 import com.openshelves.model.enums.MetadataProvider;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Contract for interacting with an external metadata provider.
@@ -21,12 +21,31 @@ public interface MetadataClient {
      */
     MetadataProvider getProvider();
 
+
     /**
-     * Fetches book metadata using an ISBN identifier.
+     * Fetches a list of books matching the given search criteria.
      *
-     * @param isbn the ISBN of the book
-     * @return an {@link Optional} containing the book metadata if found
+     * <p>The provider implementation determines which fields of {@code request} are
+     * used and how results are ranked or filtered. At least one non-null field in
+     * {@code request} should be provided for meaningful results.</p>
+     *
+     * @param request      the search criteria (title, identifiers, authors, etc.)
+     * @param fetchOptions controls result limits and language filtering
+     * @return a list of matching {@link ExternalBook} results; never {@code null}, may be empty
      */
-    Optional<ExternalBook> fetchBookByIsbn(String isbn);
+    List<ExternalBook> fetchBooks(BookRequest request, FetchOptions fetchOptions);
+
+    /**
+     * Fetches a list of authors matching the given search criteria.
+     *
+     * <p>The provider implementation determines which fields of {@code request} are
+     * used and how results are ranked or filtered. At least one non-null field in
+     * {@code request} should be provided for meaningful results.</p>
+     *
+     * @param request      the search criteria (name, identifiers, etc.)
+     * @param fetchOptions controls result limits and language filtering
+     * @return a list of matching {@link ExternalAuthor} results; never {@code null}, may be empty
+     */
+    List<ExternalAuthor> fetchAuthors(AuthorRequest request, FetchOptions fetchOptions);
 
 }

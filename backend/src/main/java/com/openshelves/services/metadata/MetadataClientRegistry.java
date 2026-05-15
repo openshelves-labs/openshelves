@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 public class MetadataClientRegistry {
 
-    private final Map<MetadataProvider, MetadataClient> clients;
+    private final Map<MetadataProvider, MetadataClient> registry;
 
     /**
      * Constructs the registry by indexing all available {@link MetadataClient} beans.
@@ -37,18 +37,18 @@ public class MetadataClientRegistry {
      */
     @Autowired
     public MetadataClientRegistry(List<MetadataClient> allClients) {
-        Map<MetadataProvider, MetadataClient> clientMap = new EnumMap<>(MetadataProvider.class);
+        Map<MetadataProvider, MetadataClient> providerMap = new EnumMap<>(MetadataProvider.class);
         for (MetadataClient client : allClients) {
             MetadataProvider provider = client.getProvider();
-            MetadataClient existing = clientMap.put(provider, client);
+            MetadataClient existing = providerMap.put(provider, client);
             if (existing != null) {
                 throw new IllegalStateException(
                     "Duplicate MetadataClient for provider: " + provider);
             }
         }
-        this.clients = Collections.unmodifiableMap(clientMap);
+        this.registry = Collections.unmodifiableMap(providerMap);
 
-        log.debug("Registered MetadataClients: {}", clients.keySet());
+        log.debug("Registered MetadataClients: {}", registry.keySet());
     }
 
     /**
@@ -59,7 +59,7 @@ public class MetadataClientRegistry {
      * @throws IllegalArgumentException if no client is registered for the given provider
      */
     public MetadataClient getClient(MetadataProvider provider) {
-        MetadataClient client = clients.get(provider);
+        MetadataClient client = registry.get(provider);
         if (client == null) {
             throw new IllegalArgumentException(
                 "No MetadataClient registered for provider: " + provider);

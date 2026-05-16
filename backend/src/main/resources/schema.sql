@@ -183,7 +183,30 @@ CREATE TABLE lu_metadata_fields (
 );
 
 INSERT INTO lu_metadata_fields (code, label, description) VALUES
-    ('BOOK_TITLE', 'Book Title', 'The primary title of the book');
+    ('BOOK_TITLE',              'Book Title',           'The primary title of the book'),
+    ('BOOK_SUBTITLE',           'Book Subtitle',        'The secondary title or subtitle of the book'),
+    ('BOOK_DESCRIPTION',        'Book Description',     'A description or summary of the book content'),
+    ('BOOK_LANGUAGE',           'Book Language',        'The language code of the book (e.g., en)'),
+    ('BOOK_PAGE_COUNT',         'Book Page Count',      'The total number of pages in the book'),
+    ('BOOK_DEWEY_DECIMAL',      'Dewey Decimal',        'The Dewey Decimal Classification code'),
+    ('BOOK_LC_CLASSIFICATION',  'LC Classification',    'The Library of Congress classification code'),
+    ('BOOK_PUBLISHER',          'Book Publisher',       'The name of the publishing entity'),
+    ('BOOK_PUBLICATION_YEAR',   'Publication Year',     'The year the book was published'),
+    ('BOOK_SERIES_NAME',        'Series Name',          'The name of the series the book belongs to'),
+    ('BOOK_SERIES_NUMBER',      'Series Number',        'The position of the book within a series'),
+    ('BOOK_ISBN10',             'ISBN-10',              'The 10-digit International Standard Book Number'),
+    ('BOOK_ISBN13',             'ISBN-13',              'The 13-digit International Standard Book Number'),
+    ('BOOK_ASIN',               'Amazon ASIN',          'Amazon Standard Identification Number for the book'),
+    ('BOOK_OLID',               'Open Library ID',      'Open Library identifier for the book'),
+    ('BOOK_COVER_IMAGE_URL',    'Cover Image URL',      'The URL of the book cover image'),
+    ('AUTHOR_NAME',             'Author Name',          'The full display name of the author'),
+    ('AUTHOR_BIO',              'Author Biography',     'A short biography or description of the author'),
+    ('AUTHOR_NATIONALITY',      'Author Nationality',   'The nationality of the author'),
+    ('AUTHOR_BIRTH_YEAR',       'Birth Year',           'The year the author was born'),
+    ('AUTHOR_DEATH_YEAR',       'Death Year',           'The year the author died'),
+    ('AUTHOR_ASIN',             'Author ASIN',          'Amazon identifier for the author'),
+    ('AUTHOR_OLID',             'Author OLID',          'Open Library identifier for the author'),
+    ('AUTHOR_PROFILE_IMAGE_URL','Profile Image URL',    'The URL of the author profile image');
 
 
 -- -------------------------------------------------------

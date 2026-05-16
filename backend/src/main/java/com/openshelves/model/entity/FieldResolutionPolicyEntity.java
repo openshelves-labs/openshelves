@@ -1,6 +1,6 @@
 package com.openshelves.model.entity;
 
-import com.openshelves.model.enums.MergeStrategy;
+import com.openshelves.model.enums.ResolutionStrategy;
 import com.openshelves.model.enums.MetadataField;
 import com.openshelves.model.enums.MetadataProvider;
 import jakarta.persistence.*;
@@ -13,18 +13,18 @@ import org.hibernate.type.SqlTypes;
 import java.util.List;
 
 /**
- * Entity representing a rule for merging and prioritizing metadata for a specific field.
+ * Entity representing a policy for resolving and prioritizing metadata for a specific field.
  *
- * <p>Each rule defines how values for a given {@link MetadataField} should be resolved
+ * <p>Each policy defines how values for a given {@link MetadataField} should be resolved
  * when multiple providers supply conflicting information. This includes the
- * {@link MergeStrategy} to use and the priority order of {@link MetadataProvider}s.</p>
+ * {@link ResolutionStrategy} to use and the priority order of {@link MetadataProvider}s.</p>
  */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "field_rules")
-public class FieldRuleEntity extends BaseEntity<Long> {
+@Table(name = "field_resolution_policies")
+public class FieldResolutionPolicyEntity extends BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,23 +32,24 @@ public class FieldRuleEntity extends BaseEntity<Long> {
     private Long id;
 
     /**
-     * The metadata field this rule applies to.
+     * The metadata field this policy applies to.
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "field_key", nullable = false)
     private MetadataField fieldKey;
 
     /**
-     * The strategy to use when merging values for this field from different providers.
+     * The strategy to use when resolving values for this field from different providers.
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "merge_strategy", nullable = false)
-    private MergeStrategy mergeStrategy;
+    @Column(name = "resolution_strategy", nullable = false)
+    private ResolutionStrategy resolutionStrategy;
 
     /**
      * An ordered list of providers, where the first provider in the list has the highest priority.
      * Only used by strategies that rely on provider ranking.
      */
+    @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.ARRAY)
     @Column(name = "provider_priority")
     private List<MetadataProvider> providerPriority;

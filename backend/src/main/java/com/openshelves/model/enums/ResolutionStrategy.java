@@ -4,7 +4,7 @@ package com.openshelves.model.enums;
  * Defines the strategy used to resolve conflicts when multiple metadata providers
  * supply different values for the same field.
  */
-public enum MergeStrategy {
+public enum ResolutionStrategy {
     /** Select the value from the provider with the highest defined priority. */
     PRIORITY,
 

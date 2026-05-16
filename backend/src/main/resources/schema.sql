@@ -157,13 +157,161 @@ CREATE TABLE book_authors (
     CONSTRAINT book_authors_author_fk
         FOREIGN KEY (author_id)         REFERENCES authors         (id) ON DELETE RESTRICT,
     CONSTRAINT book_authors_role_fk
-        FOREIGN KEY (role)              REFERENCES lu_author_roles (code),
+        FOREIGN KEY (role)              REFERENCES lu_author_roles (code) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT book_authors_sort_order_chk
         CHECK (sort_order >= 1)
 );
 
 CREATE INDEX book_authors_book_role_idx    ON book_authors (book_id, role, sort_order);
 CREATE INDEX book_authors_author_idx       ON book_authors (author_id);
+
+
+-- -------------------------------------------------------
+-- Metadata Fields: lookup table for book/author fields
+-- -------------------------------------------------------
+CREATE TABLE lu_metadata_fields (
+    -- key
+    code                VARCHAR(20)     NOT NULL,
+
+    -- descriptor
+    label               VARCHAR(100)    NOT NULL,
+    description         TEXT,
+
+    -- constraints
+    CONSTRAINT lu_metadata_fields_pk       PRIMARY KEY (code),
+    CONSTRAINT lu_metadata_fields_label_uk UNIQUE (label)
+);
+
+INSERT INTO lu_metadata_fields (code, label, description) VALUES
+    ('BOOK_TITLE', 'Book Title', 'The primary title of the book');
+
+
+-- -------------------------------------------------------
+-- Metadata Providers: lookup table for external sources
+-- -------------------------------------------------------
+CREATE TABLE lu_metadata_providers (
+    -- key
+    code                VARCHAR(20)     NOT NULL,
+
+    -- descriptor
+    label               VARCHAR(50)     NOT NULL,
+    description         TEXT,
+
+    -- constraints
+    CONSTRAINT lu_metadata_providers_pk       PRIMARY KEY (code),
+    CONSTRAINT lu_metadata_providers_label_uk UNIQUE (label)
+);
+
+INSERT INTO lu_metadata_providers (code, label, description) VALUES
+    ('GOOGLE_BOOKS', 'Google Books', 'Google Books API'),
+    ('OPEN_LIBRARY', 'Open Library', 'Open Library API'),
+    ('AMAZON',       'Amazon',       'Amazon Books service'),
+    ('GOODREADS',    'Goodreads',    'Goodreads social cataloging');
+
+
+-- -------------------------------------------------------
+-- Resolution Strategies: lookup table for conflict resolution
+-- -------------------------------------------------------
+CREATE TABLE lu_resolution_strategies (
+    -- key
+    code                VARCHAR(20)     NOT NULL,
+
+    -- descriptor
+    label               VARCHAR(50)     NOT NULL,
+    description         TEXT,
+
+    -- constraints
+    CONSTRAINT lu_resolution_strategies_pk       PRIMARY KEY (code),
+    CONSTRAINT lu_resolution_strategies_label_uk UNIQUE (label)
+);
+
+INSERT INTO lu_resolution_strategies (code, label, description) VALUES
+    ('PRIORITY',       'Priority',       'Select the value from the provider with the highest defined priority'),
+    ('FIRST_NON_NULL', 'First Non-Null', 'Select the first non-null value encountered among providers'),
+    ('LONGEST_TEXT',   'Longest Text',   'Select the value with the greatest character length'),
+    ('VOTING',         'Voting',         'Select the value most commonly supplied by all providers'),
+    ('AI_SYNTHESIZE',  'AI Synthesize',  'Use an AI model to synthesize a consolidated value from all provider inputs'),
+    ('MANUAL',         'Manual',         'Mark the field for manual resolution by a human moderator');
+
+
+-- -------------------------------------------------------
+-- Field Resolution Policies: rules for merging metadata
+-- -------------------------------------------------------
+CREATE TABLE field_resolution_policies (
+    -- identity
+    id                  BIGINT          NOT NULL GENERATED ALWAYS AS IDENTITY,
+
+    -- configuration
+    field_key           VARCHAR(20)     NOT NULL,
+    resolution_strategy VARCHAR(20)     NOT NULL,
+    provider_priority   VARCHAR(20)[],
+
+    -- constraints
+    CONSTRAINT field_resolution_policies_pk      PRIMARY KEY (id),
+    CONSTRAINT field_resolution_policies_uk      UNIQUE (field_key),
+    CONSTRAINT field_resolution_policies_field_fk
+        FOREIGN KEY (field_key)           REFERENCES lu_metadata_fields (code) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT field_resolution_policies_strategy_fk
+        FOREIGN KEY (resolution_strategy) REFERENCES lu_resolution_strategies (code) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+-- -------------------------------------------------------
+-- Integrity: Referential Integrity for provider_priority Array
+-- -------------------------------------------------------
+
+-- 1. Validation Trigger: Ensures all providers in a policy exist in the lookup table
+CREATE OR REPLACE FUNCTION check_provider_priority_validity()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.provider_priority IS NOT NULL AND array_length(NEW.provider_priority, 1) > 0 THEN
+        IF EXISTS (
+            SELECT 1 
+            FROM unnest(NEW.provider_priority) AS p_code
+            WHERE p_code NOT IN (SELECT code FROM lu_metadata_providers)
+        ) THEN
+            RAISE EXCEPTION 'Invalid provider code in provider_priority: some values do not exist in lu_metadata_providers';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_provider_priority
+BEFORE INSERT OR UPDATE ON field_resolution_policies
+FOR EACH ROW
+EXECUTE FUNCTION check_provider_priority_validity();
+
+
+-- 2. Cascade Trigger: Syncs changes from lu_metadata_providers to policies
+CREATE OR REPLACE FUNCTION handle_metadata_provider_changes()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'UPDATE' AND OLD.code <> NEW.code THEN
+        -- Cascade code changes: replace old code with new code in all priority arrays
+        UPDATE field_resolution_policies
+        SET provider_priority = array_replace(provider_priority, OLD.code, NEW.code)
+        WHERE OLD.code = ANY(provider_priority);
+    ELSIF TG_OP = 'DELETE' THEN
+        -- Prevent "silent" deletion: raise an exception if the provider is still in use
+        IF EXISTS (
+            SELECT 1 
+            FROM field_resolution_policies 
+            WHERE OLD.code = ANY(provider_priority)
+        ) THEN
+            RAISE EXCEPTION 'Cannot delete provider %: it is currently referenced in one or more field resolution policies. Remove it from the policies first.', OLD.code;
+        END IF;
+    END IF;
+    -- Note: Since this is an AFTER trigger, we return NULL
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_handle_metadata_provider_changes
+AFTER UPDATE OR DELETE ON lu_metadata_providers
+FOR EACH ROW
+EXECUTE FUNCTION handle_metadata_provider_changes();
+
 
 
 

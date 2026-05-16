@@ -19,6 +19,9 @@ public class MetadataFieldAccessor {
     /**
      * Constructs an accessor for a specific field on an entity type.
      *
+     * <p>Note: Accessors bind directly to the underlying field,
+     * bypassing any declared getter or setter methods on the class.</p>
+     *
      * @param fieldName  the name of the field to access
      * @param fieldType  the Java type of the field
      * @param entityType the class of the entity containing the field

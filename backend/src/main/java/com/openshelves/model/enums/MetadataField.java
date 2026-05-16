@@ -5,6 +5,8 @@ import com.openshelves.model.dto.metadata.ExternalBook;
 import com.openshelves.services.metadata.MetadataFieldAccessor;
 import lombok.Getter;
 
+import java.util.List;
+
 /**
  * Enumeration of all metadata fields supported by the system.
  *
@@ -66,6 +68,9 @@ public enum MetadataField {
 
     /** The URL of the book's cover image. */
     BOOK_COVER_IMAGE_URL("coverImageUrl", String.class, ExternalBook.class),
+
+    /** The list of contributors associated with the book. */
+    BOOK_AUTHORS("authors", List.class, ExternalBook.class),
 
 
     // -------------------------------------------------------------------------

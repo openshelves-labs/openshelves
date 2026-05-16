@@ -199,6 +199,7 @@ INSERT INTO lu_metadata_fields (code, label, description) VALUES
     ('BOOK_ASIN',               'Amazon ASIN',          'Amazon Standard Identification Number for the book'),
     ('BOOK_OLID',               'Open Library ID',      'Open Library identifier for the book'),
     ('BOOK_COVER_IMAGE_URL',    'Cover Image URL',      'The URL of the book cover image'),
+    ('BOOK_AUTHORS',            'Book Authors',         'The list of contributors associated with the book'),
     ('AUTHOR_NAME',             'Author Name',          'The full display name of the author'),
     ('AUTHOR_BIO',              'Author Biography',     'A short biography or description of the author'),
     ('AUTHOR_NATIONALITY',      'Author Nationality',   'The nationality of the author'),

@@ -1,4 +1,4 @@
-package com.openshelves.services.metadata.mock;
+package com.openshelves.services.metadata.client.mock;
 
 import com.openshelves.model.dto.metadata.*;
 import com.openshelves.model.enums.MetadataProvider;

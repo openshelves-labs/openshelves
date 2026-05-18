@@ -1,6 +1,6 @@
 package com.openshelves.config;
 
-import com.openshelves.services.metadata.openlibrary.OpenLibraryInterceptor;
+import com.openshelves.services.metadata.client.openlibrary.OpenLibraryInterceptor;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Qualifier;

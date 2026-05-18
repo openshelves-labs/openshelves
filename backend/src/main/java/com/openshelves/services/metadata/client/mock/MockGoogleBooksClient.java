@@ -1,4 +1,4 @@
-package com.openshelves.services.metadata.mock;
+package com.openshelves.services.metadata.client.mock;
 
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;

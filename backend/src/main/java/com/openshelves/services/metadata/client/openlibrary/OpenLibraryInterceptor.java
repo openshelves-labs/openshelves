@@ -1,4 +1,4 @@
-package com.openshelves.services.metadata.openlibrary;
+package com.openshelves.services.metadata.client.openlibrary;
 
 import io.github.resilience4j.core.IntervalFunction;
 import io.github.resilience4j.core.functions.CheckedSupplier;

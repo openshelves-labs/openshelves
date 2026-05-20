@@ -5,8 +5,8 @@ import com.openshelves.model.enums.MetadataField;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.EnumSet;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class MetadataFieldPolicyService {
@@ -18,7 +18,7 @@ public class MetadataFieldPolicyService {
      * @return A map associating each requested field with its corresponding resolution policy entity.
      */
     @Transactional(readOnly = true)
-    public Map<MetadataField, FieldResolutionPolicyEntity> bulkLoadPolicies(EnumSet<MetadataField> fields) {
+    public Map<MetadataField, FieldResolutionPolicyEntity> bulkLoadPolicies(Set<MetadataField> fields) {
         // TODO: will implement once the repository is created
         throw new UnsupportedOperationException("Bulk load policies not yet supported");
     }

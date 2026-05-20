@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class MockGoogleBooksClient implements MetadataClient {
+public class MockGoogleBooksClient extends BaseMockClient {
 
     private static final List<ExternalBook> BOOK_DATA = new ArrayList<>();
     private static final List<ExternalAuthor> AUTHOR_DATA = new ArrayList<>();
@@ -118,45 +118,12 @@ public class MockGoogleBooksClient implements MetadataClient {
     }
 
     @Override
-    public List<ExternalBook> fetchBooks(BookRequest request, FetchOptions fetchOptions) {
-        log.debug("Mock fetching books from Google Books for request: {}", request);
-
-        // 1. Priority ID Search (Returns 1 result if matched)
-        // In a real provider, ID lookups are usually specific and return a single canonical result.
-        String isbn13 = request.getIsbn13();
-        String isbn10 = request.getIsbn10();
-        String olid = request.getOlid();
-        String asin = request.getAsin();
-
-        if (isbn13 != null || isbn10 != null || olid != null || asin != null) {
-            for (ExternalBook book : BOOK_DATA) {
-                if ((isbn13 != null && isbn13.equals(book.getIsbn13())) ||
-                    (isbn10 != null && isbn10.equals(book.getIsbn10())) ||
-                    (olid != null && olid.equals(book.getOlid())) ||
-                    (asin != null && asin.equals(book.getAsin()))) {
-                    return List.of(book);
-                }
-            }
-            return List.of(); // ID specified but not found in mock data
-        }
-
-        // 2. Title Search / Default (Simulate multiple results)
-        // To help in development of the UI flow, we return multiple books when a title search is performed.
-        int limit = (fetchOptions != null && fetchOptions.getMaxResults() != null)
-                ? Math.min(fetchOptions.getMaxResults(), BOOK_DATA.size())
-                : BOOK_DATA.size();
-
-        return BOOK_DATA.subList(0, limit);
+    protected List<ExternalBook> getBookData() {
+        return BOOK_DATA;
     }
 
     @Override
-    public List<ExternalAuthor> fetchAuthors(AuthorRequest request, FetchOptions fetchOptions) {
-        log.debug("Mock fetching authors from Google Books for request: {}", request);
-
-        int limit = (fetchOptions != null && fetchOptions.getMaxResults() != null)
-                ? Math.min(fetchOptions.getMaxResults(), AUTHOR_DATA.size())
-                : AUTHOR_DATA.size();
-
-        return AUTHOR_DATA.subList(0, limit);
+    protected List<ExternalAuthor> getAuthorData() {
+        return AUTHOR_DATA;
     }
 }

@@ -21,6 +21,10 @@ public record AggregationResult<T>(
     Map<MetadataField, FieldResolution<?>> needsReview
 ) {
 
+    public static <T> AggregationResult<T> empty() {
+        return new AggregationResult<>(null, Map.of());
+    }
+
     /**
      * Checks if the aggregation result is empty, meaning no provider returned
      * any value for the entity being aggregated.

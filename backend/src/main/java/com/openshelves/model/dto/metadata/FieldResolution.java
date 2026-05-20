@@ -13,7 +13,7 @@ import java.util.Map;
  * requires human review, or encountered an unresolvable conflict.</p>
  */
 public sealed interface FieldResolution<T>
-    permits FieldResolution.Resolved, FieldResolution.NeedsConfirmation, FieldResolution.Blocked {
+    permits FieldResolution.Resolved, FieldResolution.NeedsConfirmation, FieldResolution.Blocked, FieldResolution.Absent {
 
     /**
      * Indicates that the field was successfully resolved to a single, unambiguous value.
@@ -35,7 +35,7 @@ public sealed interface FieldResolution<T>
      * @param assessment    the AI-generated reasoning and confidence score for this proposal
      */
     record NeedsConfirmation<T>(
-        T proposedValue, 
+        T proposedValue,
         AiAssessment assessment
     ) implements FieldResolution<T> {}
 
@@ -53,6 +53,12 @@ public sealed interface FieldResolution<T>
         Map<MetadataProvider, T> conflictingValues,
         AiAssessment assessment
     ) implements FieldResolution<T> {}
+
+    /**
+     * Indicates that no value could be found for the field from any provider.
+     * This occurs when all providers return null or are missing the field.
+     */
+    record Absent<T>() implements FieldResolution<T> {}
 
     /**
      * Encapsulates the results of an AI-based evaluation during the metadata resolution process.

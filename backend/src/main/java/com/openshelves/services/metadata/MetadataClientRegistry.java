@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Registry that maps each {@link MetadataProvider} to its corresponding {@link MetadataClient}
@@ -65,5 +62,9 @@ public class MetadataClientRegistry {
                 "No MetadataClient registered for provider: " + provider);
         }
         return client;
+    }
+
+    public Map<MetadataProvider, MetadataClient> getAllClients() {
+        return registry;
     }
 }

@@ -56,11 +56,10 @@ public abstract class BaseMockClient implements MetadataClient {
     }
 
     private boolean matchesId(ExternalBook book, BookRequest request) {
-        if (request.getIsbn13() != null && request.getIsbn13().equals(book.getIsbn13())) return true;
-        if (request.getIsbn10() != null && request.getIsbn10().equals(book.getIsbn10())) return true;
-        if (request.getOlid() != null && request.getOlid().equals(book.getOlid())) return true;
-        if (request.getAsin() != null && request.getAsin().equals(book.getAsin())) return true;
-        return false;
+        return (request.getIsbn13() != null && request.getIsbn13().equals(book.getIsbn13())) ||
+               (request.getIsbn10() != null && request.getIsbn10().equals(book.getIsbn10())) ||
+               (request.getOlid() != null && request.getOlid().equals(book.getOlid())) ||
+               (request.getAsin() != null && request.getAsin().equals(book.getAsin()));
     }
 
     @Override

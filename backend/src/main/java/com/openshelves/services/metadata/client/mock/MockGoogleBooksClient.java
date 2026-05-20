@@ -113,7 +113,7 @@ public class MockGoogleBooksClient implements MetadataClient {
     }
 
     @Override
-    public MetadataProvider getProvider() {
+    public MetadataProvider provider() {
         return MetadataProvider.GOOGLE_BOOKS;
     }
 

@@ -12,7 +12,7 @@ import java.util.Map;
  * resolution process. It is used to encapsulate whether a field was cleanly resolved,
  * requires human review, or encountered an unresolvable conflict.</p>
  */
-public sealed interface FieldResolution
+public sealed interface FieldResolution<T>
     permits FieldResolution.Resolved, FieldResolution.NeedsConfirmation, FieldResolution.Blocked {
 
     /**
@@ -20,9 +20,11 @@ public sealed interface FieldResolution
      * This occurs when all providers agree, or a provider with sufficiently high priority
      * provides the value according to the configured resolution policy.
      *
-     * @param value the final, resolved string value for the metadata field
+     * @param value the final, resolved value for the metadata field
      */
-    record Resolved(String value) implements FieldResolution {}
+    record Resolved<T>(
+        T value
+    ) implements FieldResolution<T> {}
 
     /**
      * Indicates that a proposed value was determined, but requires manual confirmation
@@ -32,10 +34,10 @@ public sealed interface FieldResolution
      * @param proposedValue the most likely value determined by the resolution engine
      * @param assessment    the AI-generated reasoning and confidence score for this proposal
      */
-    record NeedsConfirmation(
-        String proposedValue, 
+    record NeedsConfirmation<T>(
+        T proposedValue, 
         AiAssessment assessment
-    ) implements FieldResolution {}
+    ) implements FieldResolution<T> {}
 
     /**
      * Indicates that the field resolution is blocked due to conflicting values from
@@ -46,11 +48,11 @@ public sealed interface FieldResolution
      * @param conflictingValues a mapping of metadata providers to their respective conflicting values
      * @param assessment        the AI-generated context explaining the conflict and why it could not be resolved
      */
-    record Blocked(
-        String proposedValue,
-        Map<MetadataProvider, String> conflictingValues,
+    record Blocked<T>(
+        T proposedValue,
+        Map<MetadataProvider, T> conflictingValues,
         AiAssessment assessment
-    ) implements FieldResolution {}
+    ) implements FieldResolution<T> {}
 
     /**
      * Encapsulates the results of an AI-based evaluation during the metadata resolution process.

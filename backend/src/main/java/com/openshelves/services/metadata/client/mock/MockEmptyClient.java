@@ -18,7 +18,7 @@ import java.util.List;
 public class MockEmptyClient implements MetadataClient {
 
     @Override
-    public MetadataProvider getProvider() {
+    public MetadataProvider provider() {
         return MetadataProvider.GOODREADS;
     }
 

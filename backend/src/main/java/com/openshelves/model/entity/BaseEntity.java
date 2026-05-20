@@ -1,9 +1,11 @@
 package com.openshelves.model.entity;
 
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,6 +19,7 @@ import java.util.Objects;
  * @param <ID> the type of the entity's identifier
  */
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseEntity<ID> implements Serializable {
 

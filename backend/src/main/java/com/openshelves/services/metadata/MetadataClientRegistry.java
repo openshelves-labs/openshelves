@@ -39,7 +39,7 @@ public class MetadataClientRegistry {
     public MetadataClientRegistry(List<MetadataClient> allClients) {
         Map<MetadataProvider, MetadataClient> providerMap = new EnumMap<>(MetadataProvider.class);
         for (MetadataClient client : allClients) {
-            MetadataProvider provider = client.getProvider();
+            MetadataProvider provider = client.provider();
             MetadataClient existing = providerMap.put(provider, client);
             if (existing != null) {
                 throw new IllegalStateException(

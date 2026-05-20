@@ -17,7 +17,7 @@ import java.util.List;
 public class MockFailingClient implements MetadataClient {
 
     @Override
-    public MetadataProvider getProvider() {
+    public MetadataProvider provider() {
         return MetadataProvider.AMAZON;
     }
 

@@ -19,7 +19,7 @@ public interface MetadataClient {
      *
      * @return the associated {@link MetadataProvider}
      */
-    MetadataProvider getProvider();
+    MetadataProvider provider();
 
 
     /**

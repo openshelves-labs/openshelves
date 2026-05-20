@@ -113,7 +113,7 @@ public class MockOpenLibraryClient implements MetadataClient {
     }
 
     @Override
-    public MetadataProvider getProvider() {
+    public MetadataProvider provider() {
         return MetadataProvider.OPEN_LIBRARY;
     }
 

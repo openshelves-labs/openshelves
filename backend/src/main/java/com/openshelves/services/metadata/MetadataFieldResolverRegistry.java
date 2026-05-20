@@ -39,7 +39,7 @@ public class MetadataFieldResolverRegistry {
     public MetadataFieldResolverRegistry(List<MetadataFieldResolver> allResolvers) {
         Map<ResolutionStrategy, MetadataFieldResolver> strategyMap = new EnumMap<>(ResolutionStrategy.class);
         for (MetadataFieldResolver resolver : allResolvers) {
-            ResolutionStrategy strategy = resolver.getStrategy();
+            ResolutionStrategy strategy = resolver.strategy();
             MetadataFieldResolver existing = strategyMap.put(strategy, resolver);
             if (existing != null) {
                 throw new IllegalStateException(

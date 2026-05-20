@@ -29,21 +29,8 @@ public abstract class BaseMockClient implements MetadataClient {
         log.debug("Mock fetching books from {} for request: {}", provider(), request);
 
         // 1. Priority ID Search (Returns 1 result if matched)
-        String isbn13 = request.getIsbn13();
-        String isbn10 = request.getIsbn10();
-        String olid = request.getOlid();
-        String asin = request.getAsin();
-
-        if (isbn13 != null || isbn10 != null || olid != null || asin != null) {
-            for (ExternalBook book : getBookData()) {
-                if ((isbn13 != null && isbn13.equals(book.getIsbn13())) ||
-                    (isbn10 != null && isbn10.equals(book.getIsbn10())) ||
-                    (olid != null && olid.equals(book.getOlid())) ||
-                    (asin != null && asin.equals(book.getAsin()))) {
-                    return List.of(book);
-                }
-            }
-            return List.of();
+        if (hasAnyId(request)) {
+            return findBookById(request);
         }
 
         // 2. Title Search / Default (Simulate multiple results)
@@ -52,6 +39,28 @@ public abstract class BaseMockClient implements MetadataClient {
                 : getBookData().size();
 
         return getBookData().subList(0, limit);
+    }
+
+    private boolean hasAnyId(BookRequest request) {
+        return request.getIsbn13() != null || request.getIsbn10() != null
+                || request.getOlid() != null || request.getAsin() != null;
+    }
+
+    private List<ExternalBook> findBookById(BookRequest request) {
+        for (ExternalBook book : getBookData()) {
+            if (matchesId(book, request)) {
+                return List.of(book);
+            }
+        }
+        return List.of();
+    }
+
+    private boolean matchesId(ExternalBook book, BookRequest request) {
+        if (request.getIsbn13() != null && request.getIsbn13().equals(book.getIsbn13())) return true;
+        if (request.getIsbn10() != null && request.getIsbn10().equals(book.getIsbn10())) return true;
+        if (request.getOlid() != null && request.getOlid().equals(book.getOlid())) return true;
+        if (request.getAsin() != null && request.getAsin().equals(book.getAsin())) return true;
+        return false;
     }
 
     @Override

@@ -268,7 +268,7 @@ CREATE TABLE field_resolution_policies (
     -- configuration
     field_key           VARCHAR(20)     NOT NULL,
     resolution_strategy VARCHAR(20)     NOT NULL,
-    provider_priority   VARCHAR(20)[],
+    ranked_providers   VARCHAR(20)[],
 
     -- constraints
     CONSTRAINT field_resolution_policies_pk      PRIMARY KEY (id),
@@ -281,30 +281,30 @@ CREATE TABLE field_resolution_policies (
 
 
 -- -------------------------------------------------------
--- Integrity: Referential Integrity for provider_priority Array
+-- Integrity: Referential Integrity for ranked_providers Array
 -- -------------------------------------------------------
 
 -- 1. Validation Trigger: Ensures all providers in a policy exist in the lookup table
-CREATE OR REPLACE FUNCTION check_provider_priority_validity()
+CREATE OR REPLACE FUNCTION check_ranked_providers_validity()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.provider_priority IS NOT NULL AND array_length(NEW.provider_priority, 1) > 0 THEN
+    IF NEW.ranked_providers IS NOT NULL AND array_length(NEW.ranked_providers, 1) > 0 THEN
         IF EXISTS (
-            SELECT 1 
-            FROM unnest(NEW.provider_priority) AS p_code
+            SELECT 1
+            FROM unnest(NEW.ranked_providers) AS p_code
             WHERE p_code NOT IN (SELECT code FROM lu_metadata_providers)
         ) THEN
-            RAISE EXCEPTION 'Invalid provider code in provider_priority: some values do not exist in lu_metadata_providers';
+            RAISE EXCEPTION 'Invalid provider code in ranked_providers: some values do not exist in lu_metadata_providers';
         END IF;
     END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_check_provider_priority
+CREATE TRIGGER trg_check_ranked_providers
 BEFORE INSERT OR UPDATE ON field_resolution_policies
 FOR EACH ROW
-EXECUTE FUNCTION check_provider_priority_validity();
+EXECUTE FUNCTION check_ranked_providers_validity();
 
 
 -- 2. Cascade Trigger: Syncs changes from lu_metadata_providers to policies
@@ -314,14 +314,14 @@ BEGIN
     IF TG_OP = 'UPDATE' AND OLD.code <> NEW.code THEN
         -- Cascade code changes: replace old code with new code in all priority arrays
         UPDATE field_resolution_policies
-        SET provider_priority = array_replace(provider_priority, OLD.code, NEW.code)
-        WHERE OLD.code = ANY(provider_priority);
+        SET ranked_providers = array_replace(ranked_providers, OLD.code, NEW.code)
+        WHERE OLD.code = ANY(ranked_providers);
     ELSIF TG_OP = 'DELETE' THEN
         -- Prevent "silent" deletion: raise an exception if the provider is still in use
         IF EXISTS (
-            SELECT 1 
-            FROM field_resolution_policies 
-            WHERE OLD.code = ANY(provider_priority)
+            SELECT 1
+            FROM field_resolution_policies
+            WHERE OLD.code = ANY(ranked_providers)
         ) THEN
             RAISE EXCEPTION 'Cannot delete provider %: it is currently referenced in one or more field resolution policies. Remove it from the policies first.', OLD.code;
         END IF;

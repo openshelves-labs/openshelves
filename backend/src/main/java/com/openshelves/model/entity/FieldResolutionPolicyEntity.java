@@ -46,11 +46,11 @@ public class FieldResolutionPolicyEntity extends BaseEntity<Long> {
     private ResolutionStrategy resolutionStrategy;
 
     /**
-     * An ordered list of providers, where the first provider in the list has the highest priority.
-     * Only used by strategies that rely on provider ranking.
+     * An ordered list of providers ranked by preference, where the first entry carries
+     * the highest weight. Used by strategies that resolve conflicts based on source ordering.
      */
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.ARRAY)
-    @Column(name = "provider_priority")
-    private List<MetadataProvider> providerPriority;
+    @Column(name = "ranked_providers")
+    private List<MetadataProvider> rankedProviders;
 }

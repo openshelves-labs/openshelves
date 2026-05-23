@@ -1,0 +1,579 @@
+-- =======================================================
+-- OpenShelves Seed Data for Mocking
+-- =======================================================
+
+
+-- -------------------------------------------------------
+-- Books Data: the catalog record
+-- -------------------------------------------------------
+INSERT INTO books (
+    title, subtitle, description, language, page_count,
+    dewey_decimal, lc_classification,
+    publisher, publication_year,
+    series_name, series_number,
+    isbn_10, isbn_13, olid,
+    cover_image_url
+)
+VALUES
+    -- ── George Orwell ──────────────────────────────────────
+    (
+        'Nineteen Eighty-Four', NULL,
+        'Winston Smith works for the Ministry of Truth in London, chief city of Airstrip One. '
+        'Big Brother stares out from every poster, the Thought Police uncover every act of '
+        'betrayal. When Winston finds love with Julia, he discovers that life does not have '
+        'to be dull and deadening, and awakens to new possibilities.',
+        'eng', 328,
+        '823.912', 'PR6029.R8',
+        'Secker & Warburg', 1949,
+        NULL, NULL,
+        '0451524934', '9780451524935', 'OL7353544M',
+        'https://covers.openlibrary.org/b/olid/OL7353544M-L.jpg'
+    ),
+    (
+        'Animal Farm', 'A Fairy Story',
+        'A farm is taken over by its overworked, mistreated animals. With flaming idealism '
+        'and stirring slogans, they set out to create a paradise of progress, justice, and '
+        'equality. Thus the stage is set for one of the most telling satiric fables ever '
+        'penned—a razor-edged fairy tale for grown-ups.',
+        'eng', 112,
+        '823.912', 'PR6029.R8',
+        'Secker & Warburg', 1945,
+        NULL, NULL,
+        '0451526341', '9780451526342', 'OL7353543M',
+        'https://covers.openlibrary.org/b/olid/OL7353543M-L.jpg'
+    ),
+    (
+        'Homage to Catalonia', NULL,
+        'George Orwell''s personal account of his experiences in the Spanish Civil War, '
+        'fighting alongside the POUM militia against Franco''s Nationalists. A vivid '
+        'firsthand account of the war and a penetrating look at the political divisions '
+        'that plagued the Republican side.',
+        'eng', 232,
+        '946.081', 'DP269.2',
+        'Secker & Warburg', 1938,
+        NULL, NULL,
+        '0156421178', '9780156421171', 'OL7353549M',
+        'https://covers.openlibrary.org/b/olid/OL7353549M-L.jpg'
+    ),
+
+    -- ── J.R.R. Tolkien ────────────────────────────────────────────
+    (
+        'The Hobbit', 'or There and Back Again',
+        'Bilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, rarely '
+        'travelling any farther than his pantry or cellar. But his contentment is '
+        'disturbed when the wizard Gandalf and a company of dwarves arrive on his doorstep '
+        'one day to whisk him away on an adventure.',
+        'eng', 310,
+        '823.912', 'PR6039.O32',
+        'George Allen & Unwin', 1937,
+        NULL, NULL,
+        '0547928227', '9780547928227', 'OL27516827M',
+        'https://covers.openlibrary.org/b/olid/OL27516827M-L.jpg'
+    ),
+    (
+        'The Fellowship of the Ring', NULL,
+        'The first part of The Lord of the Rings. Frodo Baggins must leave his home and '
+        'journey to the Cracks of Doom to destroy the One Ring, an artefact of '
+        'great evil created by the Dark Lord Sauron.',
+        'eng', 423,
+        '823.912', 'PR6039.O32',
+        'George Allen & Unwin', 1954,
+        'The Lord of the Rings', 1,
+        '0618346252', '9780618346257', 'OL9069698M',
+        'https://covers.openlibrary.org/b/olid/OL9069698M-L.jpg'
+    ),
+    (
+        'The Two Towers', NULL,
+        'The second part of The Lord of the Rings. The Fellowship is broken. Some are with '
+        'Aragorn on the way to Minas Tirith; others are held captive by Saruman in '
+        'Isengard. Frodo and Sam continue their journey to Mordor.',
+        'eng', 352,
+        '823.912', 'PR6039.O32',
+        'George Allen & Unwin', 1954,
+        'The Lord of the Rings', 2,
+        '0618346260', '9780618346264', 'OL9069700M',
+        'https://covers.openlibrary.org/b/olid/OL9069700M-L.jpg'
+    ),
+    (
+        'The Return of the King', NULL,
+        'The third part of The Lord of the Rings. The War of the Ring reaches its '
+        'climax as the Dark Lord Sauron sets his power against Gondor. Aragorn must '
+        'decide to what use he will put the power of the Dead.',
+        'eng', 416,
+        '823.912', 'PR6039.O32',
+        'George Allen & Unwin', 1955,
+        'The Lord of the Rings', 3,
+        '0618346279', '9780618346271', 'OL9069702M',
+        'https://covers.openlibrary.org/b/olid/OL9069702M-L.jpg'
+    ),
+
+    -- ── Frank Herbert ──────────────────────────────────────
+    (
+        'Dune', NULL,
+        'Set on the desert planet Arrakis, Dune is the story of the boy Paul Atreides, '
+        'heir to a noble family tasked with ruling an inhospitable world where the only '
+        'thing of value is the "spice" melange, a drug capable of extending life and '
+        'enhancing consciousness.',
+        'eng', 412,
+        '813.54', 'PS3558.E63',
+        'Chilton Books', 1965,
+        'Dune Chronicles', 1,
+        '0441013597', '9780441013593', 'OL26857646M',
+        'https://covers.openlibrary.org/b/olid/OL26857646M-L.jpg'
+    ),
+    (
+        'Dune Messiah', NULL,
+        'Twelve years have passed since Paul Atreides became Emperor of the Known '
+        'Universe. Now the Bene Gesserit, the Spacing Guild, House Harkonnen, and '
+        'Scytale of the Tleilaxu hatch a plot to dethrone him.',
+        'eng', 256,
+        '813.54', 'PS3558.E63',
+        'Putnam', 1969,
+        'Dune Chronicles', 2,
+        '0593098234', '9780593098233', 'OL26857647M',
+        'https://covers.openlibrary.org/b/olid/OL26857647M-L.jpg'
+    ),
+    (
+        'Children of Dune', NULL,
+        'The third novel in the Dune Chronicles. Nine years after the events of Dune '
+        'Messiah, the twins Leto and Ghanima walk in the footsteps of their father Paul '
+        'Muad''Dib. The desert planet Arrakis—Dune—is slowly changing.',
+        'eng', 444,
+        '813.54', 'PS3558.E63',
+        'Putnam', 1976,
+        'Dune Chronicles', 3,
+        '0593098242', '9780593098240', 'OL26857648M',
+        'https://covers.openlibrary.org/b/olid/OL26857648M-L.jpg'
+    ),
+
+    -- ── Fyodor Dostoevsky ─────────────────────────────────────────
+    (
+        'Crime and Punishment', NULL,
+        'Raskolnikov, a destitute and desperate former student, wanders through the '
+        'slums of St. Petersburg and commits a random murder. The act tears at his '
+        'sanity as an investigator closes in. A novel of the psychology of guilt.',
+        'eng', 671,
+        '891.733', 'PG3326',
+        'The Russian Messenger', 1866,
+        NULL, NULL,
+        '0486454118', '9780486454115', 'OL7156810M',
+        'https://covers.openlibrary.org/b/olid/OL7156810M-L.jpg'
+    ),
+    (
+        'The Brothers Karamazov', NULL,
+        'The final novel by Fyodor Dostoevsky. The story tells of the Karamazov family: '
+        'the sensual, impulsive father Fyodor Pavlovich, and his three very different '
+        'sons. Beneath the story of a family feud lies a profound meditation on God, '
+        'free will, and morality.',
+        'eng', 824,
+        '891.733', 'PG3326',
+        'The Russian Messenger', 1880,
+        NULL, NULL,
+        '0374528373', '9780374528379', 'OL7156811M',
+        'https://covers.openlibrary.org/b/olid/OL7156811M-L.jpg'
+    ),
+    (
+        'The Idiot', NULL,
+        'Prince Myshkin returns to Russia after years in a Swiss sanatorium. His '
+        'innocence and benevolence earn him the epithet "idiot", but in a society '
+        'consumed by greed and passion, his simplicity exposes the moral bankruptcy '
+        'of those around him.',
+        'eng', 656,
+        '891.733', 'PG3326',
+        'The Russian Messenger', 1869,
+        NULL, NULL,
+        '0140447938', '9780140447934', 'OL7156812M',
+        'https://covers.openlibrary.org/b/olid/OL7156812M-L.jpg'
+    ),
+
+    -- ── Leo Tolstoy ────────────────────────────────────────
+    (
+        'War and Peace', NULL,
+        'Tolstoy''s epic novel follows five Russian aristocratic families through '
+        'Napoleon''s 1812 invasion of Russia. Interweaving the historical sweep of '
+        'war with intimate portrayals of love, ambition, and spiritual awakening.',
+        'eng', 1225,
+        '891.733', 'PG3366',
+        'The Russian Messenger', 1869,
+        NULL, NULL,
+        '1400079985', '9781400079988', 'OL7353640M',
+        'https://covers.openlibrary.org/b/olid/OL7353640M-L.jpg'
+    ),
+    (
+        'Anna Karenina', NULL,
+        'Considered by many critics to be the greatest novel ever written, Anna '
+        'Karenina depicts the tragedy of a socialite who abandons her respectable life '
+        'for a passionate affair that leads to her eventual downfall.',
+        'eng', 964,
+        '891.733', 'PG3366',
+        'The Russian Messenger', 1878,
+        NULL, NULL,
+        '0143035002', '9780143035008', 'OL7353641M',
+        'https://covers.openlibrary.org/b/olid/OL7353641M-L.jpg'
+    ),
+    (
+        'The Death of Ivan Ilyich', NULL,
+        'Ivan Ilyich has lived a proper, successful life according to society''s norms. '
+        'Now, dying of a mysterious illness, he confronts the emptiness of his life '
+        'and the nature of a good death. A masterful novella.',
+        'eng', 132,
+        '891.733', 'PG3366',
+        'Russkaya Beseda', 1886,
+        NULL, NULL,
+        '0553210351', '9780553210354', 'OL7353642M',
+        'https://covers.openlibrary.org/b/olid/OL7353642M-L.jpg'
+    ),
+
+    -- ── Gabriel García Márquez ────────────────────────────────────
+    (
+        'One Hundred Years of Solitude', NULL,
+        'The novel tells the multi-generational story of the Buendía family, whose '
+        'patriarch, José Arcadio Buendía, founds the town of Macondo. A landmark of '
+        'magical realism and Latin American literature.',
+        'eng', 417,
+        '863.64', 'PQ8180.17.A73',
+        'Harper & Row', 1967,
+        NULL, NULL,
+        '0060883286', '9780060883287', 'OL7353588M',
+        'https://covers.openlibrary.org/b/olid/OL7353588M-L.jpg'
+    ),
+    (
+        'Love in the Time of Cholera', NULL,
+        'In their youth, Florentino Ariza and Fermina Daza fall passionately in love. '
+        'When she eventually chooses to marry a rich doctor, Florentino is heartbroken '
+        'but vows to wait for her forever, however long it takes.',
+        'eng', 348,
+        '863.64', 'PQ8180.17.A73',
+        'Editorial Oveja Negra', 1985,
+        NULL, NULL,
+        '0307389731', '9780307389732', 'OL7353589M',
+        'https://covers.openlibrary.org/b/olid/OL7353589M-L.jpg'
+    ),
+    (
+        'Chronicle of a Death Foretold', NULL,
+        'A man returns to his home town many years after a murder to find out the '
+        'full story of the killing. The story of Santiago Nasar''s killing on his '
+        'wedding morning is told in reverse, revealing the inevitability and '
+        'complicity of an entire community.',
+        'eng', 120,
+        '863.64', 'PQ8180.17.A73',
+        'Editorial La Oveja Negra', 1981,
+        NULL, NULL,
+        '1400034720', '9781400034727', 'OL7353590M',
+        'https://covers.openlibrary.org/b/olid/OL7353590M-L.jpg'
+    ),
+
+    -- ── Douglas Adams ──────────────────────────────────────
+    (
+        'The Hitchhiker''s Guide to the Galaxy', NULL,
+        'Seconds before the Earth is demolished to make way for a hyperspace bypass, '
+        'Arthur Dent is plucked off the planet by his friend Ford Prefect, a researcher '
+        'for the revised edition of The Hitchhiker''s Guide to the Galaxy.',
+        'eng', 193,
+        '823.914', 'PR6051.D3352',
+        'Pan Books', 1979,
+        'The Hitchhiker''s Guide to the Galaxy', 1,
+        '0345391802', '9780345391803', 'OL7353545M',
+        'https://covers.openlibrary.org/b/olid/OL7353545M-L.jpg'
+    ),
+    (
+        'The Restaurant at the End of the Universe', NULL,
+        'The second book in the Hitchhiker''s Guide series. Facing annihilation at the '
+        'hands of the warlike Vogons, Arthur Dent and friends find themselves in a '
+        'restaurant at the end of the universe.',
+        'eng', 208,
+        '823.914', 'PR6051.D3352',
+        'Pan Books', 1980,
+        'The Hitchhiker''s Guide to the Galaxy', 2,
+        '0345391810', '9780345391810', 'OL7353546M',
+        'https://covers.openlibrary.org/b/olid/OL7353546M-L.jpg'
+    ),
+    (
+        'Life, the Universe and Everything', NULL,
+        'The unhappy inhabitants of planet Krikkit are at war with the rest of the '
+        'universe, wanting to destroy it. Arthur Dent and his companions struggle to '
+        'save the universe from destruction.',
+        'eng', 224,
+        '823.914', 'PR6051.D3352',
+        'Pan Books', 1982,
+        'The Hitchhiker''s Guide to the Galaxy', 3,
+        '0345391829', '9780345391827', 'OL7353547M',
+        'https://covers.openlibrary.org/b/olid/OL7353547M-L.jpg'
+    ),
+
+    -- ── Ursula K. Le Guin ─────────────────────────────────────────
+    (
+        'The Left Hand of Darkness', NULL,
+        'A lone human emissary is sent to the icy planet of Gethen on a mission of '
+        'political alliance. But he learns too late that on Gethen there are no social '
+        'hierarchies or gender distinctions—a profound novel of alien otherness.',
+        'eng', 304,
+        '813.54', 'PS3562.E42',
+        'Ace Books', 1969,
+        'Hainish Cycle', 4,
+        '0441478123', '9780441478125', 'OL7353580M',
+        'https://covers.openlibrary.org/b/olid/OL7353580M-L.jpg'
+    ),
+    (
+        'The Dispossessed', 'An Ambiguous Utopia',
+        'Shevek, a brilliant physicist, decides to take action. He will seek answers, '
+        'question the unquestionable, and attempt to tear down the walls of hatred '
+        'that have isolated his planet of anarchists from the rest of the civilized '
+        'universe.',
+        'eng', 387,
+        '813.54', 'PS3562.E42',
+        'Harper & Row', 1974,
+        'Hainish Cycle', 5,
+        '0061054887', '9780061054884', 'OL7353581M',
+        'https://covers.openlibrary.org/b/olid/OL7353581M-L.jpg'
+    ),
+    (
+        'A Wizard of Earthsea', NULL,
+        'Ged, the greatest sorcerer in all Earthsea, was called Sparrowhawk in his '
+        'reckless youth. From his home island of Gont, a poor boy with extraordinary '
+        'powers, he accidentally summons a terrible shadow-creature.',
+        'eng', 197,
+        '813.54', 'PS3562.E42',
+        'Parnassus Press', 1968,
+        'Earthsea Cycle', 1,
+        '0547773749', '9780547773742', 'OL7353582M',
+        'https://covers.openlibrary.org/b/olid/OL7353582M-L.jpg'
+    ),
+
+    -- ── Isaac Asimov ───────────────────────────────────────
+    (
+        'Foundation', NULL,
+        'For twelve thousand years the Galactic Empire has ruled supreme. Now it is '
+        'dying. But only Hari Seldon, creator of the revolutionary science of '
+        'psychohistory, can see into the future—to a dark age of ignorance, barbarism, '
+        'and warfare that will last thirty thousand years.',
+        'eng', 255,
+        '813.54', 'PS3551.S5',
+        'Gnome Press', 1951,
+        'Foundation', 1,
+        '0553293354', '9780553293357', 'OL7353560M',
+        'https://covers.openlibrary.org/b/olid/OL7353560M-L.jpg'
+    ),
+    (
+        'Foundation and Empire', NULL,
+        'The Foundation faces the greatest challenge in its history: the ambitious '
+        'military leader Bel Riose battles the Foundation''s attempts to survive. '
+        'The second volume of Asimov''s celebrated Foundation series.',
+        'eng', 247,
+        '813.54', 'PS3551.S5',
+        'Gnome Press', 1952,
+        'Foundation', 2,
+        '0553293370', '9780553293371', 'OL7353561M',
+        'https://covers.openlibrary.org/b/olid/OL7353561M-L.jpg'
+    ),
+    (
+        'Second Foundation', NULL,
+        'The all-conquering Mule has finally located the Second Foundation—the '
+        'elusive repository of psychohistorical knowledge—and intends to destroy it. '
+        'The third volume in the Foundation series.',
+        'eng', 210,
+        '813.54', 'PS3551.S5',
+        'Gnome Press', 1953,
+        'Foundation', 3,
+        '0553293389', '9780553293388', 'OL7353562M',
+        'https://covers.openlibrary.org/b/olid/OL7353562M-L.jpg'
+    ),
+
+    -- ── Cormac McCarthy ───────────────────────────────────────────
+    (
+        'The Road', NULL,
+        'A father and his son walk alone through burned America. Nothing moves in '
+        'the ravaged landscape save the ash on the wind. It is cold enough to crack '
+        'stones, and when the snow falls it is gray. The sky is dark. Their '
+        'destination is the coast, though they don''t know what, if anything, awaits them there.',
+        'eng', 287,
+        '813.54', 'PS3563.C337',
+        'Alfred A. Knopf', 2006,
+        NULL, NULL,
+        '0307265439', '9780307265432', 'OL17854096M',
+        'https://covers.openlibrary.org/b/olid/OL17854096M-L.jpg'
+    ),
+    (
+        'Blood Meridian', 'or the Evening Redness in the West',
+        'Based on historical events that took place on the Texas-Mexico border in the '
+        '1850s, Blood Meridian traces the fortunes of the Kid, a fourteen-year-old '
+        'Tennesseean who stumbles into the bottomless violence of the Glanton Gang.',
+        'eng', 337,
+        '813.54', 'PS3563.C337',
+        'Random House', 1985,
+        NULL, NULL,
+        '0679728759', '9780679728757', 'OL18269415M',
+        'https://covers.openlibrary.org/b/olid/OL18269415M-L.jpg'
+    ),
+    (
+        'No Country for Old Men', NULL,
+        'In rural Texas, welder and hunter Llewelyn Moss finds a pickup truck '
+        'surrounded by a sentry of dead men. A haul of heroin and more than two '
+        'million dollars in cash is all that remains. Now, a merciless killer named '
+        'Chigurh is on his trail.',
+        'eng', 309,
+        '813.54', 'PS3563.C337',
+        'Alfred A. Knopf', 2005,
+        NULL, NULL,
+        '0375706674', '9780375706677', 'OL17927193M',
+        'https://covers.openlibrary.org/b/olid/OL17927193M-L.jpg'
+    )
+
+ON CONFLICT (olid) DO NOTHING;
+
+
+-- -------------------------------------------------------
+-- Authors Data: people who wrote the books
+-- -------------------------------------------------------
+INSERT INTO authors (name, bio, nationality, birth_year, death_year, olid, profile_image_url)
+VALUES
+    (
+        'George Orwell',
+        'Eric Arthur Blair, known by his pen name George Orwell, was an English novelist, '
+        'essayist, journalist and critic. His work is characterised by lucid prose, biting '
+        'social criticism, total opposition to totalitarianism, and outspoken support of '
+        'democratic socialism.',
+        'British',
+        1903, 1950,
+        'OL1392723A',
+        'https://covers.openlibrary.org/a/olid/OL1392723A-L.jpg'
+    ),
+    (
+        'J.R.R. Tolkien',
+        'John Ronald Reuel Tolkien was an English author and philologist. He is best known '
+        'as the author of the high fantasy works The Hobbit and The Lord of the Rings. '
+        'Tolkien was a professor of Anglo-Saxon and later of English Language and Literature '
+        'at Oxford University.',
+        'British',
+        1892, 1973,
+        'OL26320A',
+        'https://covers.openlibrary.org/a/olid/OL26320A-L.jpg'
+    ),
+    (
+        'Frank Herbert',
+        'Franklin Patrick Herbert Jr. was an American science fiction author best known for '
+        'the 1965 novel Dune and its five sequels. He was also a journalist, photographer, '
+        'short story writer, book reviewer, and ecological consultant.',
+        'American',
+        1920, 1986,
+        'OL26707A',
+        'https://covers.openlibrary.org/a/olid/OL26707A-L.jpg'
+    ),
+    (
+        'Fyodor Dostoevsky',
+        'Fyodor Mikhailovich Dostoevsky was a Russian novelist, short story writer, essayist '
+        'and journalist. His works explore the psychological, moral, and spiritual turmoil '
+        'of his characters, and have had a profound influence on literature.',
+        'Russian',
+        1821, 1881,
+        'OL22242A',
+        'https://covers.openlibrary.org/a/olid/OL22242A-L.jpg'
+    ),
+    (
+        'Leo Tolstoy',
+        'Count Lev Nikolayevich Tolstoy was a Russian author widely regarded as one of the '
+        'greatest writers of all time. He is best known for his novels War and Peace and '
+        'Anna Karenina, which are often cited as pinnacles of realist fiction.',
+        'Russian',
+        1828, 1910,
+        'OL33434A',
+        'https://covers.openlibrary.org/a/olid/OL33434A-L.jpg'
+    ),
+    (
+        'Gabriel García Márquez',
+        'Gabriel José de la Concordia García Márquez was a Colombian novelist, short-story '
+        'writer, screenwriter, and journalist. He was awarded the Nobel Prize in Literature '
+        'in 1982. He is best known for his novel One Hundred Years of Solitude.',
+        'Colombian',
+        1927, 2014,
+        'OL26095A',
+        'https://covers.openlibrary.org/a/olid/OL26095A-L.jpg'
+    ),
+    (
+        'Douglas Adams',
+        'Douglas Noël Adams was an English author, screenwriter, essayist, humorist, '
+        'satirist and dramatist. Adams was author of The Hitchhiker''s Guide to the Galaxy, '
+        'which originated in 1978 as a BBC Radio 4 comedy before developing into a '
+        '"trilogy in five parts".',
+        'British',
+        1952, 2001,
+        'OL23919A',
+        'https://covers.openlibrary.org/a/olid/OL23919A-L.jpg'
+    ),
+    (
+        'Ursula K. Le Guin',
+        'Ursula Kroeber Le Guin was an American author best known for her works of '
+        'speculative fiction, including science fiction works set in her Hainish universe, '
+        'and the Earthsea fantasy series. Her writing explored themes of anarchism, '
+        'gender, and anthropology.',
+        'American',
+        1929, 2018,
+        'OL152A',
+        'https://covers.openlibrary.org/a/olid/OL152A-L.jpg'
+    ),
+    (
+        'Isaac Asimov',
+        'Isaac Asimov was an American author and professor of biochemistry at Boston '
+        'University. During his lifetime, Asimov was considered one of the "Big Three" '
+        'science fiction writers. He wrote or edited more than 500 books and an estimated '
+        '90,000 letters and postcards.',
+        'American',
+        1920, 1992,
+        'OL34221A',
+        'https://covers.openlibrary.org/a/olid/OL34221A-L.jpg'
+    ),
+    (
+        'Cormac McCarthy',
+        'Cormac McCarthy was an American novelist, playwright, and screenwriter. He wrote '
+        'twelve novels in the Southern Gothic, Appalachian, and neo-Western genres. He '
+        'received the Pulitzer Prize for Fiction in 2007 for The Road.',
+        'American',
+        1933, 2023,
+        'OL2649852A',
+        'https://covers.openlibrary.org/a/olid/OL2649852A-L.jpg'
+    )
+ON CONFLICT (olid) DO NOTHING;
+
+
+-- -------------------------------------------------------
+-- Book Authors Mapping Data
+-- -------------------------------------------------------
+INSERT INTO book_authors (book_id, author_id, role, sort_order)
+SELECT b.id, a.id, 'AUTHOR', 1
+FROM (VALUES
+    -- title OLID → author OLID
+    ('OL7353544M', 'OL1392723A'),   -- 1984            → Orwell
+    ('OL7353543M', 'OL1392723A'),   -- Animal Farm     → Orwell
+    ('OL7353549M', 'OL1392723A'),   -- Homage          → Orwell
+    ('OL27516827M','OL26320A'),     -- Hobbit          → Tolkien
+    ('OL9069698M', 'OL26320A'),     -- FotR            → Tolkien
+    ('OL9069700M', 'OL26320A'),     -- TT              → Tolkien
+    ('OL9069702M', 'OL26320A'),     -- RotK            → Tolkien
+    ('OL26857646M','OL26707A'),     -- Dune            → Herbert
+    ('OL26857647M','OL26707A'),     -- Dune Messiah    → Herbert
+    ('OL26857648M','OL26707A'),     -- Children        → Herbert
+    ('OL7156810M', 'OL22242A'),     -- Crime & Pun     → Dostoevsky
+    ('OL7156811M', 'OL22242A'),     -- Brothers K      → Dostoevsky
+    ('OL7156812M', 'OL22242A'),     -- Idiot           → Dostoevsky
+    ('OL7353640M', 'OL33434A'),     -- War & Peace     → Tolstoy
+    ('OL7353641M', 'OL33434A'),     -- Anna K          → Tolstoy
+    ('OL7353642M', 'OL33434A'),     -- Death of Ivan   → Tolstoy
+    ('OL7353588M', 'OL26095A'),     -- 100 Years       → García Márquez
+    ('OL7353589M', 'OL26095A'),     -- Love/Cholera    → García Márquez
+    ('OL7353590M', 'OL26095A'),     -- Chronicle       → García Márquez
+    ('OL7353545M', 'OL23919A'),     -- H2G2            → Adams
+    ('OL7353546M', 'OL23919A'),     -- Restaurant      → Adams
+    ('OL7353547M', 'OL23919A'),     -- Life Universe   → Adams
+    ('OL7353580M', 'OL152A'),       -- Left Hand       → Le Guin
+    ('OL7353581M', 'OL152A'),       -- Dispossessed    → Le Guin
+    ('OL7353582M', 'OL152A'),       -- Wizard          → Le Guin
+    ('OL7353560M', 'OL34221A'),     -- Foundation      → Asimov
+    ('OL7353561M', 'OL34221A'),     -- F & Empire      → Asimov
+    ('OL7353562M', 'OL34221A'),     -- 2nd Foundation  → Asimov
+    ('OL17854096M','OL2649852A'),   -- The Road        → McCarthy
+    ('OL18269415M','OL2649852A'),   -- Blood Meridian  → McCarthy
+    ('OL17927193M','OL2649852A')    -- No Country      → McCarthy
+) AS mapping (book_olid, author_olid)
+JOIN books   b ON b.olid = book_olid
+JOIN authors a ON a.olid = author_olid
+ON CONFLICT (book_id, author_id, role) DO NOTHING;

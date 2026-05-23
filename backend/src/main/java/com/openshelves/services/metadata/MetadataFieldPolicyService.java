@@ -29,7 +29,7 @@ public class MetadataFieldPolicyService {
                 field -> {
                     FieldResolutionPolicyEntity policy = new FieldResolutionPolicyEntity();
                     policy.setFieldKey(field);
-                    
+
                     switch (field) {
                         case BOOK_DESCRIPTION:
                         case AUTHOR_BIO:
@@ -52,7 +52,7 @@ public class MetadataFieldPolicyService {
                             break;
                         default:
                             policy.setResolutionStrategy(ResolutionStrategy.PRIORITY);
-                            policy.setProviderPriority(List.of(
+                            policy.setRankedProviders(List.of(
                                     MetadataProvider.GOOGLE_BOOKS,
                                     MetadataProvider.OPEN_LIBRARY,
                                     MetadataProvider.GOODREADS,
@@ -60,7 +60,7 @@ public class MetadataFieldPolicyService {
                             ));
                             break;
                     }
-                    
+
                     return policy;
                 }
         ));

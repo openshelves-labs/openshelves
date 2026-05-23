@@ -1,21 +1,36 @@
 package com.openshelves.model.entity;
 
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Abstract base class for JPA entities.
+ * Provides a common structure including ID retrieval and robust
+ * {@code equals} and {@code hashCode} implementations based on the entity's ID.
+ *
+ * @param <ID> the type of the entity's identifier
+ */
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseEntity<ID> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Retrieves the identifier of the entity.
+     *
+     * @return the identifier
+     */
     public abstract ID getId();
 
     @Override

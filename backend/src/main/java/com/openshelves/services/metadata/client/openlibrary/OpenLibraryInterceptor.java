@@ -1,4 +1,4 @@
-package com.openshelves.services.metadata.openlibrary;
+package com.openshelves.services.metadata.client.openlibrary;
 
 import io.github.resilience4j.core.IntervalFunction;
 import io.github.resilience4j.core.functions.CheckedSupplier;
@@ -16,6 +16,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Duration;
 
+/**
+ * OkHttp Interceptor for the Open Library API.
+ * Handles rate limiting, retry logic, and adding standard headers (e.g., User-Agent)
+ * to comply with Open Library's usage policies.
+ */
 @Slf4j
 @Component
 public class OpenLibraryInterceptor implements Interceptor {
@@ -58,6 +63,13 @@ public class OpenLibraryInterceptor implements Interceptor {
 
     /// Interceptor Method
 
+    /**
+     * Intercepts the HTTP request to apply headers, rate limiting, and retry logic.
+     *
+     * @param chain the OkHttp interceptor chain
+     * @return the HTTP response
+     * @throws IOException if a network error occurs or if the resilience chain fails
+     */
     @Override
     public @NonNull Response intercept(@NonNull Chain chain) throws IOException {
         // Add User-Agent header to all requests
@@ -85,6 +97,15 @@ public class OpenLibraryInterceptor implements Interceptor {
     }
 
     // Helper method to select appropriate Rate Limiter
+    /**
+     * Determines which rate limiter to apply based on the request URL.
+     *
+     * <p>Open Library applies different rate limits to its API endpoints versus
+     * its cover image service.</p>
+     *
+     * @param request the outgoing request
+     * @return the appropriate {@link RateLimiter} instance
+     */
     private RateLimiter getRateLimiter(Request request) {
         String host = request.url().host();
 

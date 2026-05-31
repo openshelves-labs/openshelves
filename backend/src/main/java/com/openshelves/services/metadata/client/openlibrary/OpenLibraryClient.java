@@ -26,7 +26,7 @@ import java.util.*;
 public class OpenLibraryClient implements MetadataClient {
 
     private static final String OPEN_LIBRARY_BASE_URL = "https://openlibrary.org";
-    private static final Integer DEFAULT_SEARCH_LIMIT = 5;
+    private static final int DEFAULT_SEARCH_LIMIT = 5;
 
     @Qualifier("openLibrary")
     private final OkHttpClient httpClient;
@@ -61,7 +61,7 @@ public class OpenLibraryClient implements MetadataClient {
 
         // Search For The Book using title and author
         if (StringUtils.isNotBlank(request.getTitle())) {
-            HttpUrl url = buildSearchUrl(request, fetchOptions).build();
+            HttpUrl url = buildBookSearchUrl(request, fetchOptions).build();
             Request req = new Request.Builder().url(url).build();
 
             Optional<String> resp = performApiRequest(req);
@@ -71,6 +71,8 @@ public class OpenLibraryClient implements MetadataClient {
                 List<ExternalBook> bookList = new ArrayList<>();
                 for (String editionKey : editionKeyList) {
                     // Fetch individual book details using the edition key
+
+                    // Note: Here edition key already contains the prefix "/books/", so we can directly append ".json" to it
                     HttpUrl bookUrl = parseAndGetNewURLBuilder(editionKey + ".json").build();
                     Request bookReq = new Request.Builder().url(bookUrl).build();
 
@@ -103,10 +105,10 @@ public class OpenLibraryClient implements MetadataClient {
     }
 
     // Returns the URL to search for books based on title and author parameters
-    private HttpUrl.Builder buildSearchUrl(BookRequest request, FetchOptions fetchOptions) {
+    private HttpUrl.Builder buildBookSearchUrl(BookRequest request, FetchOptions fetchOptions) {
         HttpUrl.Builder urlBuilder = parseAndGetNewURLBuilder("/search.json");
 
-        // Build query string
+        // Build solr query string
         String query = request.getTitle();
 
         if (request.getAuthors() != null && !request.getAuthors().isEmpty()) {
@@ -119,21 +121,89 @@ public class OpenLibraryClient implements MetadataClient {
         // Only fetch edition keys in search results to minimize payload size
         urlBuilder.addQueryParameter("fields", "editions,key");
 
-        // Apply Limits
-        int maxResults = fetchOptions.getMaxResults() != null ? fetchOptions.getMaxResults() : DEFAULT_SEARCH_LIMIT;
-        urlBuilder.addQueryParameter("limit", String.valueOf(maxResults));
-
         // Suggest Book Language
         if (StringUtils.isNotBlank(fetchOptions.getLanguage())) {
             urlBuilder.addQueryParameter("lang", fetchOptions.getLanguage());
         }
+
+        // Apply Limits
+        int maxResults = fetchOptions.getMaxResults() != null ? fetchOptions.getMaxResults() : DEFAULT_SEARCH_LIMIT;
+        urlBuilder.addQueryParameter("limit", String.valueOf(maxResults));
 
         return urlBuilder;
     }
 
     @Override
     public List<ExternalAuthor> fetchAuthors(AuthorRequest request, FetchOptions fetchOptions) {
-        return List.of();
+        // OpenLibrary Supported Identifiers
+        if (StringUtils.isNotBlank(request.getOlid())) {
+
+            HttpUrl url = buildAuthorUrl(request).build();
+            Request req = new Request.Builder().url(url).build();
+
+            Optional<String> resp = performApiRequest(req);
+            if (resp.isPresent()) {
+                JsonNode node = jsonMapper.readTree(resp.get());
+                return Collections.singletonList(olMapper.toExternalAuthor(node));
+            }
+
+            log.warn("Could not fetch author from Open Library with known identifiers [path={}], falling back to search", url.encodedPath());
+        }
+
+        // Search For The Author using his name
+        if (StringUtils.isNotBlank(request.getName())) {
+            HttpUrl url = buildAuthorSearchUrl(request, fetchOptions).build();
+            Request req = new Request.Builder().url(url).build();
+
+            Optional<String> resp = performApiRequest(req);
+            if (resp.isPresent()) {
+                List<String> authorKeyList = JsonPath.read(resp.get(), "$.docs[*].key");
+
+                List<ExternalAuthor> authorList = new ArrayList<>();
+                for (String authorKey : authorKeyList) {
+                    // Fetch individual author details using the author key
+                    HttpUrl authorUrl = parseAndGetNewURLBuilder("/authors/" + authorKey + ".json").build();
+                    Request authorReq = new Request.Builder().url(authorUrl).build();
+
+                    Optional<String> authorResp = performApiRequest(authorReq);
+                    if (authorResp.isPresent()) {
+                        JsonNode node = jsonMapper.readTree(authorResp.get());
+                        authorList.add(olMapper.toExternalAuthor(node));
+                    }
+                }
+
+                if (!authorList.isEmpty()) return authorList;
+            }
+        }
+
+        // Unknown Author
+        return Collections.emptyList();
+    }
+
+    // Returns the URL to fetch author data based on the request parameters
+    private HttpUrl.Builder buildAuthorUrl(AuthorRequest request) {
+        if (StringUtils.isNotBlank(request.getOlid())) {
+            return parseAndGetNewURLBuilder("/authors/" + request.getOlid() + ".json");
+        } else {
+            throw new IllegalArgumentException("Author OLID must be provided.");
+        }
+    }
+
+    // Returns the URL to search for authors based on author name
+    private HttpUrl.Builder buildAuthorSearchUrl(AuthorRequest request, FetchOptions fetchOptions) {
+        HttpUrl.Builder urlBuilder = parseAndGetNewURLBuilder("/search/authors.json");
+
+        // Build solr query string
+        urlBuilder.addQueryParameter("q", request.getName());
+
+        // Only fetch keys in search results to minimize payload size
+        urlBuilder.addQueryParameter("fields", "key");
+
+        // Apply Limits
+        int maxResults = fetchOptions.getMaxResults() != null ? fetchOptions.getMaxResults() : DEFAULT_SEARCH_LIMIT;
+        urlBuilder.addQueryParameter("limit", String.valueOf(maxResults));
+
+        return urlBuilder;
     }
 
 

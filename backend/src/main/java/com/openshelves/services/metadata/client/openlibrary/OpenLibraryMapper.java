@@ -106,8 +106,9 @@ public class OpenLibraryMapper {
         Map.entry("bul", "bg"), Map.entry("srp", "sr"), Map.entry("slv", "sl")
     );
 
+
     // -----------------------------------------------------------------------
-    // Public mapping methods
+    // Public Mapper API
     // -----------------------------------------------------------------------
 
     /**
@@ -129,7 +130,7 @@ public class OpenLibraryMapper {
         String[] seriesInfo = parseSeries(firstInArray(node, "series"));
 
         // Resolve the first positive cover ID for building the cover image URL
-        Integer coverId = extractFirstPositiveIntegerInArray(node, "covers");
+        Long coverId = extractFirstPositiveNumberInArray(node, "covers");
 
         return ExternalBook.builder()
             .title(text(node, "title"))
@@ -176,7 +177,7 @@ public class OpenLibraryMapper {
         if (node == null || node.isNull()) return null;
 
         // Resolve the first positive photo ID for building the profile image URL
-        Integer photoId = extractFirstPositiveIntegerInArray(node, "photos");
+        Long photoId = extractFirstPositiveNumberInArray(node, "photos");
 
         return ExternalAuthor.builder()
             // personal_name is the more specific field; fall back to the generic name field
@@ -193,6 +194,7 @@ public class OpenLibraryMapper {
             .profileImageUrl(photoId != null ? String.format(AUTHOR_PHOTO_URL, photoId) : null)
             .build();
     }
+
 
     // -----------------------------------------------------------------------
     // OL-specific resolvers
@@ -261,7 +263,7 @@ public class OpenLibraryMapper {
     }
 
     /**
-     * Extracts the first positive integer value from a JSON array field.
+     * Extracts the first positive number from a JSON array field.
      *
      * <p>Open Library uses integer arrays for cover and photo IDs; the value
      * {@code -1} is used as a sentinel to indicate that no image is available.
@@ -269,18 +271,19 @@ public class OpenLibraryMapper {
      *
      * @param node  the parent {@link JsonNode}; may be {@code null}
      * @param field the name of the array field within {@code node}
-     * @return the first positive integer found in the array, or {@code null} if
-     *         the field is absent, not an array, empty, or contains no positive integers
+     * @return the first positive value found in the array as a {@link Long}, or
+     *         {@code null} if the field is absent, not an array, empty, or contains
+     *         no positive numbers
      */
-    private Integer extractFirstPositiveIntegerInArray(JsonNode node, String field) {
+    private Long extractFirstPositiveNumberInArray(JsonNode node, String field) {
         if (node == null || node.isNull()) return null;
 
         JsonNode arrayNode = node.get(field);
         if (arrayNode == null || !arrayNode.isArray() || arrayNode.isEmpty()) return null;
 
         for (JsonNode itemNode : arrayNode) {
-            if (itemNode.isInt() && itemNode.asInt() > 0) {
-                return itemNode.asInt();
+            if (itemNode.isIntegralNumber() && itemNode.asLong() > 0) {
+                return itemNode.asLong();
             }
         }
 
@@ -369,6 +372,7 @@ public class OpenLibraryMapper {
 
         return authorRefs;
     }
+
 
     // -----------------------------------------------------------------------
     // Generic helpers

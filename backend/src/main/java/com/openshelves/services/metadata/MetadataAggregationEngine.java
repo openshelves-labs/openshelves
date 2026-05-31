@@ -29,9 +29,9 @@ public class MetadataAggregationEngine {
     private final MetadataFieldPolicyService policyService;
 
 
-    // =========================================================================
+    // -----------------------------------------------------------------------
     // Public API
-    // =========================================================================
+    // -----------------------------------------------------------------------
 
     /**
      * Aggregates book metadata by fetching data from all registered providers and resolving field conflicts.
@@ -76,9 +76,9 @@ public class MetadataAggregationEngine {
     }
 
 
-    // =========================================================================
+    // -----------------------------------------------------------------------
     // Fetch
-    // =========================================================================
+    // -----------------------------------------------------------------------
 
     /**
      * Executes the fetch operation across all registered providers, collecting the first available result from each.
@@ -110,9 +110,9 @@ public class MetadataAggregationEngine {
     }
 
 
-    // =========================================================================
+    // -----------------------------------------------------------------------
     // Resolution
-    // =========================================================================
+    // -----------------------------------------------------------------------
 
     /**
      * Orchestrates the resolution of an entity by applying field-level resolution policies to provider candidates.

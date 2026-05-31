@@ -340,8 +340,7 @@ public class OpenLibraryMapper {
      * <p>Entries with blank or unresolvable OLIDs are silently skipped.
      *
      * @param node the root {@link JsonNode} of an Open Library edition; may be {@code null}
-     * @return a list of {@link ExternalBook.AuthorRef} objects (may be empty, never {@code null}
-     *         when the parent node is non-null), or {@code null} if {@code node} is null
+     * @return a list of {@link ExternalBook.AuthorRef} objects (may be empty, never {@code null})
      */
     private List<ExternalBook.AuthorRef> extractAuthorRefs(JsonNode node) {
         if (node == null || node.isNull()) return Collections.emptyList();

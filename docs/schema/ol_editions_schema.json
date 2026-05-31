@@ -1,0 +1,2144 @@
+{
+  "$dump": "ol_dump_editions_2026-04-30.txt.gz",
+  "$sample_size": 55962700,
+  "type": "object",
+  "properties": {
+    "audience": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "author": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "author_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "birth_date": {
+      "type": "string"
+    },
+    "body": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "bookweight": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "string"
+        }
+      }
+    },
+    "by_statement": {
+      "type": "string"
+    },
+    "by_statements": {
+      "type": "string"
+    },
+    "classifications": {
+      "type": "object",
+      "properties": {
+        "bisac": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dep\u00f3sito_legal_n.a.": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dk5": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "finnish_public_libraries_classification_system": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "goethe_university_library,_frankfurt": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "identificativo_sbn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lccn_permalink": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lccn_permalink:_http:/lccn.loc.gov/65023044": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "library_and_archives_canada_cataloguing_in_publication": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "library_bibliographical_classification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "national_library_of_canada_catologue": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nlm_class_no.:": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nur": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rvk": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sab": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "siso": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "thema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "udc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ulrls_classmark": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "code": {
+      "type": "string"
+    },
+    "collections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "content_features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contributions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contributor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "copyright_date": {
+      "type": "string"
+    },
+    "cover": {
+      "type": "string"
+    },
+    "coverid": {
+      "type": "string"
+    },
+    "coverimage": {
+      "type": "string"
+    },
+    "covers": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "create": {
+      "type": "string"
+    },
+    "created": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "dewey_decimal_class": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "properties": {
+        "depth": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "units": {
+          "type": "string"
+        },
+        "width": {
+          "type": "string"
+        }
+      }
+    },
+    "download_url": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "edition": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "edition_name": {
+      "type": "string"
+    },
+    "first_sentence": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "full_title": {
+      "type": "string"
+    },
+    "genres": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ia_box_id": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "ia_id": {
+      "type": "string"
+    },
+    "ia_loaded_id": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "identfiers": {
+      "type": "object",
+      "properties": {
+        "doi": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "identifiers": {
+      "type": "object",
+      "properties": {
+        "abaa": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "abebooks,de": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "abebooks.de": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "abwa_bibliographic_number": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "abwa_talking_book_number": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alecso": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alibris_id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "almedina": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amazon": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "amazon.ca_asin": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amazon.co.jp": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amazon.co.uk_asin": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amazon.de_asin": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amazon.it_asin": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "annas_archive": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "apple_ibook_store": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "archive.org": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "asin": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "barcode": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "barnes_and_noble_-_bn.com": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bayerische_staatsbibliothek": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bca": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bcid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bestell-nr._(ddr)": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bestellnummer": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "better_world_books": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bhl": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bibliografia_selecionada": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bibliotheca_alexandrina": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "biblioth\u00e8que_nationale_de_france": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "biblioth\u00e8que_nationale_de_france_(bnf)": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bibsys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "biodiversity_heritage_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bodleian,_oxford_university": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bol.com": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bookbrainz": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bookdash": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "booklocker.com": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bookmooch": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "books_on_demand": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "booksforyou": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "booksonclick": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bookwire": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "boston_public_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "british_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "british_national_bibliography": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "call_number": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "canadian_national_library_archive": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "choosebooks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cihm_number": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cita_press": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cornell_university_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cornell_university_online_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "create_space": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dc_books": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dep\u00f3sito_legal": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dep\u00f3sito_legal_bolivia": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deutsche_nationalbibliothek_(urn:nbn)": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dewey_decimal_classification_(ddc)": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "discovereads": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dnb": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dnb_(german_national_library)": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "doi": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dominican_institute_for_oriental_studies_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "e-books": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ean": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ebook_family_friendly_store": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ebooks_libres_et_gratuits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "edition": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "el_n\u00famero_de_inscripci\u00f3n_de_la_obra": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "etsc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fennica": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "flipkart": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "folio": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "format": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "format:_kindle_edition": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "freebase": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gallica_(bnf)": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "glossary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "goodreads": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "google": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gpn_(taiwan)": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "grand_comics_database": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hakikat_kitabevi": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "harvard": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "harvard_university_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hathi_trust": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hizmetbooks.org": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "idealbooks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ilmiolibro": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "imslp/petrucci_music_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inducks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "infosoup": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isbn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isbn_10": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isbn_13": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isfdb": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "issn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "istc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "judaica_savings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kindle.com": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "l.n.": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lc_classification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lccn_permalink:": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "learnawesome": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "library_of_congress": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "library_of_congress_catalog_card_no.": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "library_of_congress_catalog_no.": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "library_of_congress_catalogue_number": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "library_of_congress_classification_(lcc)": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "librarything": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "libris": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "librivox": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limited_edition_book_number": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "link": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lulu": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "magcloud": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mathematic_subject_classification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "media_mint_publishing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "musicbrainz": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "national_book_chamber_of_moldova": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "national_diet_library,_japan": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "national_library_of_australia": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "national_library_of_egypt": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nbuv": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "newberry_library_cartographic_catalog": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nieders\u00e4chsische_staats-_und_universit\u00e4tsbibliothek_g\u00f6ttingen": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nla": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "num._national_de_th\u00e8se": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "num\u00e9ro_de_d\u00e9p\u00f4t_l\u00e9gal": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "n\u00famero_de_incripci\u00f3n_de_la_obra": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "oclc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "opac_sbn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open_alex": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open_textbook_library": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "openstax": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "overdrive": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "paperback_swap": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "project_gutenberg": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "project_runeberg": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "publishamerica": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "publisher_catalog": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "registro_autoral": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sadguru_sanga_diary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scribd": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "shelfari": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "smashwords.com": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "smashwords_book_download": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "special_library_collections": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "staats-_und_universit\u00e4tsbibliothek_hamburg": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "standard_ebooks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "storygraph": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sudoc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "system_number_of_the_research_library_olomouc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "taideteollisen_korkeakoulun_julkaisusarja": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ulrls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "universal_decimal_classification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "university_library_of_the_ludwig-maximilian_university_of_munich": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "universit\u00e4tsbibliothek_heidelberg": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "upc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "uri": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "urn_nbn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "usaid/dec": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "victoria_institutions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "w._w._norton": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "wikidata": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "wikisource": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "yakaboo": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "zdb-id": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "isbn_10": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isbn_13": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isbn_invalid": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isbn_odd_length": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "key": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "language": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "language_code": {
+      "type": "string"
+    },
+    "languages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "last_modified": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "latest_revision": {
+      "type": "integer"
+    },
+    "lc_classification": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lc_classifications": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lccn": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lexile": {
+      "type": "string"
+    },
+    "library_of_congress_name": {
+      "type": "string"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              }
+            }
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "literary_form": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "literary_themes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "literary_tropes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "local_id": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "location": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "m": {
+      "type": "string"
+    },
+    "macro": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "main_topics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mood": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "news": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "number_of_pages": {
+      "type": "integer"
+    },
+    "numer_of_pages": {
+      "type": "string"
+    },
+    "ocaid": {
+      "type": "string"
+    },
+    "oclc": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "oclc_number": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "oclc_numbers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "openlibrary": {
+      "type": "string"
+    },
+    "original_isbn": {
+      "type": "string"
+    },
+    "other_titles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pagination": {
+      "type": "string"
+    },
+    "people": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "physical_dimensions": {
+      "type": "string"
+    },
+    "physical_format": {
+      "type": "string"
+    },
+    "places": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "price": {
+      "type": "string"
+    },
+    "prior_knowledge": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "properties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "expected_type": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              }
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              }
+            }
+          },
+          "unique": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "access": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "indirectAcquisition": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "price": {
+                "type": "object",
+                "properties": {
+                  "currency": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "provider": {
+            "type": "string"
+          },
+          "provider_name": {
+            "type": "string"
+          },
+          "rel": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "publish_country": {
+      "type": "string"
+    },
+    "publish_date": {
+      "type": "string"
+    },
+    "publish_places": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "publishers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "purchase_url": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "remote_ids": {
+      "type": "object",
+      "properties": {
+        "viaf": {
+          "type": "string"
+        },
+        "wikidata": {
+          "type": "string"
+        }
+      }
+    },
+    "revision": {
+      "type": "integer"
+    },
+    "scan_on_demand": {
+      "type": "boolean"
+    },
+    "scan_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_records": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "sub_topics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subgenres": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subject": {
+      "type": "string"
+    },
+    "subject_people": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subject_place": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subject_places": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subject_time": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subject_times": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subjects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "table_of_contents": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "authors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "class": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "level": {
+                "type": "integer"
+              },
+              "pagenum": {
+                "type": "string"
+              },
+              "subtitle": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "tocpage": {
+                "type": "integer"
+              },
+              "type": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "things": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "times": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "title": {
+      "type": "string"
+    },
+    "title_prefix": {
+      "type": "string"
+    },
+    "translated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "translation_of": {
+      "type": "string"
+    },
+    "type": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "uri_descriptions": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "uris": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "url": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "volume_number": {
+      "type": "integer"
+    },
+    "volumes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ia_id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              }
+            }
+          },
+          "volume_number": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "weight": {
+      "type": "string"
+    },
+    "word_count": {
+      "type": "integer"
+    },
+    "work_title": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "work_titles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "works": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

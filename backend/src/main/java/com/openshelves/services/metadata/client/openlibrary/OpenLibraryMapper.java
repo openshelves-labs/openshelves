@@ -344,7 +344,7 @@ public class OpenLibraryMapper {
      *         when the parent node is non-null), or {@code null} if {@code node} is null
      */
     private List<ExternalBook.AuthorRef> extractAuthorRefs(JsonNode node) {
-        if (node == null || node.isNull()) return null;
+        if (node == null || node.isNull()) return Collections.emptyList();
 
         JsonNode authorsNode = node.get("authors");
         if (authorsNode == null || !authorsNode.isArray() || authorsNode.isEmpty()) return Collections.emptyList();

@@ -71,7 +71,7 @@ public class OpenLibraryMapper {
      * </ol>
      */
     private static final Pattern SERIES_NUMBER_PATTERN = Pattern.compile(
-        "(?:[,\\s]++(?:#|No\\.?|Vol\\.?|Book|Part|Volume)\\s*+(\\d+)|\\s++#(\\d+)|\\s++\\((\\d+)\\))\\s*+$",
+        "[,\\s]*+(?:(?:no|vol|book|part|volume)\\.?\\s*+(\\d++)|#(\\d++)|\\((\\d++)\\))\\s*+$",
         Pattern.CASE_INSENSITIVE
     );
 

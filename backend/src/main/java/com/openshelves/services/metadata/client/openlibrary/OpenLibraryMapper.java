@@ -71,7 +71,7 @@ public class OpenLibraryMapper {
      * </ol>
      */
     private static final Pattern SERIES_NUMBER_PATTERN = Pattern.compile(
-        "[,\\s]*+(?:(?:no|vol|book|part|volume)\\.?\\s*+(\\d++)|#(\\d++)|\\((\\d++)\\))\\s*+$",
+        "[,\\s]++(?:no|vol|book|part|volume)\\.?\\s*+(\\d++)|#(\\d++)|\\.?(\\d++)\\)",
         Pattern.CASE_INSENSITIVE
     );
 
@@ -247,11 +247,14 @@ public class OpenLibraryMapper {
     private String[] parseSeries(String seriesEntry) {
         if (StringUtils.isEmpty(seriesEntry)) return new String[2];
 
+        // Trim the input to remove leading/trailing whitespace before applying the regex
+        seriesEntry = seriesEntry.strip();
+
         Matcher m = SERIES_NUMBER_PATTERN.matcher(seriesEntry);
         if (m.find()) {
             // One of the three capture groups will hold the numeric part
             String seriesNumber = firstNonNull(m.group(1), m.group(2), m.group(3));
-            String seriesName = seriesEntry.substring(0, m.start()).trim();
+            String seriesName = seriesEntry.substring(0, m.start()).strip();
             if (seriesName.isEmpty()) {
                 seriesName = seriesEntry;   // Just a safe fallback
             }

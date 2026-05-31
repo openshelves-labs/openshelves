@@ -59,9 +59,8 @@ public class RankedProviderResolver implements MetadataFieldResolver {
         // ----------------------------------------------------------------
         // Phase 3b: conflict — ask AI to propose a winner
         // ----------------------------------------------------------------
-        T proposedValue = null;
-        FieldResolution.AiAssessment assessment = null;
+        // TODO: Call the AI Conflict Resolver with the list of unranked candidates and their sources
 
-        return new FieldResolution.Blocked<>(proposedValue, candidates, assessment);
+        return new FieldResolution.Blocked<>(null, candidates, null);
     }
 }

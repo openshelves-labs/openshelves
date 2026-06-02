@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OpenShelves — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a18;
+  --ink2:#6b6b66;
+  --ink3:#a0a099;
+  --bg:#f4f2ed;
+  --bg2:#eceae3;
+  --bg1:#ffffff;
+  --bdr:#e2dfd7;
+  --bdr2:#c8c5bc;
+  --grn:#2d5a3d;
+  --grn-bg:#e8f0eb;
+  --grn-text:#1a3d28;
+  --amb:#854f0b;
+  --amb-bg:#faeeda;
+  --amb-text:#633806;
+  --red:#a32d2d;
+  --red-bg:#fcebeb;
+  --red-text:#791f1f;
+  --blue:#185fa5;
+  --blue-bg:#e6f1fb;
+  --blue-text:#0c447c;
+  --serif:'Lora',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --r:8px;
+  --rl:12px;
+}
+
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);min-height:100vh;font-size:14px}
+
+/* TOPBAR */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:var(--bg1);
+  border-bottom:1px solid var(--bdr);gap:16px;
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:9px;flex-shrink:0;text-decoration:none}
+.logo-mark{
+  width:30px;height:30px;background:var(--grn);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-mark svg{width:16px;height:16px}
+.logo-name{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--ink)}
+.search-wrap{flex:1;max-width:540px;position:relative}
+.search-wrap input{
+  width:100%;padding:9px 12px 9px 38px;
+  border:1px solid var(--bdr2);border-radius:var(--r);
+  background:var(--bg2);font-family:var(--sans);font-size:13.5px;
+  color:var(--ink);outline:none;transition:border-color 0.15s,background 0.15s;
+}
+.search-wrap input::placeholder{color:var(--ink3)}
+.search-wrap input:focus{border-color:var(--grn);background:var(--bg1)}
+.search-icon{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:15px;height:15px;color:var(--ink3);pointer-events:none;
+}
+.topbar-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.notif-btn{
+  width:32px;height:32px;border-radius:var(--r);
+  border:1px solid var(--bdr);background:var(--bg1);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;cursor:pointer;transition:background 0.12s;
+}
+.notif-btn:hover{background:var(--bg2)}
+.notif-btn svg{width:15px;height:15px;color:var(--ink2)}
+.notif-dot{
+  position:absolute;top:7px;right:7px;
+  width:5px;height:5px;background:#e24b4a;border-radius:50%;
+}
+.avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--grn-bg);display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:500;color:var(--grn-text);cursor:pointer;
+  border:1px solid rgba(45,90,61,0.2);
+}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:204px 1fr;min-height:calc(100vh - 54px)}
+
+/* SIDEBAR */
+.sidebar{
+  background:var(--bg1);border-right:1px solid var(--bdr);
+  padding:18px 0;position:sticky;top:54px;height:calc(100vh - 54px);
+  overflow-y:auto;
+}
+.sidebar-section{margin-bottom:22px}
+.sidebar-label{
+  font-size:10px;font-weight:500;letter-spacing:0.9px;
+  color:var(--ink3);padding:0 16px;margin-bottom:4px;text-transform:uppercase;
+}
+.nav-link{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 16px;font-size:13px;color:var(--ink2);
+  cursor:pointer;transition:background 0.1s,color 0.1s;
+  text-decoration:none;
+}
+.nav-link:hover{background:var(--bg2);color:var(--ink)}
+.nav-link.active{background:var(--grn-bg);color:var(--grn-text);font-weight:500}
+.nav-link svg{width:15px;height:15px;flex-shrink:0;opacity:0.7}
+.nav-link.active svg{opacity:1}
+.nav-badge{
+  margin-left:auto;font-size:10.5px;font-weight:500;
+  padding:1px 7px;border-radius:100px;
+}
+.badge-grn{background:var(--grn-bg);color:var(--grn-text)}
+.badge-amb{background:var(--amb-bg);color:var(--amb-text)}
+.badge-red{background:var(--red-bg);color:var(--red-text)}
+
+/* MAIN */
+.main{padding:22px 24px;display:flex;flex-direction:column;gap:22px}
+
+/* GREETING */
+.greeting{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.greeting h1{font-family:var(--serif);font-size:21px;font-weight:500;color:var(--ink);margin-bottom:4px;line-height:1.2}
+.greeting-sub{font-size:13px;color:var(--ink2);font-weight:300;display:flex;gap:14px;flex-wrap:wrap}
+.greeting-sub span{display:flex;align-items:center;gap:5px}
+.greeting-sub .dot{width:5px;height:5px;border-radius:50%;display:inline-block}
+.dot-amb{background:var(--amb)}
+.dot-grn{background:var(--grn)}
+.dot-red{background:var(--red)}
+.lib-hours{font-size:12px;color:var(--ink3);text-align:right;line-height:1.5;flex-shrink:0}
+
+/* QUICK ACTIONS */
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qa-card{
+  background:var(--bg1);border:1px solid var(--bdr);border-radius:var(--rl);
+  padding:14px;display:flex;flex-direction:column;gap:8px;
+  cursor:pointer;transition:border-color 0.12s,background 0.12s;
+}
+.qa-card:hover{border-color:var(--bdr2);background:var(--bg2)}
+.qa-icon{
+  width:30px;height:30px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+}
+.qa-icon svg{width:15px;height:15px}
+.qi-grn{background:var(--grn-bg)}.qi-grn svg{color:var(--grn)}
+.qi-amb{background:var(--amb-bg)}.qi-amb svg{color:var(--amb)}
+.qi-blue{background:var(--blue-bg)}.qi-blue svg{color:var(--blue)}
+.qi-red{background:var(--red-bg)}.qi-red svg{color:var(--red)}
+.qa-label{font-size:13px;font-weight:500;color:var(--ink)}
+.qa-sub{font-size:11.5px;color:var(--ink3)}
+
+/* SECTION HEAD */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.section-title{font-size:13px;font-weight:500;color:var(--ink)}
+.section-more{font-size:12px;color:var(--ink3);cursor:pointer;text-decoration:none;transition:color 0.12s}
+.section-more:hover{color:var(--ink2)}
+
+/* LOANS */
+.card-list{
+  background:var(--bg1);border:1px solid var(--bdr);
+  border-radius:var(--rl);overflow:hidden;
+}
+.loan-row{
+  display:flex;align-items:center;gap:13px;
+  padding:12px 16px;border-bottom:1px solid var(--bdr);
+  transition:background 0.1s;cursor:pointer;
+}
+.loan-row:last-child{border-bottom:none}
+.loan-row:hover{background:var(--bg2)}
+.book-spine{width:32px;height:44px;border-radius:3px;flex-shrink:0;object-fit:cover;background:var(--bg2)}
+.loan-info{flex:1;min-width:0}
+.loan-title{
+  font-family:var(--serif);font-size:13.5px;font-weight:500;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;
+}
+.loan-author{font-size:11.5px;color:var(--ink3)}
+.loan-due{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.due-label{font-size:11px;color:var(--ink3)}
+.due-date{font-size:12.5px;font-weight:500}
+.due-ok{color:var(--grn)}.due-warn{color:var(--amb)}.due-late{color:var(--red)}
+.renew-btn{
+  font-size:11px;font-weight:500;color:var(--grn-text);
+  background:var(--grn-bg);border:none;border-radius:4px;
+  padding:3px 9px;cursor:pointer;transition:background 0.12s;
+}
+.renew-btn:hover{background:#d0e4d6}
+
+/* NEW ARRIVALS */
+.arrivals-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.book-card{cursor:pointer;transition:opacity 0.12s}
+.book-card:hover{opacity:0.85}
+.book-cover{
+  width:100%;aspect-ratio:2/3;border-radius:5px;
+  margin-bottom:8px;position:relative;overflow:hidden;
+  background:var(--bg2);
+}
+.book-cover img{width:100%;height:100%;object-fit:cover;display:block;border-radius:5px}
+.cover-new{
+  position:absolute;top:6px;right:6px;
+  background:var(--grn);color:#fff;font-size:9px;font-weight:500;
+  padding:2px 6px;border-radius:3px;letter-spacing:0.3px;
+  pointer-events:none;
+}
+.bc-title{
+  font-family:var(--serif);font-size:12px;color:var(--ink);
+  line-height:1.35;margin-bottom:3px;
+}
+.bc-author{font-size:11px;color:var(--ink3)}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* HOLDS */
+.hold-row{
+  display:flex;align-items:center;gap:11px;
+  padding:10px 14px;border-bottom:1px solid var(--bdr);cursor:pointer;
+  transition:background 0.1s;
+}
+.hold-row:last-child{border-bottom:none}
+.hold-row:hover{background:var(--bg2)}
+.hold-pos{
+  width:24px;height:24px;border-radius:50%;background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:500;color:var(--ink2);flex-shrink:0;
+}
+.hold-pos.ready{background:var(--grn-bg);color:var(--grn-text)}
+.hold-info{flex:1;min-width:0}
+.hold-title{
+  font-size:12.5px;font-weight:500;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;
+}
+.hold-status{font-size:11.5px;color:var(--ink3)}
+.hold-status.ready{color:var(--grn-text)}
+
+/* RECS */
+.rec-row{
+  display:flex;align-items:center;gap:11px;
+  padding:10px 14px;border-bottom:1px solid var(--bdr);cursor:pointer;
+  transition:background 0.1s;
+}
+.rec-row:last-child{border-bottom:none}
+.rec-row:hover{background:var(--bg2)}
+.rec-cover{width:28px;height:38px;border-radius:3px;flex-shrink:0;object-fit:cover;background:var(--bg2)}
+.rec-info{flex:1;min-width:0}
+.rec-title{
+  font-size:12.5px;font-weight:500;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;
+}
+.rec-reason{font-size:11.5px;color:var(--ink3)}
+.rec-avail{font-size:11.5px;font-weight:500;color:var(--grn);flex-shrink:0}
+
+/* FOOTER */
+.footer{
+  border-top:1px solid var(--bdr);padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg1);margin-top:8px;
+}
+.footer-name{font-family:var(--serif);font-size:13px;color:var(--ink3)}
+.footer-links{display:flex;gap:18px;list-style:none}
+.footer-links a{font-size:12px;color:var(--ink3);text-decoration:none}
+.footer-links a:hover{color:var(--ink2)}
+.footer-copy{font-size:12px;color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a href="#" class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 16 16" fill="none">
+        <rect x="1" y="2" width="3" height="12" rx="1" fill="white" opacity="0.9"/>
+        <rect x="5.5" y="2" width="3" height="12" rx="1" fill="white" opacity="0.7"/>
+        <rect x="10" y="4" width="5" height="9" rx="1" fill="white" opacity="0.5" transform="skewX(-6)"/>
+      </svg>
+    </div>
+    <span class="logo-name">OpenShelves</span>
+  </a>
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="13.5" y2="13.5"/>
+    </svg>
+    <input type="text" placeholder="Search titles, authors, subjects, ISBN…"/>
+  </div>
+  <div class="topbar-right">
+    <button class="notif-btn" title="Notifications">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 2a4 4 0 0 1 4 4v3l1.5 2H2.5L4 9V6a4 4 0 0 1 4-4z"/>
+        <path d="M6.5 13a1.5 1.5 0 0 0 3 0"/>
+      </svg>
+      <span class="notif-dot"></span>
+    </button>
+    <div class="avatar" title="Arpan Reddy">AR</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Discover</div>
+      <a href="#" class="nav-link active">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="12" height="12" rx="1.5"/><line x1="2" y1="6.5" x2="14" y2="6.5"/>
+          <line x1="6" y1="6.5" x2="6" y2="14"/>
+        </svg>
+        Home
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="13.5" y2="13.5"/>
+        </svg>
+        Browse catalog
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 4h12M2 8h8M2 12h6"/>
+        </svg>
+        New arrivals
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 2l1.5 3.5L13 6l-2.5 2.5.5 3.5L8 10.5 5 12l.5-3.5L3 6l3.5-.5z"/>
+        </svg>
+        Recommended
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">My library</div>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="1.5" width="7" height="13" rx="1"/>
+          <line x1="13" y1="5" x2="13" y2="13.5"/><line x1="11.5" y1="5" x2="14.5" y2="5"/>
+        </svg>
+        Current loans
+        <span class="nav-badge badge-grn">3</span>
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="8" r="6"/>
+          <line x1="8" y1="5" x2="8" y2="8.5"/><line x1="8" y1="8.5" x2="10.5" y2="10.5"/>
+        </svg>
+        Holds
+        <span class="nav-badge badge-amb">2</span>
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 12l3-4 3 2.5 3-6 3 4"/>
+        </svg>
+        Reading history
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="4" width="12" height="9" rx="1"/>
+          <path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/>
+        </svg>
+        Fines
+        <span class="nav-badge badge-red">₹20</span>
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Collections</div>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 3V2M11 3V2"/>
+        </svg>
+        Journals &amp; serials
+      </a>
+      <a href="#" class="nav-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="2" width="10" height="13" rx="1"/>
+          <line x1="6" y1="6" x2="10" y2="6"/><line x1="6" y1="9" x2="10" y2="9"/>
+        </svg>
+        Digital resources
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- GREETING -->
+    <div class="greeting">
+      <div>
+        <h1>Good morning, Arpan.</h1>
+        <div class="greeting-sub">
+          <span><span class="dot dot-grn"></span>3 active loans</span>
+          <span><span class="dot dot-amb"></span>1 hold ready for pickup</span>
+          <span><span class="dot dot-red"></span>₹20 outstanding fine</span>
+        </div>
+      </div>
+      <div class="lib-hours">
+        <div style="font-size:11px;color:var(--ink3);margin-bottom:2px">Central Library</div>
+        <div style="font-size:12px;font-weight:500;color:var(--grn)">Open now</div>
+        <div style="font-size:11px;color:var(--ink3)">Mon–Fri 8am – 9pm</div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-actions">
+      <div class="qa-card">
+        <div class="qa-icon qi-grn">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M10 5l3 3-3 3"/>
+          </svg>
+        </div>
+        <div class="qa-label">Renew loans</div>
+        <div class="qa-sub">2 eligible now</div>
+      </div>
+      <div class="qa-card">
+        <div class="qa-icon qi-amb">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="8" cy="8" r="6"/>
+            <line x1="8" y1="5" x2="8" y2="8.5"/>
+            <circle cx="8" cy="11" r="0.75" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="qa-label">Hold ready</div>
+        <div class="qa-sub">Pick up by Apr 25</div>
+      </div>
+      <div class="qa-card">
+        <div class="qa-icon qi-blue">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="13.5" y2="13.5"/>
+          </svg>
+        </div>
+        <div class="qa-label">Search catalog</div>
+        <div class="qa-sub">4,821 items</div>
+      </div>
+      <div class="qa-card">
+        <div class="qa-icon qi-red">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="12" height="9" rx="1"/>
+            <path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/>
+          </svg>
+        </div>
+        <div class="qa-label">Pay fines</div>
+        <div class="qa-sub">₹20 outstanding</div>
+      </div>
+    </div>
+
+    <!-- CURRENT LOANS -->
+    <div>
+      <div class="section-head">
+        <span class="section-title">Current loans</span>
+        <a href="#" class="section-more">View all →</a>
+      </div>
+      <div class="card-list">
+        <div class="loan-row">
+          <img class="book-spine" src="https://covers.openlibrary.org/b/isbn/9780132392273-M.jpg" alt="Distributed Systems cover"/>
+          <div class="loan-info">
+            <div class="loan-title">Distributed Systems: Principles and Paradigms</div>
+            <div class="loan-author">Tanenbaum, A. · 2nd ed. · Copy #OS-BK-00312</div>
+          </div>
+          <div class="loan-due">
+            <div class="due-label">Due</div>
+            <div class="due-date due-ok">Apr 30</div>
+            <button class="renew-btn">Renew</button>
+          </div>
+        </div>
+        <div class="loan-row">
+          <img class="book-spine" src="https://covers.openlibrary.org/b/isbn/9780135957059-M.jpg" alt="Pragmatic Programmer cover"/>
+          <div class="loan-info">
+            <div class="loan-title">The Pragmatic Programmer</div>
+            <div class="loan-author">Hunt, A. · Thomas, D. · Copy #OS-BK-00089</div>
+          </div>
+          <div class="loan-due">
+            <div class="due-label">Due</div>
+            <div class="due-date due-warn">Apr 23</div>
+            <button class="renew-btn">Renew</button>
+          </div>
+        </div>
+        <div class="loan-row">
+          <img class="book-spine" src="https://covers.openlibrary.org/b/isbn/9780134494166-M.jpg" alt="Clean Architecture cover"/>
+          <div class="loan-info">
+            <div class="loan-title">Clean Architecture</div>
+            <div class="loan-author">Martin, R.C. · 2017 · Copy #OS-BK-00139</div>
+          </div>
+          <div class="loan-due">
+            <div class="due-label">Overdue</div>
+            <div class="due-date due-late">Apr 18</div>
+            <button class="renew-btn">Renew</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEW ARRIVALS -->
+    <div>
+      <div class="section-head">
+        <span class="section-title">New arrivals</span>
+        <a href="#" class="section-more">Browse all →</a>
+      </div>
+      <div class="arrivals-grid">
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9781098105945-M.jpg" alt="Platform Engineering"/>
+            <div class="cover-new">New</div>
+          </div>
+          <div class="bc-title">Platform Engineering</div>
+          <div class="bc-author">Krebs, J. · 2024</div>
+        </div>
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9780861966677-M.jpg" alt="Postcolonial Computing"/>
+            <div class="cover-new">New</div>
+          </div>
+          <div class="bc-title">Postcolonial Computing</div>
+          <div class="bc-author">Philip, K. · 2024</div>
+        </div>
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9781492040347-M.jpg" alt="Database Internals"/>
+          </div>
+          <div class="bc-title">Database Internals</div>
+          <div class="bc-author">Petrov, A. · 2023</div>
+        </div>
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9780393868197-M.jpg" alt="The Alignment Problem"/>
+          </div>
+          <div class="bc-title">The Alignment Problem</div>
+          <div class="bc-author">Christian, B. · 2023</div>
+        </div>
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9781603580557-M.jpg" alt="Thinking in Systems"/>
+            <div class="cover-new">New</div>
+          </div>
+          <div class="bc-title">Thinking in Systems</div>
+          <div class="bc-author">Meadows, D. · 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOLDS + RECOMMENDATIONS -->
+    <div class="two-col">
+      <div>
+        <div class="section-head">
+          <span class="section-title">Your holds</span>
+          <a href="#" class="section-more">Manage →</a>
+        </div>
+        <div class="card-list">
+          <div class="hold-row">
+            <div class="hold-pos ready">✓</div>
+            <div class="hold-info">
+              <div class="hold-title">Designing Data-Intensive Applications</div>
+              <div class="hold-status ready">Ready for pickup · Counter B</div>
+            </div>
+          </div>
+          <div class="hold-row">
+            <div class="hold-pos">2</div>
+            <div class="hold-info">
+              <div class="hold-title">A Philosophy of Software Design</div>
+              <div class="hold-status">Est. available May 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-head">
+          <span class="section-title">Recommended for you</span>
+          <a href="#" class="section-more">See more →</a>
+        </div>
+        <div class="card-list">
+          <div class="rec-row">
+            <img class="rec-cover" src="https://covers.openlibrary.org/b/isbn/9781491929124-M.jpg" alt="Site Reliability Engineering"/>
+            <div class="rec-info">
+              <div class="rec-title">Site Reliability Engineering</div>
+              <div class="rec-reason">Based on your loans</div>
+            </div>
+            <div class="rec-avail">Available</div>
+          </div>
+          <div class="rec-row">
+            <img class="rec-cover" src="https://covers.openlibrary.org/b/isbn/9781098118730-M.jpg" alt="The Staff Engineer's Path"/>
+            <div class="rec-info">
+              <div class="rec-title">The Staff Engineer's Path</div>
+              <div class="rec-reason">Popular this week</div>
+            </div>
+            <div class="rec-avail">Available</div>
+          </div>
+          <div class="rec-row">
+            <img class="rec-cover" src="https://covers.openlibrary.org/b/isbn/9781491971673-M.jpg" alt="Software Architecture Patterns"/>
+            <div class="rec-info">
+              <div class="rec-title">Software Architecture Patterns</div>
+              <div class="rec-reason">Based on your loans</div>
+            </div>
+            <div class="rec-avail">1 copy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span class="footer-name">OpenShelves</span>
+      <ul class="footer-links">
+        <li><a href="#">Help</a></li>
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Contact library</a></li>
+      </ul>
+      <span class="footer-copy">Powered by OpenShelves · Apache 2.0</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const FALLBACKS = [
+  '#3a4a7a','#7a3a5a','#2d5a3d','#7a4a1a','#4a3a7a',
+  '#0f6e56','#534ab7','#993c1d','#2d5a3d','#185fa5'
+];
+let fi = 0;
+document.querySelectorAll('img[src*="openlibrary"]').forEach(img => {
+  const color = FALLBACKS[fi++ % FALLBACKS.length];
+  img.onerror = function() {
+    const parent = this.parentElement;
+    this.style.display = 'none';
+    parent.style.background = color;
+  };
+});
+</script>
+</body>
+</html>

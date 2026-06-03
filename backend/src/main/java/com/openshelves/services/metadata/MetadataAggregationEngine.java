@@ -13,11 +13,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-/**
- * Core engine responsible for orchestrating the aggregation of metadata from multiple external providers.
- * It fetches data from registered providers, resolves conflicts at the field level using defined policies,
- * and constructs a unified domain entity representing the aggregated result.
- */
+/// Core engine responsible for orchestrating the aggregation of metadata from multiple external providers.
+/// It fetches data from registered providers, resolves conflicts at the field level using defined policies,
+/// and constructs a unified domain entity representing the aggregated result.
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -33,13 +31,11 @@ public class MetadataAggregationEngine {
     // Public API
     // -----------------------------------------------------------------------
 
-    /**
-     * Aggregates book metadata by fetching data from all registered providers and resolving field conflicts.
-     *
-     * @param request      The book request containing identifiers and search criteria.
-     * @param fetchOptions Options governing the fetch behavior (e.g., bypassing cache).
-     * @return An {@link AggregationResult} containing the resolved {@link ExternalBook} and any fields needing review.
-     */
+    /// Aggregates book metadata by fetching data from all registered providers and resolving field conflicts.
+    ///
+    /// @param request      The book request containing identifiers and search criteria.
+    /// @param fetchOptions Options governing the fetch behavior (e.g., bypassing cache).
+    /// @return An [AggregationResult] containing the resolved [ExternalBook] and any fields needing review.
     public AggregationResult<ExternalBook> aggregateBook(BookRequest request, FetchOptions fetchOptions) {
         Map<MetadataProvider, ExternalBook> providerResults = fetchFromAllProviders(
             request,
@@ -54,13 +50,11 @@ public class MetadataAggregationEngine {
         return resolveEntity(providerResults, ExternalBook.class, ExternalBook::new);
     }
 
-    /**
-     * Aggregates author metadata by fetching data from all registered providers and resolving field conflicts.
-     *
-     * @param request      The author request containing identifiers and search criteria.
-     * @param fetchOptions Options governing the fetch behavior (e.g., bypassing cache).
-     * @return An {@link AggregationResult} containing the resolved {@link ExternalAuthor} and any fields needing review.
-     */
+    /// Aggregates author metadata by fetching data from all registered providers and resolving field conflicts.
+    ///
+    /// @param request      The author request containing identifiers and search criteria.
+    /// @param fetchOptions Options governing the fetch behavior (e.g., bypassing cache).
+    /// @return An [AggregationResult] containing the resolved [ExternalAuthor] and any fields needing review.
     public AggregationResult<ExternalAuthor> aggregateAuthor(AuthorRequest request, FetchOptions fetchOptions) {
         Map<MetadataProvider, ExternalAuthor> providerResults = fetchFromAllProviders(
             request,
@@ -80,15 +74,13 @@ public class MetadataAggregationEngine {
     // Fetch
     // -----------------------------------------------------------------------
 
-    /**
-     * Executes the fetch operation across all registered providers, collecting the first available result from each.
-     * Provider failures are caught, logged, and skipped — ensuring they never abort the aggregation pipeline.
-     *
-     * @param request The request object being processed (used primarily for logging).
-     * @param fetcher A function that takes a MetadataClient and returns a list of results.
-     * @param <T>     The type of the result returned by the fetcher.
-     * @return A map containing the first valid result from each successful provider.
-     */
+    /// Executes the fetch operation across all registered providers, collecting the first available result from each.
+    /// Provider failures are caught, logged, and skipped — ensuring they never abort the aggregation pipeline.
+    ///
+    /// @param request The request object being processed (used primarily for logging).
+    /// @param fetcher A function that takes a MetadataClient and returns a list of results.
+    /// @param <T>     The type of the result returned by the fetcher.
+    /// @return A map containing the first valid result from each successful provider.
     private <T> Map<MetadataProvider, T> fetchFromAllProviders(Object request, Function<MetadataClient, List<T>> fetcher) {
         Map<MetadataProvider, MetadataClient> clients = clientRegistry.getAllClients();
         Map<MetadataProvider, T> results = new EnumMap<>(MetadataProvider.class);
@@ -114,15 +106,13 @@ public class MetadataAggregationEngine {
     // Resolution
     // -----------------------------------------------------------------------
 
-    /**
-     * Orchestrates the resolution of an entity by applying field-level resolution policies to provider candidates.
-     *
-     * @param providerResults A map of successful metadata responses keyed by their respective providers.
-     * @param entityType      The class type of the target entity being resolved.
-     * @param entityFactory   A supplier that instantiates a new instance of the target entity.
-     * @param <T>             The type of the target entity.
-     * @return An {@link AggregationResult} containing the newly populated entity and a map of unresolved fields.
-     */
+    /// Orchestrates the resolution of an entity by applying field-level resolution policies to provider candidates.
+    ///
+    /// @param providerResults A map of successful metadata responses keyed by their respective providers.
+    /// @param entityType      The class type of the target entity being resolved.
+    /// @param entityFactory   A supplier that instantiates a new instance of the target entity.
+    /// @param <T>             The type of the target entity.
+    /// @return An [AggregationResult] containing the newly populated entity and a map of unresolved fields.
     private <T> AggregationResult<T> resolveEntity(
         Map<MetadataProvider, T> providerResults,
         Class<T> entityType,
@@ -164,14 +154,12 @@ public class MetadataAggregationEngine {
         return new AggregationResult<>(newEntity, Collections.unmodifiableMap(needsReview));
     }
 
-    /**
-     * Resolves a single metadata field from a pool of candidate values according to the configured policy.
-     *
-     * @param field      The metadata field being resolved.
-     * @param candidates A map of provider candidates for the given field.
-     * @param policy     The resolution policy defining the strategy and provider priorities for the field.
-     * @return The final {@link FieldResolution} which is either resolved or requires manual review.
-     */
+    /// Resolves a single metadata field from a pool of candidate values according to the configured policy.
+    ///
+    /// @param field      The metadata field being resolved.
+    /// @param candidates A map of provider candidates for the given field.
+    /// @param policy     The resolution policy defining the strategy and provider priorities for the field.
+    /// @return The final [FieldResolution] which is either resolved or requires manual review.
     private FieldResolution<?> resolveField(MetadataField field, Map<MetadataProvider, ?> candidates, FieldResolutionPolicyEntity policy) {
         // Fields locked to a specific provider bypass the resolver entirely
         if (field.isProviderLocked()) {
@@ -192,14 +180,12 @@ public class MetadataAggregationEngine {
         return resolver.resolve(field, candidates, policy);
     }
 
-    /**
-     * Extracts non-null candidate values for a specific metadata field from all successful provider results.
-     *
-     * @param field           The metadata field to extract.
-     * @param providerResults The aggregated provider results.
-     * @param <T>             The type of the entity containing the field.
-     * @return A map of candidate values keyed by the provider that supplied them.
-     */
+    /// Extracts non-null candidate values for a specific metadata field from all successful provider results.
+    ///
+    /// @param field           The metadata field to extract.
+    /// @param providerResults The aggregated provider results.
+    /// @param <T>             The type of the entity containing the field.
+    /// @return A map of candidate values keyed by the provider that supplied them.
     private <T> Map<MetadataProvider, ?> extractCandidates(MetadataField field, Map<MetadataProvider, T> providerResults) {
         Map<MetadataProvider, Object> candidates = new EnumMap<>(MetadataProvider.class);
 
@@ -213,14 +199,12 @@ public class MetadataAggregationEngine {
         return candidates;
     }
 
-    /**
-     * Applies a successfully resolved value to the target entity using the field's accessor.
-     *
-     * @param newEntity          The target entity being populated.
-     * @param field              The metadata field being populated.
-     * @param resolvedResolution The resolved value wrapper.
-     * @param <T>                The type of the target entity.
-     */
+    /// Applies a successfully resolved value to the target entity using the field's accessor.
+    ///
+    /// @param newEntity          The target entity being populated.
+    /// @param field              The metadata field being populated.
+    /// @param resolvedResolution The resolved value wrapper.
+    /// @param <T>                The type of the target entity.
     private <T> void applyResolution(T newEntity, MetadataField field, FieldResolution.Resolved<?> resolvedResolution) {
         Object value = resolvedResolution.value();
         if (value != null) {

@@ -18,38 +18,28 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-/**
- * Resolves metadata fields (specifically textual ones like descriptions,
- * abstracts, or notes)
- * by evaluating multiple candidates and selecting the one with the highest
- * calculated quality score.
- * 
- * <p>
- * The quality calculation uses a weighted combination of multiple heuristic
- * metrics:
- * <ul>
- * <li><b>Text Length:</b> Prefers values within a standard length range,
- * penalizing very short
- * or extremely long text.</li>
- * <li><b>Word Density:</b> Assesses the ratio of meaningful content words
- * versus filler or stop words.
- * Penalizes keyword-stuffed lists or content lacking substance.</li>
- * <li><b>Sentence Coherence:</b> Evaluates basic syntactic markers
- * (capitalization, ending punctuation)
- * and penalizes excessively choppy or run-on sentences.</li>
- * <li><b>Structural Integrity:</b> Flags indicators of poor extraction, such as
- * HTML tags,
- * unescaped HTML entities, trailing truncation markers (e.g., ellipses),
- * junk/control characters,
- * and repeated punctuation.</li>
- * </ul>
- * 
- * <p>
- * If candidates score too closely to each other (defined by
- * {@link #TIE_TOLERANCE_BAND}),
- * the resolver flags the field for human verification rather than making an
- * arbitrary choice.
- */
+/// Resolves metadata fields (specifically textual ones like descriptions,
+/// abstracts, or notes)
+/// by evaluating multiple candidates and selecting the one with the highest
+/// calculated quality score.
+/// 
+/// The quality calculation uses a weighted combination of multiple heuristic
+/// metrics:
+/// - **Text Length:** Prefers values within a standard length range,
+///   penalizing very short or extremely long text.
+/// - **Word Density:** Assesses the ratio of meaningful content words
+///   versus filler or stop words. Penalizes keyword-stuffed lists or content
+///   lacking substance.
+/// - **Sentence Coherence:** Evaluates basic syntactic markers
+///   (capitalization, ending punctuation) and penalizes excessively choppy
+///   or run-on sentences.
+/// - **Structural Integrity:** Flags indicators of poor extraction, such as
+///   HTML tags, unescaped HTML entities, trailing truncation markers (e.g.,
+///   ellipses), junk/control characters, and repeated punctuation.
+/// 
+/// If candidates score too closely to each other (defined by
+/// [TIE_TOLERANCE_BAND]), the resolver flags the field for human
+/// verification rather than making an arbitrary choice.
 @Component
 public class HighestQualityTextResolver implements MetadataFieldResolver {
 
@@ -155,20 +145,17 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         return ResolutionStrategy.HIGHEST_QUALITY_TEXT;
     }
 
-    /**
-     * Resolves the best candidate value for a metadata field based on text quality
-     * heuristics.
-     * Deduplicates and scores candidates, checks for quality thresholds, and flags
-     * ties.
-     *
-     * @param field      the metadata field being resolved (e.g., DESCRIPTION)
-     * @param candidates a map of metadata providers to their corresponding
-     *                   candidate values
-     * @param policy     the resolution policy configuration
-     * @param <T>        the type of the candidate values
-     * @return a {@link FieldResolution} indicating the resolution result (Absent,
-     *         Resolved, NeedsConfirmation, or Blocked)
-     */
+    /// Resolves the best candidate value for a metadata field based on text quality
+    /// heuristics.
+    /// Deduplicates and scores candidates, checks for quality thresholds, and flags
+    /// ties.
+    ///
+    /// @param field      the metadata field being resolved (e.g., DESCRIPTION)
+    /// @param candidates a map of metadata providers to their corresponding candidate values
+    /// @param policy     the resolution policy configuration
+    /// @param <T>        the type of the candidate values
+    /// @return a [FieldResolution] indicating the resolution result (Absent,
+    ///         Resolved, NeedsConfirmation, or Blocked)
     @Override
     public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates,
             FieldResolutionPolicyEntity policy) {
@@ -230,16 +217,12 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         }
     }
 
-    /**
-     * Evaluates a text block and returns a normalized quality score between 0.0 and
-     * 1.0.
-     * A score of 1.0 represents a clean, well-formatted, and cohesive block of
-     * prose,
-     * while 0.0 represents empty or extremely low-quality content.
-     *
-     * @param text the candidate text to score
-     * @return a quality score in the range [0.0, 1.0]
-     */
+    /// Evaluates a text block and returns a normalized quality score between 0.0 and 1.0.
+    /// A score of 1.0 represents a clean, well-formatted, and cohesive block of prose,
+    /// while 0.0 represents empty or extremely low-quality content.
+    ///
+    /// @param text the candidate text to score
+    /// @return a quality score in the range [0.0, 1.0]
     private double calculateTextQuality(String text) {
         if (StringUtils.isBlank(text)) {
             return 0;
@@ -263,22 +246,16 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         return Math.clamp(qualityScore, 0, 1);
     }
 
-    /**
-     * Scores the text based on its length in characters.
-     * Prefers text within the range [{@link #MIN_TEXT_LENGTH},
-     * {@link #MAX_TEXT_LENGTH}].
-     * 
-     * <ul>
-     * <li>Texts shorter than {@link #MIN_TEXT_LENGTH} are penalized linearly.</li>
-     * <li>Texts within the range get a perfect score of 1.0.</li>
-     * <li>Texts longer than {@link #MAX_TEXT_LENGTH} are penalized logarithmically
-     * to avoid
-     * harshly penalizing slightly longer, detailed descriptions.</li>
-     * </ul>
-     *
-     * @param text the text to score
-     * @return a length score in the range [0.0, 1.0]
-     */
+    /// Scores the text based on its length in characters.
+    /// Prefers text within the range [[MIN_TEXT_LENGTH], [MAX_TEXT_LENGTH]].
+    /// 
+    /// - Texts shorter than [MIN_TEXT_LENGTH] are penalized linearly.
+    /// - Texts within the range get a perfect score of 1.0.
+    /// - Texts longer than [MAX_TEXT_LENGTH] are penalized logarithmically to avoid
+    ///   harshly penalizing slightly longer, detailed descriptions.
+    ///
+    /// @param text the text to score
+    /// @return a length score in the range [0.0, 1.0]
     private double scoreTextLength(String text) {
         int textLength = text.length();
         if (textLength == 0) {
@@ -299,27 +276,17 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         return 1.0; // Perfect score for being within the ideal length range
     }
 
-    /**
-     * Scores the text based on the density of meaningful content words (non-stop
-     * words).
-     * 
-     * <ul>
-     * <li>If the word count is very low (&lt; 3), a minimal fractional score is
-     * returned.</li>
-     * <li>If the density is between 50% and 85%, it receives a perfect score of
-     * 1.0.</li>
-     * <li>If the density is under 50%, it indicates high usage of stop/filler
-     * words,
-     * leading to a linear penalty.</li>
-     * <li>If the density is over 85%, it indicates a high concentration of
-     * rare/content words,
-     * which is typical for a list of keyword tags rather than natural prose,
-     * leading to a penalty.</li>
-     * </ul>
-     *
-     * @param text the text to score
-     * @return a density score in the range [0.0, 1.0]
-     */
+    /// Scores the text based on the density of meaningful content words (non-stop words).
+    /// 
+    /// - If the word count is very low (&lt; 3), a minimal fractional score is returned.
+    /// - If the density is between 50% and 85%, it receives a perfect score of 1.0.
+    /// - If the density is under 50%, it indicates high usage of stop/filler words,
+    ///   leading to a linear penalty.
+    /// - If the density is over 85%, it indicates a high concentration of rare/content words,
+    ///   which is typical for a list of keyword tags rather than natural prose, leading to a penalty.
+    ///
+    /// @param text the text to score
+    /// @return a density score in the range [0.0, 1.0]
     private double scoreWordDensity(String text) {
         String[] words = text.split("\\s+");
         int wordCount = words.length;
@@ -353,17 +320,13 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         return 1 - 0.3 * penaltyPercentage;
     }
 
-    /**
-     * Scores the text based on sentence structure coherence.
-     * Evaluates if sentences begin with a capital letter and end with appropriate
-     * punctuation.
-     * Also applies penalties if the average sentence length is too short (choppy
-     * fragments)
-     * or too long (run-on sentences).
-     *
-     * @param text the text to score
-     * @return a coherence score in the range [0.0, 1.0]
-     */
+    /// Scores the text based on sentence structure coherence.
+    /// Evaluates if sentences begin with a capital letter and end with appropriate punctuation.
+    /// Also applies penalties if the average sentence length is too short (choppy fragments)
+    /// or too long (run-on sentences).
+    ///
+    /// @param text the text to score
+    /// @return a coherence score in the range [0.0, 1.0]
     private double scoreSentenceCoherence(String text) {
         String[] sentences = SENTENCE_SPLIT_PATTERN.split(text);
 
@@ -415,23 +378,18 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         return Math.clamp(coherenceRatio - lengthPenalty, 0, 1);
     }
 
-    /**
-     * Assesses the structural clean-ness of the text, penalizing artifacts of bad
-     * extraction or formatting.
-     * 
-     * <p>
-     * Deducts points for:
-     * <ul>
-     * <li>HTML tags (-0.4)</li>
-     * <li>Unescaped HTML entities (-0.15)</li>
-     * <li>Truncation markers like trailing ellipses (-0.5)</li>
-     * <li>Junk/control characters (-0.3)</li>
-     * <li>Repeated punctuation like !!! or ??? (-0.2)</li>
-     * </ul>
-     *
-     * @param text the text to score
-     * @return a structural integrity score in the range [0.0, 1.0]
-     */
+    /// Assesses the structural clean-ness of the text, penalizing artifacts of bad
+    /// extraction or formatting.
+    /// 
+    /// Deducts points for:
+    /// - HTML tags (-0.4)
+    /// - Unescaped HTML entities (-0.15)
+    /// - Truncation markers like trailing ellipses (-0.5)
+    /// - Junk/control characters (-0.3)
+    /// - Repeated punctuation like !!! or ??? (-0.2)
+    ///
+    /// @param text the text to score
+    /// @return a structural integrity score in the range [0.0, 1.0]
     private double scoreStructuralIntegrity(String text) {
         double integrityScore = 1; // Perfect Score
 
@@ -458,14 +416,11 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         return Math.clamp(integrityScore, 0, 1);
     }
 
-    /**
-     * Internal container that pairs a candidate value with its calculated quality
-     * score.
-     *
-     * @param <T>          the type of the candidate value
-     * @param candidate    the candidate value
-     * @param qualityScore the calculated quality score for this candidate
-     */
+    /// Internal container that pairs a candidate value with its calculated quality score.
+    ///
+    /// @param <T>          the type of the candidate value
+    /// @param candidate    the candidate value
+    /// @param qualityScore the calculated quality score for this candidate
     private record ScoredCandidate<T>(
             T candidate,
             double qualityScore) {

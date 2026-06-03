@@ -3,30 +3,26 @@ package com.openshelves.services.metadata;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 
-/**
- * Low-level utility for reflective access to entity fields using {@link MethodHandle}.
- *
- * <p>Provides a type-safe and performant way to get and set metadata fields on entity
- * instances without the overhead of traditional reflection on every call. Accessors
- * are resolved once during construction.</p>
- */
+/// Low-level utility for reflective access to entity fields using [MethodHandle].
+///
+/// Provides a type-safe and performant way to get and set metadata fields on entity
+/// instances without the overhead of traditional reflection on every call. Accessors
+/// are resolved once during construction.
 public class MetadataFieldAccessor {
 
     private final String fieldName;
     private final MethodHandle getter;
     private final MethodHandle setter;
 
-    /**
-     * Constructs an accessor for a specific field on an entity type.
-     *
-     * <p>Note: Accessors bind directly to the underlying field,
-     * bypassing any declared getter or setter methods on the class.</p>
-     *
-     * @param fieldName  the name of the field to access
-     * @param fieldType  the Java type of the field
-     * @param entityType the class of the entity containing the field
-     * @throws IllegalArgumentException if the field cannot be found or accessed
-     */
+    /// Constructs an accessor for a specific field on an entity type.
+    ///
+    /// Note: Accessors bind directly to the underlying field,
+    /// bypassing any declared getter or setter methods on the class.
+    ///
+    /// @param fieldName  the name of the field to access
+    /// @param fieldType  the Java type of the field
+    /// @param entityType the class of the entity containing the field
+    /// @throws IllegalArgumentException if the field cannot be found or accessed
     public MetadataFieldAccessor(String fieldName, Class<?> fieldType, Class<?> entityType) {
         this.fieldName = fieldName;
 
@@ -40,14 +36,12 @@ public class MetadataFieldAccessor {
         }
     }
 
-    /**
-     * Retrieves the value of the field from the given entity instance.
-     *
-     * @param <T>    the expected return type
-     * @param entity the entity instance to read from
-     * @return the value of the field
-     * @throws RuntimeException if the value cannot be retrieved
-     */
+    /// Retrieves the value of the field from the given entity instance.
+    ///
+    /// @param <T>    the expected return type
+    /// @param entity the entity instance to read from
+    /// @return the value of the field
+    /// @throws RuntimeException if the value cannot be retrieved
     @SuppressWarnings("unchecked")
     public <T> T get(Object entity) {
         try {
@@ -57,13 +51,11 @@ public class MetadataFieldAccessor {
         }
     }
 
-    /**
-     * Sets the value of the field on the given entity instance.
-     *
-     * @param entity the entity instance to modify
-     * @param value  the new value to set
-     * @throws RuntimeException if the value cannot be set
-     */
+    /// Sets the value of the field on the given entity instance.
+    ///
+    /// @param entity the entity instance to modify
+    /// @param value  the new value to set
+    /// @throws RuntimeException if the value cannot be set
     public void set(Object entity, Object value) {
         try {
             setter.invoke(entity, value);

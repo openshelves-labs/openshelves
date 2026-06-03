@@ -1,25 +1,23 @@
 package com.openshelves.model.enums;
 
-/**
- * Defines the strategy used to resolve conflicts when multiple metadata providers
- * supply different values for the same field.
- */
+/// Defines the strategy used to resolve conflicts when multiple metadata providers
+/// supply different values for the same field.
 public enum ResolutionStrategy {
-    /** Select the value from the provider with the highest defined priority. */
+    /// Select the value from the provider with the highest defined priority.
     PRIORITY,
 
-    /** Select the first non-null value encountered among providers. */
+    /// Select the first non-null value encountered among providers.
     FIRST_NON_NULL,
 
-    /** Select the value with the highest quality text (useful for descriptions). */
+    /// Select the value with the highest quality text (useful for descriptions).
     HIGHEST_QUALITY_TEXT,
 
-    /** Select the value most commonly supplied by all providers (majority wins). */
+    /// Select the value most commonly supplied by all providers (majority wins).
     VOTING,
 
-    /** Use an AI model to synthesize a consolidated value from all provider inputs. */
+    /// Use an AI model to synthesize a consolidated value from all provider inputs.
     AI_SYNTHESIZE,
 
-    /** Mark the field for manual resolution by a human moderator. */
+    /// Mark the field for manual resolution by a human moderator.
     MANUAL
 }

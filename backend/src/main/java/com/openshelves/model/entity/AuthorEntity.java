@@ -12,10 +12,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Entity representing an author or contributor in the OpenShelves system.
- * Stores core metadata, biographical information, and identifiers.
- */
+/// Entity representing an author or contributor in the OpenShelves system.
+/// Stores core metadata, biographical information, and identifiers.
 @Entity
 @Getter
 @Setter

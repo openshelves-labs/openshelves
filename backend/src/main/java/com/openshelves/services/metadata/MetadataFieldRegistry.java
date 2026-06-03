@@ -7,21 +7,17 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Registry that maps entity classes to the set of metadata fields they support.
- *
- * <p>This registry is initialized at startup by scanning the {@link MetadataField} enum
- * and grouping fields by their associated entity type (e.g., {@link com.openshelves.model.entity.BookEntity}).
- * It provides a centralized way to discover which fields are available for metadata operations
- * on a given entity.</p>
- */
+/// Registry that maps entity classes to the set of metadata fields they support.
+///
+/// This registry is initialized at startup by scanning the [MetadataField] enum
+/// and grouping fields by their associated entity type (e.g., [com.openshelves.model.entity.BookEntity]).
+/// It provides a centralized way to discover which fields are available for metadata operations
+/// on a given entity.
 @Slf4j
 @Component
 public class MetadataFieldRegistry {
 
-    /**
-     * Internal mapping of entity types to their supported metadata fields.
-     */
+    /// Internal mapping of entity types to their supported metadata fields.
     private static final Map<Class<?>, EnumSet<MetadataField>> registry;
 
     static {
@@ -39,13 +35,11 @@ public class MetadataFieldRegistry {
             ));
     }
 
-    /**
-     * Retrieves the set of metadata fields registered for a specific entity type.
-     *
-     * @param entityType the class of the entity to look up (e.g., {@code BookEntity.class})
-     * @return an {@link EnumSet} of supported {@link MetadataField}s
-     * @throws IllegalArgumentException if no fields are registered for the given entity type
-     */
+    /// Retrieves the set of metadata fields registered for a specific entity type.
+    ///
+    /// @param entityType the class of the entity to look up (e.g., `BookEntity.class`)
+    /// @return an [EnumSet] of supported [MetadataField]s
+    /// @throws IllegalArgumentException if no fields are registered for the given entity type
     public EnumSet<MetadataField> getFieldsForEntity(Class<?> entityType) {
         EnumSet<MetadataField> fields = registry.get(entityType);
         if (fields == null) {

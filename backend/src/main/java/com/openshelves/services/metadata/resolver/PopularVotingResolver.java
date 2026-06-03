@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/// Resolves metadata fields using a voting mechanism.
+///
+/// This strategy counts occurrences of each unique candidate value across all
+/// providers and selects the one with the majority vote. Ties or low consensus
+/// are flagged according to the configured resolution policy.
 @Component
 public class PopularVotingResolver implements MetadataFieldResolver {
 

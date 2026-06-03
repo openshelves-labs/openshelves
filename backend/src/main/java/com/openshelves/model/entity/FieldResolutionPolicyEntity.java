@@ -12,13 +12,11 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 
-/**
- * Entity representing a policy for resolving and prioritizing metadata for a specific field.
- *
- * <p>Each policy defines how values for a given {@link MetadataField} should be resolved
- * when multiple providers supply conflicting information. This includes the
- * {@link ResolutionStrategy} to use and the priority order of {@link MetadataProvider}s.</p>
- */
+/// Entity representing a policy for resolving and prioritizing metadata for a specific field.
+///
+/// Each policy defines how values for a given [MetadataField] should be resolved
+/// when multiple providers supply conflicting information. This includes the
+/// [ResolutionStrategy] to use and the priority order of [MetadataProvider]s.
 @Entity
 @Getter
 @Setter
@@ -31,24 +29,18 @@ public class FieldResolutionPolicyEntity extends BaseEntity<Long> {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    /**
-     * The metadata field this policy applies to.
-     */
+    /// The metadata field this policy applies to.
     @Enumerated(EnumType.STRING)
     @Column(name = "field_key", nullable = false)
     private MetadataField fieldKey;
 
-    /**
-     * The strategy to use when resolving values for this field from different providers.
-     */
+    /// The strategy to use when resolving values for this field from different providers.
     @Enumerated(EnumType.STRING)
     @Column(name = "resolution_strategy", nullable = false)
     private ResolutionStrategy resolutionStrategy;
 
-    /**
-     * An ordered list of providers ranked by preference, where the first entry carries
-     * the highest weight. Used by strategies that resolve conflicts based on source ordering.
-     */
+    /// An ordered list of providers ranked by preference, where the first entry carries
+    /// the highest weight. Used by strategies that resolve conflicts based on source ordering.
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.ARRAY)
     @Column(name = "ranked_providers")

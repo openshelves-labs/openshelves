@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/// Resolves metadata fields by using an external LLM / AI service to synthesize
+/// the candidate values.
+///
+/// This strategy is typically used for complex fields or fields where multiple
+/// conflicting, detailed records must be merged or structured cleanly.
 @Component
 public class AiAssistedResolver implements MetadataFieldResolver {
 

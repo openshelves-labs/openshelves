@@ -20,6 +20,10 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.*;
 
+/// Client implementation for the Open Library API.
+///
+/// Communicates with Open Library to search for and retrieve book and author
+/// metadata, mapping the responses via [OpenLibraryMapper].
 @Slf4j
 @Service
 @RequiredArgsConstructor

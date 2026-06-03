@@ -12,15 +12,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/// Service responsible for loading and resolving metadata field resolution policies.
+///
+/// Currently provides mock policy configurations mapping each field to a specific
+/// resolution strategy (e.g. text quality, voting, or ranked priority).
 @Service
 public class MetadataFieldPolicyService {
 
-    /**
-     * Retrieves the resolution policies in bulk for the specified set of metadata fields.
-     *
-     * @param fields The set of metadata fields to load policies for.
-     * @return A map associating each requested field with its corresponding resolution policy entity.
-     */
+    /// Retrieves the resolution policies in bulk for the specified set of metadata fields.
+    ///
+    /// @param fields The set of metadata fields to load policies for.
+    /// @return A map associating each requested field with its corresponding resolution policy entity.
     @Transactional(readOnly = true)
     public Map<MetadataField, FieldResolutionPolicyEntity> bulkLoadPolicies(Set<MetadataField> fields) {
         // Mock returning a static list of policies based on real-life field level decisions

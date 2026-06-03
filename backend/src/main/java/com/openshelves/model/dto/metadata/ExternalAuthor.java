@@ -7,20 +7,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Represents normalized author metadata retrieved from external providers
- * such as Google Books or Open Library.
- *
- * <p>This DTO is intentionally tolerant and minimal:
- * <ul>
- *   <li>All fields are optional and may be {@code null}</li>
- *   <li>Unknown properties from upstream APIs are ignored</li>
- *   <li>{@code null} fields are excluded from JSON serialization</li>
- * </ul>
- *
- * <p>The structure is designed for ingestion and mapping, not as a
- * fully authoritative domain model.</p>
- */
+/// Represents normalized author metadata retrieved from external providers
+/// such as Google Books or Open Library.
+///
+/// This DTO is intentionally tolerant and minimal:
+/// - All fields are optional and may be `null`
+/// - Unknown properties from upstream APIs are ignored
+/// - `null` fields are excluded from JSON serialization
+///
+/// The structure is designed for ingestion and mapping, not as a
+/// fully authoritative domain model.
 @Data
 @Builder
 @NoArgsConstructor
@@ -33,13 +29,13 @@ public class ExternalAuthor {
     // Core metadata
     // -------------------------------------------------------------------------
 
-    /** Display name of the author. */
+    /// Display name of the author.
     private String name;
 
-    /** Short biography or description of the author. */
+    /// Short biography or description of the author.
     private String bio;
 
-    /** Nationality of the author. */
+    /// Nationality of the author.
     private String nationality;
 
 
@@ -47,10 +43,10 @@ public class ExternalAuthor {
     // Dates
     // -------------------------------------------------------------------------
 
-    /** Year the author was born. */
+    /// Year the author was born.
     private Short birthYear;
 
-    /** Year the author died, if applicable. */
+    /// Year the author died, if applicable.
     private Short deathYear;
 
 
@@ -58,10 +54,10 @@ public class ExternalAuthor {
     // Identifiers
     // -------------------------------------------------------------------------
 
-    /** Amazon identifier for the author, if available. */
+    /// Amazon identifier for the author, if available.
     private String asin;
 
-    /** Open Library identifier for the author. */
+    /// Open Library identifier for the author.
     private String olid;
 
 
@@ -69,6 +65,6 @@ public class ExternalAuthor {
     // Media
     // -------------------------------------------------------------------------
 
-    /** URL pointing to the author's profile image. */
+    /// URL pointing to the author's profile image.
     private String profileImageUrl;
 }

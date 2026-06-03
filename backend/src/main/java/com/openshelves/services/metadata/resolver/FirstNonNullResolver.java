@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/// Resolves metadata fields by returning the first non-null candidate value
+/// in the natural iteration order of the candidates map.
+///
+/// This strategy acts as a basic fallback when provider ordering or priority ranking
+/// is not specified by the policy.
 @Component
 public class FirstNonNullResolver implements MetadataFieldResolver {
 

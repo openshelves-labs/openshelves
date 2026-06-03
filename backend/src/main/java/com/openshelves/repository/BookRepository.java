@@ -4,10 +4,8 @@ import com.openshelves.model.entity.BookEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-/**
- * Repository interface for managing {@link BookEntity} instances.
- * Provides basic CRUD operations and custom query methods through Spring Data JPA.
- */
+/// Spring Data JPA repository for [BookEntity] instances.
+/// Provides standard CRUD operations and can be extended with custom query methods.
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
 

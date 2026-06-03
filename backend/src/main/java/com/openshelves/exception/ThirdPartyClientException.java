@@ -1,8 +1,7 @@
 package com.openshelves.exception;
 
-/**
- * Exception thrown when an error occurs while communicating with a third-party metadata service.
- */
+/// Unchecked exception thrown when an error occurs while communicating
+/// with a third-party metadata service (e.g., Open Library, Google Books).
 public class ThirdPartyClientException extends RuntimeException {
 
     public ThirdPartyClientException(String message) {

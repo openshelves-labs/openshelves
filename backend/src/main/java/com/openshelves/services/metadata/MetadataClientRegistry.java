@@ -7,31 +7,26 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-/**
- * Registry that maps each {@link MetadataProvider} to its corresponding {@link MetadataClient}
- * implementation.
- *
- * <p>All {@code MetadataClient} beans present in the application context are collected at startup
- * and indexed by their declared provider. The registry is immutable after construction; clients
- * cannot be added or removed at runtime.
- *
- * <p>Enforces a one-to-one relationship between providers and clients: if two beans claim the same
- * {@link MetadataProvider}, the application will fail to start with an {@link IllegalStateException}.
- */
+/// Registry that maps each [MetadataProvider] to its corresponding [MetadataClient]
+/// implementation.
+///
+/// All `MetadataClient` beans present in the application context are collected at startup
+/// and indexed by their declared provider. The registry is immutable after construction; clients
+/// cannot be added or removed at runtime.
+///
+/// Enforces a one-to-one relationship between providers and clients: if two beans claim the same
+/// [MetadataProvider], the application will fail to start with an [IllegalStateException].
 @Slf4j
 @Component
 public class MetadataClientRegistry {
 
     private final Map<MetadataProvider, MetadataClient> registry;
 
-    /**
-     * Constructs the registry by indexing all available {@link MetadataClient} beans.
-     *
-     * @param allClients all {@code MetadataClient} implementations discovered in the application
-     *                   context; Spring injects these automatically via list injection
-     *
-     * @throws IllegalStateException if two clients declare the same {@link MetadataProvider}
-     */
+    /// Constructs the registry by indexing all available [MetadataClient] beans.
+    ///
+    /// @param allClients all `MetadataClient` implementations discovered in the application
+    ///                   context; Spring injects these automatically via list injection
+    /// @throws IllegalStateException if two clients declare the same [MetadataProvider]
     @Autowired
     public MetadataClientRegistry(List<MetadataClient> allClients) {
         Map<MetadataProvider, MetadataClient> providerMap = new EnumMap<>(MetadataProvider.class);
@@ -48,13 +43,11 @@ public class MetadataClientRegistry {
         log.debug("Registered MetadataClients: {}", registry.keySet());
     }
 
-    /**
-     * Returns the {@link MetadataClient} registered for the given provider.
-     *
-     * @param provider the metadata provider to look up
-     * @return the client associated with {@code provider}; never {@code null}
-     * @throws IllegalArgumentException if no client is registered for the given provider
-     */
+    /// Returns the [MetadataClient] registered for the given provider.
+    ///
+    /// @param provider the metadata provider to look up
+    /// @return the client associated with `provider`; never `null`
+    /// @throws IllegalArgumentException if no client is registered for the given provider
     public MetadataClient getClient(MetadataProvider provider) {
         MetadataClient client = registry.get(provider);
         if (client == null) {
@@ -64,6 +57,9 @@ public class MetadataClientRegistry {
         return client;
     }
 
+    /// Returns a read-only map of all registered metadata clients.
+    ///
+    /// @return a map of all registered [MetadataProvider]s to their corresponding [MetadataClient]s
     public Map<MetadataProvider, MetadataClient> getAllClients() {
         return registry;
     }

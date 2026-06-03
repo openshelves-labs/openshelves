@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/// Resolves metadata fields by bypassing automatic resolution and directly
+/// blocking the field, requiring explicit manual review or operator input.
+///
+/// This strategy is typically used for critical field parameters that must
+/// be audited manually before publication.
 @Component
 public class ManualResolver implements MetadataFieldResolver {
 

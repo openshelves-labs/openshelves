@@ -21,11 +21,14 @@ public class MetadataFieldPolicyService {
 
     /// Retrieves the resolution policies in bulk for the specified set of metadata fields.
     ///
+    /// <p>Currently returns a hardcoded policy map based on intended real-world field-level
+    /// decisions. This will be replaced by a database-backed lookup once policy persistence
+    /// is implemented.
+    ///
     /// @param fields The set of metadata fields to load policies for.
     /// @return A map associating each requested field with its corresponding resolution policy entity.
     @Transactional(readOnly = true)
     public Map<MetadataField, FieldResolutionPolicyEntity> bulkLoadPolicies(Set<MetadataField> fields) {
-        // Mock returning a static list of policies based on real-life field level decisions
         return fields.stream().collect(Collectors.toMap(
                 field -> field,
                 field -> {

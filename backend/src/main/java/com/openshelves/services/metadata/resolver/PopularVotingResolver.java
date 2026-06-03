@@ -23,8 +23,10 @@ public class PopularVotingResolver implements MetadataFieldResolver {
         return ResolutionStrategy.VOTING;
     }
 
+    // TODO: tally occurrences of each unique candidate value, return the majority as Resolved,
+    //       or NeedsConfirmation if there is a tie or consensus falls below policy threshold
     @Override
     public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates, FieldResolutionPolicyEntity policy) {
-        return null;
+        throw new UnsupportedOperationException("PopularVotingResolver is not yet implemented");
     }
 }

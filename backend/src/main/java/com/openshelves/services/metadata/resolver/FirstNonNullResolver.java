@@ -23,8 +23,10 @@ public class FirstNonNullResolver implements MetadataFieldResolver {
         return ResolutionStrategy.FIRST_NON_NULL;
     }
 
+    // TODO: iterate candidates in map order, return the first non-null value as Resolved,
+    //       or Absent if all candidates are null
     @Override
     public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates, FieldResolutionPolicyEntity policy) {
-        return null;
+        throw new UnsupportedOperationException("FirstNonNullResolver is not yet implemented");
     }
 }

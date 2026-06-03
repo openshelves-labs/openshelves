@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Primary;
 import java.util.concurrent.TimeUnit;
 
 /// Configuration class for creating and managing HTTP client beans.
+///
 /// Defines customized [OkHttpClient] instances for various external service integrations.
 @Configuration
 public class RestClientConfig {

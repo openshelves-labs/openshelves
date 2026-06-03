@@ -27,14 +27,13 @@ public class MetadataFieldResolverRegistry {
 
     private final Map<ResolutionStrategy, MetadataFieldResolver> registry;
 
-    /// Constructs the registry by indexing all available
-    /// [MetadataFieldResolver] beans.
+    /// Constructs the registry by indexing all available [MetadataFieldResolver] beans.
     ///
-    /// @param allResolvers all `MetadataFieldResolver` implementations discovered in
-    ///                     the application context; Spring injects these
-    ///                     automatically via list injection
-    /// @throws IllegalStateException if two resolvers declare the
-    ///                               same [ResolutionStrategy]
+    /// @param allResolvers all `MetadataFieldResolver` implementations discovered in the
+    ///                     application context; Spring injects these automatically via
+    ///                     list injection
+    ///
+    /// @throws IllegalStateException if two resolvers declare the same [ResolutionStrategy]
     @Autowired
     public MetadataFieldResolverRegistry(List<MetadataFieldResolver> allResolvers) {
         Map<ResolutionStrategy, MetadataFieldResolver> strategyMap = new EnumMap<>(ResolutionStrategy.class);
@@ -54,9 +53,9 @@ public class MetadataFieldResolverRegistry {
     /// Returns the [MetadataFieldResolver] registered for the given strategy.
     ///
     /// @param strategy the resolution strategy to look up
+    ///
     /// @return the resolver associated with `strategy`; never `null`
-    /// @throws IllegalArgumentException if no resolver is registered for the
-    ///                                  given strategy
+    /// @throws IllegalArgumentException if no resolver is registered for the given strategy
     public MetadataFieldResolver getResolver(ResolutionStrategy strategy) {
         MetadataFieldResolver resolver = registry.get(strategy);
         if (resolver == null) {

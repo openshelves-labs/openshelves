@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /// Entity representing a book in the OpenShelves system.
+///
 /// Stores core metadata, classification, publishing details, and identifiers.
 @Entity
 @Getter

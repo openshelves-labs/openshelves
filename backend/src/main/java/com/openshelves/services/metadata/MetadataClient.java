@@ -26,6 +26,7 @@ public interface MetadataClient {
     ///
     /// @param request      the search criteria (title, identifiers, authors, etc.)
     /// @param fetchOptions controls result limits and language filtering
+    ///
     /// @return a list of matching [ExternalBook] results; never `null`, may be empty
     List<ExternalBook> fetchBooks(BookRequest request, FetchOptions fetchOptions);
 
@@ -37,6 +38,7 @@ public interface MetadataClient {
     ///
     /// @param request      the search criteria (name, identifiers, etc.)
     /// @param fetchOptions controls result limits and language filtering
+    ///
     /// @return a list of matching [ExternalAuthor] results; never `null`, may be empty
     List<ExternalAuthor> fetchAuthors(AuthorRequest request, FetchOptions fetchOptions);
 

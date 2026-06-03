@@ -248,6 +248,7 @@ public class OpenLibraryMapper {
     ///
     /// @param node  the parent [JsonNode]; may be `null`
     /// @param field the name of the array field within `node`
+    ///
     /// @return the first positive value found in the array as a [Long], or `null` if
     ///         the field is absent, not an array, empty, or contains no
     ///         positive numbers
@@ -388,6 +389,7 @@ public class OpenLibraryMapper {
     ///
     /// @param node  the parent [JsonNode]; may be `null`
     /// @param field the field name to read
+    ///
     /// @return the resolved, stripped string value, or `null` if the field is
     ///         absent, null, blank, or unresolvable
     private String text(JsonNode node, String field) {
@@ -430,6 +432,7 @@ public class OpenLibraryMapper {
     ///
     /// @param node  the parent [JsonNode]; may be `null`
     /// @param field the field name to read
+    ///
     /// @return the integer value, or `null` if the field is absent, null, or not an
     ///         integer node
     private Integer integer(JsonNode node, String field) {
@@ -451,6 +454,7 @@ public class OpenLibraryMapper {
     ///
     /// @param node  the parent [JsonNode]; may be `null`
     /// @param field the name of the array field within `node`
+    ///
     /// @return the first non-null resolved string in the array, or `null` if the
     ///         field is absent, not an array, empty, or all elements resolve
     ///         to `null`
@@ -480,6 +484,7 @@ public class OpenLibraryMapper {
     ///
     /// @param <T>    the type of the values
     /// @param values the candidate values to evaluate in order
+    ///
     /// @return the first non-null value, or `null` if all values are `null`
     @SafeVarargs
     private <T> T firstNonNull(T... values) {

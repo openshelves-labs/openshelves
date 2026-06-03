@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /// Abstract base class for JPA entities.
+///
 /// Provides a common structure including ID retrieval and robust
 /// `equals` and `hashCode` implementations based on the entity's ID.
 ///

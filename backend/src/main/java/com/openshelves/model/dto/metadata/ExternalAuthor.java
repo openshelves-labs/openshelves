@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 /// such as Google Books or Open Library.
 ///
 /// This DTO is intentionally tolerant and minimal:
-/// - All fields are optional and may be `null`
-/// - Unknown properties from upstream APIs are ignored
-/// - `null` fields are excluded from JSON serialization
+///
+///   - All fields are optional and may be `null`
+///   - Unknown properties from upstream APIs are ignored
+///   - `null` fields are excluded from JSON serialization
 ///
 /// The structure is designed for ingestion and mapping, not as a
 /// fully authoritative domain model.

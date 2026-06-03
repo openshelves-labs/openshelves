@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /// Resolves metadata fields by walking through a prioritized list of providers.
-/// 
+///
 /// The resolution logic follows three distinct phases:
 ///
 /// 1. **Priority List Walk:** Iterates through the list of ranked providers in order of

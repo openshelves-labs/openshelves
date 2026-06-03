@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /// Join entity representing the relationship between a [BookEntity] and an [AuthorEntity].
+///
 /// Includes additional metadata such as the contributor's role and sort order.
 @Entity
 @Getter

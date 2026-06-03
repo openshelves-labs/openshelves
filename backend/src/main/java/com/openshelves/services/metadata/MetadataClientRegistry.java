@@ -26,6 +26,7 @@ public class MetadataClientRegistry {
     ///
     /// @param allClients all `MetadataClient` implementations discovered in the application
     ///                   context; Spring injects these automatically via list injection
+    ///
     /// @throws IllegalStateException if two clients declare the same [MetadataProvider]
     @Autowired
     public MetadataClientRegistry(List<MetadataClient> allClients) {
@@ -46,6 +47,7 @@ public class MetadataClientRegistry {
     /// Returns the [MetadataClient] registered for the given provider.
     ///
     /// @param provider the metadata provider to look up
+    ///
     /// @return the client associated with `provider`; never `null`
     /// @throws IllegalArgumentException if no client is registered for the given provider
     public MetadataClient getClient(MetadataProvider provider) {

@@ -22,6 +22,7 @@ public class MetadataFieldAccessor {
     /// @param fieldName  the name of the field to access
     /// @param fieldType  the Java type of the field
     /// @param entityType the class of the entity containing the field
+    ///
     /// @throws IllegalArgumentException if the field cannot be found or accessed
     public MetadataFieldAccessor(String fieldName, Class<?> fieldType, Class<?> entityType) {
         this.fieldName = fieldName;
@@ -40,6 +41,7 @@ public class MetadataFieldAccessor {
     ///
     /// @param <T>    the expected return type
     /// @param entity the entity instance to read from
+    ///
     /// @return the value of the field
     /// @throws RuntimeException if the value cannot be retrieved
     @SuppressWarnings("unchecked")
@@ -55,6 +57,7 @@ public class MetadataFieldAccessor {
     ///
     /// @param entity the entity instance to modify
     /// @param value  the new value to set
+    ///
     /// @throws RuntimeException if the value cannot be set
     public void set(Object entity, Object value) {
         try {

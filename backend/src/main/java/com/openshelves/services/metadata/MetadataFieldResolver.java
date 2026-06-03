@@ -28,6 +28,7 @@ public interface MetadataFieldResolver {
     /// @param candidates a map of candidate values keyed by their source provider
     /// @param policy     the resolution policy governing this field
     /// @param <T>        the type of the metadata field value
+    ///
     /// @return a [FieldResolution] indicating whether the field was successfully resolved,
     ///         requires manual confirmation, or is blocked due to an unresolvable conflict
     <T> FieldResolution<T> resolve(

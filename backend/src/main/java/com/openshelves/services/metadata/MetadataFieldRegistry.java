@@ -38,6 +38,7 @@ public class MetadataFieldRegistry {
     /// Retrieves the set of metadata fields registered for a specific entity type.
     ///
     /// @param entityType the class of the entity to look up (e.g., `BookEntity.class`)
+    ///
     /// @return an [EnumSet] of supported [MetadataField]s
     /// @throws IllegalArgumentException if no fields are registered for the given entity type
     public EnumSet<MetadataField> getFieldsForEntity(Class<?> entityType) {

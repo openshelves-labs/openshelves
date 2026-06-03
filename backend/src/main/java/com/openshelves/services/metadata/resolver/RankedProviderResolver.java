@@ -18,11 +18,14 @@ import java.util.stream.Collectors;
 /// 1. **Priority List Walk:** Iterates through the list of ranked providers in order of
 ///    priority. The first non-null candidate value found is returned immediately as
 ///    a [FieldResolution.Resolved] value.
+///
 /// 2. **Unranked Candidate Assessment:** If no ranked provider returned a value, gathers
 ///    all non-null candidate values from unranked providers.
+///
 /// 3. **Consensus & Fallback Resolution:**
 ///    - If there is unanimous consensus (exactly one unique value among all unranked
 ///      providers), that value is proposed with a [FieldResolution.NeedsConfirmation] state.
+///
 ///    - If there are conflicting values among unranked providers, the field resolution
 ///      is marked as [FieldResolution.Blocked] for human or AI conflict resolution.
 @Component

@@ -54,9 +54,10 @@ public class OpenLibraryMapper {
     /// `(27)`, etc.
     ///
     /// The pattern captures the numeric portion in one of three groups:
-    /// 1. Group 1 – keyword-prefixed number, e.g. `Vol. 3` → `3`
-    /// 2. Group 2 – hash-prefixed number, e.g. `#1` → `1`
-    /// 3. Group 3 – parenthesised number, e.g. `(27)` → `27`
+    ///
+    ///     1. Group 1 – keyword-prefixed number, e.g. `Vol. 3` → `3`
+    ///     2. Group 2 – hash-prefixed number, e.g. `#1` → `1`
+    ///     3. Group 3 – parenthesised number, e.g. `(27)` → `27`
     private static final Pattern SERIES_NUMBER_PATTERN = Pattern.compile(
             "[,\\s]++(?:no|vol|book|part|volume)\\.?\\s*+(\\d++)|#(\\d++)|\\.?(\\d++)\\)",
             Pattern.CASE_INSENSITIVE);
@@ -403,10 +404,11 @@ public class OpenLibraryMapper {
     /// Resolves a [JsonNode] to a plain, stripped string.
     ///
     /// Open Library uses two representations for text fields:
-    /// - **Plain string** – the node itself carries the text value directly.
-    /// - **Typed value object** – a JSON object of the form `{"type": "/type/text",
-    ///   "value": "actual text"}`; the text is nested under the `value` key and
-    ///   extracted via a recursive call.
+    ///
+    ///     - **Plain string** – the node itself carries the text value directly.
+    ///
+    ///     - **Typed value object** – a JSON object of the form `{"type": "/type/text", "value": "actual text"}`;
+    ///       the text is nested under the `value` key and extracted via a recursive call.
     ///
     /// Blank strings are normalised to `null` so that callers never receive
     /// whitespace-only values.

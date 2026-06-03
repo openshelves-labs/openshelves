@@ -26,10 +26,13 @@ import java.util.stream.Collectors;
 ///
 ///   - **Text Length:** Prefers values within a standard length range, penalizing
 ///     very short or extremely long text.
+///
 ///   - **Word Density:** Assesses the ratio of meaningful content words versus filler
 ///     or stop words. Penalizes keyword-stuffed lists or content lacking substance.
+///
 ///   - **Sentence Coherence:** Evaluates basic syntactic markers (capitalization,
 ///     ending punctuation) and penalizes excessively choppy or run-on sentences.
+///
 ///   - **Structural Integrity:** Flags indicators of poor extraction, such as HTML
 ///     tags, unescaped HTML entities, trailing truncation markers (e.g., ellipses),
 ///     junk/control characters, and repeated punctuation.
@@ -249,7 +252,9 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
     /// Prefers text within the range [[MIN_TEXT_LENGTH], [MAX_TEXT_LENGTH]]:
     ///
     ///   - Texts shorter than [MIN_TEXT_LENGTH] are penalized linearly.
+    ///
     ///   - Texts within the range get a perfect score of 1.0.
+    ///
     ///   - Texts longer than [MAX_TEXT_LENGTH] are penalized logarithmically to avoid
     ///     harshly penalizing slightly longer, detailed descriptions.
     ///
@@ -278,9 +283,12 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
     /// Scores the text based on the density of meaningful content words (non-stop words).
     ///
     ///   - If the word count is very low (fewer than 3 words), a minimal fractional score is returned.
+    ///
     ///   - If the density is between 50% and 85%, it receives a perfect score of 1.0.
+    ///
     ///   - If the density is under 50%, it indicates high usage of stop/filler words,
     ///     leading to a linear penalty.
+    ///
     ///   - If the density is over 85%, it indicates a high concentration of rare/content
     ///     words — typical of a keyword tag list rather than natural prose — leading to
     ///     a penalty.

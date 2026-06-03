@@ -21,7 +21,7 @@ public class MetadataFieldPolicyService {
 
     /// Retrieves the resolution policies in bulk for the specified set of metadata fields.
     ///
-    /// <p>Currently returns a hardcoded policy map based on intended real-world field-level
+    /// Currently returns a hardcoded policy map based on intended real-world field-level
     /// decisions. This will be replaced by a database-backed lookup once policy persistence
     /// is implemented.
     ///
@@ -36,25 +36,20 @@ public class MetadataFieldPolicyService {
                     policy.setFieldKey(field);
 
                     switch (field) {
-                        case BOOK_DESCRIPTION:
-                        case AUTHOR_BIO:
+                        case BOOK_DESCRIPTION, AUTHOR_BIO:
                             policy.setResolutionStrategy(ResolutionStrategy.HIGHEST_QUALITY_TEXT);
                             break;
-                        case BOOK_TITLE:
-                        case BOOK_AUTHORS:
-                        case AUTHOR_NAME:
+
+                        case BOOK_TITLE, BOOK_AUTHORS, AUTHOR_NAME:
                             policy.setResolutionStrategy(ResolutionStrategy.VOTING);
                             break;
-                        case BOOK_ISBN10:
-                        case BOOK_ISBN13:
-                        case BOOK_ASIN:
-                        case BOOK_OLID:
-                        case AUTHOR_ASIN:
-                        case AUTHOR_OLID:
-                        case BOOK_COVER_IMAGE_URL:
-                        case AUTHOR_PROFILE_IMAGE_URL:
+
+                        case BOOK_ISBN10, BOOK_ISBN13, BOOK_ASIN, BOOK_OLID,
+                             AUTHOR_ASIN, AUTHOR_OLID,
+                             BOOK_COVER_IMAGE_URL, AUTHOR_PROFILE_IMAGE_URL:
                             policy.setResolutionStrategy(ResolutionStrategy.FIRST_NON_NULL);
                             break;
+
                         default:
                             policy.setResolutionStrategy(ResolutionStrategy.PRIORITY);
                             policy.setRankedProviders(List.of(

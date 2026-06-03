@@ -11,8 +11,8 @@ public enum ResolutionStrategy {
     /** Select the first non-null value encountered among providers. */
     FIRST_NON_NULL,
 
-    /** Select the value with the greatest character length (useful for descriptions). */
-    LONGEST_TEXT,
+    /** Select the value with the highest quality text (useful for descriptions). */
+    HIGHEST_QUALITY_TEXT,
 
     /** Select the value most commonly supplied by all providers (majority wins). */
     VOTING,

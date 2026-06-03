@@ -250,12 +250,12 @@ CREATE TABLE lu_resolution_strategies (
 );
 
 INSERT INTO lu_resolution_strategies (code, label, description) VALUES
-    ('PRIORITY',       'Priority',       'Select the value from the provider with the highest defined priority'),
-    ('FIRST_NON_NULL', 'First Non-Null', 'Select the first non-null value encountered among providers'),
-    ('LONGEST_TEXT',   'Longest Text',   'Select the value with the greatest character length'),
-    ('VOTING',         'Voting',         'Select the value most commonly supplied by all providers'),
-    ('AI_SYNTHESIZE',  'AI Synthesize',  'Use an AI model to synthesize a consolidated value from all provider inputs'),
-    ('MANUAL',         'Manual',         'Mark the field for manual resolution by a human moderator');
+    ('PRIORITY',             'Priority',             'Select the value from the provider with the highest defined priority'),
+    ('FIRST_NON_NULL',       'First Non-Null',       'Select the first non-null value encountered among providers'),
+    ('HIGHEST_QUALITY_TEXT', 'Highest Quality Text', 'Select the value with the highest quality text'),
+    ('VOTING',               'Voting',               'Select the value most commonly supplied by all providers'),
+    ('AI_SYNTHESIZE',        'AI Synthesize',        'Use an AI model to synthesize a consolidated value from all provider inputs'),
+    ('MANUAL',               'Manual',               'Mark the field for manual resolution by a human moderator');
 
 
 -- -------------------------------------------------------

@@ -33,7 +33,7 @@ public class MetadataFieldPolicyService {
                     switch (field) {
                         case BOOK_DESCRIPTION:
                         case AUTHOR_BIO:
-                            policy.setResolutionStrategy(ResolutionStrategy.LONGEST_TEXT);
+                            policy.setResolutionStrategy(ResolutionStrategy.HIGHEST_QUALITY_TEXT);
                             break;
                         case BOOK_TITLE:
                         case BOOK_AUTHORS:

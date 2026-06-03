@@ -38,7 +38,7 @@ public class RankedProviderResolver implements MetadataFieldResolver {
         }
 
         // ----------------------------------------------------------------
-        // Phase 2: collect unranked candidates
+        // Phase 2: collect unranked candidates (no data acquired from ranked providers)
         // ----------------------------------------------------------------
         Set<T> unrankedValues = candidates.values().stream()
             .filter(Objects::nonNull)

@@ -158,8 +158,7 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
     /// @return a [FieldResolution] indicating the resolution result (Absent,
     ///         Resolved, NeedsConfirmation, or Blocked)
     @Override
-    public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates,
-            FieldResolutionPolicyEntity policy) {
+    public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates, FieldResolutionPolicyEntity policy) {
 
         // ----------------------------------------------------------------
         // Phase 1: Extract, clean, and deduplicate upfront

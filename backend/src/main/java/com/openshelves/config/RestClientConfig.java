@@ -21,7 +21,7 @@ public class RestClientConfig {
     /// Default HTTP client configuration, used as the primary bean for all services.
     @Bean
     @Primary
-    public OkHttpClient defaultClient() {
+    public OkHttpClient defaultHttpClient() {
         return httpClient;
     }
 
@@ -31,7 +31,7 @@ public class RestClientConfig {
     /// and adds the [OpenLibraryInterceptor] to handle rate limiting and retries.
     @Bean
     @Qualifier("openLibrary")
-    public OkHttpClient openLibraryClient() {
+    public OkHttpClient openLibraryHttpClient() {
         return httpClient.newBuilder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)

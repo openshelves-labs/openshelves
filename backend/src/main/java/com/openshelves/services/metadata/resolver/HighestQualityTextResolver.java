@@ -182,7 +182,7 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
             if (qualityScore >= MINIMUM_QUALITY_THRESHOLD) {
                 return new FieldResolution.Resolved<>(candidate);
             } else {
-                return new FieldResolution.NeedsConfirmation<>(candidate, null);
+                return new FieldResolution.NeedsConfirmation<>(candidate);
             }
         }
 
@@ -204,7 +204,7 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         double diff = bestCandidate.qualityScore() - secondBestCandidate.qualityScore();
         if (diff < TIE_TOLERANCE_BAND) {
             // Too close to call — flag for human review
-            return new FieldResolution.Blocked<>(null, candidates, null);
+            return new FieldResolution.Blocked<>(candidates);
         }
 
         // ----------------------------------------------------------------
@@ -213,7 +213,7 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         if (bestCandidate.qualityScore >= MINIMUM_QUALITY_THRESHOLD) {
             return new FieldResolution.Resolved<>(bestCandidate.candidate());
         } else {
-            return new FieldResolution.NeedsConfirmation<>(bestCandidate.candidate(), null);
+            return new FieldResolution.NeedsConfirmation<>(bestCandidate.candidate());
         }
     }
 

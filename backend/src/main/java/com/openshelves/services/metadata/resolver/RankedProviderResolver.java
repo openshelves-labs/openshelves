@@ -70,7 +70,7 @@ public class RankedProviderResolver implements MetadataFieldResolver {
         // ----------------------------------------------------------------
         if (unrankedValues.size() == 1) {
             T consensusValue = unrankedValues.iterator().next();
-            return new FieldResolution.NeedsConfirmation<>(consensusValue, null);
+            return new FieldResolution.NeedsConfirmation<>(consensusValue);
         }
 
         // ----------------------------------------------------------------
@@ -78,6 +78,6 @@ public class RankedProviderResolver implements MetadataFieldResolver {
         // ----------------------------------------------------------------
         // TODO: Call the AI Conflict Resolver with the list of unranked candidates and their sources
 
-        return new FieldResolution.Blocked<>(null, candidates, null);
+        return new FieldResolution.Blocked<>(candidates);
     }
 }

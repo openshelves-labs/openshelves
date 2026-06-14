@@ -160,9 +160,7 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
     @Override
     public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates, FieldResolutionPolicyEntity policy) {
 
-        // ----------------------------------------------------------------
-        // Phase 1: Extract, clean, and deduplicate upfront
-        // ----------------------------------------------------------------
+        // Extract, clean, and deduplicate upfront
         Set<T> uniqueCandidates = candidates.values().stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
@@ -171,10 +169,7 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
             return new FieldResolution.Absent<>();
         }
 
-        // ----------------------------------------------------------------
-        // Phase 2: Short-circuit: If there's only one unique text block, just check for
-        // quality
-        // ----------------------------------------------------------------
+        // Short-circuit: If there's only one unique text block, just check for quality
         if (uniqueCandidates.size() == 1) {
             T candidate = uniqueCandidates.iterator().next();
             double qualityScore = calculateTextQuality(candidate.toString());
@@ -186,18 +181,13 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
             }
         }
 
-        // ----------------------------------------------------------------
-        // Phase 3: Score the unique candidates and order them by quality (highest ->
-        // lowest)
-        // ----------------------------------------------------------------
+        // Score the unique candidates and order them by quality (highest -> lowest)
         List<ScoredCandidate<T>> scoredCandidates = uniqueCandidates.stream()
                 .map(candidate -> new ScoredCandidate<>(candidate, calculateTextQuality(candidate.toString())))
                 .sorted((a, b) -> Double.compare(b.qualityScore(), a.qualityScore())) // Descending order
                 .toList();
 
-        // ----------------------------------------------------------------
-        // Phase 3a: Evaluate conflict threshold between top 2 candidates
-        // ----------------------------------------------------------------
+        // Evaluate conflict threshold between top 2 candidates
         ScoredCandidate<T> bestCandidate = scoredCandidates.get(0);
         ScoredCandidate<T> secondBestCandidate = scoredCandidates.get(1);
 
@@ -207,9 +197,7 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
             return new FieldResolution.Blocked<>(candidates);
         }
 
-        // ----------------------------------------------------------------
-        // Phase 3b: Check if the best candidate meets the minimum quality threshold
-        // ----------------------------------------------------------------
+        // Check if the best candidate meets the minimum quality threshold
         if (bestCandidate.qualityScore >= MINIMUM_QUALITY_THRESHOLD) {
             return new FieldResolution.Resolved<>(bestCandidate.candidate());
         } else {

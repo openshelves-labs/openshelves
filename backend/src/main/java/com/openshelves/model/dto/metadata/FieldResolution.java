@@ -26,7 +26,7 @@ public sealed interface FieldResolution<T> {
     ///
     /// @param <T> the type of the resolved value
     @Data
-    @Accessors(chain = true, fluent = true)
+    @Accessors(chain = true)
     @RequiredArgsConstructor
     final class Resolved<T> implements FieldResolution<T> {
         /// The successfully resolved value.
@@ -37,7 +37,7 @@ public sealed interface FieldResolution<T> {
     ///
     /// @param <T> the type of the proposed value
     @Data
-    @Accessors(chain = true, fluent = true)
+    @Accessors(chain = true)
     @RequiredArgsConstructor
     final class NeedsConfirmation<T> implements FieldResolution<T> {
         /// The proposed value that needs confirmation.
@@ -51,7 +51,7 @@ public sealed interface FieldResolution<T> {
     ///
     /// @param <T> the type of the conflicting values
     @Data
-    @Accessors(chain = true, fluent = true)
+    @Accessors(chain = true)
     @RequiredArgsConstructor
     final class Blocked<T> implements FieldResolution<T> {
         /// A map showing the conflicting values returned by each provider.
@@ -68,7 +68,7 @@ public sealed interface FieldResolution<T> {
     ///
     /// @param <T> the type of the expected field
     @Data
-    @Accessors(chain = true, fluent = true)
+    @Accessors(chain = true)
     @RequiredArgsConstructor
     final class Absent<T> implements FieldResolution<T> {}
 }

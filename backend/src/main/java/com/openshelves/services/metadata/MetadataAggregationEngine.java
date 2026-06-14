@@ -225,7 +225,7 @@ public class MetadataAggregationEngine {
     /// @param resolvedResolution The resolved value wrapper.
     /// @param <T>                The type of the target entity.
     private <T> void applyResolution(T newEntity, MetadataField field, FieldResolution.Resolved<?> resolvedResolution) {
-        Object value = resolvedResolution.value();
+        Object value = resolvedResolution.getValue();
         if (value != null) {
             field.getAccessor().set(newEntity, value);
         }

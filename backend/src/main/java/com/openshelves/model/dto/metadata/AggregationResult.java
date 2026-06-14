@@ -1,31 +1,50 @@
 package com.openshelves.model.dto.metadata;
 
 import com.openshelves.model.enums.MetadataField;
-import org.jspecify.annotations.Nullable;
+import lombok.NonNull;
+import lombok.Value;
 
+import java.util.Collections;
 import java.util.Map;
 
 /// Represents the result of aggregating metadata from multiple sources for an entity.
 ///
-/// @param <T>         The type of the domain entity being aggregated (e.g., Book, Author).
-/// @param entity      The partially or fully aggregated entity instance. This may be `null`
-///                    if the entity could not be instantiated or if critical fields are blocked.
-/// @param needsReview A map containing fields that could not be automatically resolved and
-///                    require manual review or confirmation. Keys are the specific
-///                    [MetadataField]s, and values are the corresponding
-///                    [FieldResolution] states detailing the resolution attempt.
-public record AggregationResult<T>(
-    @Nullable T entity,
-    Map<MetadataField, FieldResolution<?>> needsReview
-) {
+/// @param <T>  The type of the domain entity being aggregated (e.g., Book, Author).
+@Value
+public class AggregationResult<T> {
+
+    // -------------------------------------------------------------------------
+    // Data fields
+    // -------------------------------------------------------------------------
+
+    /// The partially or fully aggregated entity instance. This may be `null` if the
+    /// entity could not be instantiated or if critical fields are blocked.
+    T entity;
+
+    /// A map containing fields that could not be automatically resolved and require
+    /// manual review or confirmation. Keys are the specific [MetadataField]s, and
+    /// values are the corresponding [FieldResolution] states detailing the
+    /// resolution attempt.
+    @NonNull
+    Map<MetadataField, FieldResolution<?>> needsReview;
+
+
+    // -------------------------------------------------------------------------
+    // named Constructors
+    // -------------------------------------------------------------------------
 
     /// Creates an empty aggregation result representing no data retrieved.
     ///
     /// @param <T> the type of the domain entity
     /// @return an empty [AggregationResult] instance
     public static <T> AggregationResult<T> empty() {
-        return new AggregationResult<>(null, Map.of());
+        return new AggregationResult<>(null, Collections.emptyMap());
     }
+
+
+    // -------------------------------------------------------------------------
+    // Helper Methods
+    // -------------------------------------------------------------------------
 
     /// Checks if the aggregation result is empty, meaning no provider returned
     /// any value for the entity being aggregated.

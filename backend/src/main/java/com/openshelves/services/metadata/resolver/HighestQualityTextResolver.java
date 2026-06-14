@@ -6,6 +6,7 @@ import com.openshelves.model.enums.MetadataField;
 import com.openshelves.model.enums.MetadataProvider;
 import com.openshelves.model.enums.ResolutionStrategy;
 import com.openshelves.services.metadata.MetadataFieldResolver;
+import lombok.Value;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -184,14 +185,14 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         // Score the unique candidates and order them by quality (highest -> lowest)
         List<ScoredCandidate<T>> scoredCandidates = uniqueCandidates.stream()
                 .map(candidate -> new ScoredCandidate<>(candidate, calculateTextQuality(candidate.toString())))
-                .sorted((a, b) -> Double.compare(b.qualityScore(), a.qualityScore())) // Descending order
+                .sorted((a, b) -> Double.compare(b.getQualityScore(), a.getQualityScore())) // Descending order
                 .toList();
 
         // Evaluate conflict threshold between top 2 candidates
         ScoredCandidate<T> bestCandidate = scoredCandidates.get(0);
         ScoredCandidate<T> secondBestCandidate = scoredCandidates.get(1);
 
-        double diff = bestCandidate.qualityScore() - secondBestCandidate.qualityScore();
+        double diff = bestCandidate.getQualityScore() - secondBestCandidate.getQualityScore();
         if (diff < TIE_TOLERANCE_BAND) {
             // Too close to call — flag for human review
             return new FieldResolution.Blocked<>(candidates);
@@ -199,9 +200,9 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
 
         // Check if the best candidate meets the minimum quality threshold
         if (bestCandidate.qualityScore >= MINIMUM_QUALITY_THRESHOLD) {
-            return new FieldResolution.Resolved<>(bestCandidate.candidate());
+            return new FieldResolution.Resolved<>(bestCandidate.getCandidate());
         } else {
-            return new FieldResolution.NeedsConfirmation<>(bestCandidate.candidate());
+            return new FieldResolution.NeedsConfirmation<>(bestCandidate.getCandidate());
         }
     }
 
@@ -362,23 +363,20 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         double coherenceRatio = totalFormatingScore / sentences.length;
         double avgSentenceLength = (double) totalWordCount / sentences.length;
 
-        // Penalise run-on sentences (avg > 40 words) or choppy fragments (avg < 5)
+        // Penalize run-on sentences (avg > 40 words) or choppy fragments (avg < 5)
         double lengthPenalty = 0;
         if (avgSentenceLength < 8) {
             lengthPenalty = 0.2 * (1 - avgSentenceLength / 8); // Up to 20% penalty for very short sentences
         } else if (avgSentenceLength > 40) {
-            lengthPenalty = 0.2 * Math.min(1.0, (avgSentenceLength - 40) / 40); // Up to 20% penalty for very long
-                                                                                // sentences
+            lengthPenalty = 0.2 * Math.min(1.0, (avgSentenceLength - 40) / 40); // Up to 20% penalty for very long sentences
         }
 
         return Math.clamp(coherenceRatio - lengthPenalty, 0, 1);
     }
 
-    /// Assesses the structural cleanliness of the text, penalizing artifacts of poor
-    /// extraction or formatting.
+    /// Assesses the structural cleanliness of the text, penalizing artifacts of poor extraction or formatting.
     ///
     /// Deducts points for:
-    ///
     ///   - HTML tags — deducts 0.4 points
     ///   - Unescaped HTML entities — deducts 0.15 points
     ///   - Truncation markers like trailing ellipses — deducts 0.5 points
@@ -413,13 +411,10 @@ public class HighestQualityTextResolver implements MetadataFieldResolver {
         return Math.clamp(integrityScore, 0, 1);
     }
 
-    /// Internal container that pairs a candidate value with its calculated quality score.
-    ///
-    /// @param <T>          the type of the candidate value
-    /// @param candidate    the candidate value
-    /// @param qualityScore the calculated quality score for this candidate
-    private record ScoredCandidate<T>(
-            T candidate,
-            double qualityScore) {
+    /// Pairs a candidate value with its calculated quality score.
+    @Value
+    private static class ScoredCandidate<T> {
+        T candidate;
+        double qualityScore;
     }
 }

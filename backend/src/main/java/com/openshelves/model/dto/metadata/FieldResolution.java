@@ -20,7 +20,6 @@ import java.util.Map;
 /// - [Absent]: No provider could supply a value for this field.
 ///
 /// @param <T> the type of the resolved field value
-@SuppressWarnings("ClassCanBeRecord")
 public sealed interface FieldResolution<T> {
 
     /// Indicates that a definitive value was successfully resolved.
@@ -43,7 +42,7 @@ public sealed interface FieldResolution<T> {
     final class NeedsConfirmation<T> implements FieldResolution<T> {
         /// The proposed value that needs confirmation.
         private final T proposedValue;
-        
+
         /// The reason why confirmation is required.
         private String rationale;
     }
@@ -57,10 +56,10 @@ public sealed interface FieldResolution<T> {
     final class Blocked<T> implements FieldResolution<T> {
         /// A map showing the conflicting values returned by each provider.
         private final Map<MetadataProvider, T> conflictingValues;
-        
+
         /// An optionally suggested value to resolve the conflict.
         private T suggestedValue;
-        
+
         /// The explanation of the conflict.
         private String rationale;
     }

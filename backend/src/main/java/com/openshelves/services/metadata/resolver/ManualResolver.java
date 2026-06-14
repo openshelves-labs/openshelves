@@ -25,6 +25,6 @@ public class ManualResolver implements MetadataFieldResolver {
 
     @Override
     public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates, FieldResolutionPolicyEntity policy) {
-        return null;
+        return new FieldResolution.Blocked<>(candidates);
     }
 }

@@ -10,11 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-/// Resolves metadata fields by returning the first non-null candidate value
-/// in the natural iteration order of the candidates map.
+/// Resolves metadata fields by returning the first non-null candidate value in [MetadataProvider] enum declaration order.
 ///
-/// This strategy acts as a basic fallback when provider ordering or priority ranking
-/// is not specified by the policy.
+/// This strategy is used when any available value is acceptable and provider precedence does not matter.
 @Component
 public class FirstNonNullResolver implements MetadataFieldResolver {
 
@@ -23,10 +21,16 @@ public class FirstNonNullResolver implements MetadataFieldResolver {
         return ResolutionStrategy.FIRST_NON_NULL;
     }
 
-    // TODO: iterate candidates in map order, return the first non-null value as Resolved,
-    //       or Absent if all candidates are null
     @Override
     public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates, FieldResolutionPolicyEntity policy) {
-        throw new UnsupportedOperationException("FirstNonNullResolver is not yet implemented");
+        // Look for the first non-null value
+        for (MetadataProvider provider : MetadataProvider.values()) {
+            T value = candidates.get(provider);
+            if (value != null) {
+                return new FieldResolution.Resolved<>(value);
+            }
+        }
+
+        return new FieldResolution.Absent<>();
     }
 }

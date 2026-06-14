@@ -25,6 +25,7 @@ public class AiAssistedResolver implements MetadataFieldResolver {
 
     @Override
     public <T> FieldResolution<T> resolve(MetadataField field, Map<MetadataProvider, T> candidates, FieldResolutionPolicyEntity policy) {
-        return null;
+        // TODO: Implement AI-assisted resolution logic
+        throw new UnsupportedOperationException("AiAssistedResolver is not yet implemented");
     }
 }

@@ -1,0 +1,108 @@
+Resolve the metadata conflicts for the following book.
+
+{
+  "book_context": {
+    "title": "Introduction to Algorithms",
+    "authors": ["Thomas H. Cormen", "Charles E. Leiserson", "Ronald L. Rivest", "Clifford Stein"],
+    "isbn_13": "9780262033848",
+    "publisher": "MIT Press",
+    "published_year": 2009,
+    "language": "en"
+  },
+  "conflicts": {
+    "SUBTITLE": {
+      "resolutionType": "RESOLVE",
+      "resolverUsed": "AI_SYNTHESIZE",
+      "type": "string",
+      "candidates": [
+        {
+          "value": "Third Edition",
+          "sources": ["OPEN_LIBRARY"]
+        },
+        {
+          "value": "A comprehensive guide to algorithms and data structures",
+          "sources": ["GOOGLE_BOOKS"]
+        }
+      ]
+    },
+    "DESCRIPTION": {
+      "resolutionType": "RESOLVE",
+      "resolverUsed": "VOTING",
+      "type": "string",
+      "candidates": [
+        {
+          "value": "A textbook on algorithms and data structures.",
+          "sources": ["OPEN_LIBRARY"]
+        },
+        {
+          "value": "Covers a broad range of algorithms in depth, with design and analysis techniques explained rigorously. Suitable for use as a university textbook and as a reference for professionals.",
+          "sources": ["GOOGLE_BOOKS", "CROSSREF"]
+        },
+        {
+          "value": "A foundational text in theoretical computer science covering sorting, graph algorithms, dynamic programming, and computational complexity.",
+          "sources": ["SEMANTIC_SCHOLAR"]
+        }
+      ]
+    },
+    "PAGE_COUNT": {
+      "resolutionType": "VERIFY",
+      "type": "integer",
+      "candidates": [
+        {
+          "value": 1292,
+          "sources": ["OPEN_LIBRARY"]
+        }
+      ]
+    },
+    "SUBJECT_AREA": {
+      "resolutionType": "RESOLVE",
+      "resolverUsed": "HIGHEST_QUALITY_TEXT",
+      "type": "string",
+      "candidates": [
+        {
+          "value": "Computer Science",
+          "sources": ["OPEN_LIBRARY", "SEMANTIC_SCHOLAR"]
+        },
+        {
+          "value": "Data Structures and Algorithms",
+          "sources": ["GOOGLE_BOOKS"]
+        }
+      ]
+    },
+    "EDITION_NUMBER": {
+      "resolutionType": "VERIFY",
+      "type": "integer",
+      "candidates": [
+        {
+          "value": 3,
+          "sources": ["CROSSREF"]
+        }
+      ]
+    },
+    "IS_ILLUSTRATED": {
+      "resolutionType": "VERIFY",
+      "type": "boolean",
+      "candidates": [
+        {
+          "value": true,
+          "sources": ["OPEN_LIBRARY"]
+        }
+      ]
+    },
+    "DOI": {
+      "resolutionType": "RESOLVE",
+      "resolverUsed": "PRIORITY",
+      "type": "string",
+      "candidates": [
+        {
+          "value": "10.7551/mitpress/9780262033848",
+          "sources": ["CROSSREF"]
+        },
+        {
+          "value": "10.7551/9780262033848",
+          "sources": ["SEMANTIC_SCHOLAR"]
+        }
+      ]
+    }
+  }
+}

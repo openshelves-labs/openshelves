@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OpenShelves — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d0d14;
+  --ink2:#52526a;
+  --ink3:#9898b0;
+  --bg:#f7f7fc;
+  --surface:#ffffff;
+  --surface2:#f0f0f8;
+  --bdr:#e4e4f0;
+  --bdr2:#c8c8e0;
+
+  --v:#6d28d9;
+  --v-mid:#7c3aed;
+  --v-bg:#f3eeff;
+  --v-light:#ede9fe;
+  --v-border:#c4b5fd;
+  --v-text:#4c1d95;
+  --v-dark:#4c1d95;
+
+  --grn:#15803d;
+  --grn-bg:#f0fdf4;
+  --grn-border:#86efac;
+  --grn-text:#14532d;
+
+  --amb:#b45309;
+  --amb-bg:#fffbeb;
+  --amb-border:#fcd34d;
+  --amb-text:#78350f;
+
+  --red:#be123c;
+  --red-bg:#fff1f2;
+  --red-border:#fda4af;
+  --red-text:#881337;
+
+  --sans:'Inter',system-ui,sans-serif;
+  --r:8px;
+  --rl:12px;
+  --h:52px;
+  --sw:200px;
+}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);min-height:100vh;font-size:13.5px;-webkit-font-smoothing:antialiased}
+
+/* TOPBAR */
+.topbar{
+  display:flex;align-items:center;gap:16px;
+  padding:0 20px;height:var(--h);
+  background:var(--surface);border-bottom:1px solid var(--bdr);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.logo-mark{
+  width:30px;height:30px;background:var(--v);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-mark svg{width:16px;height:16px}
+.logo-name{font-size:15px;font-weight:700;color:var(--ink);letter-spacing:-0.03em}
+.search-wrap{flex:1;max-width:500px;position:relative}
+.search-wrap input{
+  width:100%;padding:9px 12px 9px 36px;
+  border:1.5px solid var(--bdr2);border-radius:var(--r);
+  background:var(--bg);font-family:var(--sans);font-size:13px;
+  color:var(--ink);outline:none;font-weight:400;
+  transition:border-color 0.15s,background 0.15s;
+}
+.search-wrap input::placeholder{color:var(--ink3)}
+.search-wrap input:focus{border-color:var(--v);background:var(--surface);box-shadow:0 0 0 3px rgba(109,40,217,0.08)}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink3);pointer-events:none}
+.topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.icon-btn{
+  width:32px;height:32px;border-radius:var(--r);border:1.5px solid var(--bdr);
+  background:var(--surface);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;transition:border-color 0.12s,background 0.12s;
+}
+.icon-btn:hover{background:var(--bg);border-color:var(--bdr2)}
+.icon-btn svg{width:15px;height:15px;color:var(--ink2)}
+.notif-dot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:var(--red);border-radius:50%;border:1.5px solid var(--surface)}
+.avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--v-bg);display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--v-text);cursor:pointer;
+  border:1.5px solid var(--v-border);letter-spacing:0.02em;
+}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--h))}
+
+/* SIDEBAR */
+.sidebar{
+  background:var(--surface);border-right:1px solid var(--bdr);
+  padding:14px 0;position:sticky;top:var(--h);
+  height:calc(100vh - var(--h));overflow-y:auto;
+}
+.sidebar-group{margin-bottom:24px}
+.sidebar-grouplabel{
+  font-size:10px;font-weight:700;letter-spacing:1px;color:var(--ink3);
+  padding:0 14px;margin-bottom:4px;text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 14px;font-size:13px;font-weight:400;color:var(--ink2);
+  cursor:pointer;transition:background 0.1s,color 0.1s;
+  text-decoration:none;position:relative;
+}
+.nav-item:hover{background:var(--bg);color:var(--ink)}
+.nav-item.active{background:var(--v-bg);color:var(--v-text);font-weight:600}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--v);border-radius:0 2px 2px 0}
+.nav-item svg{width:15px;height:15px;flex-shrink:0}
+.nav-item.active svg{color:var(--v)}
+.nav-pill{
+  margin-left:auto;font-size:10.5px;font-weight:700;
+  padding:2px 7px;border-radius:100px;
+}
+.pill-v{background:var(--v-bg);color:var(--v-text);border:1px solid var(--v-border)}
+.pill-a{background:var(--amb-bg);color:var(--amb-text);border:1px solid var(--amb-border)}
+.pill-r{background:var(--red-bg);color:var(--red-text);border:1px solid var(--red-border)}
+
+/* MAIN */
+.main{padding:24px;display:flex;flex-direction:column;gap:28px}
+
+/* GREETING */
+.greeting{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  padding-bottom:24px;border-bottom:1px solid var(--bdr);
+}
+.greeting-left h1{
+  font-size:30px;font-weight:800;color:var(--ink);
+  letter-spacing:-0.04em;line-height:1.1;margin-bottom:10px;
+}
+.greeting-left h1 span{color:var(--v)}
+.status-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:100px;font-size:12px;font-weight:500;
+  border:1px solid;cursor:pointer;transition:opacity 0.12s;
+}
+.chip:hover{opacity:0.8}
+.chip-dot{width:5px;height:5px;border-radius:50%}
+.chip-grn{background:var(--grn-bg);color:var(--grn-text);border-color:var(--grn-border)}
+.chip-grn .chip-dot{background:var(--grn)}
+.chip-amb{background:var(--amb-bg);color:var(--amb-text);border-color:var(--amb-border)}
+.chip-amb .chip-dot{background:var(--amb)}
+.chip-red{background:var(--red-bg);color:var(--red-text);border-color:var(--red-border)}
+.chip-red .chip-dot{background:var(--red)}
+.lib-info{text-align:right;flex-shrink:0;padding-top:4px}
+.lib-name{font-size:10.5px;font-weight:600;color:var(--ink3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:3px}
+.lib-status{font-size:13px;font-weight:700;color:var(--grn)}
+.lib-hours{font-size:11.5px;color:var(--ink3);margin-top:1px}
+
+/* QUICK ACTIONS */
+.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qa-card{
+  background:var(--surface);border:1.5px solid var(--bdr);border-radius:var(--rl);
+  padding:16px;display:flex;flex-direction:column;gap:10px;
+  cursor:pointer;transition:border-color 0.15s,transform 0.1s;
+}
+.qa-card:hover{border-color:var(--bdr2);transform:translateY(-1px)}
+.qa-card.qa-urgent{border-color:var(--red-border);background:var(--red-bg)}
+.qa-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.qa-icon svg{width:18px;height:18px}
+.qi-v{background:var(--v-light)}.qi-v svg{color:var(--v)}
+.qi-a{background:var(--amb-bg)}.qi-a svg{color:var(--amb)}
+.qi-s{background:#e0f2fe}.qi-s svg{color:#0284c7}
+.qi-r{background:var(--red-bg)}.qi-r svg{color:var(--red)}
+.qa-label{font-size:13px;font-weight:600;color:var(--ink)}
+.qa-card.qa-urgent .qa-label{color:var(--red-text)}
+.qa-sub{font-size:11.5px;color:var(--ink3)}
+
+/* SECTION HEADER */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sec-title{font-size:13.5px;font-weight:700;color:var(--ink);letter-spacing:-0.01em}
+.sec-more{font-size:12.5px;color:var(--v);cursor:pointer;text-decoration:none;font-weight:500;transition:opacity 0.12s}
+.sec-more:hover{opacity:0.7}
+
+/* LOANS */
+.card-wrap{background:var(--surface);border:1.5px solid var(--bdr);border-radius:var(--rl);overflow:hidden}
+.loan-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-bottom:1px solid var(--bdr);
+  cursor:pointer;transition:background 0.1s;
+}
+.loan-row:last-child{border-bottom:none}
+.loan-row:hover{background:var(--bg)}
+.loan-cover{
+  width:40px;height:56px;border-radius:4px;flex-shrink:0;
+  object-fit:cover;background:var(--surface2);border:1px solid var(--bdr);
+}
+.loan-body{flex:1;min-width:0}
+.loan-title{
+  font-size:14px;font-weight:600;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  letter-spacing:-0.01em;margin-bottom:3px;
+}
+.loan-meta{font-size:11.5px;color:var(--ink3);margin-bottom:6px}
+.loan-tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:4px;border:1px solid;letter-spacing:0.02em}
+.tag-copy{background:var(--surface2);color:var(--ink2);border-color:var(--bdr2)}
+.tag-due-ok{background:var(--grn-bg);color:var(--grn-text);border-color:var(--grn-border)}
+.tag-due-warn{background:var(--amb-bg);color:var(--amb-text);border-color:var(--amb-border)}
+.tag-overdue{background:var(--red-bg);color:var(--red-text);border-color:var(--red-border)}
+.loan-action{flex-shrink:0}
+.renew-btn{
+  font-size:12px;font-weight:600;color:var(--v-text);
+  background:var(--v-light);border:1.5px solid var(--v-border);border-radius:6px;
+  padding:6px 14px;cursor:pointer;transition:background 0.12s;
+  white-space:nowrap;
+}
+.renew-btn:hover{background:var(--v-bg)}
+
+/* NEW ARRIVALS — covers as heroes */
+.arrivals-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.arr-card{cursor:pointer;transition:transform 0.15s}
+.arr-card:hover{transform:translateY(-3px)}
+.arr-cover{
+  width:100%;aspect-ratio:2/3;border-radius:8px;
+  position:relative;overflow:hidden;
+  background:var(--surface2);border:1px solid var(--bdr);
+  margin-bottom:10px;
+}
+.arr-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.arr-badge{
+  position:absolute;top:8px;right:8px;
+  font-size:9px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--v);color:#fff;padding:3px 7px;border-radius:5px;
+}
+.arr-title{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:3px;letter-spacing:-0.01em}
+.arr-author{font-size:11.5px;color:var(--ink3)}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* HOLDS */
+.hold-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;border-bottom:1px solid var(--bdr);
+  cursor:pointer;transition:background 0.1s;
+}
+.hold-row:last-child{border-bottom:none}
+.hold-row:hover{background:var(--bg)}
+.hold-badge{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;
+}
+.hb-ready{background:var(--grn-bg);color:var(--grn-text);border:1.5px solid var(--grn-border)}
+.hb-wait{background:var(--surface2);color:var(--ink2);border:1.5px solid var(--bdr2)}
+.hold-info{flex:1;min-width:0}
+.hold-title{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.hold-sub{font-size:11.5px;color:var(--ink3)}
+.hold-sub.ready{color:var(--grn-text);font-weight:500}
+
+/* RECS */
+.rec-row{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;border-bottom:1px solid var(--bdr);
+  cursor:pointer;transition:background 0.1s;
+}
+.rec-row:last-child{border-bottom:none}
+.rec-row:hover{background:var(--bg)}
+.rec-cover{width:30px;height:42px;border-radius:4px;flex-shrink:0;object-fit:cover;background:var(--surface2);border:1px solid var(--bdr)}
+.rec-info{flex:1;min-width:0}
+.rec-title{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.rec-why{font-size:11.5px;color:var(--ink3)}
+.avail-chip{font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;flex-shrink:0}
+.av-ok{background:var(--grn-bg);color:var(--grn-text);border:1px solid var(--grn-border)}
+.av-low{background:var(--amb-bg);color:var(--amb-text);border:1px solid var(--amb-border)}
+
+/* FOOTER */
+.footer{
+  border-top:1px solid var(--bdr);padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);
+}
+.footer-brand{font-size:13px;font-weight:700;color:var(--ink3);letter-spacing:-0.02em}
+.footer-links{display:flex;gap:16px;list-style:none}
+.footer-links a{font-size:12px;color:var(--ink3);text-decoration:none}
+.footer-links a:hover{color:var(--ink2)}
+.footer-copy{font-size:11.5px;color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="#" class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 16 16" fill="none">
+        <rect x="1" y="2" width="3" height="12" rx="1" fill="white" opacity="0.95"/>
+        <rect x="5.5" y="2" width="3" height="12" rx="1" fill="white" opacity="0.7"/>
+        <rect x="9.5" y="3.5" width="5" height="9" rx="1" fill="white" opacity="0.45" transform="skewX(-5)"/>
+      </svg>
+    </div>
+    <span class="logo-name">OpenShelves</span>
+  </a>
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="13.5" y2="13.5"/>
+    </svg>
+    <input type="text" placeholder="Search titles, authors, subjects, ISBN…"/>
+  </div>
+  <div class="topbar-right">
+    <div class="icon-btn" title="Notifications">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 2a4 4 0 0 1 4 4v3l1.5 2H2.5L4 9V6a4 4 0 0 1 4-4z"/>
+        <path d="M6.5 13a1.5 1.5 0 0 0 3 0"/>
+      </svg>
+      <span class="notif-dot"></span>
+    </div>
+    <div class="avatar" title="Arpan Reddy">AR</div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-grouplabel">Discover</div>
+      <a href="#" class="nav-item active">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="12" height="12" rx="1.5"/><line x1="2" y1="6.5" x2="14" y2="6.5"/><line x1="6" y1="6.5" x2="6" y2="14"/>
+        </svg>
+        Home
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="13.5" y2="13.5"/>
+        </svg>
+        Browse catalog
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 4h12M2 8h8M2 12h6"/>
+        </svg>
+        New arrivals
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 2l1.5 3.5L13 6l-2.5 2.5.5 3.5L8 10.5 5 12l.5-3.5L3 6l3.5-.5z"/>
+        </svg>
+        Recommended
+      </a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-grouplabel">My library</div>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="1.5" width="7" height="13" rx="1"/>
+          <line x1="13" y1="5" x2="13" y2="13.5"/><line x1="11.5" y1="5" x2="14.5" y2="5"/>
+        </svg>
+        Current loans
+        <span class="nav-pill pill-v">3</span>
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="8" r="6"/>
+          <line x1="8" y1="5" x2="8" y2="8.5"/><line x1="8" y1="8.5" x2="10.5" y2="10.5"/>
+        </svg>
+        Holds
+        <span class="nav-pill pill-a">2</span>
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 12l3-4 3 2.5 3-6 3 4"/>
+        </svg>
+        Reading history
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="4" width="12" height="9" rx="1"/>
+          <path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/>
+        </svg>
+        Fines
+        <span class="nav-pill pill-r">₹20</span>
+      </a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-grouplabel">Collections</div>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 3V2M11 3V2"/>
+        </svg>
+        Journals &amp; serials
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="2" width="10" height="13" rx="1"/>
+          <line x1="6" y1="6" x2="10" y2="6"/><line x1="6" y1="9" x2="10" y2="9"/>
+        </svg>
+        Digital resources
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="greeting">
+      <div class="greeting-left">
+        <h1>Good morning, <span>Arpan.</span></h1>
+        <div class="status-chips">
+          <span class="chip chip-grn"><span class="chip-dot"></span>3 active loans</span>
+          <span class="chip chip-amb"><span class="chip-dot"></span>1 hold ready</span>
+          <span class="chip chip-red"><span class="chip-dot"></span>₹20 fine due</span>
+        </div>
+      </div>
+      <div class="lib-info">
+        <div class="lib-name">Central Library</div>
+        <div class="lib-status">Open now</div>
+        <div class="lib-hours">Mon–Fri · 8am – 9pm</div>
+      </div>
+    </div>
+
+    <div class="qa-grid">
+      <div class="qa-card">
+        <div class="qa-icon qi-v">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M10 5l3 3-3 3"/>
+          </svg>
+        </div>
+        <div>
+          <div class="qa-label">Renew loans</div>
+          <div class="qa-sub">2 eligible now</div>
+        </div>
+      </div>
+      <div class="qa-card">
+        <div class="qa-icon qi-a">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="8" cy="8" r="6"/>
+            <line x1="8" y1="5" x2="8" y2="8.5"/>
+            <circle cx="8" cy="11" r="0.75" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div>
+          <div class="qa-label">Hold ready</div>
+          <div class="qa-sub">Pick up by Apr 25</div>
+        </div>
+      </div>
+      <div class="qa-card">
+        <div class="qa-icon qi-s">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="13.5" y2="13.5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="qa-label">Search catalog</div>
+          <div class="qa-sub">4,821 items</div>
+        </div>
+      </div>
+      <div class="qa-card qa-urgent">
+        <div class="qa-icon qi-r">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="12" height="9" rx="1"/>
+            <path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/>
+          </svg>
+        </div>
+        <div>
+          <div class="qa-label">Pay fines</div>
+          <div class="qa-sub">₹20 outstanding</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-head">
+        <span class="sec-title">Current loans</span>
+        <a href="#" class="sec-more">View all →</a>
+      </div>
+      <div class="card-wrap">
+        <div class="loan-row">
+          <img class="loan-cover" src="https://covers.openlibrary.org/b/isbn/9780132392273-M.jpg" alt=""/>
+          <div class="loan-body">
+            <div class="loan-title">Distributed Systems: Principles and Paradigms</div>
+            <div class="loan-meta">Tanenbaum, A. · 2nd ed.</div>
+            <div class="loan-tags">
+              <span class="tag tag-copy">#OS-BK-00312</span>
+              <span class="tag tag-due-ok">Due Apr 30</span>
+            </div>
+          </div>
+          <div class="loan-action"><button class="renew-btn">Renew</button></div>
+        </div>
+        <div class="loan-row">
+          <img class="loan-cover" src="https://covers.openlibrary.org/b/isbn/9780135957059-M.jpg" alt=""/>
+          <div class="loan-body">
+            <div class="loan-title">The Pragmatic Programmer</div>
+            <div class="loan-meta">Hunt, A. · Thomas, D.</div>
+            <div class="loan-tags">
+              <span class="tag tag-copy">#OS-BK-00089</span>
+              <span class="tag tag-due-warn">Due soon · Apr 23</span>
+            </div>
+          </div>
+          <div class="loan-action"><button class="renew-btn">Renew</button></div>
+        </div>
+        <div class="loan-row">
+          <img class="loan-cover" src="https://covers.openlibrary.org/b/isbn/9780134494166-M.jpg" alt=""/>
+          <div class="loan-body">
+            <div class="loan-title">Clean Architecture</div>
+            <div class="loan-meta">Martin, R.C. · 2017</div>
+            <div class="loan-tags">
+              <span class="tag tag-copy">#OS-BK-00139</span>
+              <span class="tag tag-overdue">Overdue · Apr 18</span>
+            </div>
+          </div>
+          <div class="loan-action"><button class="renew-btn">Renew</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-head">
+        <span class="sec-title">New arrivals</span>
+        <a href="#" class="sec-more">Browse all →</a>
+      </div>
+      <div class="arrivals-grid">
+        <div class="arr-card">
+          <div class="arr-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9781098105945-M.jpg" alt="Platform Engineering"/>
+            <div class="arr-badge">New</div>
+          </div>
+          <div class="arr-title">Platform Engineering</div>
+          <div class="arr-author">Krebs, J. · 2024</div>
+        </div>
+        <div class="arr-card">
+          <div class="arr-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9780861966677-M.jpg" alt="Postcolonial Computing"/>
+            <div class="arr-badge">New</div>
+          </div>
+          <div class="arr-title">Postcolonial Computing</div>
+          <div class="arr-author">Philip, K. · 2024</div>
+        </div>
+        <div class="arr-card">
+          <div class="arr-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9781492040347-M.jpg" alt="Database Internals"/>
+          </div>
+          <div class="arr-title">Database Internals</div>
+          <div class="arr-author">Petrov, A. · 2023</div>
+        </div>
+        <div class="arr-card">
+          <div class="arr-cover">
+            <img src="https://covers.openlibrary.org/b/isbn/9781603580557-M.jpg" alt="Thinking in Systems"/>
+            <div class="arr-badge">New</div>
+          </div>
+          <div class="arr-title">Thinking in Systems</div>
+          <div class="arr-author">Meadows, D. · 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="sec-head">
+          <span class="sec-title">Your holds</span>
+          <a href="#" class="sec-more">Manage →</a>
+        </div>
+        <div class="card-wrap">
+          <div class="hold-row">
+            <div class="hold-badge hb-ready">✓</div>
+            <div class="hold-info">
+              <div class="hold-title">Designing Data-Intensive Applications</div>
+              <div class="hold-sub ready">Ready · Counter B</div>
+            </div>
+          </div>
+          <div class="hold-row">
+            <div class="hold-badge hb-wait">2</div>
+            <div class="hold-info">
+              <div class="hold-title">A Philosophy of Software Design</div>
+              <div class="hold-sub">Est. available May 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-head">
+          <span class="sec-title">Recommended for you</span>
+          <a href="#" class="sec-more">See more →</a>
+        </div>
+        <div class="card-wrap">
+          <div class="rec-row">
+            <img class="rec-cover" src="https://covers.openlibrary.org/b/isbn/9781491929124-M.jpg" alt=""/>
+            <div class="rec-info">
+              <div class="rec-title">Site Reliability Engineering</div>
+              <div class="rec-why">Based on your loans</div>
+            </div>
+            <span class="avail-chip av-ok">Available</span>
+          </div>
+          <div class="rec-row">
+            <img class="rec-cover" src="https://covers.openlibrary.org/b/isbn/9781098118730-M.jpg" alt=""/>
+            <div class="rec-info">
+              <div class="rec-title">The Staff Engineer's Path</div>
+              <div class="rec-why">Popular this week</div>
+            </div>
+            <span class="avail-chip av-ok">Available</span>
+          </div>
+          <div class="rec-row">
+            <img class="rec-cover" src="https://covers.openlibrary.org/b/isbn/9781491971673-M.jpg" alt=""/>
+            <div class="rec-info">
+              <div class="rec-title">Software Architecture Patterns</div>
+              <div class="rec-why">Based on your loans</div>
+            </div>
+            <span class="avail-chip av-low">1 copy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span class="footer-brand">OpenShelves</span>
+      <ul class="footer-links">
+        <li><a href="#">Help</a></li>
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Contact library</a></li>
+      </ul>
+      <span class="footer-copy">Apache 2.0 · v0.0.1-alpha</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const FB=['#3a4a7a','#6d28d9','#2d5a3d','#7a4a1a','#4a3a7a','#0f6e56','#534ab7','#993c1d'];
+let fi=0;
+document.querySelectorAll('img[src*="openlibrary"]').forEach(img=>{
+  const c=FB[fi++%FB.length];
+  img.onerror=function(){this.style.display='none';this.parentElement.style.background=c};
+});
+</script>
+</body>
+</html>

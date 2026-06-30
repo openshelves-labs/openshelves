@@ -17,10 +17,10 @@ GRANT ALL ON SCHEMA public TO public;
 -- -------------------------------------------------------
 CREATE TABLE lu_author_roles (
     -- key
-    code                VARCHAR(20)     NOT NULL,
+    code                VARCHAR(100)     NOT NULL,
 
     -- descriptor
-    label               VARCHAR(50)     NOT NULL,
+    label               VARCHAR(100)     NOT NULL,
     description         TEXT,
 
     -- constraints
@@ -146,7 +146,7 @@ CREATE TABLE book_authors (
     author_id           BIGINT          NOT NULL,
 
     -- additional metadata
-    role                VARCHAR(20)     NOT NULL DEFAULT 'AUTHOR',
+    role                VARCHAR(100)     NOT NULL DEFAULT 'AUTHOR',
     sort_order          SMALLINT        NOT NULL DEFAULT 1,
 
     -- constraints
@@ -171,7 +171,7 @@ CREATE INDEX book_authors_author_idx       ON book_authors (author_id);
 -- -------------------------------------------------------
 CREATE TABLE lu_metadata_fields (
     -- key
-    code                VARCHAR(20)     NOT NULL,
+    code                VARCHAR(100)     NOT NULL,
 
     -- descriptor
     label               VARCHAR(100)    NOT NULL,
@@ -215,10 +215,10 @@ INSERT INTO lu_metadata_fields (code, label, description) VALUES
 -- -------------------------------------------------------
 CREATE TABLE lu_metadata_providers (
     -- key
-    code                VARCHAR(20)     NOT NULL,
+    code                VARCHAR(100)     NOT NULL,
 
     -- descriptor
-    label               VARCHAR(50)     NOT NULL,
+    label               VARCHAR(100)     NOT NULL,
     description         TEXT,
 
     -- constraints
@@ -238,10 +238,10 @@ INSERT INTO lu_metadata_providers (code, label, description) VALUES
 -- -------------------------------------------------------
 CREATE TABLE lu_resolution_strategies (
     -- key
-    code                VARCHAR(20)     NOT NULL,
+    code                VARCHAR(100)     NOT NULL,
 
     -- descriptor
-    label               VARCHAR(50)     NOT NULL,
+    label               VARCHAR(100)     NOT NULL,
     description         TEXT,
 
     -- constraints
@@ -266,9 +266,9 @@ CREATE TABLE field_resolution_policies (
     id                  BIGINT          NOT NULL GENERATED ALWAYS AS IDENTITY,
 
     -- configuration
-    field_key           VARCHAR(20)     NOT NULL,
-    resolution_strategy VARCHAR(20)     NOT NULL,
-    ranked_providers   VARCHAR(20)[],
+    field_key           VARCHAR(100)     NOT NULL,
+    resolution_strategy VARCHAR(100)     NOT NULL,
+    ranked_providers   VARCHAR(100)[],
 
     -- constraints
     CONSTRAINT field_resolution_policies_pk      PRIMARY KEY (id),

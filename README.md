@@ -1,5 +1,7 @@
 # OpenShelves: The Future of Academic Discovery
 
+[![License](https://img.shields.io/badge/License-BUSL%201.1-blue.svg)](LICENSE)
+
 OpenShelves is a modern platform designed to revolutionize the university library experience. We are turning complex, legacy academic catalogs into intuitive, high-performance, and open discovery platforms that empower students and researchers.
 
 > [!IMPORTANT]
@@ -44,7 +46,8 @@ We are looking for early contributors, visionaries, and library enthusiasts!
 - [AI Agent Instructions (AGENTS.md)](AGENTS.md)
 - [AI Usage Policy](AI_USAGE_POLICY.md)
 - [Security Policy](SECURITY.md)
-- [License](LICENSE)
+- [Anti-Impersonation Policy](ANTI-IMPERSONATION.md)
+- [License (Business Source License 1.1)](LICENSE)
 
 ---
 © 2026 OpenShelves Labs. Built with ❤️ for the academic community.

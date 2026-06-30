@@ -129,9 +129,9 @@ We believe this is the right balance between openness and sustainability. If you
 
 ## License
 
-OpenShelves is licensed under the **Apache License, Version 2.0**. By contributing, you agree that your contributions will be licensed under the same terms as they apply to the project, subject to the [Contributor License Agreement](./CLA.md).
+OpenShelves is licensed under the **Business Source License 1.1 (BUSL)**, converting to Apache License 2.0 on a rolling basis per the Change Date defined in the `LICENSE` file. By contributing, you agree to the terms described in the [Contributor License Agreement](./CLA.md).
 
-You are free to use, fork, and build upon OpenShelves in your own projects under the Apache 2.0 terms — provided you include proper attribution to the original project as described in the CLA.
+You are free to use, fork, and build upon OpenShelves in your own projects under the BUSL terms — provided you respect the Additional Use Grant limits and include proper attribution as described in the CLA.
 
 ---
 

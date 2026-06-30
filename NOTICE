@@ -1,10 +1,20 @@
 OpenShelves
 Copyright 2026 OpenShelves Labs
 
-This product is licensed under the Apache License, Version 2.0.
-You may obtain a copy of the License at:
-http://www.apache.org/licenses/LICENSE-2.0
+This product is licensed under the Business Source License 1.1 (BUSL).
+Each released version converts to the Apache License, Version 2.0 on its
+own Change Date (currently five years from that version's publication),
+as specified in the LICENSE file.
+
+You may obtain a copy of the current License at:
+https://github.com/openshelves-labs/openshelves/blob/develop/LICENSE
 
 This product includes software developed by the OpenShelves contributors.
 A full list of contributors is available in the project's git history at:
 https://github.com/openshelves-labs/openshelves
+
+"OpenShelves" and the OpenShelves name are referenced under the terms of
+the OpenShelves Anti-Impersonation Policy:
+https://github.com/openshelves-labs/openshelves/blob/develop/ANTI-IMPERSONATION.md
+This notice does not impose additional restrictions on the rights granted
+under the Business Source License with respect to the software itself.

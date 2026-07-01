@@ -1,6 +1,10 @@
 # OpenShelves: The Future of Academic Discovery
 
 [![License](https://img.shields.io/badge/License-BUSL%201.1-blue.svg)](LICENSE)
+[![Java 25](https://img.shields.io/badge/Java-25-blue.svg)](https://www.java.com/)
+[![Spring Boot 4.0.6](https://img.shields.io/badge/Spring_Boot-4.0.6-6DB33F.svg?logo=spring)](https://spring.io/projects/spring-boot)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome!-orange.svg)](CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-Adopted-blue.svg)](CODE_OF_CONDUCT.md)
 
 OpenShelves is a modern platform designed to revolutionize the university library experience. We are turning complex, legacy academic catalogs into intuitive, high-performance, and open discovery platforms that empower students and researchers.
 

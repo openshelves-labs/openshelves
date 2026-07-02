@@ -1,5 +1,6 @@
 package com.openshelves.config;
 
+import com.openshelves.services.metadata.client.googlebooks.GoogleBooksInterceptor;
 import com.openshelves.services.metadata.client.openlibrary.OpenLibraryInterceptor;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
@@ -38,6 +39,22 @@ public class RestClientConfig {
             .writeTimeout(30, TimeUnit.SECONDS)
             .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))     // Max 5 idle connections, 5 minutes keep-alive
             .addInterceptor(new OpenLibraryInterceptor())   // Add custom interceptor
+            .build();
+    }
+
+    /// Custom HTTP client configuration for the Google Books service.
+    ///
+    /// Configures connection and read/write timeouts, a connection pool,
+    /// and adds the [GoogleBooksInterceptor] to handle rate limiting and retries.
+    @Bean
+    @Qualifier("googleBooks")
+    public OkHttpClient googleBooksHttpClient() {
+        return httpClient.newBuilder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))     // Max 5 idle connections, 5 minutes keep-alive
+            .addInterceptor(new GoogleBooksInterceptor())   // Add custom interceptor
             .build();
     }
 }

@@ -55,8 +55,7 @@ public class MetadataFieldPolicyService {
                             policy.setRankedProviders(List.of(
                                     MetadataProvider.GOOGLE_BOOKS,
                                     MetadataProvider.OPEN_LIBRARY,
-                                    MetadataProvider.GOODREADS,
-                                    MetadataProvider.AMAZON
+                                    MetadataProvider.GOODREADS
                             ));
                             break;
                     }

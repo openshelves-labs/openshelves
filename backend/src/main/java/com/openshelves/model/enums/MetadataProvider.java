@@ -11,5 +11,5 @@ package com.openshelves.model.enums;
 public enum MetadataProvider {
     GOOGLE_BOOKS,   // Google Books
     OPEN_LIBRARY,   // Open Library
-    GOODREADS       // Goodreads
+    HARDCOVER,      // Hardcover
 }

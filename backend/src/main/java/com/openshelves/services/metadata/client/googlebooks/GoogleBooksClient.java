@@ -42,8 +42,7 @@ public class GoogleBooksClient implements MetadataClient {
 
     /// Google Books API key. Optional — unauthenticated requests are permitted at a much
     /// lower quota, so a key is strongly recommended for production use.
-//    @Value("${openshelves.metadata.google-books.api-key:}")
-//    private String apiKey;
+    private String apiKey;      // TODO: Bind the API Key
 
 
     @Override
@@ -155,6 +154,12 @@ public class GoogleBooksClient implements MetadataClient {
 
     // Execute the HTTP request and return the response body as a String
     private Optional<String> performApiRequest(Request request) throws ThirdPartyClientException {
+
+        if (StringUtils.isBlank(apiKey)) {
+            log.debug("Google Books API key not configured; skipping fetch.");
+            return Optional.empty();
+        }
+
         try (Response response = httpClient.newCall(request).execute()) {
             log.debug("Google Books API response: {}", response);
 

@@ -53,9 +53,9 @@ public class MetadataFieldPolicyService {
                         default:
                             policy.setResolutionStrategy(ResolutionStrategy.PRIORITY);
                             policy.setRankedProviders(List.of(
-                                    MetadataProvider.GOOGLE_BOOKS,
                                     MetadataProvider.OPEN_LIBRARY,
-                                    MetadataProvider.GOODREADS
+                                    MetadataProvider.HARDCOVER,
+                                    MetadataProvider.GOOGLE_BOOKS
                             ));
                             break;
                     }

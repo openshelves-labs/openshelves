@@ -103,41 +103,73 @@ public class OpenLibraryMapper {
     /// @return a populated [ExternalBook], or `null` if `node` is `null` or a
     ///         JSON null
     public ExternalBook toExternalBook(JsonNode node) {
-        if (node == null || node.isNull())
+        return toExternalBook(node, null);
+    }
+
+    /// Converts a raw Open Library *edition* JSON document into an
+    /// [ExternalBook] DTO, falling back to the parent *work* document for the
+    /// fields that are commonly absent at the edition level.
+    ///
+    /// Edition-specific fields (ISBN, publisher, page count, series, etc.) are
+    /// always sourced from `editionNode` only, since these do not exist on a
+    /// work and are meaningless to fall back on. `workNode` is only consulted
+    /// when the corresponding edition-level field is completely absent.
+    ///
+    /// The method is tolerant of missing or null fields; any field that cannot be
+    /// resolved from the JSON is left as `null` on the resulting object.
+    ///
+    /// @param editionNode the root [JsonNode] of an Open Library edition response; may be
+    ///             `null`
+    /// @param workNode the root [JsonNode] of an Open Library work response; may be
+    ///                 `null`
+    /// @return a populated [ExternalBook], or `null` if `editionNode` is `null` or a
+    ///         JSON null
+    public ExternalBook toExternalBook(JsonNode editionNode, JsonNode workNode) {
+        if (editionNode == null || editionNode.isNull())
             return null;
 
         // Parse the series field once; result is [seriesName, seriesNumber] or [null,
         // null]
-        String[] seriesInfo = parseSeries(firstInArray(node, "series"));
+        String[] seriesInfo = parseSeries(firstInArray(editionNode, "series"));
 
         // Resolve the first positive cover ID for building the cover image URL
-        Long coverId = extractFirstPositiveNumberInArray(node, "covers");
+        Long coverId = firstNonNull(
+            extractFirstPositiveNumberInArray(editionNode, "covers"),
+            extractFirstPositiveNumberInArray(workNode, "covers")
+        );
+
+        List<ExternalBook.AuthorRef> authorRefs = extractAuthorRefs(editionNode);
+        if (authorRefs.isEmpty()) {
+            // If no authors are found in the edition, try the work node as a fallback
+            authorRefs = extractAuthorRefs(workNode);
+        }
 
         return ExternalBook.builder()
-                .title(text(node, "title"))
-                .subtitle(text(node, "subtitle"))
-                .description(text(node, "description"))
-                .language(extractLanguageCode(node))
-                .pageCount(integer(node, "number_of_pages"))
-                .deweyDecimal(firstInArray(node, "dewey_decimal_class"))
-                // lc_classifications is preferred; lc_classification is a legacy field on older
-                // records
+                .title(text(editionNode, "title"))
+                .subtitle(text(editionNode, "subtitle"))
+                .description(firstNonNull(
+                        text(editionNode, "description"),
+                        text(workNode, "description")))
+                .language(extractLanguageCode(editionNode))
+                .pageCount(integer(editionNode, "number_of_pages"))
+                .deweyDecimal(firstInArray(editionNode, "dewey_decimal_class"))
+                // lc_classifications is preferred; lc_classification is a legacy field on older records
                 .lcClassification(firstNonNull(
-                        firstInArray(node, "lc_classifications"),
-                        firstInArray(node, "lc_classification")))
-                .publisher(firstInArray(node, "publishers"))
-                .publicationYear(extractYearFromDate(text(node, "publish_date")))
+                        firstInArray(editionNode, "lc_classifications"),
+                        firstInArray(editionNode, "lc_classification")))
+                .publisher(firstInArray(editionNode, "publishers"))
+                .publicationYear(extractYearFromDate(text(editionNode, "publish_date")))
                 .seriesName(seriesInfo[0])
                 .seriesNumber(seriesInfo[1] != null ? Integer.valueOf(seriesInfo[1]) : null)
-                .isbn10(firstInArray(node, "isbn_10"))
-                .isbn13(firstInArray(node, "isbn_13"))
+                .isbn10(firstInArray(editionNode, "isbn_10"))
+                .isbn13(firstInArray(editionNode, "isbn_13"))
                 // ASIN may appear under "asin" or "amazon" within the identifiers sub-object
                 .asin(firstNonNull(
-                        firstInArray(node.get("identifiers"), "asin"),
-                        firstInArray(node.get("identifiers"), "amazon")))
-                .olid(extractOlidFromKey(text(node, "key")))
+                        firstInArray(editionNode.get("identifiers"), "asin"),
+                        firstInArray(editionNode.get("identifiers"), "amazon")))
+                .olid(extractOlidFromKey(text(editionNode, "key")))
                 .coverImageUrl(coverId != null ? String.format(BOOK_COVER_URL, coverId) : null)
-                .authors(extractAuthorRefs(node))
+                .authors(authorRefs)
                 .build();
     }
 
@@ -171,6 +203,29 @@ public class OpenLibraryMapper {
                 .asin(text(node.get("remote_ids"), "amazon"))
                 .profileImageUrl(photoId != null ? String.format(AUTHOR_PHOTO_URL, photoId) : null)
                 .build();
+    }
+
+    /// Determines whether an edition document is missing any of the three
+    /// fields that can be enriched from its parent work: `description`,
+    /// `authors`, or a cover image.
+    ///
+    /// Callers can use this to decide whether the extra work-document fetch is
+    /// worth making, rather than fetching the work unconditionally for every
+    /// edition.
+    ///
+    /// @param editionNode the root [JsonNode] of an Open Library edition response;
+    ///                     may be `null`
+    /// @return `true` if `editionNode` is missing `description`, `authors`, or a
+    ///         cover, and therefore stands to benefit from work-level fallback
+    public boolean needsWorkEnrichment(JsonNode editionNode) {
+        if (editionNode == null || editionNode.isNull())
+            return false;
+
+        boolean missingDescription = text(editionNode, "description") == null;
+        boolean missingAuthors = extractAuthorRefs(editionNode).isEmpty();
+        boolean missingCover = extractFirstPositiveNumberInArray(editionNode, "covers") == null;
+
+        return missingDescription || missingAuthors || missingCover;
     }
 
     // -----------------------------------------------------------------------
@@ -339,9 +394,11 @@ public class OpenLibraryMapper {
             if (item == null || item.isNull())
                 continue;
 
-            // Author entries can be reference objects {"key": "/authors/OL456A"} or plain
-            // strings
-            String authorKey = item.isObject() ? text(item, "key") : resolveTextNode(item);
+            // Author entries can be reference objects {"key": "/authors/OL456A"}, 
+            // nested objects {"author": {"key": "/authors/OL456A"}}, or plain strings
+            String authorKey = item.has("author") ? text(item.get("author"), "key")
+                             : item.has("key")    ? text(item, "key")
+                             : resolveTextNode(item);
             String authorOlid = extractOlidFromKey(authorKey);
 
             // Skip entries that cannot be resolved to a valid OLID

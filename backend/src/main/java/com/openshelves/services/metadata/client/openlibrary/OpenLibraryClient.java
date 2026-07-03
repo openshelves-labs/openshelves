@@ -56,8 +56,10 @@ public class OpenLibraryClient implements MetadataClient {
 
             Optional<String> resp = performApiRequest(req);
             if (resp.isPresent()) {
-                JsonNode node = jsonMapper.readTree(resp.get());
-                return Collections.singletonList(olMapper.toExternalBook(node));
+                JsonNode editionNode = jsonMapper.readTree(resp.get());
+                JsonNode workNode = olMapper.needsWorkEnrichment(editionNode) ?
+                    fetchWorkNode(editionNode) : null;
+                return Collections.singletonList(olMapper.toExternalBook(editionNode, workNode));
             }
 
             log.warn("Could not fetch book from Open Library with known identifiers [path={}], falling back to search", url.encodedPath());
@@ -82,8 +84,10 @@ public class OpenLibraryClient implements MetadataClient {
 
                     Optional<String> bookResp = performApiRequest(bookReq);
                     if (bookResp.isPresent()) {
-                        JsonNode node = jsonMapper.readTree(bookResp.get());
-                        bookList.add(olMapper.toExternalBook(node));
+                        JsonNode editionNode = jsonMapper.readTree(bookResp.get());
+                        JsonNode workNode = olMapper.needsWorkEnrichment(editionNode) ?
+                            fetchWorkNode(editionNode) : null;
+                        bookList.add(olMapper.toExternalBook(editionNode, workNode));
                     }
                 }
 
@@ -93,6 +97,32 @@ public class OpenLibraryClient implements MetadataClient {
 
         // Unknown Book
         return Collections.emptyList();
+    }
+
+    /// Extracts the work key from an edition's JSON node and fetches the corresponding
+    /// work details from the Open Library API.
+    ///
+    /// @param editionNode the JSON node representing the edition data
+    /// @return the JSON node representing the work data, or {@code null} if it cannot be found or fetched
+    private JsonNode fetchWorkNode(JsonNode editionNode) {
+        // Retrieve the "works" array from the edition node
+        JsonNode works = editionNode.get("works");
+        if (works == null || !works.isArray() || works.isEmpty()) {
+            log.warn("Edition node does not contain 'works' array or it is empty: {}", editionNode);
+            return null;
+        }
+
+        // Get the key of the first work in the array
+        JsonNode keyNode = works.get(0).get("key");
+        if (keyNode == null || !keyNode.isString()) return null;
+
+        // Construct the URL to fetch the work data
+        HttpUrl workUrl = parseAndGetNewURLBuilder(keyNode.asString() + ".json").build();
+        Request workReq = new Request.Builder().url(workUrl).build();
+
+        // Perform the API request and parse the response
+        Optional<String> workResp = performApiRequest(workReq);
+        return workResp.map(jsonMapper::readTree).orElse(null);
     }
 
     // Returns the URL to fetch book data based on the request parameters

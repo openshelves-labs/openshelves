@@ -40,8 +40,7 @@ public class GoogleBooksClient implements MetadataClient {
     private final GoogleBooksMapper gbMapper;
     private final ObjectMapper jsonMapper;
 
-    /// Google Books API key. Optional — unauthenticated requests are permitted at a much
-    /// lower quota, so a key is strongly recommended for production use.
+    /// Google Books API key. Required for authentication with the Google Books API.
     private String apiKey;      // TODO: Bind the API Key
 
 
@@ -145,9 +144,9 @@ public class GoogleBooksClient implements MetadataClient {
             urlBuilder.addQueryParameter("langRestrict", fetchOptions.getLanguage());
         }
 
-//        if (StringUtils.isNotBlank(apiKey)) {
-//            urlBuilder.addQueryParameter("key", apiKey);
-//        }
+        if (StringUtils.isNotBlank(apiKey)) {
+            urlBuilder.addQueryParameter("key", apiKey);
+        }
 
         return urlBuilder;
     }

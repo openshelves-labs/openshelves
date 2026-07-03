@@ -12,4 +12,6 @@ public enum MetadataProvider {
     GOOGLE_BOOKS,   // Google Books
     OPEN_LIBRARY,   // Open Library
     HARDCOVER,      // Hardcover
+    COMIC_VINE,     // Comic Vine (comics/graphic novels)
+    RANOBEDB,       // RanobeDB (light novels)
 }

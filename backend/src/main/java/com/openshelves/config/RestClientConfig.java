@@ -1,7 +1,10 @@
 package com.openshelves.config;
 
+import com.openshelves.services.metadata.client.comicvine.ComicVineInterceptor;
 import com.openshelves.services.metadata.client.googlebooks.GoogleBooksInterceptor;
+import com.openshelves.services.metadata.client.hardcover.HardcoverInterceptor;
 import com.openshelves.services.metadata.client.openlibrary.OpenLibraryInterceptor;
+import com.openshelves.services.metadata.client.ranobedb.RanobeDbInterceptor;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,6 +58,54 @@ public class RestClientConfig {
             .writeTimeout(30, TimeUnit.SECONDS)
             .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))     // Max 5 idle connections, 5 minutes keep-alive
             .addInterceptor(new GoogleBooksInterceptor())   // Add custom interceptor
+            .build();
+    }
+
+    /// Custom HTTP client configuration for the Hardcover service.
+    ///
+    /// Configures connection and read/write timeouts, a connection pool,
+    /// and adds the [HardcoverInterceptor] to handle rate limiting, and retries.
+    @Bean
+    @Qualifier("hardcover")
+    public OkHttpClient hardcoverHttpClient() {
+        return httpClient.newBuilder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))     // Max 5 idle connections, 5 minutes keep-alive
+            .addInterceptor(new HardcoverInterceptor())   // Add custom interceptor
+            .build();
+    }
+
+    /// Custom HTTP client configuration for the Comic Vine service (comics/graphic novels).
+    ///
+    /// Configures connection and read/write timeouts, a connection pool,
+    /// and adds the [ComicVineInterceptor] to handle headers, rate limiting, and retries.
+    @Bean
+    @Qualifier("comicVine")
+    public OkHttpClient comicVineHttpClient() {
+        return httpClient.newBuilder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))     // Max 5 idle connections, 5 minutes keep-alive
+            .addInterceptor(new ComicVineInterceptor())   // Add custom interceptor
+            .build();
+    }
+
+    /// Custom HTTP client configuration for the RanobeDB service (light novels).
+    ///
+    /// Configures connection and read/write timeouts, a connection pool,
+    /// and adds the [RanobeDbInterceptor] to handle headers, rate limiting, and retries.
+    @Bean
+    @Qualifier("ranobeDb")
+    public OkHttpClient ranobeDbHttpClient() {
+        return httpClient.newBuilder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))     // Max 5 idle connections, 5 minutes keep-alive
+            .addInterceptor(new RanobeDbInterceptor())   // Add custom interceptor
             .build();
     }
 }

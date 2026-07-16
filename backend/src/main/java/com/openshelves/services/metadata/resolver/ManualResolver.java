@@ -13,8 +13,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/// Resolves metadata fields by bypassing automatic resolution and directly
-/// blocking the field, requiring explicit manual review or operator input.
+/// Resolves metadata fields by bypassing automatic resolution and requiring
+/// explicit manual review or operator input.
 ///
 /// This strategy is typically used for critical field parameters that must
 /// be audited manually before publication.

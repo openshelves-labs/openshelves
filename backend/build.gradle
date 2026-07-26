@@ -57,6 +57,7 @@ dependencies {
 
     // Apache Commons Libraries
     implementation 'org.apache.commons:commons-lang3'
+    implementation 'commons-codec:commons-codec'
 
     // Annotation processors
     compileOnly 'org.projectlombok:lombok'

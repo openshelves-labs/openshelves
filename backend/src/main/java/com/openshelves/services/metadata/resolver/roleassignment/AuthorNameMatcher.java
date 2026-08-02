@@ -143,11 +143,11 @@ public class AuthorNameMatcher {
 
     /// Whether two raw name strings refer to the same person. A null on either side yields
     /// "no match" rather than an exception; providers do send them.
-    public boolean sameName(String rawA, String rawB) {
-        if (rawA == null || rawB == null) return false;
+    public boolean sameName(String nameA, String nameB) {
+        if (nameA == null || nameB == null) return false;
 
-        ParsedName first = parse(rawA);
-        ParsedName second = parse(rawB);
+        ParsedName first = parse(nameA);
+        ParsedName second = parse(nameB);
         if (first.hasNoParts() || second.hasNoParts()) return false;
 
         return markersAgree(first.honorifics(), second.honorifics())

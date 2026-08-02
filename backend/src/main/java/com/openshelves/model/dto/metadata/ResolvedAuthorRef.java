@@ -30,7 +30,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResolvedContributor {
+public class ResolvedAuthorRef {
 
     // -------------------------------------------------------------------------
     // Identity

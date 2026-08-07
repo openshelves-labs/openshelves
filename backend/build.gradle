@@ -4,7 +4,7 @@ plugins {
     id 'java'
 
     // Dependency Updater
-    id 'com.github.ben-manes.versions' version '0.54.0'
+    id 'com.github.ben-manes.versions' version '0.60.0'
 
     // IDEs
     id 'idea'

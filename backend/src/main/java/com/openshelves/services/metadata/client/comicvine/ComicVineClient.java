@@ -14,15 +14,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.*;
 
 /// Client implementation for the Comic Vine API.
 ///
-/// As its name suggests, this client is specifically tailored for comic books, graphic novels, 
-/// and manga. It is the go-to provider for fetching structured metadata about issues, volumes, 
+/// As its name suggests, this client is specifically tailored for comic books, graphic novels,
+/// and manga. It is the go-to provider for fetching structured metadata about issues, volumes,
 /// and character appearances that general book databases lack.
 ///
 /// Uses Comic Vine's flat `/search/` endpoint (covering both `volume` and `issue`
@@ -49,7 +49,7 @@ public class ComicVineClient implements MetadataClient {
     private final OkHttpClient httpClient;
 
     private final ComicVineMapper cvMapper;
-    private final ObjectMapper jsonMapper;
+    private final JsonMapper jsonMapper;
 
     /// Comic Vine API key. Free to obtain from a Comic Vine account; requests are skipped
     /// entirely when unset, since Comic Vine rejects unauthenticated calls outright.

@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class HardcoverClient implements MetadataClient {
     private final OkHttpClient httpClient;
 
     private final HardcoverMapper hcMapper;
-    private final ObjectMapper jsonMapper;
+    private final JsonMapper jsonMapper;
 
     /// Hardcover API bearer token. Requests are skipped entirely when unset, since
     /// Hardcover's GraphQL endpoint has no meaningful unauthenticated tier.

@@ -15,15 +15,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.*;
 
 /// Client implementation for the RanobeDB API.
 ///
-/// This client acts as the primary metadata source for Light Novels (or "Ranobe" in Japanese). 
-/// It's particularly useful for fetching specialized metadata for Japanese literature that 
+/// This client acts as the primary metadata source for Light Novels (or "Ranobe" in Japanese).
+/// It's particularly useful for fetching specialized metadata for Japanese literature that
 /// general-purpose providers might miss.
 ///
 /// RanobeDB requires no API key — it's a small, open, community-run project — but its
@@ -44,7 +44,7 @@ public class RanobeDbClient implements MetadataClient {
     private final OkHttpClient httpClient;
 
     private final RanobeDbMapper rdbMapper;
-    private final ObjectMapper jsonMapper;
+    private final JsonMapper jsonMapper;
 
 
     @Override

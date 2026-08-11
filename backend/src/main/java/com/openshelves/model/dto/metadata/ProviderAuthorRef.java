@@ -1,7 +1,5 @@
 package com.openshelves.model.dto.metadata;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.openshelves.model.enums.MetadataProvider;
 import lombok.*;
@@ -16,8 +14,6 @@ import lombok.experimental.Delegate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProviderAuthorRef {
 
     /// The original author reference as provided by the external metadata provider.

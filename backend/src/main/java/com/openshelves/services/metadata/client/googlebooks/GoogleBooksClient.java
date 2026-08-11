@@ -12,10 +12,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.*;
@@ -38,7 +37,7 @@ public class GoogleBooksClient implements MetadataClient {
     private final OkHttpClient httpClient;
 
     private final GoogleBooksMapper gbMapper;
-    private final ObjectMapper jsonMapper;
+    private final JsonMapper jsonMapper;
 
     /// Google Books API key. Required for authentication with the Google Books API.
     private String apiKey;      // TODO: Bind the API Key

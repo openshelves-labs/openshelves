@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.*;
@@ -36,7 +36,7 @@ public class OpenLibraryClient implements MetadataClient {
     private final OkHttpClient httpClient;
 
     private final OpenLibraryMapper olMapper;
-    private final ObjectMapper jsonMapper;
+    private final JsonMapper jsonMapper;
 
 
     @Override

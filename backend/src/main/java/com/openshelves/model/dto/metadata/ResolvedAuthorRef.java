@@ -1,7 +1,5 @@
 package com.openshelves.model.dto.metadata;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.openshelves.model.enums.AuthorRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +26,6 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResolvedAuthorRef {
 
     // -------------------------------------------------------------------------
@@ -101,8 +97,6 @@ public class ResolvedAuthorRef {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RoleClaim {
 
         /// The specific role assigned to the contributor (e.g., AUTHOR, ILLUSTRATOR).
@@ -121,8 +115,6 @@ public class ResolvedAuthorRef {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Conflict {
 
         /// The category of conflict requiring user intervention.
@@ -142,8 +134,6 @@ public class ResolvedAuthorRef {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Decision {
 
         /// The specific type of conflict that was resolved.

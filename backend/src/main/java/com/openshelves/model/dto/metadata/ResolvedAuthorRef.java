@@ -1,10 +1,7 @@
 package com.openshelves.model.dto.metadata;
 
 import com.openshelves.model.enums.AuthorRole;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +19,8 @@ import java.util.UUID;
 /// Note on `roleClaims`: The ordering is managed by the frontend. The backend accepts the provided order,
 /// validating only for uniqueness and contiguous sequences, and will silently repair any validation failures
 /// rather than rejecting the request.
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Value
+@Builder(setterPrefix = "with")
 public class ResolvedAuthorRef {
 
     // -------------------------------------------------------------------------
@@ -35,11 +30,11 @@ public class ResolvedAuthorRef {
     /// A stable identifier used for tracking the entity across backend and frontend boundaries.
     /// Note that this is not a decision-log key. When a contributor is split, the resulting entity receives
     /// a new ID; during a merge, a new ID is generated or a parent's ID is retained.
-    private UUID id;
+    UUID id;
 
     /// The original raw provider records from which this contributor was resolved.
     @Builder.Default
-    private List<ProviderAuthorRef> originalRefs = new ArrayList<>();
+    List<ProviderAuthorRef> originalRefs = new ArrayList<>();
 
 
     // -------------------------------------------------------------------------
@@ -47,13 +42,13 @@ public class ResolvedAuthorRef {
     // -------------------------------------------------------------------------
 
     /// The resolved display name of the contributor.
-    private String name;
+    String name;
 
     /// The resolved Amazon Standard Identification Number (ASIN), if a valid candidate survived the resolution process.
-    private String asin;
+    String asin;
 
     /// The resolved Open Library identifier, if a valid candidate survived the resolution process.
-    private String olid;
+    String olid;
 
 
     // -------------------------------------------------------------------------
@@ -63,7 +58,7 @@ public class ResolvedAuthorRef {
     /// The collection of roles attributed to this contributor. The ordering of this list is
     /// controlled by the frontend to determine presentation order.
     @Builder.Default
-    private List<RoleClaim> roleClaims = new ArrayList<>();
+    List<RoleClaim> roleClaims = new ArrayList<>();
 
 
     // -------------------------------------------------------------------------
@@ -72,11 +67,11 @@ public class ResolvedAuthorRef {
 
     /// The list of currently unresolved conflicts associated with this contributor.
     @Builder.Default
-    private List<Conflict> conflicts = new ArrayList<>();
+    List<Conflict> conflicts = new ArrayList<>();
 
     /// The historical log of decisions made by the user to resolve past conflicts.
     @Builder.Default
-    private List<Decision> decisionHistory = new ArrayList<>();
+    List<Decision> decisionHistory = new ArrayList<>();
 
     /// Checks whether this contributor currently has any unresolved conflicts.
     ///
@@ -93,10 +88,8 @@ public class ResolvedAuthorRef {
     /// Represents a single role assigned to this contributor, along with its specific ordering
     /// relative to other contributors who share the same role.
     /// A single contributor can hold multiple roles simultaneously (e.g., both `AUTHOR` and `ILLUSTRATOR` for the same book).
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Value
+    @Builder(setterPrefix = "with")
     public static class RoleClaim {
 
         /// The specific role assigned to the contributor (e.g., AUTHOR, ILLUSTRATOR).
@@ -111,10 +104,8 @@ public class ResolvedAuthorRef {
     /// The `candidates` list is populated exclusively for conflict types where the user must select
     /// between competing values (e.g., `NAME_CONFLICT`, `CONFLICTING_IDENTIFIERS`). For informational
     /// conflict types (e.g., `ROLE_UNSPECIFIED`, `HAS_MULTI_ROLE`), this list remains empty.
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Value
+    @Builder(setterPrefix = "with")
     public static class Conflict {
 
         /// The category of conflict requiring user intervention.
@@ -130,10 +121,8 @@ public class ResolvedAuthorRef {
     /// During re-evaluation, a previous decision is automatically reapplied only if the `chosenValue`
     /// remains present among the newly computed candidates for the given `conflictType`. If it is no longer
     /// a valid candidate, the conflict is resurfaced to the user rather than relying on stale data.
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Value
+    @Builder(setterPrefix = "with")
     public static class Decision {
 
         /// The specific type of conflict that was resolved.

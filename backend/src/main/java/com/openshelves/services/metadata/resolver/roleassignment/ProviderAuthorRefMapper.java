@@ -53,9 +53,9 @@ public class ProviderAuthorRefMapper {
             }
 
             ProviderAuthorRef providerAuthorRef = ProviderAuthorRef.builder()
-                .authorRef(authorRef)
-                .provider(provider)
-                .sortOrder(nextSortOrder(sortOrderCounter, authorRef.getRole()))
+                .withAuthorRef(authorRef)
+                .withProvider(provider)
+                .withSortOrder(nextSortOrder(sortOrderCounter, authorRef.getRole()))
                 .build();
 
             result.add(providerAuthorRef);

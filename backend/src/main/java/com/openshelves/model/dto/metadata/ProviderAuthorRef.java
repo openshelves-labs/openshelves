@@ -10,16 +10,14 @@ import lombok.experimental.Delegate;
 ///
 /// This DTO acts as a wrapper around an [ExternalBook.AuthorRef], tying it to the specific
 /// [MetadataProvider] it was fetched from, and retaining the author's sequence in the provider's data.
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Value
+@Builder(setterPrefix = "with")
 public class ProviderAuthorRef {
 
     /// The original author reference as provided by the external metadata provider.
     @Delegate
     @JsonUnwrapped
-    private ExternalBook.AuthorRef authorRef;
+    ExternalBook.AuthorRef authorRef;
 
 
     // -------------------------------------------------------------------------
@@ -27,7 +25,7 @@ public class ProviderAuthorRef {
     // -------------------------------------------------------------------------
 
     /// The provider from which this author reference was sourced (e.g., Google Books, Open Library).
-    private MetadataProvider provider;
+    MetadataProvider provider;
 
 
     // -------------------------------------------------------------------------
@@ -35,5 +33,5 @@ public class ProviderAuthorRef {
     // -------------------------------------------------------------------------
 
     /// The order of this author within their role (e.g., first author, second author).
-    private Integer sortOrder;
+    Integer sortOrder;
 }

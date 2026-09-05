@@ -35,17 +35,10 @@ spring:
 
   # JSON Configuration
   jackson:
-    # Exclude null or empty fields from the output JSON
-    default-property-inclusion: non_null
+    default-property-inclusion: non_null    # Exclude null or empty fields from the output JSON
 
-    # Pretty-print JSON responses
-    serialization:
-      indent-output: true
-      write-dates-as-timestamps: false # Uses ISO-8601 date formatting
-
-    # Prevent crashing when API receives unrecognized fields
     deserialization:
-      fail-on-unknown-properties: false
+      fail-on-unknown-properties: false     # Prevent crashing when API receives unrecognized fields
 
 # Logging Configuration
 logging:

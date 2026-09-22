@@ -1,5 +1,6 @@
 package com.openshelves.services.metadata.resolver.roleassignment;
 
+import com.openshelves.metadata.resolver.impl.roleassignment.AuthorNameMatcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

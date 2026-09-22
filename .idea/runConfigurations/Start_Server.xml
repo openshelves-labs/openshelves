@@ -2,7 +2,7 @@
   <configuration default="false" name="Start Server" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
     <module name="openshelves.main" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.openshelves.ServerApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.openshelves.OpenShelvesApplication" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.openshelves.*" />

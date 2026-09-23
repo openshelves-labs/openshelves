@@ -1,6 +1,6 @@
 package com.openshelves.metadata.services;
 
-import com.openshelves.metadata.entity.BookEntity;
+import com.openshelves.catalog.entity.BookEntity;
 import com.openshelves.metadata.enums.MetadataField;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

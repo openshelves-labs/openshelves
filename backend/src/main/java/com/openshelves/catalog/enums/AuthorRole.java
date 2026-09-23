@@ -1,4 +1,4 @@
-package com.openshelves.metadata.enums;
+package com.openshelves.catalog.enums;
 
 /// Represents the various roles a contributor can have in relation to a book.
 ///
@@ -7,9 +7,6 @@ package com.openshelves.metadata.enums;
 public enum AuthorRole {
     /// Primary writer of the work.
     AUTHOR,
-
-    /// Joint primary writer of the work.
-    CO_AUTHOR,
 
     /// Responsible for editing and curating the content.
     EDITOR,

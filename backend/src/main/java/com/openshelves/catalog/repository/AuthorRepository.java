@@ -1,6 +1,6 @@
 package com.openshelves.catalog.repository;
 
-import com.openshelves.metadata.entity.AuthorEntity;
+import com.openshelves.catalog.entity.AuthorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

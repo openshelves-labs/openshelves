@@ -2,7 +2,7 @@ package com.openshelves.metadata.resolver.impl.roleassignment;
 
 import com.openshelves.metadata.models.ExternalBook;
 import com.openshelves.metadata.models.ProviderAuthorRef;
-import com.openshelves.metadata.enums.AuthorRole;
+import com.openshelves.catalog.enums.AuthorRole;
 import com.openshelves.metadata.enums.MetadataProvider;
 import org.springframework.stereotype.Component;
 

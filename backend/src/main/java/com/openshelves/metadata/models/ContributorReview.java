@@ -3,7 +3,7 @@ package com.openshelves.metadata.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.openshelves.metadata.enums.AuthorRole;
+import com.openshelves.catalog.enums.AuthorRole;
 import com.openshelves.metadata.enums.MetadataProvider;
 
 import lombok.Builder;

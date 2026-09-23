@@ -2,7 +2,7 @@ package com.openshelves.metadata.resolver.impl;
 
 import com.openshelves.metadata.models.ContributorReview;
 import com.openshelves.metadata.models.ExternalBook;
-import com.openshelves.metadata.enums.AuthorRole;
+import com.openshelves.catalog.enums.AuthorRole;
 import com.openshelves.metadata.enums.MetadataProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

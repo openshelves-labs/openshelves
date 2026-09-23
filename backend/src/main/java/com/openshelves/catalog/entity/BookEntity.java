@@ -1,4 +1,4 @@
-package com.openshelves.metadata.entity;
+package com.openshelves.catalog.entity;
 
 import com.openshelves.common.entity.BaseEntity;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.openshelves.metadata.client.googlebooks;
 
 import com.openshelves.metadata.models.ExternalBook;
-import com.openshelves.metadata.enums.AuthorRole;
+import com.openshelves.catalog.enums.AuthorRole;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.JsonNode;

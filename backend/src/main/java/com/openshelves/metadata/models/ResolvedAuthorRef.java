@@ -1,6 +1,6 @@
 package com.openshelves.metadata.models;
 
-import com.openshelves.metadata.enums.AuthorRole;
+import com.openshelves.catalog.enums.AuthorRole;
 import lombok.*;
 
 import java.util.ArrayList;

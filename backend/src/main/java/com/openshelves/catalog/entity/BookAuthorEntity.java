@@ -1,7 +1,7 @@
-package com.openshelves.metadata.entity;
+package com.openshelves.catalog.entity;
 
 import com.openshelves.common.entity.BaseEntity;
-import com.openshelves.metadata.enums.AuthorRole;
+import com.openshelves.catalog.enums.AuthorRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

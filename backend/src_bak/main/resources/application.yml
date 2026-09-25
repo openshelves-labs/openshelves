@@ -1,0 +1,47 @@
+# Default configuration for the OpenShelves
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# Spring Configuration
+spring:
+  application:
+    name: openshelves-api
+
+  # DataSource Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/openshelves
+    username: admin
+    password: admin123
+
+  # Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  # Migration Configuration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  # JSON Configuration
+  jackson:
+    default-property-inclusion: non_null    # Exclude null or empty fields from the output JSON
+
+    deserialization:
+      fail-on-unknown-properties: false     # Prevent crashing when API receives unrecognized fields
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.openshelves: DEBUG

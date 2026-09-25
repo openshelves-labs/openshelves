@@ -1,0 +1,123 @@
+# English stop words for HighestQualityTextResolver — word density scoring
+# One word per line. Lines starting with # and blank lines are ignored.
+
+# Articles & determiners
+a
+an
+the
+this
+that
+these
+those
+each
+every
+both
+either
+neither
+some
+any
+all
+few
+more
+most
+other
+such
+no
+
+# Conjunctions & connectives
+and
+or
+but
+nor
+so
+yet
+than
+as
+if
+then
+
+# Prepositions
+in
+on
+at
+to
+for
+of
+with
+by
+from
+into
+through
+about
+above
+after
+before
+between
+up
+out
+
+# Pronouns
+i
+me
+my
+we
+us
+our
+you
+your
+he
+him
+his
+she
+her
+they
+them
+their
+it
+its
+
+# To be / auxiliaries
+is
+was
+are
+were
+be
+been
+being
+am
+
+# To have / to do
+has
+have
+had
+do
+does
+did
+
+# Modals
+will
+would
+could
+should
+may
+might
+shall
+can
+need
+dare
+
+# Common adverbs
+not
+very
+just
+too
+
+# Relative / interrogative
+which
+who
+whom
+whose
+where
+when
+how
+what

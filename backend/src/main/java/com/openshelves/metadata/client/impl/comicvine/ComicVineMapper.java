@@ -221,7 +221,6 @@ public class ComicVineMapper {
                 linkedAuthors.add(
                     BookMetadata.LinkedAuthor.builder()
                         .withName(name)
-                        .withRole(AuthorRole.AUTHOR)
                         .build());
             }
         }

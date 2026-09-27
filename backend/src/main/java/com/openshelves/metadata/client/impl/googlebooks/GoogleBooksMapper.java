@@ -1,6 +1,5 @@
 package com.openshelves.metadata.client.impl.googlebooks;
 
-import com.openshelves.metadata.enums.AuthorRole;
 import com.openshelves.metadata.model.BookMetadata;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -169,7 +168,6 @@ public class GoogleBooksMapper {
             linkedAuthors.add(
                 BookMetadata.LinkedAuthor.builder()
                     .withName(author.asString())
-                    .withRole(AuthorRole.AUTHOR)
                     .build());
         }
 

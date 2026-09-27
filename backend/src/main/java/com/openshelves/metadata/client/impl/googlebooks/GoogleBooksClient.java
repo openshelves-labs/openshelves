@@ -106,6 +106,7 @@ public class GoogleBooksClient implements MetadataClient {
     // Author Metadata Fetching
     // -----------------------------------------------------------------------
 
+    /// Author search is not supported by Google Books, as the API does not provide a dedicated author-lookup endpoint.
     @Override
     public List<AuthorMetadata> fetchAuthors(AuthorRequest request, FetchOptions fetchOptions) {
         // Google Books has no author-lookup endpoint — the "authors" array on a volume is

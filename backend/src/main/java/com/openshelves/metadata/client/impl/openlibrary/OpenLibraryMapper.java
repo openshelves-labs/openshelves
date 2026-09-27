@@ -407,7 +407,6 @@ public class OpenLibraryMapper {
             linkedAuthors.add(
                 BookMetadata.LinkedAuthor.builder()
                     .withOlid(authorOlid)
-                    .withRole(AuthorRole.AUTHOR)
                     .build());
         }
 

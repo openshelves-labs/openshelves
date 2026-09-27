@@ -20,5 +20,5 @@ public enum MetadataProvider {
 
     COMIC_VINE,         // Comic Vine (comics/graphic novels)
 
-    RANOBE_DB,          // RanobeDB (light novels)
+    RANOBEDB,          // RanobeDB (light novels)
 }

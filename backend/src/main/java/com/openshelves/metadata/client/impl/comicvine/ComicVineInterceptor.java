@@ -1,4 +1,4 @@
-package com.openshelves.metadata.client.impl.googlebooks;
+package com.openshelves.metadata.client.impl.comicvine;
 
 import io.github.resilience4j.core.IntervalFunction;
 import io.github.resilience4j.core.functions.CheckedSupplier;
@@ -16,36 +16,38 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.Duration;
 
-/// OkHttp Interceptor for the Google Books API.
+/// OkHttp Interceptor for the Comic Vine API.
 ///
-/// Handles rate limiting and retry logic to stay within Google Book's unauthenticated
-/// usage quotas and to recover gracefully from transient upstream failures.
+/// Adds the required `User-Agent` header, applies a conservative rate limit, and retries
+/// on Comic Vine's rate-limit status codes (`420`/`429`).
 @Slf4j
 @Component
-public class GoogleBooksInterceptor implements Interceptor {
+public class ComicVineInterceptor implements Interceptor {
+
+    private static final String USER_AGENT = "OpenShelves Metadata Service (arpan.mahanty.007@gmail.com)";
+
 
     /// Rate Limits
 
-    // Google Books' default project quota is generous (~1000 req/day for unauthenticated
-    // callers, higher with an API key), but bursts are throttled. 80 req/min keeps us
-    // comfortably under that ceiling with margin for other consumers of the same key.
+    // Comic Vine does not publish a fixed quota, but is known to throttle aggressively on
+    // bursts; 30 req/min (1 every 2s) matches the interval `Grimmory` settled on empirically.
     private final RateLimiter apiLimiter = RateLimiter.of("api", RateLimiterConfig.custom()
-        .limitForPeriod(80)
+        .limitForPeriod(30)
         .limitRefreshPeriod(Duration.ofMinutes(1))
         .build());
 
 
     /// Retry Configuration
 
-    private final Retry retry = Retry.of("googleBooks", RetryConfig.custom()
+    private final Retry retry = Retry.of("comicVine", RetryConfig.custom()
         .maxAttempts(3)
-        .intervalFunction(IntervalFunction.ofExponentialBackoff(1000, 2))
-        .retryOnResult(response ->
-            ((Response) response).code() == 429 || ((Response) response).code() == 503)
-
+        .intervalFunction(IntervalFunction.ofExponentialBackoff(2000, 2))
+        .retryOnResult(response -> {
+            int code = ((Response) response).code();
+            return code == 429 || code == 420;   // Comic Vine uses 420 for rate-limit, not just 429
+        })
         .consumeResultBeforeRetryAttempt((numTries, response) -> {
-            int statusCode = ((Response) response).code();
-            log.warn("Received HTTP status code {} from Google Books API. Retrying ... #{}", statusCode, numTries);
+            log.warn("Comic Vine API rate limited (status={}). Retrying ... #{}", ((Response) response).code(), numTries);
 
             // Close response to prevent resource leaks
             ((Response) response).close();
@@ -53,10 +55,12 @@ public class GoogleBooksInterceptor implements Interceptor {
         .build());
 
 
-    /// Intercepts the HTTP request to apply rate limiting and retry logic.
+    /// Intercepts the HTTP request to apply headers, rate limiting, and retry logic.
     @Override
     public @NonNull Response intercept(@NonNull Chain chain) throws IOException {
-        Request request = chain.request();
+        Request request = chain.request().newBuilder()
+            .addHeader("User-Agent", USER_AGENT)
+            .build();
 
         // Initialize Supplier Chain for Resilience4j
         CheckedSupplier<Response> requestHandler = () -> chain.proceed(request);
@@ -72,7 +76,7 @@ public class GoogleBooksInterceptor implements Interceptor {
         } catch (IOException e) {
             throw e;
         } catch (Throwable e) {
-            throw new IOException("Unexpected error occurred while making request to Google Books API", e);
+            throw new IOException("Unexpected error occurred while making request to Comic Vine API", e);
         }
     }
 }

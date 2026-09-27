@@ -45,7 +45,6 @@ public class GoogleBooksClient implements MetadataClient {
     /// Google Books API key. Required for authentication with the Google Books API.
     private String apiKey;      // TODO: Bind the API Key
 
-
     @Override
     public MetadataProvider provider() {
         return MetadataProvider.GOOGLE_BOOKS;
@@ -56,7 +55,9 @@ public class GoogleBooksClient implements MetadataClient {
     // Book Metadata Fetching
     // -----------------------------------------------------------------------
 
-
+    /// Fetches book metadata from Google Books based on the provided [BookRequest] and [FetchOptions].
+    /// The method first attempts to fetch the book using known identifiers (ISBN-10 or ISBN-13).
+    /// If no results are found, it falls back to searching by title and author.
     @Override
     public List<BookMetadata> fetchBooks(BookRequest request, FetchOptions fetchOptions) {
 

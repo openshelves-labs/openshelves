@@ -110,8 +110,11 @@ public class OpenLibraryClient implements MetadataClient {
         return Collections.emptyList();
     }
 
-    // Extracts the work key from an edition's JSON node and fetches the corresponding work details
-    // from the Open Library API. It returns the work JSON node if found, or `null` if the work cannot be fetched.
+    /// Fetches the work referenced by an edition.
+    ///
+    /// @param editionNode the edition JSON node containing the work reference
+    /// @return the work JSON node, or `null` if the edition has no usable reference
+    ///         or the work cannot be fetched
     private JsonNode fetchWorkNode(JsonNode editionNode) {
         // Retrieve the "works" array from the edition node
         JsonNode works = editionNode.get("works");
@@ -133,7 +136,13 @@ public class OpenLibraryClient implements MetadataClient {
         return workResp.map(jsonMapper::readTree).orElse(null);
     }
 
-    // Returns the URL to fetch book data based on the request parameters
+    /// Builds a URL for retrieving a book by ISBN-13, ISBN-10, or OLID.
+    ///
+    /// Identifiers are checked in that order.
+    ///
+    /// @param request the book request containing a supported identifier
+    /// @return the URL builder for the corresponding book
+    /// @throws IllegalArgumentException if no supported identifier is provided
     private HttpUrl.Builder buildBookUrl(BookRequest request) {
         if (StringUtils.isNotBlank(request.getIsbn13())) {
             return parseAndGetNewURLBuilder("/isbn/" + request.getIsbn13() + ".json");
@@ -146,7 +155,14 @@ public class OpenLibraryClient implements MetadataClient {
         }
     }
 
-    // Returns the URL to search for books based on title and author parameters
+    /// Builds a URL for searching books by title and optional author.
+    ///
+    /// The search uses the first author when multiple authors are provided and
+    /// applies any language and result-limit options.
+    ///
+    /// @param request the book search criteria
+    /// @param fetchOptions language and result-limit options
+    /// @return the URL builder for the book search
     private HttpUrl.Builder buildBookSearchUrl(BookRequest request, FetchOptions fetchOptions) {
         HttpUrl.Builder urlBuilder = parseAndGetNewURLBuilder("/search.json");
 
@@ -231,7 +247,11 @@ public class OpenLibraryClient implements MetadataClient {
         return Collections.emptyList();
     }
 
-    // Returns the URL to fetch author data based on the request parameters
+    /// Builds a URL for retrieving an author by OLID.
+    ///
+    /// @param request the author request containing the OLID
+    /// @return the URL builder for the author
+    /// @throws IllegalArgumentException if the request does not contain an OLID
     private HttpUrl.Builder buildAuthorUrl(AuthorRequest request) {
         if (StringUtils.isNotBlank(request.getOlid())) {
             return parseAndGetNewURLBuilder("/authors/" + request.getOlid() + ".json");
@@ -240,7 +260,14 @@ public class OpenLibraryClient implements MetadataClient {
         }
     }
 
-    // Returns the URL to search for authors based on author name
+    /// Builds a URL for searching authors by name.
+    ///
+    /// Applies the result limit specified in `fetchOptions`, or the default limit
+    /// when none is specified.
+    ///
+    /// @param request the author search criteria
+    /// @param fetchOptions search result-limit options
+    /// @return the URL builder for the author search
     private HttpUrl.Builder buildAuthorSearchUrl(AuthorRequest request, FetchOptions fetchOptions) {
         HttpUrl.Builder urlBuilder = parseAndGetNewURLBuilder("/search/authors.json");
 
@@ -262,7 +289,14 @@ public class OpenLibraryClient implements MetadataClient {
     // Helper Methods
     // -----------------------------------------------------------------------
 
-    // Execute the HTTP request and return the response body as a String
+    /// Executes an Open Library request and returns the successful response body.
+    ///
+    /// A `404` response produces an empty result; other unsuccessful responses and
+    /// request failures result in a [ThirdPartyClientException].
+    ///
+    /// @param request the request to execute
+    /// @return the response body, or an empty value when the resource is not found
+    /// @throws ThirdPartyClientException if the request fails or the API returns an unexpected status
     private Optional<String> performApiRequest(Request request) throws ThirdPartyClientException {
         try (Response response = httpClient.newCall(request).execute()) {
             log.debug("Open Library API response: {}", response);
@@ -279,7 +313,14 @@ public class OpenLibraryClient implements MetadataClient {
         }
     }
 
-    // Handle unsuccessful HTTP responses and return appropriate results or throw exceptions
+    /// Handles unsuccessful HTTP responses and returns appropriate results or throws exceptions.
+    ///
+    /// A `404` indicates that no matching result was found; other statuses are
+    /// treated as unexpected responses.
+    ///
+    /// @param response the unsuccessful HTTP response
+    /// @return an empty result when the response status is `404`
+    /// @throws ThirdPartyClientException if the response has any other unsuccessful status
     private Optional<String> handleUnsuccessfulResponse(Response response) throws ThirdPartyClientException {
         int statusCode = response.code();
 
@@ -290,7 +331,11 @@ public class OpenLibraryClient implements MetadataClient {
         throw new ThirdPartyClientException("Unexpected response from Open Library API: " + response);
     }
 
-    // Helper method to parse endpoint URL and return a new url builder
+    /// Creates a URL builder for an Open Library endpoint.
+    ///
+    /// @param endpoint the endpoint path to append to the Open Library base URL
+    /// @return the builder for the resulting URL
+    /// @throws IllegalArgumentException if the endpoint does not form a valid URL
     private HttpUrl.Builder parseAndGetNewURLBuilder(String endpoint) throws IllegalArgumentException {
         try {
             return HttpUrl.get(OPEN_LIBRARY_BASE_URL + endpoint).newBuilder();

@@ -86,7 +86,13 @@ public class OpenLibraryInterceptor implements Interceptor {
         }
     }
 
-    /// Helper method to select appropriate Rate Limiter
+    /// Selects the rate limiter for an HTTP request.
+    ///
+    /// Requests to the covers host use the cover-image limit; other requests use
+    /// the general API limit.
+    ///
+    /// @param request the request being intercepted
+    /// @return the rate limiter for the request host
     private RateLimiter selectRateLimiter(Request request) {
         String host = request.url().host();
 

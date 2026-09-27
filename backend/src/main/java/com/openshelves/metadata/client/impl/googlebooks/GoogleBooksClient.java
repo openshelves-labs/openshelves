@@ -122,7 +122,12 @@ public class GoogleBooksClient implements MetadataClient {
     // Helper Methods
     // -----------------------------------------------------------------------
 
-    // Parses the volumes.list response body and maps each item's volumeInfo to an ExternalBook.
+    /// Extracts book metadata from the `items` array in a Google Books volumes response.
+    ///
+    /// Each item's `volumeInfo` is mapped to [BookMetadata].
+    ///
+    /// @param responseBody the JSON response body from the volumes endpoint
+    /// @return the mapped books, or an empty list if the response has no `items` array
     private List<BookMetadata> extractBookMetadataFromResponse(String responseBody) {
         JsonNode root = jsonMapper.readTree(responseBody);
         JsonNode items = root.get("items");
@@ -140,15 +145,23 @@ public class GoogleBooksClient implements MetadataClient {
         return bookList;
     }
 
-    // Wraps a multi-word search term in quotes so Google Books treats it as a phrase
-    // rather than matching each word independently.
+    /// Wraps a multi-word search term in quotes so Google Books treats it as a phrase
+    /// rather than matching each word independently.
+    ///
+    /// @param term the search term
+    /// @return the trimmed term, quoted when it contains multiple words
     private String quoteIfMultiWord(String term) {
         String trimmed = term.trim();
         return trimmed.contains(" ") ? "\"" + trimmed + "\"" : trimmed;
     }
 
-    // Builds the base /volumes search URL with query, language restriction, result limit,
-    // and API key applied uniformly across all search paths.
+    /// Builds the base `/volumes` search URL with the query, language restriction,
+    /// result limit, and API key applied uniformly across all search paths.
+    ///
+    /// @param query the Google Books query expression
+    /// @param fetchOptions language restriction options
+    /// @param maxResults the maximum number of requested results
+    /// @return the URL builder for the volumes search
     private HttpUrl.Builder buildVolumesUrl(String query, FetchOptions fetchOptions, int maxResults) {
         HttpUrl.Builder urlBuilder = parseAndGetNewURLBuilder("/volumes");
 
@@ -166,7 +179,15 @@ public class GoogleBooksClient implements MetadataClient {
         return urlBuilder;
     }
 
-    // Execute the HTTP request and return the response body as a String
+    /// Executes a Google Books request and returns the successful response body.
+    ///
+    /// If no API key is configured, the request is skipped. A `404` response also
+    /// produces an empty result; other unsuccessful responses and request failures
+    /// result in a [ThirdPartyClientException].
+    ///
+    /// @param request the request to execute
+    /// @return the response body, or an empty value when fetching is skipped or the resource is not found
+    /// @throws ThirdPartyClientException if the request fails or the API returns an unexpected status
     private Optional<String> performApiRequest(Request request) throws ThirdPartyClientException {
 
         if (StringUtils.isBlank(apiKey)) {
@@ -189,7 +210,14 @@ public class GoogleBooksClient implements MetadataClient {
         }
     }
 
-    // Handle unsuccessful HTTP responses and return appropriate results or throw exceptions
+    /// Handles unsuccessful HTTP responses and returns appropriate results or throws exceptions.
+    ///
+    /// A `404` indicates that no matching result was found; other statuses are
+    /// treated as unexpected responses.
+    ///
+    /// @param response the unsuccessful HTTP response
+    /// @return an empty result when the response status is `404`
+    /// @throws ThirdPartyClientException if the response has any other unsuccessful status
     private Optional<String> handleUnsuccessfulResponse(Response response) throws ThirdPartyClientException {
         int statusCode = response.code();
 
@@ -200,7 +228,11 @@ public class GoogleBooksClient implements MetadataClient {
         throw new ThirdPartyClientException("Unexpected response from Google Books API: " + response);
     }
 
-    // Helper method to parse endpoint URL and return a new url builder
+    /// Creates a URL builder for a Google Books endpoint.
+    ///
+    /// @param endpoint the endpoint path to append to the Google Books base URL
+    /// @return the builder for the resulting URL
+    /// @throws IllegalArgumentException if the endpoint does not form a valid URL
     private HttpUrl.Builder parseAndGetNewURLBuilder(String endpoint) throws IllegalArgumentException {
         try {
             return HttpUrl.get(GOOGLE_BOOKS_BASE_URL + endpoint).newBuilder();

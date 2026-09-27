@@ -73,7 +73,12 @@ public class GoogleBooksMapper {
     // Helper Methods
     // -----------------------------------------------------------------------
 
-    // Safely extracts a text field from a node, returning null if absent or JSON-null.
+    /// Safely extracts a text field from a JSON node, returning `null` if the node
+    /// is `null`, the field is absent, or the field is JSON-null.
+    ///
+    /// @param node the JSON node to read; may be `null`
+    /// @param field the name of the field to extract
+    /// @return the field's text value, or `null` if it is unavailable
     private String text(JsonNode node, String field) {
         if (node == null || !node.has(field) || node.get(field).isNull()) {
             return null;
@@ -81,7 +86,12 @@ public class GoogleBooksMapper {
         return node.get(field).asString();
     }
 
-    // Parses the leading 4-digit year out of a loosely formatted publishedDate string.
+    /// Extracts the publication year from Google Books' `publishedDate` value.
+    ///
+    /// The API may return a year, year and month, or a full date.
+    ///
+    /// @param publishedDate the publication date; may be blank
+    /// @return the publication year, or `null` if the value does not start with a year
     private Short extractPublicationYear(String publishedDate) {
         if (StringUtils.isBlank(publishedDate)) {
             return null;
@@ -94,7 +104,11 @@ public class GoogleBooksMapper {
         return null;
     }
 
-    // Extracts [isbn10, isbn13] from the industryIdentifiers array. Either slot may be null.
+    /// Extracts ISBN-10 and ISBN-13 values from a volume's `industryIdentifiers`.
+    ///
+    /// @param industryIdentifiers the volume's identifier array; may be `null`
+    /// @return a two-element array containing ISBN-10 at index 0 and ISBN-13 at
+    ///         index 1; either value may be `null`
     private String[] extractIsbns(JsonNode industryIdentifiers) {
         String[] result = new String[2];
         if (industryIdentifiers == null || !industryIdentifiers.isArray()) {
@@ -117,8 +131,10 @@ public class GoogleBooksMapper {
         return result;
     }
 
-    // Picks the largest available thumbnail and upgrades it to HTTPS (Google Books
-    // returns http:// links by default, which browsers will block as mixed content).
+    /// Extracts a cover image URL from a volume's image links.
+    ///
+    /// @param imageLinks the volume's image links; may be `null`
+    /// @return a cover image URL, or `null` if no image is available
     private String extractCoverImageUrl(JsonNode imageLinks) {
         if (imageLinks == null) {
             return null;
@@ -134,8 +150,13 @@ public class GoogleBooksMapper {
         return url != null ? url.replaceFirst("^http://", "https://") : null;
     }
 
-    // Maps the flat "authors" string array to lightweight AuthorRefs, all tagged AUTHOR
-    // since Google Books does not distinguish contributor roles.
+    /// Maps the author names in a volume to linked authors.
+    ///
+    /// Google Books does not provide contributor roles, so each linked author
+    /// receives the `AUTHOR` role.
+    ///
+    /// @param authorsArray the volume's authors array; may be `null`
+    /// @return the linked authors; may be empty
     private List<BookMetadata.LinkedAuthor> extractLinkedAuthors(JsonNode authorsArray) {
         List<BookMetadata.LinkedAuthor> linkedAuthors = new ArrayList<>();
         if (authorsArray == null || !authorsArray.isArray()) {

@@ -99,7 +99,12 @@ public class ComicVineMapper {
     // Helper Methods
     // -----------------------------------------------------------------------
 
-    // Safely extracts a text field from a node, returning null if absent or JSON-null.
+    /// Safely extracts a text field from a JSON node, returning `null` if the node
+    /// is `null`, the field is absent, or the field is JSON-null.
+    ///
+    /// @param node the JSON node to read; may be `null`
+    /// @param field the name of the field to extract
+    /// @return the field's text value, or `null` if it is unavailable
     private String text(JsonNode node, String field) {
         if (node == null || !node.has(field) || node.get(field).isNull()) {
             return null;
@@ -107,7 +112,13 @@ public class ComicVineMapper {
         return node.get(field).asString();
     }
 
-    // Safely extracts a nested text field from a node, returning null if absent or JSON-null.
+    /// Safely extracts a nested text field from a JSON node, returning `null` if
+    /// either field is unavailable or JSON-null.
+    ///
+    /// @param node the JSON node to read; may be `null`
+    /// @param field the name of the parent field
+    /// @param nestedField the name of the nested field to extract
+    /// @return the nested field's text value, or `null` if it is unavailable
     private String text(JsonNode node, String field, String nestedField) {
         if (node == null || !node.has(field) || node.get(field).isNull()) {
             return null;
@@ -115,7 +126,10 @@ public class ComicVineMapper {
         return text(node.get(field), nestedField);
     }
 
-    // Returns the first non-blank value from a list of strings, or null if all are blank.
+    /// Returns the first non-blank value from a list of candidates.
+    ///
+    /// @param values candidate values in priority order
+    /// @return the first non-blank value, or `null` if all candidates are blank
     private String firstNonBlank(String... values) {
         for (String value : values) {
             if (StringUtils.isNotBlank(value)) return value;
@@ -123,14 +137,20 @@ public class ComicVineMapper {
         return null;
     }
 
-    // Extracts the best available cover image URL from a Comic Vine volume or issue node.
+    /// Extracts a cover image URL from a volume or issue image object.
+    ///
+    /// @param imageNode the resource's image object; may be `null`
+    /// @return a cover image URL, or `null` if no image URL is available
     private String extractImageUrl(JsonNode imageNode) {
         // Prefer medium_url: full-size covers are large enough to be wasteful for catalog thumbnails.
         String url = text(imageNode, "medium_url");
         return url != null ? url : text(imageNode, "small_url");
     }
 
-    // Extracts a 4-digit year from a Comic Vine `start_year` or `cover_date` string.
+    /// Extracts the publication year from a `start_year` or `cover_date` value.
+    ///
+    /// @param value the year or date value; may be blank
+    /// @return the extracted year, or `null` if no year is present
     private Short extractYear(String value) {
         if (StringUtils.isBlank(value)) return null;
 
@@ -141,7 +161,10 @@ public class ComicVineMapper {
         return null;
     }
 
-    // Parses a Comic Vine issue number string into an integer, returning null if the string is blank or not a valid number.
+    /// Parses a Comic Vine issue number into an integer.
+    ///
+    /// @param issueNumber the issue number from the API; may be blank or non-numeric
+    /// @return the issue number, or `null` if it cannot be parsed
     private Integer parseIssueNumber(String issueNumber) {
         if (StringUtils.isBlank(issueNumber)) return null;
         try {
@@ -151,7 +174,16 @@ public class ComicVineMapper {
         }
     }
 
-    // Formats a Comic Vine issue title as "Volume Name #Issue Number - Issue Name", omitting any blank components.
+    /// Builds a display title from the volume name and issue details.
+    ///
+    /// The issue name is omitted when it duplicates the volume name.
+    ///
+    /// Example: `"Saga"`, `"12"`, `"The Secret"` becomes `"Saga #12 - The Secret"`.
+    ///
+    /// @param volumeName the parent volume name
+    /// @param issueNumber the issue number
+    /// @param issueName the issue name
+    /// @return the combined title
     private String formatIssueTitle(String volumeName, String issueNumber, String issueName) {
         if (volumeName == null) {
             return issueName;
@@ -164,8 +196,13 @@ public class ComicVineMapper {
         return title;
     }
 
-    // Extracts writer credits from person_credits, matching on role fragments (Comic Vine
-    // stores roles as a free-text comma-separated string, e.g. "writer, plot").
+    /// Maps writing credits in an issue's `person_credits` to linked authors.
+    ///
+    /// Comic Vine represents contributor roles as text; credits identified as
+    /// writing, script, or story contributors are mapped as authors.
+    ///
+    /// @param personCredits the issue's contributor array; may be `null`
+    /// @return the linked authors found in the credits; may be empty
     private List<BookMetadata.LinkedAuthor> extractWriters(JsonNode personCredits) {
         List<BookMetadata.LinkedAuthor> linkedAuthors = new ArrayList<>();
         if (personCredits == null || !personCredits.isArray()) {

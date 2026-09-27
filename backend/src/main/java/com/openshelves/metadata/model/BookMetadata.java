@@ -100,7 +100,7 @@ public class BookMetadata {
     /// Only minimal identifying information is included here. Full author
     /// details are expected to be resolved separately.
     @Builder.Default
-    List<AuthorRef> authors = new ArrayList<>();
+    List<LinkedAuthor> authors = new ArrayList<>();
 
 
     /// Lightweight reference to a contributor (e.g., author, editor, translator).
@@ -110,7 +110,7 @@ public class BookMetadata {
     @Value
     @Builder(setterPrefix = "with")
     @Jacksonized
-    public static class AuthorRef {
+    public static class LinkedAuthor {
 
         // -------------------------------------------------------------------------
         // Core metadata

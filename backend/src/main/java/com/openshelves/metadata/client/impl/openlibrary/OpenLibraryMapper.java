@@ -392,8 +392,7 @@ public class OpenLibraryMapper {
 
         List<BookMetadata.LinkedAuthor> linkedAuthors = new ArrayList<>();
         for (JsonNode item : authorsNode) {
-            if (item == null || item.isNull())
-                continue;
+            if (item == null || item.isNull()) continue;
 
             // Author entries can be reference objects {"key": "/authors/OL456A"},
             // nested objects {"author": {"key": "/authors/OL456A"}}, or plain strings
@@ -403,8 +402,7 @@ public class OpenLibraryMapper {
             String authorOlid = extractOlidFromKey(authorKey);
 
             // Skip entries that cannot be resolved to a valid OLID
-            if (StringUtils.isBlank(authorOlid))
-                continue;
+            if (StringUtils.isBlank(authorOlid)) continue;
 
             linkedAuthors.add(
                 BookMetadata.LinkedAuthor.builder()

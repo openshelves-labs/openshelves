@@ -56,6 +56,7 @@ public class OpenLibraryClient implements MetadataClient {
     /// Otherwise, it performs a search using title and author.
     @Override
     public List<BookMetadata> fetchBooks(BookRequest request, FetchOptions fetchOptions) {
+
         // OpenLibrary Supported Identifiers
         if (StringUtils.isNotBlank(request.getIsbn13())
             || StringUtils.isNotBlank(request.getIsbn10())
@@ -184,6 +185,7 @@ public class OpenLibraryClient implements MetadataClient {
     /// Otherwise, it performs a search using the author's name.
     @Override
     public List<AuthorMetadata> fetchAuthors(AuthorRequest request, FetchOptions fetchOptions) {
+
         // OpenLibrary Supported Identifiers
         if (StringUtils.isNotBlank(request.getOlid())) {
 

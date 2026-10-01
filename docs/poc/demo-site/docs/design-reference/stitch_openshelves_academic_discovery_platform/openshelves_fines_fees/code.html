@@ -1,0 +1,730 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;background-color:#F3F1EC;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-paper":"#F3F1EC","border-warm":"#E5E0D8","secondary-fixed":"#c6ebd3","on-error":"#ffffff","outline":"#717972","surface-container":"#f0eee9","on-tertiary-fixed":"#151d1a","surface-dim":"#dcdad5","tertiary-fixed-dim":"#bfc9c3","on-tertiary-fixed-variant":"#3f4945","on-error-container":"#93000a","error-container":"#ffdad6","secondary-fixed-dim":"#aacfb8","surface-variant":"#e4e2dd","on-surface":"#1b1c19","on-primary-container":"#a2d4b6","surface-container-highest":"#e4e2dd","on-primary-fixed-variant":"#214f38","surface-container-lowest":"#ffffff","on-primary-fixed":"#002112","background":"#F3F1EC","primary-container":"#2f5d45","surface-container-high":"#eae8e3","inverse-on-surface":"#f3f1ec","on-surface-variant":"#414943","secondary-container":"#c3e9d0","surface-tint":"#39684f","on-background":"#1b1c19","tertiary-fixed":"#dbe5df","on-secondary-container":"#486a56","on-tertiary":"#ffffff","on-tertiary-container":"#c1cbc5","primary-fixed":"#bbeecf","on-secondary":"#ffffff","primary":"#2F5D45","on-primary":"#ffffff","tertiary":"#363f3b","surface-bright":"#fbf9f4","surface-container-low":"#f5f3ee","tertiary-container":"#4d5652","inverse-primary":"#a0d2b3","inverse-surface":"#30312e","on-secondary-fixed":"#002112","outline-variant":"#E5E0D8","secondary":"#446652","error":"#ba1a1a","on-secondary-fixed-variant":"#2c4d3c","primary-fixed-dim":"#a0d2b3","surface":"#F3F1EC"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},fontFamily:{"body-md":["DM Sans", "sans-serif"],"body-sm":["DM Sans", "sans-serif"],"label-lg":["DM Sans", "sans-serif"],"metadata-caps":["DM Sans", "sans-serif"],"title-editorial":["Lora", "serif"],"headline-md":["Lora", "serif"],"headline-sm":["Lora", "serif"],"headline-lg":["Lora", "serif"]}}}}</script></head><body class="bg-[#F3F1EC] font-body-md text-on-surface antialiased flex min-h-screen">
+<!-- PERSISTENT FULL HEIGHT STICKY SIDEBAR -->
+<aside class="sticky top-0 h-screen w-64 bg-[#F3F1EC] border-r border-[#E5E0D8] z-40 flex flex-col justify-between overflow-y-auto shrink-0 select-none">
+<div>
+<!-- Logo Brand Header -->
+<div class="h-16 px-5 flex items-center gap-3 border-b border-[#E5E0D8]"><img alt="OpenShelves Logo" class="w-9 h-9 rounded-lg shrink-0 object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UevTnFaccMoOEDCGZr-gMjQcT3luuRbSH4GPdHpOjWy-1mag6H3mrYfTYFHGw5MdQuT-Qc57oB4_nkTSnmQyVw2ER1J4-syzJX3fjH-Gr5MccNT5pOpqwfAuAHb3PQa-B5wfaeOn4IFNlMSD1DZdjQPstZKo4ql6fRVgEvdNBYShuv8CPv-8iuvmUOJ8lvu9Rml90mDiUwPxWXPXK6VtOu7FotQZK7o5e0NxwKOiD7nf6yA8hcwAF4S8w"><div class="flex flex-col"><span class="font-title-editorial font-bold text-lg text-on-surface leading-tight tracking-tight">OpenShelves</span><span class="font-metadata-caps text-[10px] uppercase tracking-wider text-outline">Central University Library</span></div></div>
+<!-- Navigation Lists -->
+<div class="p-4 space-y-6">
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Discover</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<span class="font-label-lg text-sm">Home</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+<span class="font-label-lg text-sm">Browse Catalog</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+<span class="font-label-lg text-sm">New Arrivals</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">48</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="font-label-lg text-sm">Recommended</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">12</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">My Library</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+<span class="font-label-lg text-sm">Current Loans</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">bookmark_added</span>
+<span class="font-label-lg text-sm">Holds</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">1</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="font-label-lg text-sm">Reading Lists</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="font-label-lg text-sm">Reading History</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg bg-[#c6ebd3]/70 text-[#2F5D45] font-semibold border border-[#2F5D45]/20 shadow-sm" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="font-label-lg text-sm">Fines &amp; Fees</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">$0.00</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Collections</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+<span class="font-label-lg text-sm">Journals &amp; Serials</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">database</span>
+<span class="font-label-lg text-sm">Digital Resources</span>
+</div>
+</a>
+</nav>
+</div>
+</div>
+<!-- Bottom Network Badge -->
+<div class="p-4 border-t border-[#E5E0D8]">
+<div class="p-3 rounded-lg bg-white/80 border border-[#E5E0D8] flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></span><div class="flex flex-col"><span class="font-label-lg text-xs font-semibold text-on-surface leading-tight">Central University Library Network</span><span class="font-metadata-caps text-[10px] text-primary mt-0.5 font-medium">Access Active &amp; Verified</span></div></div>
+</div>
+</aside>
+<!-- MAIN APP CONTAINER -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TOP HEADER -->
+<header class="sticky top-0 h-16 bg-[#F3F1EC]/90 backdrop-blur-sm border-b border-[#E5E0D8] px-8 flex items-center justify-between gap-6 z-30">
+<div class="flex-1 max-w-xl">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-12 bg-white border border-[#E5E0D8] rounded-xl font-body-md text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors shadow-2xs" placeholder="Search titles, authors, subjects, ISBN, DOI…" type="search">
+<div class="absolute right-3 flex items-center">
+<kbd class="font-metadata-caps text-[10px] px-1.5 py-0.5 rounded bg-[#eae8e3] border border-[#E5E0D8] text-on-surface-variant font-medium">⌘K</kbd>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<button class="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-white border border-[#E5E0D8] hover:bg-stone-50 text-on-surface font-label-lg text-xs rounded-lg transition-colors shadow-2xs" type="button">
+<span class="material-symbols-outlined text-base text-primary">add</span>
+<span class="">New List</span>
+</button>
+<button aria-label="Notifications" class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-white/60 rounded-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-[#F3F1EC]"></span>
+</button>
+<div class="h-5 w-px bg-[#E5E0D8]"></div>
+<!-- User Identity: Arpan -->
+<div class="flex items-center gap-2.5 pl-1 cursor-pointer"><div class="w-8 h-8 rounded-full bg-[#2F5D45] text-white font-title-editorial font-semibold text-xs flex items-center justify-center border border-[#2F5D45]/30 shadow-2xs">A</div><div class="flex flex-col text-left"><span class="font-label-lg text-xs font-semibold text-on-surface leading-none">Arpan</span><span class="font-metadata-caps text-[10px] text-outline mt-0.5">Scholar Account</span></div><span class="material-symbols-outlined text-outline text-lg">expand_more</span></div>
+</div>
+</header>
+<!-- WORKSPACE CONTENT -->
+<main class="w-full max-w-6xl mx-auto px-8 py-8 space-y-9"><div class="flex flex-col w-full">
+<!-- BREADCRUMBS & CONTEXT BAR -->
+<div class="flex items-center justify-between pb-4">
+<nav class="flex items-center gap-2 font-metadata-caps text-metadata-caps text-outline">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm">home</span>
+<span class="">Home</span>
+</a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-primary transition-colors" href="#">My Library</a>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface font-semibold">Fines &amp; Financial Accounts</span>
+</nav>
+<div class="hidden sm:flex items-center gap-2 text-xs font-label-md text-on-surface-variant bg-surface-container-high px-3 py-1 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="">Ledger Ref: <span class="font-mono text-on-surface font-medium">CAM-FIN-2024-Q4</span></span>
+</div>
+</div>
+<!-- EDITORIAL HEADER SECTION -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-surface-variant">
+<div class="space-y-2 max-w-3xl">
+<div class="inline-flex items-center gap-2 text-primary font-metadata-caps text-metadata-caps tracking-widest uppercase">
+<span class="material-symbols-outlined text-sm">account_balance</span>
+<span class="">Financial Services &amp; Borrowing Integrity • Circulation Desk</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+        Fines, Assessments &amp; Payment Ledger
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        Manage circulation assessments, inter-library loan processing charges, lost item indemnities, and view certified fiscal receipts endorsed by the Cambridge Central University Repository.
+      </p>
+</div>
+<!-- Right Header Actions -->
+<div class="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0">
+<button class="h-10 px-4 inline-flex items-center gap-2 bg-surface-container-lowest text-on-surface font-label-lg text-label-lg rounded-lg shadow-sm hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-base text-primary">description</span>
+<span class="">Statement (PDF)</span>
+</button>
+<button class="h-10 px-4 inline-flex items-center gap-2 bg-surface-container-lowest text-primary font-label-lg text-label-lg rounded-lg shadow-sm hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-base">policy</span>
+<span class="">Fee Guidelines &amp; Appeals</span>
+</button>
+</div>
+</div>
+<!-- SUMMARY METRIC CARDS (4 COLUMNS) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 py-8">
+<!-- Card 1: Outstanding Balance -->
+<div class="bg-white border border-[#E5E0D8] p-5 rounded-xl relative overflow-hidden flex flex-col justify-between hover:border-primary/40 hover:shadow-xs transition-all">
+<div class="absolute -top-3 -right-3 w-16 h-16 bg-error/5 rounded-full pointer-events-none"></div>
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase tracking-wider">Outstanding Balance</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-md font-semibold bg-error-container text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">pending</span>
+            Payment Pending
+          </span>
+</div>
+<div class="pt-2 flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface tracking-tight" id="metric-balance-display">$14.50</span>
+<span class="font-metadata-caps text-metadata-caps text-outline">USD</span>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-variant flex items-center justify-between text-xs font-body-sm text-on-surface-variant">
+<span class="">1 Recall • 1 ILL Processing</span>
+<span class="text-error font-medium">Due in 5 days</span>
+</div>
+</div>
+<!-- Card 2: Settled This Academic Year -->
+<div class="bg-white border border-[#E5E0D8] p-5 rounded-xl flex flex-col justify-between hover:border-primary/40 hover:shadow-xs transition-all">
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase tracking-wider">Settled (2023–24)</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-md font-semibold bg-secondary-container text-on-secondary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span>
+            Cleared
+          </span>
+</div>
+<div class="pt-2 flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface tracking-tight">$42.00</span>
+<span class="font-metadata-caps text-metadata-caps text-outline">USD</span>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-variant flex items-center justify-between text-xs font-body-sm text-on-surface-variant">
+<span class="">3 Completed Transactions</span>
+<a class="text-primary hover:underline font-medium" href="#payment-history">History →</a>
+</div>
+</div>
+<!-- Card 3: Account Standing -->
+<div class="bg-white border border-[#E5E0D8] p-5 rounded-xl flex flex-col justify-between hover:border-primary/40 hover:shadow-xs transition-all">
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase tracking-wider">Borrowing Status</span>
+<span class="w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-secondary-container/50"></span>
+</div>
+<div class="pt-2 flex items-center gap-2">
+<span class="font-headline-md text-headline-md text-primary font-semibold">Good Standing</span>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-variant flex items-center justify-between text-xs font-body-sm text-on-surface-variant">
+<span class="">Borrowing privileges intact</span>
+<span class="text-outline font-mono">Limit: $25.00</span>
+</div>
+</div>
+<!-- Card 4: Next Assessment Cycle -->
+<div class="bg-white border border-[#E5E0D8] p-5 rounded-xl flex flex-col justify-between hover:border-primary/40 hover:shadow-xs transition-all">
+<div class="space-y-1">
+<div class="flex items-center justify-between">
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase tracking-wider">Audit &amp; Renewal</span>
+<span class="material-symbols-outlined text-outline text-lg">event_repeat</span>
+</div>
+<div class="pt-2">
+<span class="font-headline-md text-headline-md text-on-surface">Nov 15, 2024</span>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-variant flex items-center justify-between text-xs font-body-sm text-on-surface-variant">
+<span class="">Automated tenure cycle</span>
+<span class="text-secondary font-medium">Faculty Exemption Active</span>
+</div>
+</div>
+</div>
+<!-- INTERACTIVE ZERO-BALANCE TOGGLE DEMO BAR -->
+<div class="bg-surface-container p-3 rounded-lg flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center gap-2 text-xs font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-base">info</span>
+<span class="">Simulate ledger transition: Test active ledger view vs. settled zero-balance clearance state.</span>
+</div>
+<button class="px-3 py-1 bg-surface-container-lowest hover:bg-surface-container-high rounded text-xs font-label-md text-primary font-medium transition-colors shadow-2xs" id="toggle-state-btn" onclick="toggleZeroState()">
+      Preview Zero-Balance State
+    </button>
+</div>
+<!-- ZERO-BALANCE STATE BANNER (HIDDEN IN DEFAULT ACTIVE STATE) -->
+<div class="hidden bg-white border border-[#E5E0D8] p-8 rounded-xl text-center mb-8 space-y-4" id="zero-balance-view">
+<div class="w-16 h-16 rounded-full bg-secondary-container/40 text-primary mx-auto flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">auto_stories</span>
+</div>
+<div class="max-w-md mx-auto space-y-1">
+<h3 class="font-headline-md text-headline-md text-on-surface">All Accounts Settled</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        There are no outstanding circulation fines, late recall assessments, or lost item indemnities linked to Dr. Eleanor Vance’s faculty account. Privileges are fully unrestricted.
+      </p>
+</div>
+<div class="pt-2 inline-flex items-center gap-4 text-xs font-metadata-caps text-outline">
+<span class="">Access: Cambridge Central Repository</span>
+<span class="">•</span>
+<span class="">Tier: Cambridge Research Fellow</span>
+<span class="">•</span>
+<span class="">Sanction Index: 0.00</span>
+</div>
+</div>
+<!-- MAIN SPLIT CONTENT GRID (Active ledger + Payment side-desk) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12" id="active-ledger-section">
+<!-- LEFT PANEL: TABLE OF OUTSTANDING FINES (Approx 68% / 8 cols) -->
+<div class="lg:col-span-8 space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-[#E5E0D8] p-4 rounded-xl">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">gavel</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Current Assessments</h2>
+<span class="font-metadata-caps text-metadata-caps bg-surface-container-high text-on-surface-variant px-2.5 py-0.5 rounded-full" id="active-badge-count">2 Items</span>
+</div>
+<!-- Filter Pills -->
+<div class="flex items-center gap-1.5 overflow-x-auto text-xs font-label-md">
+<button class="px-2.5 py-1 rounded-full bg-primary text-on-primary font-medium">All (2)</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Overdue Recall</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Digital Fees</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">Waived</button>
+</div>
+</div>
+<!-- TABLE CONTAINER -->
+<div class="bg-white border border-[#E5E0D8] rounded-xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-metadata-caps text-metadata-caps uppercase tracking-wider">
+<th class="py-3 px-4 w-10">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-primary bg-surface-container-lowest border-surface-variant cursor-pointer" id="select-all" onchange="toggleAllItems(this)" type="checkbox">
+</th>
+<th class="py-3 px-3">Item / Catalog Reference</th>
+<th class="py-3 px-3">Reason / Details</th>
+<th class="py-3 px-3">Days / Accrual</th>
+<th class="py-3 px-3 text-right">Amount</th>
+<th class="py-3 px-3 text-center">Status</th>
+<th class="py-3 px-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-variant font-body-md text-body-md">
+<!-- ROW 1: Overdue Recall -->
+<tr class="hover:bg-surface-container/40 transition-colors">
+<td class="py-4 px-4 align-top">
+<input checked="" class="item-checkbox w-4 h-4 rounded text-primary focus:ring-primary bg-surface-container-lowest border-surface-variant cursor-pointer" data-amount="9.00" onchange="calculateSelectedTotal()" type="checkbox">
+</td>
+<td class="py-4 px-3 align-top max-w-xs">
+<div class="space-y-1">
+<span class="font-title-editorial text-title-editorial font-semibold text-on-surface block leading-snug">
+                      Principles of Terrestrial Ecosystem Ecology (2nd ed.)
+                    </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">
+                      F. Stuart Chapin III, Pamela A. Matson, Peter Vitousek
+                    </span>
+<div class="flex items-center gap-2 pt-1 font-mono text-[11px] text-outline">
+<span class="">QH540.3 .C48</span>
+<span class="">•</span>
+<span class="">Barcode: OS-BK-008412</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-top">
+<div class="space-y-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-label-md font-medium bg-amber-100/70 text-amber-900">
+<span class="material-symbols-outlined text-[13px]">notification_important</span>
+                      Overdue Recall
+                    </span>
+<span class="text-xs font-body-sm text-on-surface-variant block">
+                      Senior scholar recall issued Oct 18
+                    </span>
+</div>
+</td>
+<td class="py-4 px-3 align-top text-xs font-body-sm text-on-surface">
+<span class="font-semibold text-error">6 days overdue</span>
+<span class="text-outline block text-[11px]">$1.50/day faculty rate</span>
+</td>
+<td class="py-4 px-3 align-top text-right font-mono font-semibold text-on-surface">
+                  $9.00
+                </td>
+<td class="py-4 px-3 align-top text-center">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-md font-semibold bg-error-container text-error">
+                    Unpaid
+                  </span>
+</td>
+<td class="py-4 px-4 align-top text-right">
+<button class="text-xs font-label-md text-primary hover:underline block ml-auto">
+                    Dispute / Appeal
+                  </button>
+<button class="text-[11px] font-body-sm text-outline hover:text-on-surface block ml-auto pt-1">
+                    Details
+                  </button>
+</td>
+</tr>
+<!-- ROW 2: Inter-Library Document Delivery Scan -->
+<tr class="hover:bg-surface-container/40 transition-colors">
+<td class="py-4 px-4 align-top">
+<input checked="" class="item-checkbox w-4 h-4 rounded text-primary focus:ring-primary bg-surface-container-lowest border-surface-variant cursor-pointer" data-amount="5.50" onchange="calculateSelectedTotal()" type="checkbox">
+</td>
+<td class="py-4 px-3 align-top max-w-xs">
+<div class="space-y-1">
+<span class="font-title-editorial text-title-editorial font-semibold text-on-surface block leading-snug">
+                      Inter-Library Document Delivery: Oxford Bodleian Archival Scans
+                    </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">
+                      Archival Folio 1884 • Ref: ILL-2024-8841
+                    </span>
+<div class="flex items-center gap-2 pt-1 font-mono text-[11px] text-outline">
+<span class="">DocID: ILL-REQ-9921</span>
+<span class="">•</span>
+<span class="">Bodleian Microfiche</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-top">
+<div class="space-y-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-label-md font-medium bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined text-[13px]">document_scanner</span>
+                      Processing Fee
+                    </span>
+<span class="text-xs font-body-sm text-on-surface-variant block">
+                      High-resolution photographic scan
+                    </span>
+</div>
+</td>
+<td class="py-4 px-3 align-top text-xs font-body-sm text-on-surface">
+<span class="">Assessed Oct 24</span>
+<span class="text-outline block text-[11px]">Direct Digitization</span>
+</td>
+<td class="py-4 px-3 align-top text-right font-mono font-semibold text-on-surface">
+                  $5.50
+                </td>
+<td class="py-4 px-3 align-top text-center">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-md font-semibold bg-error-container text-error">
+                    Unpaid
+                  </span>
+</td>
+<td class="py-4 px-4 align-top text-right">
+<button class="text-xs font-label-md text-primary hover:underline block ml-auto">
+                    View Invoice
+                  </button>
+<button class="text-[11px] font-body-sm text-outline hover:text-on-surface block ml-auto pt-1">
+                    Download Scan
+                  </button>
+</td>
+</tr>
+<!-- ROW 3: Curator Waived Historical Item -->
+<tr class="bg-surface-container/20 hover:bg-surface-container/40 transition-colors opacity-85">
+<td class="py-4 px-4 align-top">
+<input class="w-4 h-4 rounded text-outline-variant bg-surface-container-high border-surface-variant opacity-40 cursor-not-allowed" disabled="" type="checkbox">
+</td>
+<td class="py-4 px-3 align-top max-w-xs">
+<div class="space-y-1">
+<span class="font-title-editorial text-title-editorial font-medium text-on-surface block leading-snug">
+                      Biogeochemistry of Global Climate Change (1993)
+                    </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">
+                      Earth Sciences Library • Call No: QK938 .R35 M4
+                    </span>
+<div class="flex items-center gap-2 pt-1 font-mono text-[11px] text-outline">
+<span class="">Barcode: OS-BK-003192</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-top">
+<div class="space-y-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-label-md font-medium bg-surface-container-high text-on-surface-variant">
+                      Binding Assessment
+                    </span>
+<span class="text-xs font-body-sm text-secondary block font-medium">
+                      Curator Waived: Natural Archival Aging
+                    </span>
+</div>
+</td>
+<td class="py-4 px-3 align-top text-xs font-body-sm text-outline">
+<span class="">Resolved Oct 10</span>
+<span class="block text-[11px]">Audit by Dr. K. Sterling</span>
+</td>
+<td class="py-4 px-3 align-top text-right font-mono text-on-surface">
+<span class="line-through text-outline text-xs mr-1">$25.00</span>
+<span class="font-semibold text-secondary">$0.00</span>
+</td>
+<td class="py-4 px-3 align-top text-center">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-md font-semibold bg-secondary-container text-on-secondary-container">
+                    Waived
+                  </span>
+</td>
+<td class="py-4 px-4 align-top text-right">
+<button class="text-xs font-label-md text-on-surface-variant hover:underline block ml-auto">
+                    Waiver Note
+                  </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Ledger Footer Callout -->
+<div class="p-4 bg-surface-container-low flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">receipt_long</span>
+<span class="">Items not cleared within 30 days are automatically forwarded to University Bursar withholding.</span>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<a class="text-primary hover:underline font-label-md" href="#">Dispute Procedure</a>
+<a class="text-primary hover:underline font-label-md" href="#">Appeal Board Schedule</a>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: SETTLE BALANCE & PAYMENT (Approx 32% / 4 cols) -->
+<div class="lg:col-span-4 space-y-5">
+<div class="bg-white border border-[#E5E0D8] p-6 rounded-xl space-y-6">
+<div class="flex items-center justify-between pb-3 border-b border-surface-variant">
+<div class="space-y-0.5">
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase">Circulation Cashier</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Settle Balance</h3>
+</div>
+<span class="material-symbols-outlined text-primary text-2xl">credit_card</span>
+</div>
+<!-- Amount highlight -->
+<div class="bg-surface-container p-4 rounded-xl text-center space-y-1">
+<span class="text-xs font-metadata-caps text-outline uppercase tracking-wider block">Selected Total for Immediate Clearance</span>
+<div class="flex items-center justify-center gap-1">
+<span class="text-3xl font-bold font-mono text-on-surface" id="checkout-amount">$14.50</span>
+</div>
+<span class="text-xs font-body-sm text-secondary" id="checkout-item-count">2 assessments selected</span>
+</div>
+<!-- Cost Breakdown List -->
+<div class="space-y-2 text-xs font-body-sm">
+<div class="flex justify-between text-on-surface-variant">
+<span class="">Recall Penalties:</span>
+<span class="font-mono text-on-surface" id="breakdown-recall">$9.00</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">ILL Digital Fulfillment:</span>
+<span class="font-mono text-on-surface" id="breakdown-ill">$5.50</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">University Statutory Surcharge:</span>
+<span class="font-mono text-secondary">EXEMPT (Faculty)</span>
+</div>
+<div class="pt-2 border-t border-surface-variant flex justify-between font-label-lg text-sm text-on-surface">
+<span class="">Payable Today:</span>
+<span class="font-mono font-bold text-primary" id="breakdown-total">$14.50</span>
+</div>
+</div>
+<!-- Payment Method Options -->
+<div class="space-y-3">
+<span class="text-xs font-label-md text-on-surface font-semibold block">Select Remittance Source</span>
+<!-- Option 1: Faculty Allocation / Bursar -->
+<label class="flex items-start gap-3 p-3 rounded-lg bg-surface-container/60 hover:bg-surface-container cursor-pointer transition-colors border-2 border-primary">
+<input checked="" class="mt-1 text-primary focus:ring-primary w-4 h-4" name="payment-method" type="radio">
+<div class="flex flex-col text-xs font-body-sm">
+<span class="font-label-md font-semibold text-on-surface">Faculty Research Grant / Bursar Allocation</span>
+<span class="text-outline font-mono">•••• 4092 • Vance Dept Ecology</span>
+<span class="text-primary font-medium text-[11px] mt-0.5">Pre-authorized institutional charge</span>
+</div>
+</label>
+<!-- Option 2: Cambridge Scholar Card -->
+<label class="flex items-start gap-3 p-3 rounded-lg bg-surface-container/30 hover:bg-surface-container/60 cursor-pointer transition-colors border border-transparent">
+<input class="mt-1 text-primary focus:ring-primary w-4 h-4" name="payment-method" type="radio">
+<div class="flex flex-col text-xs font-body-sm">
+<span class="font-label-md font-semibold text-on-surface">Cambridge Scholar SmartCard</span>
+<span class="text-outline">Stored Library Stacks Balance: <strong class="text-on-surface font-mono">$84.20</strong></span>
+</div>
+</label>
+<!-- Option 3: Personal Card / Digital Wallet -->
+<label class="flex items-start gap-3 p-3 rounded-lg bg-surface-container/30 hover:bg-surface-container/60 cursor-pointer transition-colors border border-transparent">
+<input class="mt-1 text-primary focus:ring-primary w-4 h-4" name="payment-method" type="radio">
+<div class="flex flex-col text-xs font-body-sm">
+<span class="font-label-md font-semibold text-on-surface">Personal Card (Visa, MC, Apple Pay)</span>
+<span class="text-outline">Encrypted via Cambridge University Gateway</span>
+</div>
+</label>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full h-11 bg-primary text-on-primary font-label-lg text-sm rounded-lg hover:bg-primary-container transition-all flex items-center justify-center gap-2 shadow-sm" id="pay-button" onclick="executePayment()">
+<span class="material-symbols-outlined text-base">lock</span>
+<span id="pay-btn-label" class="">Authorize &amp; Pay $14.50</span>
+</button>
+<p class="text-[11px] font-body-sm text-outline leading-tight text-center">
+          Instant clearing. All circulation holds removed immediately upon processing. Official signed receipt forwarded to <span class="font-mono text-on-surface">e.vance@cam.ac.uk</span>.
+        </p>
+<!-- Departmental Reimbursement link -->
+<div class="pt-3 border-t border-surface-variant text-center">
+<a class="inline-flex items-center gap-1 text-xs font-label-md text-primary hover:underline" href="#">
+<span class="material-symbols-outlined text-sm">assignment_return</span>
+<span class="">Download Form FIN-4 (Dept. Reimbursement)</span>
+</a>
+</div>
+</div>
+<!-- Archival Fine Policy Quote Box -->
+<div class="bg-white border border-[#E5E0D8] border-l-4 border-l-primary p-5 rounded-xl space-y-2">
+<span class="font-metadata-caps text-[10px] text-outline uppercase tracking-wider block">Ordinance XII • Cambridge University Library</span>
+<blockquote class="font-title-editorial text-sm text-on-surface italic leading-relaxed">
+          “Library recall penalties preserve the democratic circulation of rare and primary scholarly materials. All accrued recall fines directly support the Cambridge Rare Book Preservation Fellowship.”
+        </blockquote>
+<span class="font-label-md text-[11px] text-on-surface-variant block font-medium">— Board of Syndics, Library Regulations § 14.b</span>
+</div>
+</div>
+</div>
+<!-- PAYMENT HISTORY & SETTLED LEDGER -->
+<div class="space-y-4 pt-4 border-t border-surface-variant" id="payment-history">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Settled Payment History (2023–2024 Academic Term)</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Complete audit ledger of finalized circulation settlements, indemnities, and university reimbursements.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase">Filter:</span>
+<select class="h-8 pl-2 pr-6 text-xs font-label-md bg-surface-container-lowest rounded border-surface-variant text-on-surface">
+<option>All Past Terms</option>
+<option selected="">Michaelmas Term 2024</option>
+<option>Easter Term 2024</option>
+<option>Lent Term 2024</option>
+</select>
+</div>
+</div>
+<!-- HISTORY CARDS / ROWS -->
+<div class="bg-white border border-[#E5E0D8] rounded-xl divide-y divide-[#E5E0D8] overflow-hidden">
+<!-- Row 1 -->
+<div class="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container/20 transition-colors">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-xl">receipt</span>
+</div>
+<div class="space-y-0.5">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-label-lg text-sm text-on-surface font-semibold">Late Return Penalty: Holling, C.S. • Ecological Resilience</span>
+<span class="font-mono text-xs text-outline font-normal">#TXN-98214</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-md bg-secondary-container text-on-secondary-container font-medium">Settled (RC-4491)</span>
+</div>
+<p class="text-xs font-body-sm text-on-surface-variant">
+              Paid on Oct 04, 2024 • Bursar Faculty Research Grant Account (•••• 4092) • Cambridge Central Library
+            </p>
+</div>
+</div>
+<div class="flex items-center justify-between md:justify-end gap-6 shrink-0">
+<div class="text-right">
+<span class="font-mono font-bold text-on-surface block text-base">$18.00</span>
+<span class="text-[11px] font-metadata-caps text-secondary uppercase">Tax Exempt</span>
+</div>
+<button class="h-8 px-3 inline-flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high rounded text-xs font-label-md text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+<span class="">PDF Receipt</span>
+</button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-surface-container/20 transition-colors">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-xl">auto_fix_high</span>
+</div>
+<div class="space-y-0.5">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-label-lg text-sm text-on-surface font-semibold">Replacement Archival Foil Sleeve &amp; Mylar Seal</span>
+<span class="font-mono text-xs text-outline font-normal">#TXN-91002</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-label-md bg-secondary-container text-on-secondary-container font-medium">Settled (RC-3819)</span>
+</div>
+<p class="text-xs font-body-sm text-on-surface-variant">
+              Paid on Sep 12, 2024 • Cambridge Scholar SmartCard • Preservation Dept Desk
+            </p>
+</div>
+</div>
+<div class="flex items-center justify-between md:justify-end gap-6 shrink-0">
+<div class="text-right">
+<span class="font-mono font-bold text-on-surface block text-base">$24.00</span>
+<span class="text-[11px] font-metadata-caps text-secondary uppercase">Tax Exempt</span>
+</div>
+<button class="h-8 px-3 inline-flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high rounded text-xs font-label-md text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+<span class="">PDF Receipt</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SCRIPT FOR DYNAMIC TOTAL CALCULATION & ZERO-BALANCE PREVIEW -->
+<script>
+    let isZeroState = false;
+
+    function toggleAllItems(masterCheckbox) {
+      const checkboxes = document.querySelectorAll('.item-checkbox');
+      checkboxes.forEach(cb => {
+        cb.checked = masterCheckbox.checked;
+      });
+      calculateSelectedTotal();
+    }
+
+    function calculateSelectedTotal() {
+      const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+      let total = 0;
+      checkboxes.forEach(cb => {
+        total += parseFloat(cb.getAttribute('data-amount') || 0);
+      });
+
+      const formattedTotal = '$' + total.toFixed(2);
+      const displayTotal = document.getElementById('checkout-amount');
+      const payLabel = document.getElementById('pay-btn-label');
+      const breakdownTotal = document.getElementById('breakdown-total');
+      const countLabel = document.getElementById('checkout-item-count');
+      const payButton = document.getElementById('pay-button');
+
+      if (displayTotal) displayTotal.innerText = formattedTotal;
+      if (breakdownTotal) breakdownTotal.innerText = formattedTotal;
+      if (payLabel) payLabel.innerText = 'Authorize & Pay ' + formattedTotal;
+      if (countLabel) countLabel.innerText = checkboxes.length + ' assessments selected';
+
+      if (total === 0) {
+        if (payButton) {
+          payButton.disabled = true;
+          payButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+      } else {
+        if (payButton) {
+          payButton.disabled = false;
+          payButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+      }
+    }
+
+    function toggleZeroState() {
+      isZeroState = !isZeroState;
+      const activeSection = document.getElementById('active-ledger-section');
+      const zeroSection = document.getElementById('zero-balance-view');
+      const btn = document.getElementById('toggle-state-btn');
+      const metricBalance = document.getElementById('metric-balance-display');
+
+      if (isZeroState) {
+        activeSection.classList.add('hidden');
+        zeroSection.classList.remove('hidden');
+        btn.innerText = 'Restore Active Assessments';
+        if (metricBalance) metricBalance.innerText = '$0.00';
+      } else {
+        activeSection.classList.remove('hidden');
+        zeroSection.classList.add('hidden');
+        btn.innerText = 'Preview Zero-Balance State';
+        if (metricBalance) metricBalance.innerText = '$14.50';
+      }
+    }
+
+    function executePayment() {
+      const payButton = document.getElementById('pay-button');
+      const originalText = payButton.innerHTML;
+      payButton.innerHTML = `<span class="material-symbols-outlined text-base animate-spin">refresh</span> Processing Clearance...`;
+      payButton.disabled = true;
+
+      setTimeout(() => {
+        alert("Payment Authorized. Academic Receipt #RC-5102 dispatched to e.vance@cam.ac.uk. Borrowing restrictions cleared.");
+        toggleZeroState();
+      }, 1200);
+    }
+  </script>
+</div></main>
+</div>
+
+
+</body></html>

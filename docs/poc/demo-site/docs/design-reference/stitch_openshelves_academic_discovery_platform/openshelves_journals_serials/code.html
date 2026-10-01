@@ -1,0 +1,809 @@
+<!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;background-color:#F3F1EC;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-paper":"#F3F1EC","border-warm":"#E5E0D8","secondary-fixed":"#c6ebd3","on-error":"#ffffff","outline":"#717972","surface-container":"#f0eee9","on-tertiary-fixed":"#151d1a","surface-dim":"#dcdad5","tertiary-fixed-dim":"#bfc9c3","on-tertiary-fixed-variant":"#3f4945","on-error-container":"#93000a","error-container":"#ffdad6","secondary-fixed-dim":"#aacfb8","surface-variant":"#e4e2dd","on-surface":"#1b1c19","on-primary-container":"#a2d4b6","surface-container-highest":"#e4e2dd","on-primary-fixed-variant":"#214f38","surface-container-lowest":"#ffffff","on-primary-fixed":"#002112","background":"#F3F1EC","primary-container":"#2f5d45","surface-container-high":"#eae8e3","inverse-on-surface":"#f3f1ec","on-surface-variant":"#414943","secondary-container":"#c3e9d0","surface-tint":"#39684f","on-background":"#1b1c19","tertiary-fixed":"#dbe5df","on-secondary-container":"#486a56","on-tertiary":"#ffffff","on-tertiary-container":"#c1cbc5","primary-fixed":"#bbeecf","on-secondary":"#ffffff","primary":"#2F5D45","on-primary":"#ffffff","tertiary":"#363f3b","surface-bright":"#fbf9f4","surface-container-low":"#f5f3ee","tertiary-container":"#4d5652","inverse-primary":"#a0d2b3","inverse-surface":"#30312e","on-secondary-fixed":"#002112","outline-variant":"#E5E0D8","secondary":"#446652","error":"#ba1a1a","on-secondary-fixed-variant":"#2c4d3c","primary-fixed-dim":"#a0d2b3","surface":"#F3F1EC"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},fontFamily:{"body-md":["DM Sans", "sans-serif"],"body-sm":["DM Sans", "sans-serif"],"label-lg":["DM Sans", "sans-serif"],"metadata-caps":["DM Sans", "sans-serif"],"title-editorial":["Lora", "serif"],"headline-md":["Lora", "serif"],"headline-sm":["Lora", "serif"],"headline-lg":["Lora", "serif"]}}}}</script></head><body class="bg-[#F3F1EC] font-body-md text-on-surface antialiased flex min-h-screen">
+<!-- PERSISTENT FULL HEIGHT STICKY SIDEBAR -->
+<aside class="sticky top-0 h-screen w-64 bg-[#F3F1EC] border-r border-[#E5E0D8] z-40 flex flex-col justify-between overflow-y-auto shrink-0 select-none">
+<div>
+<!-- Logo Brand Header -->
+<div class="h-16 px-5 flex items-center gap-3 border-b border-[#E5E0D8]"><img alt="OpenShelves Logo" class="w-9 h-9 rounded-lg shrink-0 object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UevTnFaccMoOEDCGZr-gMjQcT3luuRbSH4GPdHpOjWy-1mag6H3mrYfTYFHGw5MdQuT-Qc57oB4_nkTSnmQyVw2ER1J4-syzJX3fjH-Gr5MccNT5pOpqwfAuAHb3PQa-B5wfaeOn4IFNlMSD1DZdjQPstZKo4ql6fRVgEvdNBYShuv8CPv-8iuvmUOJ8lvu9Rml90mDiUwPxWXPXK6VtOu7FotQZK7o5e0NxwKOiD7nf6yA8hcwAF4S8w"><div class="flex flex-col"><span class="font-title-editorial font-bold text-lg text-on-surface leading-tight tracking-tight">OpenShelves</span><span class="font-metadata-caps text-[10px] uppercase tracking-wider text-outline">Central University Library</span></div></div>
+<!-- Navigation Lists -->
+<div class="p-4 space-y-6">
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Discover</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<span class="font-label-lg text-sm">Home</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+<span class="font-label-lg text-sm">Browse Catalog</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+<span class="font-label-lg text-sm">New Arrivals</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">48</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="font-label-lg text-sm">Recommended</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">12</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">My Library</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+<span class="font-label-lg text-sm">Current Loans</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">bookmark_added</span>
+<span class="font-label-lg text-sm">Holds</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">1</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="font-label-lg text-sm">Reading Lists</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="font-label-lg text-sm">Reading History</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="font-label-lg text-sm">Fines &amp; Fees</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">$0.00</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Collections</div>
+<a aria-current="page" class="flex items-center justify-between px-3 py-2 rounded-lg bg-[#c6ebd3]/70 text-[#2F5D45] font-semibold border border-[#2F5D45]/20 shadow-sm" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[20px]">auto_stories</span><span class="font-label-lg text-sm">Journals &amp; Serials</span></div></a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">database</span>
+<span class="font-label-lg text-sm">Digital Resources</span>
+</div>
+</a>
+</nav>
+</div>
+</div>
+<!-- Bottom Network Badge -->
+<div class="p-4 border-t border-[#E5E0D8]">
+<div class="p-3 rounded-lg bg-white/80 border border-[#E5E0D8] flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></span><div class="flex flex-col"><span class="font-label-lg text-xs font-semibold text-on-surface leading-tight">Central University Library Network</span><span class="font-metadata-caps text-[10px] text-primary mt-0.5 font-medium">Access Active &amp; Verified</span></div></div>
+</div>
+</aside>
+<!-- MAIN APP CONTAINER -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TOP HEADER -->
+<header class="sticky top-0 h-16 bg-[#F3F1EC]/90 backdrop-blur-sm border-b border-[#E5E0D8] px-8 flex items-center justify-between gap-6 z-30">
+<div class="flex-1 max-w-xl">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-12 bg-white border border-[#E5E0D8] rounded-xl font-body-md text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors shadow-2xs" placeholder="Search titles, authors, subjects, ISBN, DOI…" type="search">
+<div class="absolute right-3 flex items-center">
+<kbd class="font-metadata-caps text-[10px] px-1.5 py-0.5 rounded bg-[#eae8e3] border border-[#E5E0D8] text-on-surface-variant font-medium">⌘K</kbd>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<button class="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-white border border-[#E5E0D8] hover:bg-stone-50 text-on-surface font-label-lg text-xs rounded-lg transition-colors shadow-2xs" type="button">
+<span class="material-symbols-outlined text-base text-primary">add</span>
+<span class="">New List</span>
+</button>
+<button aria-label="Notifications" class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-white/60 rounded-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-[#F3F1EC]"></span>
+</button>
+<div class="h-5 w-px bg-[#E5E0D8]"></div>
+<!-- User Identity: Arpan -->
+<div class="flex items-center gap-2.5 pl-1 cursor-pointer"><div class="w-8 h-8 rounded-full bg-[#2F5D45] text-white font-title-editorial font-semibold text-xs flex items-center justify-center border border-[#2F5D45]/30 shadow-2xs">A</div><div class="flex flex-col text-left"><span class="font-label-lg text-xs font-semibold text-on-surface leading-none">Arpan</span><span class="font-metadata-caps text-[10px] text-outline mt-0.5">Scholar Account</span></div><span class="material-symbols-outlined text-outline text-lg">expand_more</span></div>
+</div>
+</header>
+<!-- WORKSPACE CONTENT -->
+<main class="w-full max-w-6xl mx-auto px-8 py-8 space-y-9"><div class="flex flex-col w-full">
+<!-- Breadcrumbs & Ambient Context -->
+<div class="flex items-center justify-between gap-4 pb-4">
+<nav aria-label="Breadcrumb" class="flex items-center gap-2 font-body-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm">home</span>
+<span class="">Home</span>
+</a>
+<span class="text-outline text-xs">/</span>
+<a class="hover:text-primary transition-colors" href="#">Catalog</a>
+<span class="text-outline text-xs">/</span>
+<span class="font-medium text-on-surface">Journals &amp; Serials</span>
+</nav>
+<div class="hidden sm:flex items-center gap-2.5">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[17px] text-primary">account_tree</span>
+<span class="font-label-md text-label-md">Subject Directory</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[17px] text-primary">notifications_active</span>
+<span class="font-label-md text-label-md">Coverage Alerts</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-on-primary-fixed-variant transition-colors shadow-sm" id="issn-modal-btn" type="button">
+<span class="material-symbols-outlined text-[17px]">search_check</span>
+<span class="font-label-md text-label-md">ISSN Quick Lookup</span>
+</button>
+</div>
+</div>
+<!-- Primary Page Headline Ledger -->
+<div class="bg-surface-container-lowest rounded-xl p-7 shadow-sm relative overflow-hidden mb-6">
+<div class="absolute -right-8 -bottom-8 w-56 h-56 rounded-full bg-primary/5 pointer-events-none blur-2xl"></div>
+<div class="relative z-10 max-w-3xl space-y-2">
+<div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-metadata-caps text-metadata-caps tracking-widest uppercase">Scholarly Holdings • Subscribed &amp; Archival</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Journals &amp; Periodical Serials</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
+        Discover 42,800+ peer-reviewed scholarly journals, proceedings, and university serial subscriptions with institutional full-text access and stacks preservation archives.
+      </p>
+</div>
+<!-- Discovery Search Input Bar -->
+<div class="relative mt-6 pt-5">
+<div class="flex flex-col md:flex-row items-stretch gap-2.5">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-xl">auto_stories</span>
+<input class="w-full h-12 pl-11 pr-10 bg-surface-container-low text-on-surface rounded-lg font-body-md text-body-md placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest transition-all" id="journal-search" placeholder="Search by journal title, ISSN (e.g. 0028-0836), subject, or publisher…" type="search" value="Ecology &amp; Environmental Sciences">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface p-1 rounded transition-colors" title="Clear input" type="button">
+<span class="material-symbols-outlined text-base">close</span>
+</button>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="h-12 px-6 rounded-lg bg-primary text-on-primary hover:bg-on-primary-fixed-variant font-label-lg text-label-lg flex items-center justify-center gap-2 transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-lg">search</span>
+<span class="">Search Serials</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- A-Z Index Navigation Strip -->
+<div class="bg-surface-container-lowest rounded-xl p-3 shadow-sm mb-6 flex flex-col md:flex-row items-center gap-3">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline px-2 shrink-0">Title Index</span>
+<div class="flex items-center gap-1 overflow-x-auto w-full py-1 scrollbar-none text-center">
+<button class="h-8 px-3 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">All</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">#</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">A</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">B</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">C</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">D</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 bg-primary text-on-primary font-semibold shadow-xs" type="button">E</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">F</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">G</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">H</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">I</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">J</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">K</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">L</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">M</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">N</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">O</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">P</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">Q</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">R</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">S</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">T</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">U</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">V</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">W</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">X</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">Y</button>
+<button class="h-8 w-8 rounded-lg font-label-md text-label-md transition-colors shrink-0 text-on-surface-variant hover:bg-surface-container-high" type="button">Z</button>
+</div>
+</div>
+<!-- Facets & Filters Toolbar -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+<!-- Filter Toggle Pills -->
+<div class="flex flex-wrap items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary-fixed text-primary font-label-md text-label-md transition-all shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span class="">Peer Reviewed</span>
+<span class="material-symbols-outlined text-sm">check</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-all shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px]">lock_open</span>
+<span class="">Open Access</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary-fixed text-primary font-label-md text-label-md transition-all shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px]">description</span>
+<span class="">Full-Text Online</span>
+<span class="material-symbols-outlined text-sm">check</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-all shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px]">shelves</span>
+<span class="">Print in Stacks</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md transition-all shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[16px]">insights</span>
+<span class="">Scopus / WoS Indexed</span>
+</button>
+</div>
+<!-- Dropdowns & Sorting -->
+<div class="flex items-center gap-3 shrink-0">
+<div class="relative">
+<select class="appearance-none h-9 pl-3 pr-8 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md focus:outline-none cursor-pointer shadow-2xs">
+<option>Subject: Ecology &amp; Life Sciences</option>
+<option>Subject: Environmental Sciences</option>
+<option>Subject: Economics &amp; Policy</option>
+<option>Subject: Philosophy</option>
+<option>Subject: History</option>
+<option>Subject: All Disciplines</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-base">expand_more</span>
+</div>
+<div class="relative">
+<select class="appearance-none h-9 pl-3 pr-8 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md focus:outline-none cursor-pointer shadow-2xs">
+<option>Sort: Relevance</option>
+<option>Sort: Title (A–Z)</option>
+<option>Sort: Impact Factor (High to Low)</option>
+<option>Sort: Archival Depth</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-base">sort</span>
+</div>
+</div>
+</div>
+<!-- Results Count Bar -->
+<div class="flex items-center justify-between pb-3">
+<div class="flex items-center gap-2">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Search Register</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Showing <strong class="text-on-surface font-semibold">3,842</strong> indexed serials matching active criteria</span>
+</div>
+<div class="font-metadata-caps text-metadata-caps text-on-surface-variant uppercase">
+      Indexed under 'E' &amp; 'Ecology'
+    </div>
+</div>
+<!-- Main Dual-Column Scholarly Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- LEFT COLUMN: Journal Serials Directory (8 Cols / ~70%) -->
+<div class="lg:col-span-8 space-y-4">
+<!-- ITEM 1 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative group">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+<div class="space-y-1.5 flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-primary font-label-md text-label-md font-semibold">
+                Institutional Subscription (Full Text)
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-metadata-caps text-metadata-caps uppercase">
+                Peer-Reviewed Q1
+              </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors">
+<a class="focus:outline-none" href="#">Ecology &amp; Evolutionary Biology Review</a>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Published by <span class="font-medium text-on-surface">Oxford University Press</span> on behalf of the <span class="italic">British Ecological Society</span>
+</p>
+</div>
+<!-- Impact Metric Badge Box -->
+<div class="shrink-0 bg-surface-container-low rounded-lg p-3 text-center sm:text-right flex sm:flex-col justify-between items-center sm:items-end gap-1">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Impact Factor</span>
+<span class="font-headline-sm text-headline-sm text-primary leading-none">8.42</span>
+<span class="font-label-md text-label-md text-secondary">SJR: Q1 • Top 3%</span>
+</div>
+</div>
+<!-- Citation & Catalog Ledger Block -->
+<div class="mt-4 pt-4 bg-surface-container-low/60 rounded-lg p-4 space-y-2">
+<div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class=""><strong class="font-medium text-on-surface">ISSN:</strong> 1469-185X</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">E-ISSN:</strong> 1469-1868</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">Frequency:</strong> Bimonthly (6 issues/yr)</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">Peer-Review:</strong> Double-blind</span>
+</div>
+<div class="flex items-start gap-2 pt-1 font-body-sm text-body-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0">inventory</span>
+<span class="">
+<strong class="font-medium">Online Holdings:</strong> 1984 – Present (Full-Text Online with 1-year embargo for retrospective volumes prior to 1984).
+            </span>
+</div>
+</div>
+<!-- Taxonomies & Actions -->
+<div class="mt-4 pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline mr-1">Taxonomy:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Ecology</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Evolutionary Biology</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Biodiversity</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-9 px-3.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">dataset</span>
+<span class="">Browse Issues &amp; Archives</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Bookmark serial" type="button">
+<span class="material-symbols-outlined text-lg">bookmark_border</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Export Citation" type="button">
+<span class="material-symbols-outlined text-lg">format_quote</span>
+</button>
+</div>
+</div>
+</article>
+<!-- ITEM 2 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative group">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+<div class="space-y-1.5 flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-primary font-label-md text-label-md font-semibold">
+                Open Access (Gold)
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-metadata-caps text-metadata-caps uppercase">
+                DOAJ Certified
+              </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors">
+<a class="focus:outline-none" href="#">Environmental Science &amp; Policy Letters</a>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Published by <span class="font-medium text-on-surface">Elsevier B.V.</span> with Association of Environmental Research Centres
+            </p>
+</div>
+<div class="shrink-0 bg-surface-container-low rounded-lg p-3 text-center sm:text-right flex sm:flex-col justify-between items-center sm:items-end gap-1">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Impact Factor</span>
+<span class="font-headline-sm text-headline-sm text-primary leading-none">6.81</span>
+<span class="font-label-md text-label-md text-secondary">SJR: Q1 • Scopus</span>
+</div>
+</div>
+<div class="mt-4 pt-4 bg-surface-container-low/60 rounded-lg p-4 space-y-2">
+<div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class=""><strong class="font-medium text-on-surface">ISSN:</strong> 1462-9011</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">E-ISSN:</strong> 1878-450X</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">CC License:</strong> CC-BY 4.0</span>
+</div>
+<div class="flex items-start gap-2 pt-1 font-body-sm text-body-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0">inventory</span>
+<span class="">
+<strong class="font-medium">Online Holdings:</strong> 1998 – Present (Complete uninterrupted digital archive back to Vol. 1, Issue 1).
+            </span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline mr-1">Taxonomy:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Environmental Policy</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Sustainability</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Climate Governance</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-9 px-3.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">dataset</span>
+<span class="">Browse Issues</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Bookmark serial" type="button">
+<span class="material-symbols-outlined text-lg">bookmark_border</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Export Citation" type="button">
+<span class="material-symbols-outlined text-lg">format_quote</span>
+</button>
+</div>
+</div>
+</article>
+<!-- ITEM 3 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative group">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+<div class="space-y-1.5 flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-md text-label-md font-medium">
+                Institutional Access + Stacks (Level 4)
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-metadata-caps text-metadata-caps uppercase">
+                Print &amp; Digital
+              </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors">
+<a class="focus:outline-none" href="#">Journal of Anthropological Archaeology</a>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Published by <span class="font-medium text-on-surface">Academic Press / Cambridge University Press</span>
+</p>
+</div>
+<div class="shrink-0 bg-surface-container-low rounded-lg p-3 text-center sm:text-right flex sm:flex-col justify-between items-center sm:items-end gap-1">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Impact Factor</span>
+<span class="font-headline-sm text-headline-sm text-primary leading-none">3.19</span>
+<span class="font-label-md text-label-md text-secondary">SJR: Q1 • Anthro</span>
+</div>
+</div>
+<div class="mt-4 pt-4 bg-surface-container-low/60 rounded-lg p-4 space-y-2">
+<div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class=""><strong class="font-medium text-on-surface">ISSN:</strong> 0278-4165</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">E-ISSN:</strong> 1090-2686</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">Stacks Location:</strong> CC75 .J68 (Fl. 4 East)</span>
+</div>
+<div class="flex items-start gap-2 pt-1 font-body-sm text-body-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0">inventory</span>
+<span class="">
+<strong class="font-medium">Holdings Matrix:</strong> 1982 – Present (Volumes 1–48 available bound in Library Stacks; 1995–Present accessible digitally).
+            </span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline mr-1">Taxonomy:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Archaeology</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Material Culture</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Prehistory</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-9 px-3.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">dataset</span>
+<span class="">Browse Issues</span>
+</button>
+<button class="h-9 px-3.5 rounded-lg bg-surface-container-lowest border-0 hover:bg-surface-container-high text-primary font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">pin_drop</span>
+<span class="">Check Shelf</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Bookmark serial" type="button">
+<span class="material-symbols-outlined text-lg">bookmark_border</span>
+</button>
+</div>
+</div>
+</article>
+<!-- ITEM 4 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative group">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+<div class="space-y-1.5 flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-primary font-label-md text-label-md font-semibold">
+                Full-Text Online
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-metadata-caps text-metadata-caps uppercase">
+                Historic Royal Charter
+              </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors">
+<a class="focus:outline-none" href="#">Philosophical Transactions of the Royal Society B</a>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Published by <span class="font-medium text-on-surface">The Royal Society</span> (London)
+            </p>
+</div>
+<div class="shrink-0 bg-surface-container-low rounded-lg p-3 text-center sm:text-right flex sm:flex-col justify-between items-center sm:items-end gap-1">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Impact Factor</span>
+<span class="font-headline-sm text-headline-sm text-primary leading-none">6.23</span>
+<span class="font-label-md text-label-md text-secondary">Historical Archive</span>
+</div>
+</div>
+<div class="mt-4 pt-4 bg-surface-container-low/60 rounded-lg p-4 space-y-2">
+<div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class=""><strong class="font-medium text-on-surface">ISSN:</strong> 0962-8436</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">E-ISSN:</strong> 1471-2970</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">Continual Sub:</strong> Active since 1887</span>
+</div>
+<div class="flex items-start gap-2 pt-1 font-body-sm text-body-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0">inventory</span>
+<span class="">
+<strong class="font-medium">Complete Retrospective:</strong> 1887 – Present (Historical Archive &amp; Contemporary Volumes fully digitized in OCR high-res).
+            </span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline mr-1">Taxonomy:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Biological Sciences</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Royal Society Archive</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-9 px-3.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">dataset</span>
+<span class="">Browse Issues</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Bookmark serial" type="button">
+<span class="material-symbols-outlined text-lg">bookmark_border</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Export Citation" type="button">
+<span class="material-symbols-outlined text-lg">format_quote</span>
+</button>
+</div>
+</div>
+</article>
+<!-- ITEM 5 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative group">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+<div class="space-y-1.5 flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-primary font-label-md text-label-md font-semibold">
+                Institutional Subscription
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-metadata-caps text-metadata-caps uppercase">
+                Quarterly
+              </span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface tracking-tight group-hover:text-primary transition-colors">
+<a class="focus:outline-none" href="#">Urban Studies &amp; Spatial Planning Quarterly</a>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Published by <span class="font-medium text-on-surface">SAGE Publications</span>
+</p>
+</div>
+<div class="shrink-0 bg-surface-container-low rounded-lg p-3 text-center sm:text-right flex sm:flex-col justify-between items-center sm:items-end gap-1">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Impact Factor</span>
+<span class="font-headline-sm text-headline-sm text-primary leading-none">4.98</span>
+<span class="font-label-md text-label-md text-secondary">SJR: Q1 • Urbanism</span>
+</div>
+</div>
+<div class="mt-4 pt-4 bg-surface-container-low/60 rounded-lg p-4 space-y-2">
+<div class="flex flex-wrap items-center gap-x-4 gap-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class=""><strong class="font-medium text-on-surface">ISSN:</strong> 0042-0980</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">E-ISSN:</strong> 1360-063X</span>
+<span class="text-outline">•</span>
+<span class=""><strong class="font-medium text-on-surface">Publisher Tier:</strong> SAGE Premier</span>
+</div>
+<div class="flex items-start gap-2 pt-1 font-body-sm text-body-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0">inventory</span>
+<span class="">
+<strong class="font-medium">Online Holdings:</strong> 2001 – Present (Immediate campus &amp; VPN remote access enabled).
+            </span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline mr-1">Taxonomy:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Urban Geography</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-md text-label-md">Regional Planning</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="h-9 px-3.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px]">dataset</span>
+<span class="">Browse Issues</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Bookmark serial" type="button">
+<span class="material-symbols-outlined text-lg">bookmark_border</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Export Citation" type="button">
+<span class="material-symbols-outlined text-lg">format_quote</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Pagination Footer -->
+<div class="pt-6 pb-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+          Showing <strong class="text-on-surface">1–5</strong> of 3,842 serial records (Page 1 of 384)
+        </span>
+<div class="flex items-center gap-1.5">
+<button class="h-9 w-9 rounded-lg bg-surface-container-low text-outline cursor-not-allowed flex items-center justify-center" disabled="" type="button">
+<span class="material-symbols-outlined text-base">chevron_left</span>
+</button>
+<button class="h-9 w-9 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold" type="button">1</button>
+<button class="h-9 w-9 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low text-on-surface font-label-md text-label-md transition-colors" type="button">2</button>
+<button class="h-9 w-9 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low text-on-surface font-label-md text-label-md transition-colors" type="button">3</button>
+<span class="px-1 text-outline font-label-md">…</span>
+<button class="h-9 w-9 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low text-on-surface font-label-md text-label-md transition-colors" type="button">384</button>
+<button class="h-9 w-9 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low text-on-surface flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined text-base">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Scholarly Side Panels (4 Cols / ~30%) -->
+<div class="lg:col-span-4 space-y-6">
+<!-- PANEL A: Recently Viewed Journals -->
+<section class="bg-surface-container-lowest rounded-xl p-5 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">history_toggle_off</span>
+<h3 class="font-headline-sm text-title-editorial text-on-surface font-semibold">Recently Consulted</h3>
+</div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Desk Ledger</span>
+</div>
+<ul class="space-y-3">
+<!-- Item 1 -->
+<li class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container-high/60 transition-colors">
+<a class="block space-y-1" href="#">
+<h4 class="font-title-editorial text-body-md text-on-surface font-medium hover:text-primary transition-colors leading-snug">
+                Nature Climate Change
+              </h4>
+<div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant">
+<span class="">ISSN: 1758-678X</span>
+<span class="text-xs text-outline">Viewed 2h ago</span>
+</div>
+</a>
+</li>
+<!-- Item 2 -->
+<li class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container-high/60 transition-colors">
+<a class="block space-y-1" href="#">
+<h4 class="font-title-editorial text-body-md text-on-surface font-medium hover:text-primary transition-colors leading-snug">
+                Quarterly Journal of Economics
+              </h4>
+<div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant">
+<span class="">ISSN: 0033-5533</span>
+<span class="text-xs text-outline">Viewed yesterday</span>
+</div>
+</a>
+</li>
+<!-- Item 3 -->
+<li class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container-high/60 transition-colors">
+<a class="block space-y-1" href="#">
+<h4 class="font-title-editorial text-body-md text-on-surface font-medium hover:text-primary transition-colors leading-snug">
+                The Lancet Infectious Diseases
+              </h4>
+<div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant">
+<span class="">ISSN: 1473-3099</span>
+<span class="text-xs text-outline">Viewed Nov 12</span>
+</div>
+</a>
+</li>
+<!-- Item 4 -->
+<li class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container-high/60 transition-colors">
+<a class="block space-y-1" href="#">
+<h4 class="font-title-editorial text-body-md text-on-surface font-medium hover:text-primary transition-colors leading-snug">
+                Mind &amp; Language
+              </h4>
+<div class="flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant">
+<span class="">ISSN: 0268-1064</span>
+<span class="text-xs text-outline">Viewed Nov 8</span>
+</div>
+</a>
+</li>
+</ul>
+<div class="pt-1 flex items-center justify-between">
+<button class="text-primary hover:underline font-label-md text-label-md transition-colors" type="button">
+            Clear recent history
+          </button>
+<span class="material-symbols-outlined text-outline text-sm">manage_history</span>
+</div>
+</section>
+<!-- PANEL B: ISSN & Citation Matcher Card -->
+<section class="bg-surface-container-lowest rounded-xl p-5 shadow-sm space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">travel_explore</span>
+<h3 class="font-headline-sm text-title-editorial text-on-surface font-semibold">Citation &amp; DOI Matcher</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Have an exact paper citation, DOI link, or ISSN code? Jump straight into specific volume and issue archives.
+        </p>
+<div class="space-y-2 pt-1">
+<div class="relative">
+<input class="w-full h-10 px-3 text-body-sm font-body-sm bg-surface-container-low text-on-surface rounded-lg placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest transition-colors" placeholder="e.g. 10.1038/s41558-023-01824 or 0028-0836" type="text">
+</div>
+<button class="w-full h-10 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-md text-label-md font-semibold transition-colors flex items-center justify-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[17px] text-primary">arrow_forward</span>
+<span class="">Resolve Citation Reference</span>
+</button>
+</div>
+</section>
+<!-- PANEL C: Inter-Library Loan & Serials Request -->
+<section class="bg-primary text-on-primary rounded-xl p-5 shadow-sm relative overflow-hidden space-y-3">
+<div class="flex items-center gap-2 text-secondary-fixed">
+<span class="material-symbols-outlined text-lg">local_shipping</span>
+<span class="font-metadata-caps text-metadata-caps uppercase tracking-wider">Document Delivery</span>
+</div>
+<h3 class="font-headline-sm text-title-editorial text-on-primary font-semibold leading-tight">
+          Unlisted Volume or Rare Pre-1970 Microform?
+        </h3>
+<p class="font-body-sm text-body-sm text-on-primary-container leading-relaxed">Through the Central University Library Inter-Library Loan (ILL) compact, our librarians can retrieve physical off-site rolls, high-resolution scans, or international consortium issues within 48 business hours.</p>
+<div class="pt-2">
+<button class="w-full h-10 rounded-lg bg-secondary-fixed text-on-secondary-fixed hover:bg-primary-fixed-dim transition-colors font-label-lg text-label-md font-semibold flex items-center justify-center gap-2 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">outgoing_mail</span>
+<span class="">Request Document Delivery (ILL)</span>
+</button>
+</div>
+</section>
+<!-- Archival Preservations Note -->
+<div class="p-4 rounded-xl bg-surface-container-low text-on-surface-variant space-y-1.5">
+<div class="flex items-center gap-1.5 text-secondary font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<span class="">Preservation Guarantee</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          All digital subscriptions are safeguarded under Portico and CLOCKSS digital escrow networks, maintaining persistent researcher access indefinitely.
+        </p>
+</div>
+</div>
+</div>
+<!-- Interactive ISSN Quick Lookup Modal (hidden by default, triggered by button) -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 hidden" id="issn-modal">
+<div class="bg-surface-container-lowest rounded-xl max-w-lg w-full p-6 shadow-xl space-y-4">
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">search_check</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Institutional ISSN Lookup</h3>
+</div>
+<button class="p-1 rounded-lg text-outline hover:text-on-surface transition-colors" id="close-issn-modal" type="button">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Query the global ISSN International Centre registry synchronized with the Cambridge University archival database.
+      </p>
+<div class="space-y-3 pt-2">
+<div>
+<label class="font-label-md text-label-md text-on-surface block mb-1">Standard Serial Number (ISSN or E-ISSN)</label>
+<input class="w-full h-11 px-3.5 bg-surface-container-low text-on-surface rounded-lg font-body-md text-body-md placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest transition-colors" placeholder="XXXX-XXXX (e.g. 1469-185X)" type="text">
+</div>
+<div class="flex items-center gap-2 pt-2">
+<button class="flex-1 h-11 rounded-lg bg-primary text-on-primary hover:bg-on-primary-fixed-variant font-label-lg text-label-lg transition-colors flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-lg">search</span>
+<span class="">Query Serial Record</span>
+</button>
+<button class="h-11 px-4 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-lg text-label-lg transition-colors" id="cancel-issn-modal" type="button">
+            Cancel
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Inline Script for Interactive Functionality -->
+<script>
+    (function() {
+      // ISSN Modal Interaction
+      var modal = document.getElementById('issn-modal');
+      var openBtn = document.getElementById('issn-modal-btn');
+      var closeBtn = document.getElementById('close-issn-modal');
+      var cancelBtn = document.getElementById('cancel-issn-modal');
+
+      if (openBtn && modal) {
+        openBtn.addEventListener('click', function() {
+          modal.classList.remove('hidden');
+        });
+      }
+
+      function closeModal() {
+        if (modal) modal.classList.add('hidden');
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+      if (modal) {
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      // Bookmark / Save toggle micro-interaction
+      var bookmarkBtns = document.querySelectorAll('button[title="Bookmark serial"]');
+      bookmarkBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          var icon = btn.querySelector('.material-symbols-outlined');
+          if (icon) {
+            if (icon.textContent === 'bookmark_border') {
+              icon.textContent = 'bookmark';
+              btn.classList.add('text-primary');
+            } else {
+              icon.textContent = 'bookmark_border';
+              btn.classList.remove('text-primary');
+            }
+          }
+        });
+      });
+    })();
+  </script>
+</div></main>
+</div>
+</body></html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;background-color:#F3F1EC;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-paper":"#F3F1EC","border-warm":"#E5E0D8","secondary-fixed":"#c6ebd3","on-error":"#ffffff","outline":"#717972","surface-container":"#f0eee9","on-tertiary-fixed":"#151d1a","surface-dim":"#dcdad5","tertiary-fixed-dim":"#bfc9c3","on-tertiary-fixed-variant":"#3f4945","on-error-container":"#93000a","error-container":"#ffdad6","secondary-fixed-dim":"#aacfb8","surface-variant":"#e4e2dd","on-surface":"#1b1c19","on-primary-container":"#a2d4b6","surface-container-highest":"#e4e2dd","on-primary-fixed-variant":"#214f38","surface-container-lowest":"#ffffff","on-primary-fixed":"#002112","background":"#F3F1EC","primary-container":"#2f5d45","surface-container-high":"#eae8e3","inverse-on-surface":"#f3f1ec","on-surface-variant":"#414943","secondary-container":"#c3e9d0","surface-tint":"#39684f","on-background":"#1b1c19","tertiary-fixed":"#dbe5df","on-secondary-container":"#486a56","on-tertiary":"#ffffff","on-tertiary-container":"#c1cbc5","primary-fixed":"#bbeecf","on-secondary":"#ffffff","primary":"#2F5D45","on-primary":"#ffffff","tertiary":"#363f3b","surface-bright":"#fbf9f4","surface-container-low":"#f5f3ee","tertiary-container":"#4d5652","inverse-primary":"#a0d2b3","inverse-surface":"#30312e","on-secondary-fixed":"#002112","outline-variant":"#E5E0D8","secondary":"#446652","error":"#ba1a1a","on-secondary-fixed-variant":"#2c4d3c","primary-fixed-dim":"#a0d2b3","surface":"#F3F1EC"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},fontFamily:{"body-md":["DM Sans", "sans-serif"],"body-sm":["DM Sans", "sans-serif"],"label-lg":["DM Sans", "sans-serif"],"metadata-caps":["DM Sans", "sans-serif"],"title-editorial":["Lora", "serif"],"headline-md":["Lora", "serif"],"headline-sm":["Lora", "serif"],"headline-lg":["Lora", "serif"]}}}}</script></head><body class="bg-[#F3F1EC] font-body-md text-on-surface antialiased flex min-h-screen">
+<!-- PERSISTENT FULL HEIGHT STICKY SIDEBAR -->
+<aside class="sticky top-0 h-screen w-64 bg-[#F3F1EC] border-r border-[#E5E0D8] z-40 flex flex-col justify-between overflow-y-auto shrink-0 select-none">
+<div>
+<!-- Logo Brand Header -->
+<div class="h-16 px-5 flex items-center gap-3 border-b border-[#E5E0D8]"><div class="w-8 h-8 shrink-0"><img alt="OpenShelves Logo" class="w-8 h-8 rounded-lg shrink-0 object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UevTnFaccMoOEDCGZr-gMjQcT3luuRbSH4GPdHpOjWy-1mag6H3mrYfTYFHGw5MdQuT-Qc57oB4_nkTSnmQyVw2ER1J4-syzJX3fjH-Gr5MccNT5pOpqwfAuAHb3PQa-B5wfaeOn4IFNlMSD1DZdjQPstZKo4ql6fRVgEvdNBYShuv8CPv-8iuvmUOJ8lvu9Rml90mDiUwPxWXPXK6VtOu7FotQZK7o5e0NxwKOiD7nf6yA8hcwAF4S8w"></div><div class="flex flex-col"><span class="font-title-editorial font-bold text-lg text-on-surface leading-tight tracking-tight">OpenShelves</span><span class="font-metadata-caps text-[10px] uppercase tracking-wider text-outline">Central University Library</span></div></div>
+<!-- Navigation Lists -->
+<div class="p-4 space-y-6">
+<nav class="space-y-1"><div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Discover</div><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[20px]">explore</span><span class="font-label-lg text-sm">Home</span></div></a><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[20px]">menu_book</span><span class="font-label-lg text-sm">Browse Catalog</span></div></a><a aria-current="page" class="flex items-center justify-between px-3 py-2 rounded-lg bg-[#c6ebd3]/70 text-[#2F5D45] font-semibold border border-[#2F5D45]/20 shadow-sm" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[20px]">auto_awesome</span><span class="font-label-lg text-sm">New Arrivals</span></div><span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white text-[#2F5D45] border border-[#2F5D45]/20 font-semibold">48</span></a><a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[20px]">star</span><span class="font-label-lg text-sm">Recommended</span></div><span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">12</span></a></nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">My Library</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+<span class="font-label-lg text-sm">Current Loans</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">bookmark_added</span>
+<span class="font-label-lg text-sm">Holds</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">1</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="font-label-lg text-sm">Reading Lists</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="font-label-lg text-sm">Reading History</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="font-label-lg text-sm">Fines &amp; Fees</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">$0.00</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Collections</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+<span class="font-label-lg text-sm">Journals &amp; Serials</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">database</span>
+<span class="font-label-lg text-sm">Digital Resources</span>
+</div>
+</a>
+</nav>
+</div>
+</div>
+<!-- Bottom Network Badge -->
+<div class="p-4 border-t border-[#E5E0D8]"><div class="p-3 rounded-lg bg-white/80 border border-[#E5E0D8] flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></span><div class="flex flex-col"><span class="font-label-lg text-xs font-semibold text-on-surface leading-tight">Central University Library Network</span><span class="font-metadata-caps text-[10px] text-primary mt-0.5 font-medium">Access Active &amp; Verified</span></div></div></div>
+</aside>
+<!-- MAIN APP CONTAINER -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TOP HEADER -->
+<header class="sticky top-0 h-16 bg-[#F3F1EC]/90 backdrop-blur-sm border-b border-[#E5E0D8] px-8 flex items-center justify-between gap-6 z-30">
+<div class="flex-1 max-w-xl">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-12 bg-white border border-[#E5E0D8] rounded-xl font-body-md text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors shadow-2xs" placeholder="Search titles, authors, subjects, ISBN, DOI…" type="search">
+<div class="absolute right-3 flex items-center">
+<kbd class="font-metadata-caps text-[10px] px-1.5 py-0.5 rounded bg-[#eae8e3] border border-[#E5E0D8] text-on-surface-variant font-medium">⌘K</kbd>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<button class="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-white border border-[#E5E0D8] hover:bg-stone-50 text-on-surface font-label-lg text-xs rounded-lg transition-colors shadow-2xs" type="button">
+<span class="material-symbols-outlined text-base text-primary">add</span>
+<span class="">New List</span>
+</button>
+<button aria-label="Notifications" class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-white/60 rounded-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-[#F3F1EC]"></span>
+</button>
+<div class="h-5 w-px bg-[#E5E0D8]"></div>
+<!-- User Identity: Arpan -->
+<div class="flex items-center gap-2.5 pl-1 cursor-pointer"><div class="w-8 h-8 rounded-full bg-[#2F5D45] text-white font-title-editorial font-semibold text-xs flex items-center justify-center border border-[#2F5D45]/30 shadow-2xs">A</div><div class="flex flex-col text-left"><span class="font-label-lg text-xs font-semibold text-on-surface leading-none">Arpan</span><span class="font-metadata-caps text-[10px] text-outline mt-0.5">Scholar Account</span></div><span class="material-symbols-outlined text-outline text-lg">expand_more</span></div>
+</div>
+</header>
+<!-- WORKSPACE CONTENT -->
+<main class="w-full max-w-6xl mx-auto px-8 py-8 space-y-9"><div class="flex flex-col w-full">
+<!-- Script to ensure shell sidebar state mirrors active navigation -->
+<script>
+    (function syncShellSidebar() {
+      try {
+        const navLinks = document.querySelectorAll('aside nav a');
+        navLinks.forEach(link => {
+          if (link.textContent.includes('New Arrivals')) {
+            link.classList.remove('text-on-surface-variant', 'hover:bg-white/60');
+            link.classList.add('bg-white', 'text-primary', 'font-semibold', 'shadow-2xs');
+            const badge = link.querySelector('span:last-child');
+            if (badge) {
+              badge.classList.remove('bg-white/70', 'text-on-surface-variant');
+              badge.classList.add('bg-secondary-container', 'text-primary');
+            }
+          }
+        });
+      } catch (e) {
+        /* silent catch */
+      }
+    })();
+  </script>
+<!-- BREADCRUMBS & TOP ACCESSION SUMMARY BANNER -->
+<div class="flex flex-col gap-6 pb-2">
+<!-- Breadcrumbs -->
+<nav aria-label="Breadcrumb" class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">explore</span>
+<span class="">Home</span>
+</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Discover</span>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="text-on-surface font-semibold">New Arrivals &amp; Recent Accessions</span>
+</nav>
+<!-- Page Title & Meta Block -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-[#E5E0D8]"><div class="space-y-2 max-w-2xl"><div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#c6ebd3]/60 text-primary font-metadata-caps text-metadata-caps uppercase font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span><span class="">Accession Ledger · Cycle 28-B</span></div><h1 class="font-title-editorial text-3xl font-semibold text-on-surface tracking-tight">New Arrivals</h1><p class="font-body-md text-sm text-on-surface-variant leading-relaxed">Recently accessioned monographs, critical editions, and serial volumes across the Central University Library System.</p></div><div class="flex items-center gap-4 bg-[#F3F1EC] border border-[#E5E0D8] px-5 py-3.5 rounded-xl shrink-0"><div class="w-10 h-10 rounded-lg bg-[#c6ebd3]/60 text-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[22px]">inventory_2</span></div><div class="flex flex-col"><div class="flex items-baseline gap-1.5"><span class="font-title-editorial text-xl font-bold text-primary">48</span><span class="font-label-lg text-xs font-semibold text-on-surface">new acquisitions</span></div><span class="font-metadata-caps text-[10px] text-outline uppercase tracking-wider">Indexed today, 07:45 GMT</span></div></div></div>
+</div>
+<!-- CONTROL & FILTER REGISTERS -->
+<div class="mt-6 flex flex-col gap-4 bg-surface-container-lowest p-5 rounded-xl shadow-sm border border-[#E5E0D8]">
+<!-- Row 1: Time Window Tabs & View Switcher -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<!-- Time Range Pills -->
+<div class="flex items-center gap-1.5 p-1 bg-surface-container rounded-lg">
+<button class="px-3.5 py-1.5 rounded-md bg-surface-container-lowest text-primary font-label-md text-label-md font-semibold shadow-2xs transition-all" type="button">
+          This week
+        </button>
+<button class="px-3.5 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button">
+          This month
+        </button>
+<button class="px-3.5 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button">
+          Past 90 days
+        </button>
+<button class="px-3.5 py-1.5 rounded-md text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors" type="button">
+          All recent
+        </button>
+</div>
+<!-- Quick Action Controls & View Mode -->
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-surface-container p-1 rounded-lg">
+<button aria-label="Grid View" class="p-1.5 rounded-md bg-surface-container-lowest text-primary shadow-2xs" type="button">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+<button aria-label="List Ledger View" class="p-1.5 rounded-md text-on-surface-variant hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+</button>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase">Showing</span>
+<span class="font-semibold text-on-surface">1–10</span>
+<span class="">of 48</span>
+</div>
+</div>
+</div>
+<!-- Row 2: Facet Dropdowns -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-2">
+<!-- Discipline -->
+<div class="relative">
+<select class="w-full h-10 pl-3 pr-8 bg-surface-container-low text-on-surface rounded-lg font-label-md text-label-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+<option>All Disciplines (Ecology, Law, Ethics)</option>
+<option>Biogeochemistry &amp; Earth Systems</option>
+<option>Philosophy &amp; Epistemology</option>
+<option>Early Modern History</option>
+<option>Computational Biology</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-2.5 text-outline text-[18px]">expand_more</span>
+</div>
+<!-- Format -->
+<div class="relative">
+<select class="w-full h-10 pl-3 pr-8 bg-surface-container-low text-on-surface rounded-lg font-label-md text-label-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+<option>All Formats (Print, Digital, Folio)</option>
+<option>Print Monograph</option>
+<option>E-Book (Full Access)</option>
+<option>Archival Manuscript &amp; Folio</option>
+<option>Peer Serial / Volume</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-2.5 text-outline text-[18px]">expand_more</span>
+</div>
+<!-- Library Branch -->
+<div class="relative">
+<select class="w-full h-10 pl-3 pr-8 bg-surface-container-low text-on-surface rounded-lg font-label-md text-label-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+<option>All Cambridge Libraries</option>
+<option>University Main Library (West Rd)</option>
+<option>Balfour &amp; Newton Botanical Library</option>
+<option>Wren Library (Trinity College)</option>
+<option>Earth Sciences Library</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-2.5 text-outline text-[18px]">expand_more</span>
+</div>
+<!-- Sort By -->
+<div class="relative">
+<select class="w-full h-10 pl-3 pr-8 bg-surface-container-low text-on-surface rounded-lg font-label-md text-label-md focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary appearance-none cursor-pointer">
+<option>Sort: Accession Date (Newest)</option>
+<option>Sort: Publication Year (Desc)</option>
+<option>Sort: Shelfmark / Call Number</option>
+<option>Sort: Most Circulated</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2.5 top-2.5 text-outline text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- 10 ACADEMIC MONOGRAPHS - 5-COLUMN COVER GRID -->
+<section class="mt-8 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Current Register</span>
+<span class="text-outline">/</span>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Cambridge Central Repository Catalog</span>
+</div>
+<span class="font-metadata-caps text-metadata-caps text-secondary font-medium">Batch ID: CAM-ACQ-2025-04</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+<!-- Item 1: Soil Biogeochemistry -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Scholarly book cover for Soil Biogeochemistry in Boreal Forests with deep forest green background, minimalist botanical roots lithograph, clean academic typography in warm cream ink, Cambridge University Press publication aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7d8lLlosENWyBTAuoShGmrunxExP42UI7JcJGqXCGV0SySQSjl0PsiwQXe9zBQCoi9wkEcuKv_fBETmEKoWM7k7ZV_t5GxqdHJ6OeBhOPHmZEGBNURRe-ENZmKI1ezKi0Z0DshZ6OD6QiLDNI0TTcFspkXA8s2HHWYzR8BZAPuaR6ECdURxjNDNAoWUNwlPUESXdF3Z-8TMDNyorF8t_dzEt9WDplPKVr1xwDeCsbuAFpHjiCgv6ngQ">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">New</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy MLA/APA Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">Call: QR111 .L56 2024</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors" type="button">
+                Place Hold
+              </button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Monograph</span>
+<span class="">2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Soil Biogeochemistry in Boreal Forests
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              Dr. K. M. Lindqvist
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-secondary-container text-primary font-label-md text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="truncate">On Shelf · Mezzanine Stacks</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 2: Architecture of Early Modern Libraries -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of academic monograph The Architecture of Early Modern Libraries featuring an archival copperplate engraving of a classical vaulted university library, warm parchment tone, serif title lettering" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLhtKrm_cwmOawGFiVRFrqoLvwG4Ihx5AZqfdEQZsGhTLDikY4gDxqT-rL1qIDeAshvH_8WPwBRNH7sTqMF2Dv4xUjlEBXUJ3NJD-GX9ZiTWVhIlMSb3nR62KWaetViBtTJDQEe5GHZpZWMYHWHMJvOAgvMU_oNXhZcEZFbTjqFXuIosoMcqwoB9e8H0244ARKCoFmmHsKPopyLWHqNKPtoeoVC1mKBT9rbAXy5QnvBUUgGm2aS6aBdQ">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">New</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">Call: Z679 .T46 2024</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors" type="button">
+                Place Hold
+              </button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Folio Edition</span>
+<span class="">2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              The Architecture of Early Modern Libraries
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              Julian Thorne, PhD
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-secondary-container text-primary font-label-md text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="truncate">On Shelf · Wren Wing</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 3: Algorithmic Epistemology -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of philosophy and technology book Algorithmic Epistemology and Ethics with minimalist geometric grid lines in subtle moss green over off-white paper texture, sharp editorial typography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkXLeeE9K75Vggu_dILVECMlflqZgZ6gX4_6GCrhbOEt0QOTEe0jiO0zEuNz8E1kZYSdfYsUTW0voWavrJtvZUNwi7IsDEtxOdG2zwfZPM-fzY5-kl0hhYyvqNwQIUvHBcu1PnRncSyKbK3jrB__tYJ4sOjg0YMjT5pVDdQLWfNBOWfZCffnzn6d7jLhfZzm_57a5QUWR1jzpkxuSDLvIE8v9FntCnvxe473UOgOYlpyDyRv3Kwdw9Yg">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">Just In</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">DOI: 10.1017/cam.epist.2025</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors flex items-center justify-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+<span class="">Read Online</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Digital Resource</span>
+<span class="">2025</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Algorithmic Epistemology &amp; Ethics
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              Prof. S. Arisawa &amp; M. Vance
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container text-on-surface-variant font-label-md text-[11px] font-medium">
+<span class="material-symbols-outlined text-[13px] text-primary">cloud_done</span>
+<span class="truncate">E-Book · Full Access</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 4: Peatland Hydrology -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of ecology text Peatland Hydrology and Carbon Storage showing botanical moss cross-section diagrams and geological stratigraphy in muted earthy tones, academic hardbound format" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo63W7eC6Te7FdLkB32jStDiCf3sbAOjxw5T_NcS_pY4ENJM7dJsn34oLAh0WIpbZUERdKsrJWjvgGru72IlXm-vSu_OGVTxyu_CyvaF41QmLkGjLIwkdS-55TTaiJZS1FEtRgRVWSGARzlFboC2W4btC4BsEx7aRCqXI6zF95aDG5AWY6s5nYEY9vtn2ECQgSNnzA9Ch1bQvY2EKH_gBFs2JYedAXAHwESomm5LvkhhMy1YAEjhxL8w">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">New</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">Call: GB621 .R93 2024</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors" type="button">
+                Place Hold
+              </button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Monograph</span>
+<span class="">2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Peatland Hydrology &amp; Carbon Storage
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              H. Rydin &amp; J. K. Jeglum
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-secondary-container text-primary font-label-md text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="truncate">2 Copies Available</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 5: Critical Flora of the Cambridgeshire Fens -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of botanical monograph Critical Flora of the Cambridgeshire Fens featuring delicate archival line drawing of fenland sedge, dark sage green cloth spine, gold foil serif title" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKta_niiUotj8clPkKI9ZoKfGa2U8LAYGMxUIk2S4HcxDEGO3EGUqaauRNY7qgP_6QW9DScFsgS3PnLpWF8_IAVF9_bx-tvTZyJJP2LrKglIFqm-eGSC_US-6Jx73J2koQn0uj4PnKqFIrdJA6JNaD9noJmYMdAXBeJ8kLoZPArD_MyfUqSvyGVoQbFyKroASoibotoniQG-iFim5yuEF23n9HGnx91Gmffezrw_KmvZeKhmJOSchtBA">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">Faculty Author</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">Call: QK306 .V36 2025</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors" type="button">
+                Request Retrieval
+              </button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Special Collection</span>
+<span class="">2025</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Critical Flora of the Cambridgeshire Fens
+            </h3>
+<p class="font-body-sm text-body-sm text-primary font-semibold mt-0.5 truncate">
+              Eleanor Vance, DPhil
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-highest text-on-surface-variant font-label-md text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+<span class="truncate">In Reserve Stacks</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 6: Metabolic Ecology -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of academic textbook Metabolic Ecology: Foundations and Future with thermodynamic formulas and biological allometry curve graphs, modern minimalist scholarly design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfM37s5QbeDyYhXT3Fr7JTKVx99YIG5EuXrHwKlMHqmjQMZMVHI7oiLlVCZF4CxgD5ugI80ViZ569A6aZZ-BIVpphCjL8lzlYmtqej8-KoPg1yAMq-Wq9cLRPE--u-4dQ119PcA4oXlpfjUb4mMW5qX5E_-RXyxp9gNIXCf04-rlsaSGBDYtTdUXXxzjeQxP8ZZUYaWhDz47v7uMlHdwOTKCxScP3yBJubo1d2hynMDypEFbADuW6kuQ">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">New</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">Call: QH541.15 .M46 2024</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors" type="button">
+                Place Hold
+              </button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Monograph</span>
+<span class="">2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Metabolic Ecology: Foundations &amp; Future
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              Carlos Mendez
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-secondary-container text-primary font-label-md text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="truncate">On Shelf · Level 3</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 7: Discourse on Ecological Restoration -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of environmental policy book Discourse on Ecological Restoration with subtle topographic elevation lines printed in matte dark green on cream stock, elegant typography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuEpDpyZuaTCvyXAVDK6_bWs8GqxJbX8Bc0Z88Tr4EpyCRwUJIzytEjec__ihOyREoU4C2tXelLht5DA13oQmUAl5U2xDSSGhBhx0qcxDBgOUVSki92jf3mrbWxdqvyUWsSONFmnwRVdhPmXHPrb4UiyH11L6jE5Os-wO2-WnZs9OuhYWkdgg-cNkhJ9eLxs8Izfggz6TGgHh-uqQ0Pc13g-bjNbGYhSKvYR3nRKkYstuS2900XlfRsA">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">E-Edition</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">DOI: 10.1093/oxford/eco.081</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors flex items-center justify-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+<span class="">Read Online</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Digital Resource</span>
+<span class="">2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Discourse on Ecological Restoration
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              Arthur Pendelton
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container text-on-surface-variant font-label-md text-[11px] font-medium">
+<span class="material-symbols-outlined text-[13px] text-primary">cloud_done</span>
+<span class="truncate">E-Book · Full Access</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 8: Quantum Transport in Biological Systems -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of biophysics volume Quantum Transport in Biological Systems showing wave-particle interference patterns overlaid on light-harvesting protein complexes in subtle emerald monochrome" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3WUp7Wp_0bFWLEN2JE_fWFQ7d6h8tVzA25s6fX-lQp94ZAnOlFIeaSsu1R0PSCtCPGnim8wSHUQyYK-BdF7VDwqrijvV0oM0oYpCaXxio6GI_Y4ja2QLYpFU0hJrgg92BfyP7yam41QsWp_fxf7ZMMXZ86M1UT1RMg0HTmraX-7LnmK87VoQ3DAi-X9OR3R5K3DIoNoKdxo7_jeDIMs1BDVDc0evWNggJ0P8RzLxrpPjJChWlCx-jTw">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">New</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">Call: QC176.8 .G65 2024</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors" type="button">
+                Place Hold
+              </button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Monograph</span>
+<span class="">2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Quantum Transport in Biological Systems
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              Samuel R. Goldstein
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-secondary-container text-primary font-label-md text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="truncate">On Shelf · Cavendish</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 9: Archival Paleography -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of archival history manual Archival Paleography: Reading 16th-Century Scripts featuring high-resolution manuscript secretary hand facsimile calligraphy, parchment texture, antiquarian binding" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWUg5qZijBZXz1Fip8j1m59r4VobBi9J0FIrXHdhD8t4jByqlkzQlIBvyXDNAKLJuauhU6ssLiN5tGjQrPtk4Xr1_AGgrR-NZrv_iCfRoqChh0nYHDP1vgX8JGhQtwCAThQhZkGuYuZ4syXxT7icOpDFzxGZ1-Vl8Jwf9mA1bGMysT51RyYTpcNroS-vFRizzaj_eHi_AXRlwy0MZJL-21yvckg2X8NqL7DhKet14m-5R0UaYB1eKBaA">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-tertiary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">Archival</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">Manuscript MS-9418</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors" type="button">
+                Book Reading Desk
+              </button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Manuscript Guide</span>
+<span class="">2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Archival Paleography: 16th-c Scripts
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              Beatrice Montagu
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-highest text-tertiary font-label-md text-[11px] font-medium">
+<span class="material-symbols-outlined text-[13px]">lock</span>
+<span class="truncate">Rare Books Room</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 10: Global Nitrogen Cascades -->
+<div class="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden p-3.5 shadow-sm hover:shadow-md transition-all">
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cover of ecology text Global Nitrogen Cascades showing biogeochemical atmospheric flux diagrams with subtle gradient washes of moss green and muted umber, scholarly university press publication" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtkVUsHecGMAKzSdyNXknRXOsoGmEpoJn_zs4Ab_vAYCYtbA1VC6RWjp64xe8a52CDDs0AJc3_1F0yl2WbMyrsZKwRNHX3z6t4PMHxnnt4LvHUlbec-xEAhzk39rftzHrDBdiZQss-1o3Phv2c1T1dOb8dy6PzZYVvO31Drof_WGTxJ9dARnpvCNqegQ_EJb9YwuSJEuL4ATcvNZkbpsG5538BxVH-6d3jd6i4jF5obNUVDPt_HqJDeg">
+<div class="absolute top-2.5 left-2.5">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-metadata-caps text-[10px] uppercase font-bold tracking-wider">New</span>
+</div>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-between text-on-primary">
+<div class="flex justify-end gap-1.5">
+<button aria-label="Bookmark" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Save to reading list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+<button aria-label="Cite" class="p-1.5 rounded-full bg-white/20 hover:bg-white/40 text-on-primary backdrop-blur-xs transition-colors" title="Copy Citation">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</button>
+</div>
+<div class="space-y-1.5">
+<span class="font-metadata-caps text-[10px] text-secondary-fixed block">Call: S592.6 .N5 C43 2025</span>
+<button class="w-full py-1.5 px-2 bg-surface-container-lowest text-primary rounded-md font-label-md text-label-md font-semibold hover:bg-secondary-container transition-colors" type="button">
+                Place Hold
+              </button>
+</div>
+</div>
+</div>
+<div class="mt-3 flex-1 flex flex-col justify-between gap-2">
+<div>
+<div class="flex items-center justify-between text-outline font-metadata-caps text-metadata-caps">
+<span class="">Monograph</span>
+<span class="">2025</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface line-clamp-2 mt-1 leading-snug font-medium">
+              Global Nitrogen Cascades
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">
+              F. Stuart Chapin III
+            </p>
+</div>
+<div class="pt-2">
+<div class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-secondary-container text-primary font-label-md text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="truncate">On Shelf · Plant Sciences</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- REPOSITORY DISCOVERY & CURATED RECOMMENDATIONS -->
+<section class="mt-12 bg-surface-container-lowest rounded-xl p-6 shadow-sm space-y-6 border border-[#E5E0D8]">
+<!-- Header with Scholar Link -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">auto_awesome</span>
+<span class="font-metadata-caps text-metadata-caps uppercase text-primary font-semibold">Scholar Affinity Match</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">
+          Recommended based on your research in Systems Ecology &amp; Biogeochemistry
+        </h2>
+</div>
+<a class="inline-flex items-center gap-1 text-primary hover:text-primary-container font-label-md text-label-md font-semibold transition-colors shrink-0" href="#">
+<span class="">View All Recommendations</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Recommendations Compact Row (4 items) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Rec Card 1 -->
+<div class="flex items-start gap-3.5 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors group">
+<div class="w-16 h-22 rounded shrink-0 overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover" data-alt="Cover of Wetland Sediment Dynamics with geological stratum diagram in olive and pale cream tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhjx3b4xqF5U9ImqWwTgLhVt89F_CkTHKGYZFOXteHy7O91MbRAk3KIDkqBDSSenP_DFQ2H5JV8OWfjlNxsV-npqUhVf9Pqf5OSDQ0hsRrJG22vXLKFH0meektX2UJ2_r5vOL8H6ujGAzf1QrGbfdMiliJV1GPyC4IkO5Ihb4PURymNgwZAqU5uz5cA5E6PIgOzWJEXSJjR7avKeMmtcuX2CIEoyfHp0xwdNBvWlXY1iCxAjpXUrg8sw">
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between h-full">
+<div>
+<span class="font-metadata-caps text-[10px] text-primary uppercase font-semibold">98% Field Relevance</span>
+<h4 class="font-title-editorial text-[14px] leading-tight text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+              Wetland Sediment Dynamics
+            </h4>
+<p class="font-body-sm text-[12px] text-on-surface-variant truncate">G. M. Torrence (2024)</p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-metadata-caps text-[10px] text-outline">GB628.1 .T67</span>
+<button aria-label="Add to List" class="p-1 rounded text-on-surface-variant hover:text-primary hover:bg-white transition-colors" title="Save to list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Rec Card 2 -->
+<div class="flex items-start gap-3.5 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors group">
+<div class="w-16 h-22 rounded shrink-0 overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover" data-alt="Cover of Microbial Metagenomics in Alpine Soils showing microscopic phylogenetic tree graphics on dark green parchment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEf3YUAm32jVNM-LrlzSMxFX0d3jY-d_AfYsgr3WzChlgjfo8M--Z9PwRwwMm70AoBP3lxvtu5_On0BdMaRVlLt6uvqjpZfSogxEneMJ2BwG3BMRXayNnLKp8aQOwZZjsec0ty-1j0atI1oGeGzyOghKfjgznfdesF2SvgbWBG27R5_WD4NPj_O8aCnbq__ItduWhLXfZvkUIsgE6OZfErMZvfpE-qQHMrzP86nODwTMaMqj2_kkEX1Q">
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between h-full">
+<div>
+<span class="font-metadata-caps text-[10px] text-primary uppercase font-semibold">95% Field Relevance</span>
+<h4 class="font-title-editorial text-[14px] leading-tight text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+              Microbial Metagenomics in Soils
+            </h4>
+<p class="font-body-sm text-[12px] text-on-surface-variant truncate">Elena Rostov, PhD (2024)</p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-metadata-caps text-[10px] text-outline">QR111 .R67</span>
+<button aria-label="Add to List" class="p-1 rounded text-on-surface-variant hover:text-primary hover:bg-white transition-colors" title="Save to list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Rec Card 3 -->
+<div class="flex items-start gap-3.5 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors group">
+<div class="w-16 h-22 rounded shrink-0 overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover" data-alt="Cover of Plant Root Exudates &amp; Mineral Weathering featuring vintage botanical rhizosphere cross section illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoSSAVyYTF2QcD1EB_vsfWjn8k_sNLbNAUUqER1Isbbpz0jTAFF_m3M7l7vqAH4UfVwCZqvitrgpmJ_onZbPiCwGsvSF35x_eAjt0MCMBGj1fvwVN3Oi2Y0R5Aa0v7RNUPHyCSIl08Aex2PTp52isYKrgtAIlppLuw5dGSQWjKeV8m8FePPslmpG6nd-iRIvfDFKKYcyDuCr_PnRIpQMhvudyjdNTPaQwEvveBUitQgKMzfoUphBHm0g">
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between h-full">
+<div>
+<span class="font-metadata-caps text-[10px] text-primary uppercase font-semibold">92% Field Relevance</span>
+<h4 class="font-title-editorial text-[14px] leading-tight text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+              Plant Exudates &amp; Weathering
+            </h4>
+<p class="font-body-sm text-[12px] text-on-surface-variant truncate">B. W. Henderson (2025)</p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-metadata-caps text-[10px] text-outline">QK871 .H45</span>
+<button aria-label="Add to List" class="p-1 rounded text-on-surface-variant hover:text-primary hover:bg-white transition-colors" title="Save to list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Rec Card 4 -->
+<div class="flex items-start gap-3.5 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors group">
+<div class="w-16 h-22 rounded shrink-0 overflow-hidden bg-surface-container shadow-2xs">
+<img class="w-full h-full object-cover" data-alt="Cover of Paleoclimatic Proxies in Fen Peats featuring ancient stratigraphy cores diagram in muted forest tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhiKc5GpCyFCKWFhWX7pLIJwt-O2bezcQDm3a5hkDKby49lQNTSQ4Nui3Z8UMqcX_ETXAZJwVBMQ5CnWwELY1dBuqS0zG141QM6a33s9Hvgrg2XAgOFbivS3EnVbuvLdajj_i-K75LswLaHyO_AUEJclLfICsb6ssk-FfrjAfE9u2wp7tDyZDCjs_74rAzwQkY1EljRNT-HWMel7i9GTmNjvZGxcpKOQJGvL_PkUtB3gqVqYzVeJLqOg">
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between h-full">
+<div>
+<span class="font-metadata-caps text-[10px] text-primary uppercase font-semibold">89% Field Relevance</span>
+<h4 class="font-title-editorial text-[14px] leading-tight text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+              Paleoclimatic Proxies in Peat
+            </h4>
+<p class="font-body-sm text-[12px] text-on-surface-variant truncate">S. K. Nyström (2024)</p>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-metadata-caps text-[10px] text-outline">QC884.2 .N9</span>
+<button aria-label="Add to List" class="p-1 rounded text-on-surface-variant hover:text-primary hover:bg-white transition-colors" title="Save to list">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Archival Footnote Notification -->
+<div class="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-outline font-metadata-caps text-metadata-caps">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+<span class="">Catalog records updated via Cambridge Integrated Library System (Alma/Primo API v4.2)</span>
+</div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">RSS Accession Feed</a>
+<span class="text-surface-dim">·</span>
+<a class="hover:text-primary transition-colors" href="#">Export MARC21 / RIS Batch</a>
+</div>
+</div>
+</section>
+</div></main>
+</div>
+
+
+</body></html>

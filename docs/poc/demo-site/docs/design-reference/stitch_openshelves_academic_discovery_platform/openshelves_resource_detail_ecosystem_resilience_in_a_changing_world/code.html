@@ -1,0 +1,812 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;background-color:#F3F1EC;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-paper":"#F3F1EC","border-warm":"#E5E0D8","secondary-fixed":"#c6ebd3","on-error":"#ffffff","outline":"#717972","surface-container":"#f0eee9","on-tertiary-fixed":"#151d1a","surface-dim":"#dcdad5","tertiary-fixed-dim":"#bfc9c3","on-tertiary-fixed-variant":"#3f4945","on-error-container":"#93000a","error-container":"#ffdad6","secondary-fixed-dim":"#aacfb8","surface-variant":"#e4e2dd","on-surface":"#1b1c19","on-primary-container":"#a2d4b6","surface-container-highest":"#e4e2dd","on-primary-fixed-variant":"#214f38","surface-container-lowest":"#ffffff","on-primary-fixed":"#002112","background":"#F3F1EC","primary-container":"#2f5d45","surface-container-high":"#eae8e3","inverse-on-surface":"#f3f1ec","on-surface-variant":"#414943","secondary-container":"#c3e9d0","surface-tint":"#39684f","on-background":"#1b1c19","tertiary-fixed":"#dbe5df","on-secondary-container":"#486a56","on-tertiary":"#ffffff","on-tertiary-container":"#c1cbc5","primary-fixed":"#bbeecf","on-secondary":"#ffffff","primary":"#2F5D45","on-primary":"#ffffff","tertiary":"#363f3b","surface-bright":"#fbf9f4","surface-container-low":"#f5f3ee","tertiary-container":"#4d5652","inverse-primary":"#a0d2b3","inverse-surface":"#30312e","on-secondary-fixed":"#002112","outline-variant":"#E5E0D8","secondary":"#446652","error":"#ba1a1a","on-secondary-fixed-variant":"#2c4d3c","primary-fixed-dim":"#a0d2b3","surface":"#F3F1EC"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},fontFamily:{"body-md":["DM Sans", "sans-serif"],"body-sm":["DM Sans", "sans-serif"],"label-lg":["DM Sans", "sans-serif"],"metadata-caps":["DM Sans", "sans-serif"],"title-editorial":["Lora", "serif"],"headline-md":["Lora", "serif"],"headline-sm":["Lora", "serif"],"headline-lg":["Lora", "serif"]}}}}</script></head><body class="bg-[#F3F1EC] font-body-md text-on-surface antialiased flex min-h-screen">
+<!-- PERSISTENT FULL HEIGHT STICKY SIDEBAR -->
+<aside class="sticky top-0 h-screen w-64 bg-[#F3F1EC] border-r border-[#E5E0D8] z-40 flex flex-col justify-between overflow-y-auto shrink-0 select-none">
+<div>
+<!-- Logo Brand Header -->
+<div class="h-16 px-5 flex items-center gap-3 border-b border-[#E5E0D8]"><img src="https://lh3.googleusercontent.com/aida/AEtjO1UevTnFaccMoOEDCGZr-gMjQcT3luuRbSH4GPdHpOjWy-1mag6H3mrYfTYFHGw5MdQuT-Qc57oB4_nkTSnmQyVw2ER1J4-syzJX3fjH-Gr5MccNT5pOpqwfAuAHb3PQa-B5wfaeOn4IFNlMSD1DZdjQPstZKo4ql6fRVgEvdNBYShuv8CPv-8iuvmUOJ8lvu9Rml90mDiUwPxWXPXK6VtOu7FotQZK7o5e0NxwKOiD7nf6yA8hcwAF4S8w" alt="OpenShelves Logo" class="w-9 h-9 rounded-lg shrink-0 object-contain"><div class="flex flex-col"><span class="font-title-editorial font-bold text-lg text-on-surface leading-tight tracking-tight">OpenShelves</span><span class="font-metadata-caps text-[10px] uppercase tracking-wider text-outline">Central University Library</span></div></div>
+<!-- Navigation Lists -->
+<div class="p-4 space-y-6">
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Discover</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<span class="font-label-lg text-sm">Home</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+<span class="font-label-lg text-sm">Browse Catalog</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+<span class="font-label-lg text-sm">New Arrivals</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">48</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="font-label-lg text-sm">Recommended</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">12</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">My Library</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+<span class="font-label-lg text-sm">Current Loans</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">bookmark_added</span>
+<span class="font-label-lg text-sm">Holds</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">1</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="font-label-lg text-sm">Reading Lists</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="font-label-lg text-sm">Reading History</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="font-label-lg text-sm">Fines &amp; Fees</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">$0.00</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Collections</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+<span class="font-label-lg text-sm">Journals &amp; Serials</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">database</span>
+<span class="font-label-lg text-sm">Digital Resources</span>
+</div>
+</a>
+</nav>
+</div>
+</div>
+<!-- Bottom Network Badge -->
+<div class="p-4 border-t border-[#E5E0D8]">
+<div class="p-3 rounded-lg bg-white/80 border border-[#E5E0D8] flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></span><div class="flex flex-col"><span class="font-label-lg text-xs font-semibold text-on-surface leading-tight">Central University Library Network</span><span class="font-metadata-caps text-[10px] text-primary mt-0.5 font-medium">Access Active &amp; Verified</span></div></div>
+</div>
+</aside>
+<!-- MAIN APP CONTAINER -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TOP HEADER -->
+<header class="sticky top-0 h-16 bg-[#F3F1EC]/90 backdrop-blur-sm border-b border-[#E5E0D8] px-8 flex items-center justify-between gap-6 z-30">
+<div class="flex-1 max-w-xl">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-12 bg-white border border-[#E5E0D8] rounded-xl font-body-md text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors shadow-2xs" placeholder="Search titles, authors, subjects, ISBN, DOI…" type="search">
+<div class="absolute right-3 flex items-center">
+<kbd class="font-metadata-caps text-[10px] px-1.5 py-0.5 rounded bg-[#eae8e3] border border-[#E5E0D8] text-on-surface-variant font-medium">⌘K</kbd>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<button class="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-white border border-[#E5E0D8] hover:bg-stone-50 text-on-surface font-label-lg text-xs rounded-lg transition-colors shadow-2xs" type="button">
+<span class="material-symbols-outlined text-base text-primary">add</span>
+<span class="">New List</span>
+</button>
+<button aria-label="Notifications" class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-white/60 rounded-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-[#F3F1EC]"></span>
+</button>
+<div class="h-5 w-px bg-[#E5E0D8]"></div>
+<!-- User Identity: Arpan -->
+<div class="flex items-center gap-2.5 pl-1 cursor-pointer"><div class="w-8 h-8 rounded-full bg-[#2F5D45] text-white font-title-editorial font-semibold text-xs flex items-center justify-center border border-[#2F5D45]/30 shadow-2xs">
+          A
+        </div>
+<div class="flex flex-col text-left">
+<span class="font-label-lg text-xs font-semibold text-on-surface leading-none">Arpan</span>
+<span class="font-metadata-caps text-[10px] text-outline mt-0.5">Scholar Account</span>
+</div>
+<span class="material-symbols-outlined text-outline text-lg">expand_more</span></div>
+</div>
+</header>
+<!-- WORKSPACE CONTENT -->
+<main class="w-full max-w-6xl mx-auto px-8 py-8 space-y-9"><div class="flex flex-col w-full">
+<!-- BREADCRUMB & METADATA BAR -->
+<div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#E5E0D8]">
+<nav aria-label="Breadcrumbs" class="flex items-center gap-2">
+<a class="font-body-sm text-outline hover:text-primary transition-colors flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-[17px]">account_balance</span>
+<span class="">Catalog</span>
+</a>
+<span class="text-outline-variant text-xs">/</span>
+<a class="font-body-sm text-outline hover:text-primary transition-colors" href="#">Discovery Index</a>
+<span class="text-outline-variant text-xs">/</span>
+<span class="font-label-lg text-primary text-xs uppercase tracking-wider bg-surface-container-high px-2 py-0.5 rounded">Monograph Record</span>
+</nav>
+<div class="flex items-center gap-2.5 bg-surface-container-low px-3 py-1.5 rounded-full border border-[#E5E0D8]">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-metadata-caps text-on-surface-variant text-[11px]">Central University Library • Indexed &amp; Verified</span>
+<span class="material-symbols-outlined text-primary text-base">verified</span>
+</div>
+</div>
+<!-- MAIN RESOURCE GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-8 items-start">
+<!-- LEFT COLUMN: BOOK MEDIA & PRIMARY LEDGER ACTIONS (4 Cols on lg) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Book Presentation Display -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 border border-[#E5E0D8] shadow-xs flex flex-col items-center">
+<!-- 2:3 Cover Container -->
+<div class="relative w-full max-w-[260px] aspect-[2/3] rounded-lg overflow-hidden shadow-md group">
+<img class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" data-alt="Editorial book cover titled Ecosystem Resilience in a Changing World by Marion Vance. Rich deep forest green cloth-textured background, refined gold foil serif typography, intricate debossed botanical and wetland ring line illustrations, academic university press styling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm4D7VWZWGJ5mx5CPxngF8MDwImrm6F5k6-qswOk4Go7IPqAXM9OqMwWVBc6tv_GhEaC86R4opfGYrcjnsrSG7BsEOMcTuPvXMmKnh0sj0mplRIl96ZG9Pg4jiRUkmp-ahMfc5hYCfSbQ5GgGBn-2yjk3q-6cFoKSJuDZXyob8qCsiwvnm-crt-c4dEp7EKErV6tAGNGIJoIvWsBKyHX0ClNMaMwusXeFJ_ioH6KMuy0TrB_xEhWddWw">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+<span class="font-label-lg text-xs text-on-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">zoom_in</span> High-Res Archival View
+            </span>
+</div>
+<!-- Spine shadow aesthetic -->
+<div class="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-black/25 to-transparent pointer-events-none"></div>
+</div>
+<!-- Shelf Callout Card -->
+<div class="w-full mt-6 bg-surface-container-low rounded-xl p-4 border border-[#E5E0D8] flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Classification Callout</span>
+<span class="font-metadata-caps text-[10px] bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full font-bold">In Stacks</span>
+</div>
+<div class="font-title-editorial text-primary font-bold text-base tracking-wide">
+            QH541 .E28 2023
+          </div>
+<div class="flex items-start gap-1.5 text-on-surface-variant font-body-sm text-xs leading-relaxed">
+<span class="material-symbols-outlined text-base text-primary shrink-0 mt-0.5">location_on</span>
+<span class="">Central Science Library, Mezzanine Stacks, Bay 09 • Shelf 14B</span>
+</div>
+</div>
+<!-- Primary Call to Action buttons -->
+<div class="w-full flex flex-col gap-2.5 mt-5">
+<button class="w-full h-11 bg-primary hover:bg-[#1e3f2e] text-on-primary font-label-lg text-sm rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 border border-primary/40 active:scale-[0.99]" id="requestHoldBtn">
+<span class="material-symbols-outlined text-lg">bookmark_added</span>
+<span class="">Place Hold / Request Copy</span>
+</button>
+<a class="w-full h-10 bg-surface-container-low hover:bg-surface-container hover:text-primary text-on-surface font-label-lg text-xs rounded-xl border border-[#E5E0D8] transition-colors flex items-center justify-center gap-2" href="#">
+<span class="material-symbols-outlined text-base text-primary">menu_book</span>
+<span class="">Read Online (Full-Text PDF)</span>
+<span class="font-metadata-caps text-[9px] uppercase px-1.5 py-0.5 bg-primary/10 text-primary rounded font-bold">EZProxy</span>
+</a>
+</div>
+<!-- Secondary Scholar Actions Grid -->
+<div class="w-full grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-[#E5E0D8]">
+<button class="h-9 px-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container border border-[#E5E0D8] text-on-surface font-label-md text-xs flex items-center justify-center gap-1.5 transition-colors" onclick="document.getElementById('citationSection').scrollIntoView({behavior: 'smooth'})">
+<span class="material-symbols-outlined text-sm text-primary">format_quote</span>
+<span class="">Cite Work</span>
+</button>
+<button class="h-9 px-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container border border-[#E5E0D8] text-on-surface font-label-md text-xs flex items-center justify-center gap-1.5 transition-colors" id="saveListBtn">
+<span class="material-symbols-outlined text-sm text-primary">playlist_add</span>
+<span class="">Save to List</span>
+</button>
+<button class="h-9 px-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container border border-[#E5E0D8] text-on-surface font-label-md text-xs flex items-center justify-center gap-1.5 transition-colors" id="shareDoiBtn">
+<span class="material-symbols-outlined text-sm text-primary">link</span>
+<span class="">Share DOI</span>
+</button>
+<a class="h-9 px-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container border border-[#E5E0D8] text-on-surface font-label-md text-xs flex items-center justify-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm text-primary">outbound</span>
+<span class="">Request ILL</span>
+</a>
+</div>
+<!-- Preservation & Item Provenance Notice -->
+<div class="w-full mt-5 p-3 rounded-lg bg-[#FAF8F5] border border-[#E5E0D8] flex items-center gap-2.5">
+<span class="material-symbols-outlined text-outline text-lg">verified_user</span>
+<div class="flex flex-col text-left">
+<span class="font-metadata-caps text-[10px] uppercase text-outline">Archival Condition</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant leading-tight">Acid-free cotton rag paper • Preserved in Stable Archive</span>
+</div>
+</div>
+</div>
+<!-- Quick Metrics Ledger Box -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-[#E5E0D8] shadow-2xs space-y-3">
+<h4 class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-bold">Bibliometric Impact</h4>
+<div class="grid grid-cols-3 gap-3 text-center">
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-[#E5E0D8]">
+<div class="font-title-editorial text-lg font-bold text-primary">142</div>
+<div class="font-metadata-caps text-[10px] text-outline mt-0.5">Citations</div>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-[#E5E0D8]">
+<div class="font-title-editorial text-lg font-bold text-primary">8.4k</div>
+<div class="font-metadata-caps text-[10px] text-outline mt-0.5">Reads</div>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-[#E5E0D8]">
+<div class="font-title-editorial text-lg font-bold text-primary">Top 1%</div>
+<div class="font-metadata-caps text-[10px] text-outline mt-0.5">Field Index</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: SCHOLARLY CORE METADATA & TABBED SECTIONS (8 Cols on lg) -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Editorial Header Block -->
+<div class="bg-surface-container-lowest rounded-2xl p-7 border border-[#E5E0D8] shadow-xs space-y-4">
+<!-- Badges row -->
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-metadata-caps text-[11px] bg-secondary-fixed text-on-secondary-fixed px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> Peer Reviewed
+          </span>
+<span class="font-metadata-caps text-[11px] bg-surface-container-high text-on-surface-variant px-2.5 py-1 rounded-full border border-[#E5E0D8]">
+            Hardcover 3rd Imp.
+          </span>
+<span class="font-metadata-caps text-[11px] bg-[#E4EEE8] text-primary px-2.5 py-1 rounded-full font-bold border border-primary/20 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 2 Physical Copies Available
+          </span>
+<span class="font-metadata-caps text-[11px] bg-surface-container-low text-outline px-2.5 py-1 rounded-full border border-[#E5E0D8]">
+            Central Library Open Access Partner
+          </span>
+</div>
+<!-- Title & Subtitle -->
+<div>
+<h1 class="font-headline-lg text-primary font-bold tracking-tight text-2xl sm:text-3xl lg:text-[34px] leading-snug">
+            Ecosystem Resilience in a Changing World: Adaptive Dynamics and Biome Restoration
+          </h1>
+<p class="font-title-editorial text-on-surface-variant text-base sm:text-lg italic mt-2 leading-relaxed font-normal">
+            A Comprehensive Synthesis of Multi-Decadal Biome Perturbation and Regeneration Models
+          </p>
+</div>
+<!-- Authors & Attribution Grid -->
+<div class="flex flex-wrap items-center gap-y-2 gap-x-4 pt-3 border-t border-[#E5E0D8] font-body-sm text-sm">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-xs uppercase tracking-wider text-outline font-semibold">Lead Author:</span>
+<a class="font-semibold text-primary hover:underline" href="#">Dr. Marion Vance</a>
+<span class="font-metadata-caps text-[10px] text-outline">(Inst. for Terrestrial Ecology)</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-xs uppercase tracking-wider text-outline font-semibold">Co-Author:</span>
+<a class="font-semibold text-on-surface hover:text-primary" href="#">Dr. Julian Thorne</a>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-xs uppercase tracking-wider text-outline font-semibold">Editor:</span>
+<span class="text-on-surface-variant">Prof. H. Lindqvist (Foreword)</span>
+</div>
+</div>
+<!-- Publisher Monograph Line -->
+<div class="flex flex-wrap items-center gap-3 pt-2 text-xs text-outline font-body-sm">
+<span class="flex items-center gap-1 font-medium text-on-surface">
+<span class="material-symbols-outlined text-sm text-primary">apartment</span>
+            Central University Press
+          </span>
+<span class="">•</span>
+<span class="">Published October 2023</span>
+<span class="">•</span>
+<span class="">3rd Revised Edition</span>
+<span class="">•</span>
+<span class="">Language: English</span>
+</div>
+</div>
+<!-- Tab Navigation Container -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#E5E0D8] overflow-hidden shadow-xs">
+<div class="flex border-b border-[#E5E0D8] bg-[#FAF8F5] px-4 overflow-x-auto">
+<button class="tab-btn px-4 py-3.5 border-b-2 border-primary font-label-lg text-xs text-primary font-bold flex items-center gap-2 whitespace-nowrap" id="tab-overview" onclick="switchTab('overview')">
+<span class="material-symbols-outlined text-base">article</span>
+<span class="">Overview &amp; Abstract</span>
+</button>
+<button class="tab-btn px-4 py-3.5 border-b-2 border-transparent font-label-lg text-xs text-on-surface-variant hover:text-on-surface flex items-center gap-2 whitespace-nowrap" id="tab-classification" onclick="switchTab('classification')">
+<span class="material-symbols-outlined text-base">category</span>
+<span class="">Classification &amp; Metadata</span>
+</button>
+<button class="tab-btn px-4 py-3.5 border-b-2 border-transparent font-label-lg text-xs text-on-surface-variant hover:text-on-surface flex items-center gap-2 whitespace-nowrap" id="tab-holdings" onclick="switchTab('holdings')">
+<span class="material-symbols-outlined text-base">inventory_2</span>
+<span class="">Physical Copies &amp; Locations</span>
+<span class="font-metadata-caps text-[10px] bg-secondary-container text-on-secondary-container px-1.5 py-0.2 rounded-full font-bold">3</span>
+</button>
+<button class="tab-btn px-4 py-3.5 border-b-2 border-transparent font-label-lg text-xs text-on-surface-variant hover:text-on-surface flex items-center gap-2 whitespace-nowrap" id="tab-related" onclick="switchTab('related')">
+<span class="material-symbols-outlined text-base">hub</span>
+<span class="">Related Materials</span>
+</button>
+</div>
+<div class="p-6 sm:p-7 space-y-6">
+<!-- TAB 1: OVERVIEW -->
+<div class="tab-pane space-y-6" id="content-overview">
+<!-- Scholarly Summary / Abstract -->
+<div class="space-y-3">
+<h3 class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary">subject</span> Scholarly Abstract
+              </h3>
+<!-- Left-bordered quote styling from design system -->
+<div class="border-l-3 border-primary bg-surface-container-low p-4.5 rounded-r-lg">
+<p class="font-body-md text-on-surface text-sm sm:text-base leading-relaxed">
+                  Synthesizing over thirty-five years of empiric field data from ninety-four circumpolar, temperate, and sub-tropical biome observation stations, this monograph investigates multi-decadal recovery thresholds under accelerated climatic shifts. Dr. Vance and collaborators formalize a modular mathematical framework reconciling non-linear feedback loops between soil microbiome biodiversity, hydrological retention intervals, and vascular plant recruitment. Designed for theoretical ecologists and restoration practitioners alike, the text offers unified predictive models that bridge micro-scale biogeochemical assays with macro-scale landscape resilience protocols.
+                </p>
+</div>
+</div>
+<!-- Subject Taxonomy Chips -->
+<div class="space-y-2.5">
+<h4 class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-bold">Controlled Subject Vocabularies</h4>
+<div class="flex flex-wrap gap-2">
+<a class="px-3 py-1 rounded-full bg-[#E4EEE8] text-primary hover:bg-primary hover:text-on-primary transition-colors text-xs font-label-md border border-primary/20 flex items-center gap-1.5" href="#">
+<span class="material-symbols-outlined text-xs">label</span> Ecosystem Dynamics
+                </a>
+<a class="px-3 py-1 rounded-full bg-[#E4EEE8] text-primary hover:bg-primary hover:text-on-primary transition-colors text-xs font-label-md border border-primary/20" href="#">
+                  Biome Perturbation
+                </a>
+<a class="px-3 py-1 rounded-full bg-[#E4EEE8] text-primary hover:bg-primary hover:text-on-primary transition-colors text-xs font-label-md border border-primary/20" href="#">
+                  Restoration Ecology
+                </a>
+<a class="px-3 py-1 rounded-full bg-[#E4EEE8] text-primary hover:bg-primary hover:text-on-primary transition-colors text-xs font-label-md border border-primary/20" href="#">
+                  Carbon Fluxes
+                </a>
+<a class="px-3 py-1 rounded-full bg-[#E4EEE8] text-primary hover:bg-primary hover:text-on-primary transition-colors text-xs font-label-md border border-primary/20" href="#">
+                  Mathematical Modeling in Ecology
+                </a>
+<a class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container text-xs font-label-md border border-[#E5E0D8]" href="#">
+                  Central Academic Press 2023
+                </a>
+</div>
+</div>
+<!-- Table of Contents Structured Outline -->
+<div class="space-y-3 pt-2">
+<div class="flex items-center justify-between">
+<h4 class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-bold">Archival Table of Contents</h4>
+<button class="font-label-md text-xs text-primary hover:underline flex items-center gap-1" id="toggleTocBtn">
+<span class="">Collapse All</span>
+<span class="material-symbols-outlined text-sm">unfold_less</span>
+</button>
+</div>
+<div class="divide-y divide-[#E5E0D8] border border-[#E5E0D8] rounded-xl overflow-hidden font-body-sm text-xs" id="tocContainer">
+<!-- Part I -->
+<div class="p-3.5 bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="flex items-center justify-between font-label-lg text-primary text-xs font-semibold">
+<span class="">Part I: Foundations of Ecological Stability &amp; Equilibrium</span>
+<span class="font-metadata-caps text-[11px] text-outline">pp. 1–98</span>
+</div>
+<div class="mt-2 space-y-1.5 pl-3 border-l-2 border-[#E5E0D8] text-on-surface-variant">
+<div class="flex justify-between"><span class="">Chapter 1: Historical Biome Baselines and Multi-Decadal Flux Records</span><span class="text-outline">p. 3</span></div>
+<div class="flex justify-between"><span class="">Chapter 2: Disturbance Regimes: Fire, Inundation, and Drought Intervals</span><span class="text-outline">p. 47</span></div>
+</div>
+</div>
+<!-- Part II -->
+<div class="p-3.5 bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="flex items-center justify-between font-label-lg text-primary text-xs font-semibold">
+<span class="">Part II: Quantitative Dynamics &amp; Metapopulation Equilibrium</span>
+<span class="font-metadata-caps text-[11px] text-outline">pp. 99–284</span>
+</div>
+<div class="mt-2 space-y-1.5 pl-3 border-l-2 border-[#E5E0D8] text-on-surface-variant">
+<div class="flex justify-between"><span class="">Chapter 3: Non-linear Transitions and Catastrophic Shifts in Trophic Webs</span><span class="text-outline">p. 101</span></div>
+<div class="flex justify-between"><span class="">Chapter 4: Empirical Soil Biogeochemistry &amp; Microbial Network Resilience</span><span class="text-outline">p. 189</span></div>
+</div>
+</div>
+<!-- Part III -->
+<div class="p-3.5 bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="flex items-center justify-between font-label-lg text-primary text-xs font-semibold">
+<span class="">Part III: Active Interventions &amp; Adaptive Conservation Policy</span>
+<span class="font-metadata-caps text-[11px] text-outline">pp. 285–412</span>
+</div>
+<div class="mt-2 space-y-1.5 pl-3 border-l-2 border-[#E5E0D8] text-on-surface-variant">
+<div class="flex justify-between"><span class="">Chapter 5: Adaptive Management Frameworks for Fractured Ecosystems</span><span class="text-outline">p. 287</span></div>
+<div class="flex justify-between"><span class="">Synthesis &amp; Archival Appendices: Cross-Biome Mathematical Proofs</span><span class="text-outline">p. 381</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 2: CLASSIFICATION & METADATA -->
+<div class="tab-pane hidden space-y-5" id="content-classification">
+<h4 class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-bold">Cataloging &amp; Bibliographic Schema</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-body-sm text-xs">
+<div class="p-3.5 bg-surface-container-low rounded-xl border border-[#E5E0D8] flex flex-col gap-1">
+<span class="font-metadata-caps text-[10px] text-outline uppercase font-semibold">Standard Book Number (ISBN-13)</span>
+<span class="font-label-lg text-sm text-on-surface font-semibold">978-1-108-84521-3</span>
+<span class="text-[11px] text-outline">Binding: Smyth-sewn cloth hardcover</span>
+</div>
+<div class="p-3.5 bg-surface-container-low rounded-xl border border-[#E5E0D8] flex flex-col gap-1">
+<span class="font-metadata-caps text-[10px] text-outline uppercase font-semibold">Permanent Object Identifier (DOI)</span>
+<a class="font-label-lg text-sm text-primary hover:underline font-semibold flex items-center gap-1" href="https://doi.org/10.1017/cbo.2023.18029" target="_blank">
+                  10.1017/cbo.2023.18029
+                  <span class="material-symbols-outlined text-xs">open_in_new</span>
+</a>
+<span class="text-[11px] text-outline">Registered via CrossRef Academic Registry</span>
+</div>
+<div class="p-3.5 bg-surface-container-low rounded-xl border border-[#E5E0D8] flex flex-col gap-1">
+<span class="font-metadata-caps text-[10px] text-outline uppercase font-semibold">Library of Congress Classification</span>
+<span class="font-label-lg text-sm text-on-surface font-semibold">QH541.5 .F6 E28 2023</span>
+<span class="text-[11px] text-outline">Class Q (Science) • Subclass QH (Natural history &amp; Biology)</span>
+</div>
+<div class="p-3.5 bg-surface-container-low rounded-xl border border-[#E5E0D8] flex flex-col gap-1">
+<span class="font-metadata-caps text-[10px] text-outline uppercase font-semibold">Dewey Decimal System</span>
+<span class="font-label-lg text-sm text-on-surface font-semibold">577.27 / D45</span>
+<span class="text-[11px] text-outline">577 (Ecology) &gt; Human influence and environmental effects</span>
+</div>
+<div class="p-3.5 bg-surface-container-low rounded-xl border border-[#E5E0D8] flex flex-col gap-1">
+<span class="font-metadata-caps text-[10px] text-outline uppercase font-semibold">Format &amp; Extent</span>
+<span class="font-label-lg text-sm text-on-surface font-semibold">xxiv + 412 pages</span>
+<span class="text-[11px] text-outline">68 monochrome plates, 34 fold-out chart folios</span>
+</div>
+<div class="p-3.5 bg-surface-container-low rounded-xl border border-[#E5E0D8] flex flex-col gap-1">
+<span class="font-metadata-caps text-[10px] text-outline uppercase font-semibold">Monograph Series</span>
+<span class="font-label-lg text-sm text-on-surface font-semibold">Cambridge Studies in Applied Ecology</span>
+<span class="text-[11px] text-outline">Volume 42 • Series Editor: Dr. Evelyn Ross</span>
+</div>
+</div>
+<!-- Licensing Ledger -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-[#E5E0D8] flex items-center justify-between">
+<div>
+<div class="font-label-lg text-xs font-semibold text-on-surface">Institutional Rights &amp; Access Tier</div>
+<div class="font-body-sm text-xs text-outline mt-0.5">Central University Perpetual Archive License • Unlimited Campus Concurrent Seats</div>
+</div>
+<span class="material-symbols-outlined text-primary text-xl">vpn_key</span>
+</div>
+</div>
+<!-- TAB 3: PHYSICAL COPIES & AVAILABILITY -->
+<div class="tab-pane hidden space-y-4" id="content-holdings">
+<div class="flex items-center justify-between">
+<div>
+<h4 class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-bold">Physical Holdings across Central Library Network</h4>
+<p class="font-body-sm text-xs text-on-surface-variant">Real-time status synchronized with Circulation Desk Ledger</p>
+</div>
+<span class="font-metadata-caps text-[11px] text-outline">Updated 4 mins ago</span>
+</div>
+<!-- Holdings Table -->
+<div class="overflow-x-auto rounded-xl border border-[#E5E0D8]">
+<table class="w-full text-left font-body-sm text-xs">
+<thead class="bg-[#FAF8F5] text-outline font-metadata-caps uppercase text-[10px] border-b border-[#E5E0D8]">
+<tr>
+<th class="px-4 py-3 font-semibold">Barcode / Accession</th>
+<th class="px-4 py-3 font-semibold">Branch Library</th>
+<th class="px-4 py-3 font-semibold">Shelf Location</th>
+<th class="px-4 py-3 font-semibold">Format</th>
+<th class="px-4 py-3 font-semibold">Loan Status</th>
+<th class="px-4 py-3 font-semibold text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E5E0D8] bg-surface-container-lowest">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="px-4 py-3 font-mono font-medium text-primary">OS-BK-00312</td>
+<td class="px-4 py-3 font-medium text-on-surface">Central Science Library</td>
+<td class="px-4 py-3 text-on-surface-variant">Mezzanine Stacks, Shelf 14B</td>
+<td class="px-4 py-3 text-outline">Regular 28-day</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E4EEE8] text-primary font-metadata-caps text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Available
+                      </span>
+</td>
+<td class="px-4 py-3 text-right">
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-label-md text-xs hover:bg-[#1e3f2e] transition-colors">Hold</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="px-4 py-3 font-mono font-medium text-primary">OS-BK-00315</td>
+<td class="px-4 py-3 font-medium text-on-surface">Balfour Biological Archives</td>
+<td class="px-4 py-3 text-on-surface-variant">3rd Floor, Reserve Room</td>
+<td class="px-4 py-3 text-outline">3-day Faculty Reserve</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E4EEE8] text-primary font-metadata-caps text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Available
+                      </span>
+</td>
+<td class="px-4 py-3 text-right">
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-label-md text-xs hover:bg-[#1e3f2e] transition-colors">Hold</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="px-4 py-3 font-mono font-medium text-primary">OS-BK-00289</td>
+<td class="px-4 py-3 font-medium text-on-surface">West Campus General Stacks</td>
+<td class="px-4 py-3 text-on-surface-variant">Level 2, Stacks Row 04</td>
+<td class="px-4 py-3 text-outline">Regular 28-day</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FFF4E5] text-[#975A16] font-metadata-caps text-[10px] font-bold">
+<span class="material-symbols-outlined text-[12px]">schedule</span> Due Nov 12, 2024
+                      </span>
+</td>
+<td class="px-4 py-3 text-right">
+<button class="px-2.5 py-1 rounded bg-surface-container-low border border-[#E5E0D8] text-on-surface-variant font-label-md text-xs hover:bg-surface-container transition-colors">Join Waitlist #1</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- TAB 4: RELATED MATERIALS -->
+<div class="tab-pane hidden space-y-4" id="content-related">
+<h4 class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-bold">Archival Cross-References &amp; Course Reserves</h4>
+<div class="space-y-3 font-body-sm text-xs">
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-[#E5E0D8] flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">folder_shared</span>
+<div>
+<div class="font-label-lg text-xs font-semibold text-on-surface">Course Reserve: ENV-402 Advanced Biosphere Resilience</div>
+<div class="text-outline">Assigned by Prof. Julian Thorne for Fall Semester 2024</div>
+</div>
+</div>
+<a class="font-label-md text-xs text-primary hover:underline" href="#">View Syllabus Pack</a>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-[#E5E0D8] flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">database</span>
+<div>
+<div class="font-label-lg text-xs font-semibold text-on-surface">Associated Research Dataset (Dryad Repository)</div>
+<div class="text-outline">Raw sensor CSV records from 94 biome stations (2.4 GB)</div>
+</div>
+</div>
+<a class="font-label-md text-xs text-primary hover:underline" href="#">Open Data Repository</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CITATION GENERATOR CARD -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 sm:p-7 border border-[#E5E0D8] shadow-xs space-y-4" id="citationSection">
+<div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#E5E0D8]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">format_quote</span>
+<h3 class="font-title-editorial font-bold text-on-surface text-base">Cite This Monograph</h3>
+</div>
+<!-- Citation Style Format Selector -->
+<div class="flex items-center bg-surface-container-low p-1 rounded-lg border border-[#E5E0D8] text-xs">
+<button class="cite-style-btn px-2.5 py-1 rounded bg-white text-primary font-bold shadow-2xs" id="cite-apa" onclick="setCitationFormat('apa')">APA 7th</button>
+<button class="cite-style-btn px-2.5 py-1 rounded text-outline hover:text-on-surface font-medium" id="cite-mla" onclick="setCitationFormat('mla')">MLA 9th</button>
+<button class="cite-style-btn px-2.5 py-1 rounded text-outline hover:text-on-surface font-medium" id="cite-chicago" onclick="setCitationFormat('chicago')">Chicago 17th</button>
+<button class="cite-style-btn px-2.5 py-1 rounded text-outline hover:text-on-surface font-medium" id="cite-bibtex" onclick="setCitationFormat('bibtex')">BibTeX</button>
+</div>
+</div>
+<!-- Citation display box -->
+<div class="relative bg-surface-container-low p-4.5 rounded-xl border border-[#E5E0D8] group">
+<p class="font-mono text-xs text-on-surface leading-relaxed select-all" id="citationTextBox">
+            Vance, M., Thorne, J., &amp; Lindqvist, H. (2023). Ecosystem Resilience in a Changing World: Adaptive Dynamics and Biome Restoration (3rd ed.). Central University Press. https://doi.org/10.1017/cbo.2023.18029
+          </p>
+</div>
+<!-- Citation action buttons -->
+<div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+<div class="flex items-center gap-2">
+<button class="h-9 px-4 bg-primary hover:bg-[#1e3f2e] text-on-primary font-label-lg text-xs rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs" id="copyCitationBtn">
+<span class="material-symbols-outlined text-base">content_copy</span>
+<span id="copyCitationLabel" class="">Copy Formatted Citation</span>
+</button>
+</div>
+<div class="flex items-center gap-2 font-body-sm text-xs">
+<button class="h-9 px-3 bg-surface-container-lowest hover:bg-surface-container border border-[#E5E0D8] rounded-lg text-on-surface flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-sm text-primary">download</span>
+<span class="">Export .RIS / EndNote</span>
+</button>
+<button class="h-9 px-3 bg-surface-container-lowest hover:bg-surface-container border border-[#E5E0D8] rounded-lg text-on-surface flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-sm text-primary">code</span>
+<span class="">Download .Bib</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM SECTION: RELATED MONOGRAPHS CAROUSEL -->
+<div class="pt-10 space-y-5">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-title-editorial font-bold text-xl text-on-surface">Related Resources &amp; Recommended Monographs</h2>
+<p class="font-body-sm text-xs text-outline mt-0.5">Complementary catalog records classified under Applied Ecology and Resilience Dynamics</p>
+</div>
+<div class="flex items-center gap-1.5">
+<button aria-label="Previous monographs" class="w-8 h-8 rounded-lg bg-surface-container-lowest border border-[#E5E0D8] flex items-center justify-center text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-base">chevron_left</span>
+</button>
+<button aria-label="Next monographs" class="w-8 h-8 rounded-lg bg-surface-container-lowest border border-[#E5E0D8] flex items-center justify-center text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-base">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- 4 Related Resource Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Related Item 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 border border-[#E5E0D8] hover:border-[#D8D2C7] transition-all flex flex-col justify-between group shadow-2xs">
+<div>
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container mb-3.5">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Scholarly book cover of Principles of Terrestrial Ecosystem Ecology by Chapin. Editorial minimalist earth tones, beige textured linen background with dark green botanical leaf venation patterns and clean serif typography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2oJWMmhG8DoJQDaGjati8eYyNsipjHiPxxkqRWYVier6EhoXBP5DdUtt28pLQGfYwMYeb2Ia_3xZcoy4lfWZT0OIjLCKVXdIvngUcbjqEn9EaNh6a9zWIFHp6JrLF8duKG0oyvjAOelRo0J1Z3hZh-iItsTyLa4GHh2vHhtUf96oRoc6lv9kgeQB0RkwcoUG4QJBONB0QnwBwnDVANf5HX7yUpqWASU7PUDbX0VW1iXVlQChZ_bXiGg">
+<span class="absolute top-2 right-2 bg-white/90 backdrop-blur-xs font-metadata-caps text-[9px] px-2 py-0.5 rounded text-primary font-bold border border-[#E5E0D8]">2021</span>
+</div>
+<div class="font-metadata-caps text-[10px] text-outline">QH540.3 .C48</div>
+<h3 class="font-title-editorial font-bold text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-2 mt-1">
+            Principles of Terrestrial Ecosystem Ecology
+          </h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1">F. Stuart Chapin III</p>
+</div>
+<div class="mt-4 pt-3 border-t border-[#E5E0D8] flex items-center justify-between">
+<span class="font-metadata-caps text-[10px] text-primary font-bold">1 Copy Available</span>
+<button class="text-xs font-label-md text-primary hover:underline flex items-center gap-0.5">
+<span class="">View</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Related Item 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 border border-[#E5E0D8] hover:border-[#D8D2C7] transition-all flex flex-col justify-between group shadow-2xs">
+<div>
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container mb-3.5">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Editorial book cover titled Global Peatland Restoration: Policy and Practice by Arthur Pendelton. Rich marshland moss green and deep umber palette, clean classical academic layout with foil embossed titles." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmJ0K3ftGurWNTNE7Eccr58Ap-0CzJmJGO7a3ZEdyJ9r8_DV_KchXs28P6p1FCPdQKGAYtMyVzftJEaNeZy7UbKhfbXlsSgNnwWm1kRsBU3JIUHp6Km2GW-5dlXBjmSR7bwtWa-ClyNCvQWktLoknfFmAKPykaEgEsHji_DLeSFF1KXKEHh_wHpI4KlB3udoINcO6vG0xO3EvjgRZb9iAhV6TUV_U_UmZsIAyiw2TJBNU9oIBNxXFgGA">
+<span class="absolute top-2 right-2 bg-white/90 backdrop-blur-xs font-metadata-caps text-[9px] px-2 py-0.5 rounded text-primary font-bold border border-[#E5E0D8]">2022</span>
+</div>
+<div class="font-metadata-caps text-[10px] text-outline">GB621 .P46</div>
+<h3 class="font-title-editorial font-bold text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-2 mt-1">
+            Global Peatland Restoration: Policy &amp; Practice
+          </h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1">Arthur Pendelton</p>
+</div>
+<div class="mt-4 pt-3 border-t border-[#E5E0D8] flex items-center justify-between">
+<span class="font-metadata-caps text-[10px] text-primary font-bold">In Reserves</span>
+<button class="text-xs font-label-md text-primary hover:underline flex items-center gap-0.5">
+<span class="">View</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Related Item 3 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 border border-[#E5E0D8] hover:border-[#D8D2C7] transition-all flex flex-col justify-between group shadow-2xs">
+<div>
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container mb-3.5">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Editorial monograph cover titled Mathematical Models of Biodiversity Loss by Samuel R. Goldstein. Deep navy and muted sage green design with intricate mathematical differential curves and clean serif lettering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHahuzNNX1Vtin3AKicikyoPHF0yDLm-ZQQhd_Obd4z19EdzLNRpQup5JXX68OLwlzHtEUAxjTGCbIGV7S3-D8v4VlllxBg6dFHgVX6K5_8d4OyPh_sdecdTpuxJ11-fxGX8vr2bGzMUsvFT28mdANd5mVNYug-ZJy517rbGG5vMTmeprSqLubPoAxj-zi_nClsVYzX8qIqsOhOB5lJA5fzLxk8uVhRimlcgz7RJ2IiqXVscqh1QKeag">
+<span class="absolute top-2 right-2 bg-white/90 backdrop-blur-xs font-metadata-caps text-[9px] px-2 py-0.5 rounded text-primary font-bold border border-[#E5E0D8]">2020</span>
+</div>
+<div class="font-metadata-caps text-[10px] text-outline">QH75 .G65</div>
+<h3 class="font-title-editorial font-bold text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-2 mt-1">
+            Mathematical Models of Biodiversity Loss
+          </h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1">Samuel R. Goldstein</p>
+</div>
+<div class="mt-4 pt-3 border-t border-[#E5E0D8] flex items-center justify-between">
+<span class="font-metadata-caps text-[10px] text-primary font-bold">2 Copies</span>
+<button class="text-xs font-label-md text-primary hover:underline flex items-center gap-0.5">
+<span class="">View</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Related Item 4 -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 border border-[#E5E0D8] hover:border-[#D8D2C7] transition-all flex flex-col justify-between group shadow-2xs">
+<div>
+<div class="relative w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-container mb-3.5">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Editorial book cover titled Tropical Rainforest Biogeochemistry by Carlos Mendez. Deep canopy green with muted beige typography, fine cross-section diagrams of tropical soil horizons and forest strata." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZENOU37kfCg4GFvwm77ESoB90D-moCS2skpSS44W03ItFNq-qOu_rlp9dRarbDxa61pMpNEF5J6D6ekH69t9yT-X-hIoeN2CcdxJ0vNoKGEVUzEkPhjrVfqY8UxgpZWWIcrClLsiYRuIosTvedl58ZNEXuyuNy2HBXx9GjoL8bLiP39090NbkoJWwe8zPJWqaTvS27xYgIs3i7RS60OMPFeezF2l9b9P4xmgEtxDxwFZ3Y-ZYnPwmSQ">
+<span class="absolute top-2 right-2 bg-white/90 backdrop-blur-xs font-metadata-caps text-[9px] px-2 py-0.5 rounded text-primary font-bold border border-[#E5E0D8]">2024</span>
+</div>
+<div class="font-metadata-caps text-[10px] text-outline">QK938 .R35 M4</div>
+<h3 class="font-title-editorial font-bold text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-2 mt-1">
+            Tropical Rainforest Biogeochemistry
+          </h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1">Dr. Carlos Mendez</p>
+</div>
+<div class="mt-4 pt-3 border-t border-[#E5E0D8] flex items-center justify-between">
+<span class="font-metadata-caps text-[10px] text-[#975A16] font-bold">On Order</span>
+<button class="text-xs font-label-md text-primary hover:underline flex items-center gap-0.5">
+<span class="">View</span>
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Toast feedback container (Hidden by default) -->
+<div class="fixed bottom-6 right-6 bg-surface-container-lowest border border-[#E5E0D8] px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none z-50" id="toastNotification">
+<span class="material-symbols-outlined text-primary text-xl" id="toastIcon">check_circle</span>
+<span class="font-body-sm text-xs text-on-surface font-medium" id="toastMsg">Action confirmed</span>
+</div>
+<!-- MICRO-INTERACTIONS JAVASCRIPT -->
+<script>
+    // Tab Switching Functionality
+    function switchTab(tabKey) {
+      const tabs = ['overview', 'classification', 'holdings', 'related'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-' + t);
+        const pane = document.getElementById('content-' + t);
+        if (t === tabKey) {
+          btn.classList.add('border-primary', 'text-primary', 'font-bold');
+          btn.classList.remove('border-transparent', 'text-on-surface-variant');
+          pane.classList.remove('hidden');
+        } else {
+          btn.classList.remove('border-primary', 'text-primary', 'font-bold');
+          btn.classList.add('border-transparent', 'text-on-surface-variant');
+          pane.classList.add('hidden');
+        }
+      });
+    }
+
+    // Citation format strings
+    const citations = {
+      apa: "Vance, M., Thorne, J., & Lindqvist, H. (2023). Ecosystem Resilience in a Changing World: Adaptive Dynamics and Biome Restoration (3rd ed.). Central University Press. https://doi.org/10.1017/cbo.2023.18029",
+      mla: "Vance, Marion, Julian Thorne, and H. Lindqvist. Ecosystem Resilience in a Changing World: Adaptive Dynamics and Biome Restoration. 3rd ed., Central University Press, 2023.",
+      chicago: "Vance, Marion, Julian Thorne, and H. Lindqvist. 2023. Ecosystem Resilience in a Changing World: Adaptive Dynamics and Biome Restoration. 3rd ed. Cambridge: Central University Press. https://doi.org/10.1017/cbo.2023.18029.",
+      bibtex: "@book{vance2023ecosystem,\n  title={Ecosystem Resilience in a Changing World: Adaptive Dynamics and Biome Restoration},\n  author={Vance, Marion and Thorne, Julian and Lindqvist, H.},\n  edition={3rd},\n  year={2023},\n  publisher={Central University Press},\n  doi={10.1017/cbo.2023.18029}\n}"
+    };
+
+    function setCitationFormat(format) {
+      document.getElementById('citationTextBox').textContent = citations[format];
+      const formatButtons = ['apa', 'mla', 'chicago', 'bibtex'];
+      formatButtons.forEach(fmt => {
+        const b = document.getElementById('cite-' + fmt);
+        if (fmt === format) {
+          b.className = "cite-style-btn px-2.5 py-1 rounded bg-white text-primary font-bold shadow-2xs";
+        } else {
+          b.className = "cite-style-btn px-2.5 py-1 rounded text-outline hover:text-on-surface font-medium";
+        }
+      });
+    }
+
+    function showToast(message, icon = 'check_circle') {
+      const toast = document.getElementById('toastNotification');
+      const msg = document.getElementById('toastMsg');
+      const icn = document.getElementById('toastIcon');
+      msg.textContent = message;
+      icn.textContent = icon;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // Copy Citation
+    document.getElementById('copyCitationBtn').addEventListener('click', function() {
+      const text = document.getElementById('citationTextBox').textContent;
+      navigator.clipboard.writeText(text.trim()).then(() => {
+        const lbl = document.getElementById('copyCitationLabel');
+        lbl.textContent = "Citation Copied!";
+        showToast("Citation copied to clipboard");
+        setTimeout(() => {
+          lbl.textContent = "Copy Formatted Citation";
+        }, 2200);
+      });
+    });
+
+    // Hold Request
+    document.getElementById('requestHoldBtn').addEventListener('click', function() {
+      showToast("Hold request confirmed for Arpan (Accession: OS-BK-00312)", "bookmark_added");
+    });
+
+    // Save to reading list
+    document.getElementById('saveListBtn').addEventListener('click', function() {
+      showToast("Added to reading list 'Faculty Biosphere Seminar'", "playlist_add_check");
+    });
+
+    // Share DOI
+    document.getElementById('shareDoiBtn').addEventListener('click', function() {
+      navigator.clipboard.writeText('https://doi.org/10.1017/cbo.2023.18029');
+      showToast("Permanent DOI URL copied", "link");
+    });
+
+    // Toggle Table of Contents
+    let tocCollapsed = false;
+    document.getElementById('toggleTocBtn').addEventListener('click', function() {
+      const toc = document.getElementById('tocContainer');
+      tocCollapsed = !tocCollapsed;
+      if (tocCollapsed) {
+        toc.classList.add('hidden');
+        this.innerHTML = `<span>Expand All</span><span class="material-symbols-outlined text-sm">unfold_more</span>`;
+      } else {
+        toc.classList.remove('hidden');
+        this.innerHTML = `<span>Collapse All</span><span class="material-symbols-outlined text-sm">unfold_less</span>`;
+      }
+    });
+  </script>
+</div></main>
+</div>
+
+
+
+
+</body></html>

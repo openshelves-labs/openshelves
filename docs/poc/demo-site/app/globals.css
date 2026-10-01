@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Global UI scale: 90%. Change here (and the 0.9 in tailwind.config.ts) to rescale everything. */
+  html {
+    zoom: 0.9;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    overscroll-behavior: none;
+    background-color: #f3f1ec;
+    color: #1e2320;
+    font-family: "DM Sans Variable", "DM Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  main > :first-child {
+    margin-top: 0 !important;
+  }
+  main > :last-child {
+    margin-bottom: 0 !important;
+  }
+  /* DESIGN.md focus ring: 2px paper gap + 1.5px forest stroke */
+  :focus-visible {
+    outline: 1.5px solid #2f5d45;
+    outline-offset: 2px;
+  }
+}
+
+/* Material Symbols glyph settings (font + base class come from the `material-symbols` package) */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

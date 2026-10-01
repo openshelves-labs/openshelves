@@ -1,0 +1,497 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary-fixed":"#c6ebd3","on-error":"#ffffff","outline":"#717972","surface-container":"#f0eee9","on-tertiary-fixed":"#151d1a","surface-dim":"#dcdad5","tertiary-fixed-dim":"#bfc9c3","on-tertiary-fixed-variant":"#3f4945","on-error-container":"#93000a","error-container":"#ffdad6","secondary-fixed-dim":"#aacfb8","surface-variant":"#e4e2dd","on-surface":"#1b1c19","on-primary-container":"#a2d4b6","surface-container-highest":"#e4e2dd","on-primary-fixed-variant":"#214f38","surface-container-lowest":"#ffffff","on-primary-fixed":"#002112","background":"#fbf9f4","primary-container":"#2f5d45","surface-container-high":"#eae8e3","inverse-on-surface":"#f3f1ec","on-surface-variant":"#414943","secondary-container":"#c3e9d0","surface-tint":"#39684f","on-background":"#1b1c19","tertiary-fixed":"#dbe5df","on-secondary-container":"#486a56","on-tertiary":"#ffffff","on-tertiary-container":"#c1cbc5","primary-fixed":"#bbeecf","on-secondary":"#ffffff","primary":"#16452f","on-primary":"#ffffff","tertiary":"#363f3b","surface-bright":"#fbf9f4","surface-container-low":"#f5f3ee","tertiary-container":"#4d5652","inverse-primary":"#a0d2b3","inverse-surface":"#30312e","on-secondary-fixed":"#002112","outline-variant":"#c0c9c1","secondary":"#446652","error":"#ba1a1a","on-secondary-fixed-variant":"#2c4d3c","primary-fixed-dim":"#a0d2b3","surface":"#fbf9f4"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xl":"2.5rem","margin":"2rem","gutter-sm":"1rem","gutter-lg":"2rem","margin-sm":"1rem","space-md":"1rem","space-lg":"1.5rem","space-sm":"0.5rem","gutter":"1.5rem","space-xs":"0.25rem","margin-lg":"3.5rem"},fontFamily:{"metadata-caps":["DM Sans"],"title-editorial":["Literata"],"label-lg":["DM Sans"],"body-md":["DM Sans"],"headline-md":["Literata"],"body-sm":["DM Sans"],"label-md":["DM Sans"],"display-lg-mobile":["Literata"],"headline-sm":["Literata"],"headline-lg":["Literata"],"headline-lg-mobile":["Literata"],"body-lg":["DM Sans"],"display-lg":["Literata"]},fontSize:{"metadata-caps":["11px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"600"}],"title-editorial":["18px",{"lineHeight":"26px","fontWeight":"500"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],"display-lg-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"500"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"600"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["17px",{"lineHeight":"28px","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"500"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 h-16 bg-surface-container-low border-b border-outline-variant z-50"><div class="h-16 w-full px-gutter flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0 w-64"><img alt="OpenShelves Academic Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UGimSU-fxrpGA1zbw7gB1x-iJ6COBZUXfxcvYbwlNyQv_D6EcPHw9s8fgXlNK7NhWgP4qfm0axIfpzJSWF0ji6Dx_gkDzGRHBETZ5kHhC7Qd46jnEen_nwXY4r2vRLpS8tDsrSzuWLSqD9be2ZROfuNCcWSed-rtGJUFvL9UWdWqO-DbOJoBacYquLbCVHMVRKL-C1XjlABsSKB9Q5mlgWqSZ_akrkCGV-XJ9ImI6K2v43TZ5PRWBMh6c"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface leading-none">OpenShelves</span><span class="font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline mt-0.5">University Library &amp; Archives</span></div></div><div class="flex-1 max-w-2xl px-space-md hidden md:block"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-3.5 text-outline pointer-events-none text-xl">search</span><input class="w-full h-10 pl-11 pr-14 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-md text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Search titles, authors, subjects, ISBN, DOI…" type="search"><div class="absolute right-3 flex items-center"><kbd class="font-metadata-caps text-metadata-caps px-1.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-on-surface-variant">⌘K</kbd></div></div></div><div class="flex items-center gap-space-md shrink-0"><button class="hidden sm:inline-flex items-center gap-space-xs h-9 px-space-md bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-high hover:border-outline text-on-surface font-label-lg text-label-md rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-lg text-primary">add</span><span>New List</span></button><button aria-label="Notifications" class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container-low"></span></button><div class="h-6 w-px bg-outline-variant mx-1 hidden sm:block"></div><div class="flex items-center gap-space-sm pl-1"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2OYT9PJMVePt4HLQa1TJBGSRb4Pb8RnjGix-erMgGY9pS4DBTt3Y78srr0emkzotyccUJgjdn8Fw5-Gq6xJr7dtL_By1sQpdkI4-kqiQGQWfjDCuwxTuo0X0_Rkdy4U4hvBF3EeIell-9dySi8SgYDCJOynCv8IpJDOBraW285syg64OPkoxg_VW6D5HbKl0yHfeXSLnCnY0JW98El-IK2P5PidlfzS5guFRH1wg5oa1GNXrynk9rnw"><div class="hidden xl:flex flex-col text-left"><span class="font-label-lg text-label-md font-semibold text-on-surface leading-none">Dr. Eleanor Vance</span><span class="font-metadata-caps text-metadata-caps text-outline truncate max-w-[150px] mt-0.5">Ecology &amp; Earth Systems</span></div><span class="material-symbols-outlined text-outline text-lg hidden xl:block">expand_more</span></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-low border-r border-outline-variant z-40 flex flex-col justify-between overflow-y-auto"><div class="p-space-md space-y-space-lg"><nav class="space-y-space-xs" data-active-classes="bg-secondary-fixed text-primary font-semibold border border-primary/20"><div class="px-space-sm py-1 font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">Discover</div><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="home" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">explore</span><span class="font-label-lg text-label-md">Home</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="browse-catalog" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">menu_book</span><span class="font-label-lg text-label-md">Browse Catalog</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="new-arrivals" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">auto_awesome</span><span class="font-label-lg text-label-md">New Arrivals</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">48</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="recommended" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">star</span><span class="font-label-lg text-label-md">Recommended</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">12</span></a></nav><nav class="space-y-space-xs" data-active-classes="bg-secondary-fixed text-primary font-semibold border border-primary/20"><div class="px-space-sm py-1 font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">My Library</div><a aria-current="page" class="flex items-center justify-between px-space-sm py-2 rounded-lg transition-colors bg-secondary-fixed text-primary font-semibold border border-primary/20" data-path="current-loans" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">schedule</span><span class="font-label-lg text-label-md">Current Loans</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">3</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="holds" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">bookmark_added</span><span class="font-label-lg text-label-md">Holds</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">1</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="reading-lists" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">folder</span><span class="font-label-lg text-label-md">Reading Lists</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">5</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="reading-history" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">history</span><span class="font-label-lg text-label-md">Reading History</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="fines-and-fees" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">receipt_long</span><span class="font-label-lg text-label-md">Fines &amp; Fees</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">$0.00</span></a></nav><nav class="space-y-space-xs" data-active-classes="bg-secondary-fixed text-primary font-semibold border border-primary/20"><div class="px-space-sm py-1 font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">Collections</div><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="journals-and-serials" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">auto_stories</span><span class="font-label-lg text-label-md">Journals &amp; Serials</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="digital-resources" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">database</span><span class="font-label-lg text-label-md">Digital Resources</span></div></a></nav></div><div class="p-space-md border-t border-outline-variant"><div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex items-start gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></span><div class="flex flex-col"><span class="font-label-lg text-metadata-caps font-semibold text-on-surface leading-tight">Cambridge Inter-Library Network</span><span class="font-metadata-caps text-metadata-caps text-primary mt-0.5">Access Active &amp; Verified</span></div></div></div></aside><div class="pl-64"><main class="relative pt-16 min-h-screen bg-surface w-full px-gutter-lg py-margin"><div class="flex flex-col w-full">
+<!-- Scholar Library Overview Header -->
+<div class="w-full mb-space-lg">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pb-space-lg">
+<div class="space-y-space-xs">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-secondary-fixed text-primary font-metadata-caps text-metadata-caps tracking-wider uppercase mb-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          Scholarly Borrowing Ledger
+        </div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+          My Library &amp; Academic Loans
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant flex flex-wrap items-center gap-x-2 gap-y-1">
+<span class="font-semibold text-primary">Faculty Account:</span>
+<span>Dr. Eleanor Vance</span>
+<span class="text-outline">/</span>
+<span>Card #CAM-889104</span>
+<span class="text-outline">/</span>
+<span class="italic">Department of Ecology &amp; Earth Systems</span>
+</p>
+</div>
+<!-- Quick Context Action -->
+<div class="flex items-center gap-space-sm self-start lg:self-auto shrink-0">
+<button class="inline-flex items-center gap-2 px-space-md h-10 bg-primary-container text-on-primary font-label-lg text-label-md rounded-lg hover:bg-primary transition-colors shadow-sm" id="renewAllTopBtn">
+<span class="material-symbols-outlined text-lg">autorenew</span>
+<span>Renew All Eligible</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-space-md h-10 bg-surface-container-lowest text-on-surface font-label-lg text-label-md rounded-lg hover:bg-surface-container-high transition-colors shadow-sm">
+<span class="material-symbols-outlined text-lg text-on-surface-variant">print</span>
+<span class="hidden sm:inline">Receipt</span>
+</button>
+</div>
+</div>
+<!-- Quick Metrics Summary Bar (4 Minimalist Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-space-lg">
+<!-- Active Loans -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<span class="font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">Current Checkouts</span>
+<span class="material-symbols-outlined text-primary text-xl">auto_stories</span>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md text-on-surface font-semibold">3 Books</div>
+<div class="inline-flex items-center gap-1.5 mt-1 font-metadata-caps text-metadata-caps text-error font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+            1 title due soon (3 days)
+          </div>
+</div>
+</div>
+<!-- Active Holds -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">Active Holds</span>
+<span class="material-symbols-outlined text-primary text-xl">bookmark_added</span>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md text-on-surface font-semibold">1 Item</div>
+<div class="inline-flex items-center gap-1.5 mt-1 font-metadata-caps text-metadata-caps text-secondary font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            Ready for desk pickup
+          </div>
+</div>
+</div>
+<!-- Reading Lists -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">Archival Folios</span>
+<span class="material-symbols-outlined text-primary text-xl">folder_managed</span>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md text-on-surface font-semibold">5 Lists</div>
+<div class="text-on-surface-variant font-metadata-caps text-metadata-caps mt-1">
+            22 saved citations &amp; notes
+          </div>
+</div>
+</div>
+<!-- Fines & Balance -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">Fines &amp; Standing</span>
+<span class="material-symbols-outlined text-primary text-xl">verified_user</span>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md text-primary font-semibold">$0.00</div>
+<div class="text-on-surface-variant font-metadata-caps text-metadata-caps mt-1 truncate">
+            Faculty grace status active
+          </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Tabbed Navigation within My Library -->
+<div class="w-full flex items-center justify-between gap-space-md mb-space-lg overflow-x-auto pb-1">
+<nav aria-label="Library registers" class="flex items-center gap-space-xs shrink-0">
+<button class="px-space-md py-2 rounded-full bg-secondary-fixed text-primary font-label-lg text-label-md font-semibold inline-flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">book</span>
+<span>Current Loans (3)</span>
+</button>
+<button class="px-space-md py-2 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-lg text-label-md transition-colors inline-flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+<span>Holds &amp; Requests (1)</span>
+</button>
+<button class="px-space-md py-2 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-lg text-label-md transition-colors inline-flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">devices</span>
+<span>Digital Checkouts (2)</span>
+</button>
+<button class="px-space-md py-2 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-lg text-label-md transition-colors inline-flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">history_edu</span>
+<span>Reading History (84)</span>
+</button>
+<button class="px-space-md py-2 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-lg text-label-md transition-colors inline-flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">receipt_long</span>
+<span>Fines &amp; Notices ($0.00)</span>
+</button>
+</nav>
+</div>
+<!-- Ledger Control Utility Bar -->
+<div class="w-full bg-surface-container-low p-space-sm sm:p-space-md rounded-xl mb-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex flex-wrap items-center gap-space-sm text-body-sm font-body-sm text-on-surface-variant">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Sort Catalog:</span>
+<div class="relative inline-flex items-center bg-surface-container-lowest rounded-lg px-3 py-1.5">
+<span class="material-symbols-outlined text-base text-primary mr-1.5">calendar_today</span>
+<select class="bg-transparent text-on-surface font-label-lg text-label-md focus:outline-none cursor-pointer pr-4">
+<option>Due Date (Earliest First)</option>
+<option>Title (A-Z)</option>
+<option>Checkout Date</option>
+<option>Library Branch</option>
+</select>
+</div>
+<span class="hidden lg:inline text-outline">•</span>
+<span class="hidden lg:inline">Showing 3 monographs checked out across 2 branches</span>
+</div>
+<div class="flex items-center gap-space-sm self-end md:self-auto">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface font-label-lg text-label-md rounded-lg transition-colors" onclick="exportBibtexModal()">
+<span class="material-symbols-outlined text-base text-primary">terminal</span>
+<span>Export BibTeX</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface font-label-lg text-label-md rounded-lg transition-colors" onclick="window.print()">
+<span class="material-symbols-outlined text-base text-on-surface-variant">download</span>
+<span>CSV Ledger</span>
+</button>
+</div>
+</div>
+<!-- Detailed Loans Table / Scholar Card View Stack -->
+<div class="w-full space-y-space-md mb-space-xl">
+<!-- Loan Card 1: Attention / Due Soon -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute top-0 left-0 bottom-0 w-1.5 bg-error"></div>
+<div class="flex flex-col md:flex-row gap-space-md sm:gap-space-lg">
+<!-- Monograph Cover Container (2:3 aspect) -->
+<div class="w-28 sm:w-36 aspect-[2/3] shrink-0 bg-surface-container-high rounded-lg overflow-hidden relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Cover of The Structure of Scientific Revolutions 50th Anniversary edition with archival collegiate book cloth texture, minimalist forest green typography, historical philosophical monograph styling, museum archival photography, crisp studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjVeqpToGnk-RZBDWR_xEUzXa817BSDUoMDXhWOnkCktdbyX6Pq-oBYf9gkZja_3NkCbsHHH0SGRSMxX3kU5B8cD26Jf86hQPzWwAv35gWIhyfpfYG7qhcVfNNTdSQAjHJ2CllKwhXDztjPL2Xueu8We3Zn4vTqdLLzxVLzqj70iPt8sBi1Gxw58Iz2zz7P-tZ0XyncEJP4Hw4vltpA63RGgQxxjA6KZupBc0ZjUseDWryWQJub1tXNg">
+<div class="absolute top-2 left-2 bg-error text-on-error font-metadata-caps text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+            Due Soon
+          </div>
+</div>
+<!-- Book Details & Metadata -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div>
+<div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+<span class="px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-metadata-caps text-metadata-caps uppercase tracking-wider font-semibold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                Due in 3 Days (Oct 27, 2024)
+              </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">
+                Barcode: 390880194821
+              </span>
+</div>
+<h2 class="font-title-editorial text-headline-sm text-on-surface font-semibold tracking-tight leading-snug">
+              The Structure of Scientific Revolutions (50th Anniv. Ed.)
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+              by <span class="text-on-surface font-medium">Thomas S. Kuhn</span>
+</p>
+<!-- Archival Metadata Ledger Row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-y-2 gap-x-4 mt-space-md p-space-sm bg-surface-container-low rounded-lg text-body-sm font-body-sm">
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Call Number</span>
+<span class="font-semibold text-on-surface">Q175 .K95 2012</span>
+</div>
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Branch / Pickup</span>
+<span class="text-on-surface">Seeley Historical Library</span>
+</div>
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Borrow Date &amp; Renewals</span>
+<span class="text-on-surface">Sep 27, 2024 • <span class="font-medium text-primary">2 of 3 remaining</span></span>
+</div>
+</div>
+</div>
+<!-- Card Actions Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mt-space-lg pt-space-sm">
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="h-9 px-space-md bg-primary text-on-primary hover:bg-primary-container rounded-lg font-label-lg text-label-md inline-flex items-center gap-1.5 transition-colors" onclick="handleRenewal(this, 'The Structure of Scientific Revolutions')">
+<span class="material-symbols-outlined text-base">autorenew</span>
+<span>Renew Loan (Extend to Nov 27)</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-high text-on-surface rounded-lg font-label-lg text-label-md inline-flex items-center gap-1.5 transition-colors" onclick="copyCitation('Kuhn, T. S. (2012). The Structure of Scientific Revolutions. University of Chicago Press.')">
+<span class="material-symbols-outlined text-base text-primary">format_quote</span>
+<span>Cite Book</span>
+</button>
+<button class="h-9 px-3 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface rounded-lg font-label-lg text-label-md inline-flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-base">notes</span>
+<span>Reading Notes (4)</span>
+</button>
+</div>
+<button class="text-outline hover:text-error font-metadata-caps text-metadata-caps uppercase tracking-wider inline-flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-base">report_problem</span>
+<span>Report Issue</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Loan Card 2: Standard Active Loan -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute top-0 left-0 bottom-0 w-1.5 bg-primary"></div>
+<div class="flex flex-col md:flex-row gap-space-md sm:gap-space-lg">
+<!-- Monograph Cover Container (2:3 aspect) -->
+<div class="w-28 sm:w-36 aspect-[2/3] shrink-0 bg-surface-container-high rounded-lg overflow-hidden relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Cover of Principles of Terrestrial Ecosystem Ecology textbook, botanical cross section art, warm paper background, rich forest foliage green tones, dignified academic monograph design, soft natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVZCqGkGFVH5QDXT0aKoofAN9uQfEAyve0zRX1ZlU7rWmR1rDUoytTiQ-HBC_Jmb0jEhdc-mupAXhotqUNMukojFE7hhcJWxecoSeJdhSMxYb_xtBUlXrAOXxw80JguSTIFY7_jDHMQ4yylUM_SwTlp-2f6WEXrSZrt1iyj-zvLRsJcl3ZhBgCOntjPYNT_mGomMOhWIp0vNylnHzZtBt9U83ZBqxiRNrtChp3ZyHWt8VoGtH-44043w">
+</div>
+<!-- Book Details & Metadata -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div>
+<div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-primary font-metadata-caps text-metadata-caps uppercase tracking-wider font-semibold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                Due in 18 Days (Nov 11, 2024)
+              </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">
+                Barcode: 390880287114
+              </span>
+</div>
+<h2 class="font-title-editorial text-headline-sm text-on-surface font-semibold tracking-tight leading-snug">
+              Principles of Terrestrial Ecosystem Ecology
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+              by <span class="text-on-surface font-medium">F. Stuart Chapin III, Pamela A. Matson</span>
+</p>
+<!-- Archival Metadata Ledger Row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-y-2 gap-x-4 mt-space-md p-space-sm bg-surface-container-low rounded-lg text-body-sm font-body-sm">
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Call Number</span>
+<span class="font-semibold text-on-surface">QH541.5.F6 C43</span>
+</div>
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Branch / Pickup</span>
+<span class="text-on-surface">Balfour &amp; Newton Botanical Library</span>
+</div>
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Borrow Date &amp; Renewals</span>
+<span class="text-on-surface">Oct 02, 2024 • <span class="font-medium text-primary">3 of 3 remaining</span></span>
+</div>
+</div>
+</div>
+<!-- Card Actions Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mt-space-lg pt-space-sm">
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-high text-on-surface rounded-lg font-label-lg text-label-md inline-flex items-center gap-1.5 transition-colors" onclick="handleRenewal(this, 'Principles of Terrestrial Ecosystem Ecology')">
+<span class="material-symbols-outlined text-base text-primary">cached</span>
+<span>Renew Early</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-high text-on-surface rounded-lg font-label-lg text-label-md inline-flex items-center gap-1.5 transition-colors" onclick="copyCitation('Chapin, F. S., Matson, P. A., &amp; Mooney, H. A. Principles of Terrestrial Ecosystem Ecology. Springer.')">
+<span class="material-symbols-outlined text-base text-primary">format_quote</span>
+<span>Cite Book</span>
+</button>
+<a class="h-9 px-space-md bg-surface-container-low hover:bg-secondary-fixed text-primary rounded-lg font-label-lg text-label-md inline-flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-base">download</span>
+<span>Study Guide (PDF)</span>
+</a>
+</div>
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase tracking-wider">Standard Loan Term</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Loan Card 3: Standard Active Loan -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute top-0 left-0 bottom-0 w-1.5 bg-primary"></div>
+<div class="flex flex-col md:flex-row gap-space-md sm:gap-space-lg">
+<!-- Monograph Cover Container (2:3 aspect) -->
+<div class="w-28 sm:w-36 aspect-[2/3] shrink-0 bg-surface-container-high rounded-lg overflow-hidden relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Cover of Silent Spring 60th Anniversary Edition by Rachel Carson, delicate vintage botanical print of bird in wetland foliage, warm unbleached paper background, classical academic typography, editorial press archival collection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByVJwVn0c-WWp-OTXf0tmzTlrm_7yCMd-rDl7dx7u9Ds2ILGKqU3NtxHdHs845jS1HFbW9XxJEAIEgCOyusR4e_eWYUoPvXvzDYhdJIoywM1b8plKWkPK_eJD1AhRz7gTQYjf5-77N3olEvTY0lcdj0GC29uGsE0dic4u-XwMsvuAisgN2v9Z2TPoUuWGiMNTEvOByud0jgYd8fhi0njjA4eBSDNgwRcPg_ni4RjPshC-cuykNPi_RKw">
+</div>
+<!-- Book Details & Metadata -->
+<div class="flex-1 flex flex-col justify-between min-w-0">
+<div>
+<div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-primary font-metadata-caps text-metadata-caps uppercase tracking-wider font-semibold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                Due in 24 Days (Nov 17, 2024)
+              </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">
+                Barcode: 390880312980
+              </span>
+</div>
+<h2 class="font-title-editorial text-headline-sm text-on-surface font-semibold tracking-tight leading-snug">
+              Silent Spring: 60th Anniversary Edition
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+              by <span class="text-on-surface font-medium">Rachel Carson</span>
+</p>
+<!-- Archival Metadata Ledger Row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-y-2 gap-x-4 mt-space-md p-space-sm bg-surface-container-low rounded-lg text-body-sm font-body-sm">
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Call Number</span>
+<span class="font-semibold text-on-surface">SB959 .C37 2022</span>
+</div>
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Branch / Pickup</span>
+<span class="text-on-surface">Central University Library</span>
+</div>
+<div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline block">Borrow Date &amp; Renewals</span>
+<span class="text-on-surface">Oct 15, 2024 • <span class="font-medium text-primary">3 of 3 remaining</span></span>
+</div>
+</div>
+</div>
+<!-- Card Actions Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mt-space-lg pt-space-sm">
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-high text-on-surface rounded-lg font-label-lg text-label-md inline-flex items-center gap-1.5 transition-colors" onclick="handleRenewal(this, 'Silent Spring')">
+<span class="material-symbols-outlined text-base text-primary">cached</span>
+<span>Renew Early</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container-lowest hover:bg-surface-container-high text-on-surface rounded-lg font-label-lg text-label-md inline-flex items-center gap-1.5 transition-colors" onclick="copyCitation('Carson, R. (2022). Silent Spring: 60th Anniversary Edition. Mariner Books.')">
+<span class="material-symbols-outlined text-base text-primary">format_quote</span>
+<span>Cite Book</span>
+</button>
+</div>
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase tracking-wider">Auto-Grace Eligible</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Active Holds & Ready for Pickup Section -->
+<section class="w-full mb-space-xl">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
+          Holds &amp; Inter-Library Requests
+        </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Reserved materials waiting at campus service points</p>
+</div>
+<span class="font-metadata-caps text-metadata-caps px-2.5 py-1 rounded-full bg-secondary-fixed text-primary font-bold">
+        1 Ready for Dispatch
+      </span>
+</div>
+<!-- Hold Card (Ready for Pickup) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md sm:p-space-lg shadow-sm relative overflow-hidden">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl">local_library</span>
+</div>
+<div class="space-y-1 min-w-0">
+<div class="flex flex-wrap items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-primary font-metadata-caps text-metadata-caps uppercase font-bold tracking-wider">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                Ready for Pickup at Circulation Desk
+              </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">Queue Position: 1 of 1</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface font-semibold leading-snug">
+              The Ecological World View
+            </h3>
+<p class="font-body-md text-body-sm text-on-surface-variant">
+              by <span class="text-on-surface font-medium">Charles J. Krebs</span> • Call: <span class="font-mono text-xs">QH541 .K67 2008</span>
+</p>
+<div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class="inline-flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-base">pin_drop</span>
+                Seeley Historical Library (Main Desk)
+              </span>
+<span class="text-outline">/</span>
+<span class="inline-flex items-center gap-1 text-on-surface font-medium">
+<span class="material-symbols-outlined text-base text-outline">event_available</span>
+                Held until Oct 29, 2024 (5 days remaining)
+              </span>
+</div>
+</div>
+</div>
+<!-- Hold Actions -->
+<div class="flex flex-wrap items-center gap-space-sm shrink-0 pt-2 lg:pt-0">
+<button class="h-9 px-space-md bg-primary-container text-on-primary font-label-lg text-label-md rounded-lg hover:bg-primary transition-colors inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span>Pickup Desk Hours</span>
+</button>
+<button class="h-9 px-space-md bg-surface-container-high hover:bg-surface-variant text-on-surface font-label-lg text-label-md rounded-lg transition-colors inline-flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base text-outline">swap_horiz</span>
+<span>Transfer to Central</span>
+</button>
+<button class="h-9 px-3 text-error hover:bg-error-container rounded-lg font-label-lg text-label-md transition-colors">
+            Cancel
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Borrowing Policy & Academic Integration Banner -->
+<footer class="w-full bg-surface-container-low rounded-xl p-space-md sm:p-space-lg mb-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-sm max-w-3xl">
+<span class="material-symbols-outlined text-primary text-2xl shrink-0 mt-0.5">policy</span>
+<div class="space-y-0.5">
+<h4 class="font-label-lg text-label-md font-semibold text-on-surface">Faculty Borrowing Covenant &amp; Grace Policies</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          University Faculty and PhD candidates receive standard 28-day terms with automated grace renewals unless recalled by another researcher. Inter-library loans comply with the Cambridge Research Federation agreement.
+        </p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 self-end md:self-auto">
+<button class="inline-flex items-center gap-2 px-space-md h-10 bg-surface-container-lowest text-primary font-label-lg text-label-md rounded-lg hover:bg-secondary-fixed transition-colors shadow-sm" id="zoteroBtn" onclick="syncZotero()">
+<span class="material-symbols-outlined text-lg">sync_alt</span>
+<span>Sync with University Zotero</span>
+</button>
+</div>
+</footer>
+<!-- Notification Toast Container -->
+<div class="fixed bottom-6 right-6 max-w-md bg-on-surface text-inverse-on-surface px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none z-50" id="toastNotification">
+<span class="material-symbols-outlined text-secondary-fixed" id="toastIcon">check_circle</span>
+<span class="font-body-sm text-body-sm" id="toastMessage">Action updated</span>
+</div>
+</div>
+<script>
+  function showToast(message, icon = 'check_circle') {
+    const toast = document.getElementById('toastNotification');
+    const msg = document.getElementById('toastMessage');
+    const ico = document.getElementById('toastIcon');
+    if (!toast || !msg) return;
+    
+    msg.textContent = message;
+    ico.textContent = icon;
+    toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+    toast.classList.add('translate-y-0', 'opacity-100');
+    
+    setTimeout(() => {
+      toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }, 3200);
+  }
+
+  function handleRenewal(btn, title) {
+    btn.disabled = true;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = `<span class="material-symbols-outlined text-base animate-spin">refresh</span> Processing...`;
+    
+    setTimeout(() => {
+      btn.innerHTML = `<span class="material-symbols-outlined text-base text-secondary-fixed">done</span> Extended to Nov 27`;
+      btn.classList.remove('bg-primary', 'bg-surface-container-lowest');
+      btn.classList.add('bg-secondary-container', 'text-on-secondary-container');
+      showToast(`"${title}" successfully renewed through November 27, 2024.`);
+    }, 600);
+  }
+
+  function copyCitation(citationText) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(citationText).then(() => {
+        showToast('Citation copied to clipboard (APA 7th)', 'content_copy');
+      });
+    } else {
+      showToast('Citation ready: ' + citationText.substring(0, 30) + '...', 'content_copy');
+    }
+  }
+
+  function syncZotero() {
+    const btn = document.getElementById('zoteroBtn');
+    if (!btn) return;
+    const prev = btn.innerHTML;
+    btn.innerHTML = `<span class="material-symbols-outlined text-lg animate-spin">refresh</span> Syncing...`;
+    setTimeout(() => {
+      btn.innerHTML = `<span class="material-symbols-outlined text-lg text-primary">cloud_done</span> Synced`;
+      showToast('3 monographs and 22 citations pushed to Zotero Faculty Collection', 'cloud_done');
+      setTimeout(() => { btn.innerHTML = prev; }, 3500);
+    }, 1100);
+  }
+
+  function exportBibtexModal() {
+    const bibtexData = `@book{kuhn2012structure,\n  title={The Structure of Scientific Revolutions},\n  author={Kuhn, Thomas S.},\n  year={2012},\n  publisher={University of Chicago Press}\n}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(bibtexData).then(() => {
+        showToast('BibTeX entries copied to clipboard for 3 monographs', 'terminal');
+      });
+    }
+  }
+
+  document.getElementById('renewAllTopBtn')?.addEventListener('click', function() {
+    this.disabled = true;
+    this.innerHTML = `<span class="material-symbols-outlined text-lg animate-spin">refresh</span> Renewing...`;
+    setTimeout(() => {
+      this.innerHTML = `<span class="material-symbols-outlined text-lg">done_all</span> All Eligible Renewed`;
+      showToast('All 3 eligible titles have been extended by 28 calendar days', 'verified');
+    }, 850);
+  });
+</script></main></div></body></html>

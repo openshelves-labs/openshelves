@@ -1,0 +1,651 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="web_dashboard" name="shell-type">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    overscroll-behavior: none;
+    background-color: #fbf9f4;
+  }
+  main > :first-child {
+    margin-top: 0 !important;
+  }
+  main > :last-child {
+    margin-bottom: 0 !important;
+  }
+}
+::-webkit-scrollbar {
+  display: none;
+}
+</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "on-secondary-fixed": "#002112",
+        "on-secondary-container": "#486a56",
+        "on-tertiary-fixed-variant": "#3f4945",
+        "on-background": "#1b1c19",
+        "surface-container-high": "#eae8e3",
+        "on-primary-fixed-variant": "#214f38",
+        "inverse-surface": "#30312e",
+        "inverse-on-surface": "#f3f1ec",
+        "inverse-primary": "#a0d2b3",
+        "background": "#fbf9f4",
+        "surface-container": "#f0eee9",
+        "tertiary": "#363f3b",
+        "surface-variant": "#e4e2dd",
+        "secondary-fixed-dim": "#aacfb8",
+        "primary-fixed": "#bbeecf",
+        "tertiary-container": "#4d5652",
+        "surface-tint": "#39684f",
+        "surface-dim": "#dcdad5",
+        "on-surface-variant": "#414943",
+        "error-container": "#ffdad6",
+        "on-tertiary-container": "#c1cbc5",
+        "primary": "#16452f",
+        "on-tertiary-fixed": "#151d1a",
+        "on-error-container": "#93000a",
+        "error": "#ba1a1a",
+        "on-primary": "#ffffff",
+        "surface": "#fbf9f4",
+        "secondary-fixed": "#c6ebd3",
+        "outline": "#717972",
+        "tertiary-fixed-dim": "#bfc9c3",
+        "primary-fixed-dim": "#a0d2b3",
+        "surface-bright": "#fbf9f4",
+        "secondary": "#446652",
+        "on-primary-fixed": "#002112",
+        "on-secondary": "#ffffff",
+        "surface-container-low": "#f5f3ee",
+        "tertiary-fixed": "#dbe5df",
+        "primary-container": "#2f5d45",
+        "on-error": "#ffffff",
+        "on-surface": "#1b1c19",
+        "surface-container-lowest": "#ffffff",
+        "on-tertiary": "#ffffff",
+        "on-primary-container": "#a2d4b6",
+        "secondary-container": "#c3e9d0",
+        "on-secondary-fixed-variant": "#2c4d3c",
+        "surface-container-highest": "#e4e2dd",
+        "outline-variant": "#c0c9c1"
+      },
+      borderRadius: {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      spacing: {
+        "margin-lg": "3.5rem",
+        "gutter-lg": "2rem",
+        "space-sm": "0.5rem",
+        "space-lg": "1.5rem",
+        "margin-sm": "1rem",
+        "space-xs": "0.25rem",
+        "gutter-sm": "1rem",
+        "margin": "2rem",
+        "space-md": "1rem",
+        "space-xl": "2.5rem",
+        "gutter": "1.5rem"
+      },
+      fontFamily: {
+        "headline-lg": ["Literata"],
+        "label-md": ["DM Sans"],
+        "body-md": ["DM Sans"],
+        "headline-sm": ["Literata"],
+        "body-lg": ["DM Sans"],
+        "headline-lg-mobile": ["Literata"],
+        "display-lg": ["Literata"],
+        "body-sm": ["DM Sans"],
+        "title-editorial": ["Literata"],
+        "display-lg-mobile": ["Literata"],
+        "headline-md": ["Literata"],
+        "metadata-caps": ["DM Sans"],
+        "label-lg": ["DM Sans"]
+      },
+      fontSize: {
+        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+        "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+        "body-lg": ["17px", { "lineHeight": "28px", "fontWeight": "400" }],
+        "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+        "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+        "title-editorial": ["18px", { "lineHeight": "26px", "fontWeight": "500" }],
+        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+        "metadata-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "600" }],
+        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+      }
+    }
+  }
+}
+</script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased">
+<!-- PERSISTENT LEFT SIDEBAR -->
+<aside class="fixed inset-y-0 left-0 w-64 bg-surface-container-low z-40 flex flex-col justify-between overflow-y-auto select-none border-r border-outline-variant">
+<div>
+<!-- Brand Identity Header -->
+<div class="h-16 px-space-md flex items-center gap-3 border-b border-outline-variant"><img alt="OpenShelves Logo" class="w-8 h-8 rounded-lg shrink-0 object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UevTnFaccMoOEDCGZr-gMjQcT3luuRbSH4GPdHpOjWy-1mag6H3mrYfTYFHGw5MdQuT-Qc57oB4_nkTSnmQyVw2ER1J4-syzJX3fjH-Gr5MccNT5pOpqwfAuAHb3PQa-B5wfaeOn4IFNlMSD1DZdjQPstZKo4ql6fRVgEvdNBYShuv8CPv-8iuvmUOJ8lvu9Rml90mDiUwPxWXPXK6VtOu7FotQZK7o5e0NxwKOiD7nf6yA8hcwAF4S8w"><div class="flex flex-col min-w-0"><span class="font-title-editorial font-bold text-lg text-on-surface leading-tight tracking-tight">OpenShelves</span><span class="font-metadata-caps text-[10px] uppercase tracking-wider text-outline">Central University Library</span></div></div>
+<!-- Navigation Sections -->
+<div class="p-space-md space-y-space-lg">
+<!-- Scholar / General Navigation -->
+<nav class="space-y-space-xs" data-active-classes="bg-surface-container-highest text-primary font-medium">
+<div class="px-space-sm py-space-xs font-metadata-caps text-metadata-caps uppercase text-outline">Scholar Library</div>
+<a class="block px-space-sm py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="openshelves-workspace-home" href="#">
+          Workspace / Home
+        </a>
+<a class="block px-space-sm py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="openshelves-browse-catalog" href="#">
+          Browse Catalog
+        </a>
+<a class="block px-space-sm py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="openshelves-reading-lists" href="#">
+          Reading Lists
+        </a>
+<a class="block px-space-sm py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="openshelves-loans-holds" href="#">
+          Loans &amp; Holds
+        </a>
+</nav>
+<!-- Admin / Cataloging Section -->
+<nav class="space-y-space-xs" data-active-classes="bg-surface-container-highest text-primary font-medium">
+<div class="px-space-sm py-space-xs font-metadata-caps text-metadata-caps uppercase text-outline">ADMIN / CATALOGING</div>
+<a aria-current="page" class="block px-space-sm py-space-sm rounded-lg transition-colors bg-surface-container-highest text-primary font-medium" data-path="openshelves-admin-add-resource" href="#">
+          Add Resource
+        </a>
+<a class="block px-space-sm py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="openshelves-admin-batch-ingestion" href="#">
+          Batch Ingestion
+        </a>
+<a class="block px-space-sm py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="openshelves-admin-authority-records" href="#">
+          Authority Records
+        </a>
+<a class="block px-space-sm py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors font-label-lg text-label-lg" data-path="openshelves-admin-shelf-inventory" href="#">
+          Shelf Inventory
+        </a>
+</nav>
+</div>
+</div>
+<!-- Bottom Ledger Status Badge -->
+<div class="p-space-md border-t border-outline-variant"><div class="p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></span><div class="flex flex-col"><span class="font-label-lg text-xs font-semibold text-on-surface leading-tight">Central University Library Network</span><span class="font-metadata-caps text-[10px] text-primary mt-0.5 font-medium">Access Active &amp; Verified</span></div></div></div>
+</aside>
+<!-- TOP HEADER -->
+<header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-low/90 backdrop-blur-sm px-gutter flex items-center justify-between gap-space-md z-30 border-b border-outline-variant">
+<div class="flex-1 max-w-xl">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[20px] pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-12 bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Search catalog, call numbers, ISBN, subjects..." type="search">
+<div class="absolute right-3 flex items-center">
+<kbd class="font-metadata-caps text-metadata-caps px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant">⌘K</kbd>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-space-md shrink-0"><button class="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-surface-container-lowest border border-outline-variant hover:bg-surface-container text-on-surface font-label-lg text-xs rounded-lg transition-colors shadow-xs" type="button"><span class="material-symbols-outlined text-base text-primary">add</span><span class="">New List</span></button>
+<button aria-label="Notifications" class="relative p-space-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container-low"></span>
+</button>
+<div class="h-5 w-px bg-surface-variant"></div>
+<!-- User Identity -->
+<div class="flex items-center gap-2.5 pl-1 cursor-pointer"><div class="w-8 h-8 rounded-full bg-primary text-white font-title-editorial font-semibold text-xs flex items-center justify-center border border-primary/30 shadow-xs">A</div><div class="flex flex-col text-left"><span class="font-label-lg text-xs font-semibold text-on-surface leading-none">Arpan</span><span class="font-metadata-caps text-[10px] text-outline mt-0.5">Scholar Account</span></div><span class="material-symbols-outlined text-outline text-lg">expand_more</span></div>
+</div>
+</header>
+<!-- WORKSPACE CONTENT CONTAINER -->
+<main class="pl-64 pt-16 min-h-screen bg-background">
+<div class="w-full max-w-6xl mx-auto p-margin">
+<div class="flex flex-col w-full space-y-space-xl">
+<!-- BREADCRUMB & HEADER SECTION -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="space-y-space-xs max-w-2xl">
+<!-- Breadcrumb -->
+<nav aria-label="Catalog hierarchy" class="flex items-center gap-2 font-metadata-caps text-metadata-caps uppercase text-outline tracking-wider">
+<span class="hover:text-primary transition-colors cursor-pointer">Catalog Administration</span>
+<span class="text-outline-variant">/</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Accessions &amp; Ingestion</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-semibold">Add Resource</span>
+</nav>
+<!-- Page Title & Scope -->
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+        Catalog New Resource
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Ingest bibliographic records from external metadata providers or mint new accession records with automated authority verification.
+      </p>
+</div>
+<!-- Active Cataloger Badge -->
+<div class="flex items-center gap-space-sm px-space-md py-space-sm bg-surface-container rounded-lg shrink-0"><button class="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-surface-container-lowest border border-outline-variant hover:bg-surface-container text-on-surface font-label-lg text-xs rounded-lg transition-colors shadow-xs" type="button"><span class="material-symbols-outlined text-base text-primary">add</span><span class="">New List</span></button>
+<span class="material-symbols-outlined text-primary text-[20px]">badge</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Dr. Eleanor Vance</span>
+<span class="font-metadata-caps text-metadata-caps text-outline">Special Collections &amp; Serials</span>
+</div>
+</div>
+</header>
+<!-- WIZARD STEP INDICATOR -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<ol class="grid grid-cols-1 md:grid-cols-3 gap-space-md text-left">
+<!-- Step 1: Lookup Completed/Active -->
+<li class="flex items-center gap-space-sm">
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md shrink-0">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</span>
+<div class="flex flex-col min-w-0">
+<span class="font-metadata-caps text-metadata-caps uppercase text-primary font-bold">Step 1 • Query</span>
+<span class="font-label-lg text-label-lg text-on-surface font-medium truncate">Lookup &amp; Identifiers</span>
+</div>
+</li>
+<!-- Step 2: Conflict Resolution (Active) -->
+<li class="flex items-center gap-space-sm bg-surface-container-low p-2 rounded-lg -m-2">
+<span class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-md text-label-md shrink-0">
+          2
+        </span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-metadata-caps text-metadata-caps uppercase text-primary-container font-bold">Step 2 • Active</span>
+<span class="w-2 h-2 rounded-full bg-error"></span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold truncate">Review &amp; Resolve Conflicts</span>
+</div>
+</li>
+<!-- Step 3: Holdings & Preservation -->
+<li class="flex items-center gap-space-sm opacity-60">
+<span class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-md text-label-md shrink-0">
+          3
+        </span>
+<div class="flex flex-col min-w-0">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline font-semibold">Step 3 • Finalize</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant font-medium truncate">Holdings &amp; Classification</span>
+</div>
+</li>
+</ol>
+</div>
+<!-- STEP 1 CARD: MULTI-SOURCE IDENTIFIER LOOKUP -->
+<section class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm space-y-space-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="space-y-0.5">
+<h2 class="font-title-editorial text-title-editorial text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">manage_search</span>
+          Multi-Source Bibliographic Ingestion
+        </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Federated query across Library of Congress, Open Library, Google Books, and Crossref registers.</p>
+</div>
+<!-- Search Schema Selector Tabs -->
+<div class="inline-flex p-1 bg-surface-container rounded-lg font-label-md text-label-md">
+<button class="px-3 py-1 rounded bg-surface-container-lowest text-primary font-semibold shadow-xs" type="button">ISBN-10 / 13</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors" type="button">Title + Author</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors" type="button">ASIN / EAN</button>
+<button class="px-3 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors" type="button">DOI / OCLC</button>
+</div>
+</div>
+<!-- Inputs & Type Selector Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-end">
+<!-- ISBN Input -->
+<div class="md:col-span-4 space-y-1.5">
+<label class="block font-metadata-caps text-metadata-caps uppercase text-on-surface-variant font-semibold">Standard Identifier (ISBN)</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">barcode</span>
+<input class="w-full h-10 pl-10 pr-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container-lowest" type="text" value="978-0-19-883492-2">
+</div>
+</div>
+<!-- Resource Format Selection -->
+<div class="md:col-span-4 space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-metadata-caps text-metadata-caps uppercase text-on-surface-variant font-semibold">Resource Format Type</label>
+<span class="font-metadata-caps text-[10px] text-primary">MARC21 Record 008</span>
+</div>
+<div class="relative">
+<select class="w-full h-10 pl-3 pr-8 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none appearance-none cursor-pointer">
+<option selected="">General (Monograph / Print)</option>
+<option>Comics / Graphic Novel</option>
+<option>Audiobook &amp; Spoken Word</option>
+<option>Electronic Folio / E-Book</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-outline pointer-events-none text-[20px]">unfold_more</span>
+</div>
+</div>
+<!-- Action Button -->
+<div class="md:col-span-4">
+<button class="w-full h-10 px-space-md bg-primary-container hover:bg-primary text-on-primary rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-2 transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+          Re-run Multi-Source Lookup
+        </button>
+</div>
+</div>
+<!-- Provider Connections Bar -->
+<div class="pt-space-xs flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-low p-space-sm rounded-lg text-body-sm">
+<div class="flex flex-wrap items-center gap-space-md">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Target Registries:</span>
+<label class="inline-flex items-center gap-1.5 cursor-pointer font-label-md text-label-md text-on-surface">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Open Library (Live)
+        </label>
+<label class="inline-flex items-center gap-1.5 cursor-pointer font-label-md text-label-md text-on-surface">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Google Books (API v1)
+        </label>
+<label class="inline-flex items-center gap-1.5 cursor-pointer font-label-md text-label-md text-on-surface">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Hardcover Community
+        </label>
+<label class="inline-flex items-center gap-1.5 cursor-pointer font-label-md text-label-md text-outline">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span> Crossref Metadata
+        </label>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant italic">Changing type adjusts cataloging rules &amp; field schemas</span>
+</div>
+</section>
+<!-- STEP 2: LOOKUP RESULTS & SOURCE COMPARISON CARDS -->
+<section class="space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">3 Provider Matches Found</h2>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold">
+          ISBN 978-0-19-883492-2
+        </span>
+</div>
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Auto-Merged • Base schema applied</span>
+</div>
+<!-- Match Comparison Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Match Card 1 (Selected Base) -->
+<article class="bg-surface-container-lowest p-space-md rounded-xl shadow-md flex flex-col justify-between space-y-space-md relative overflow-hidden">
+<div class="absolute top-0 right-0 left-0 h-1 bg-primary"></div>
+<div class="space-y-space-sm">
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-primary text-on-primary font-metadata-caps text-metadata-caps font-bold uppercase">
+<span class="material-symbols-outlined text-[12px]">verified</span>
+              Open Library • 98%
+            </span>
+<span class="font-metadata-caps text-metadata-caps text-primary font-semibold">Recommended</span>
+</div>
+<div class="flex gap-space-sm pt-space-xs">
+<div class="w-16 h-24 shrink-0 rounded bg-surface-container-high overflow-hidden shadow-xs">
+<img class="w-full h-full object-cover" data-alt="Vintage academic textbook cover of Ecosystem Resilience and Forest Canopy Dynamics featuring an intricate botanical copperplate engraving of temperate forest crowns in deep olive greens and rich amber paper tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-HQBFJoI9FaWqub30G5un-oZra5JWUryg8Heeu4zOzYyDtxzk9PJJbaPrfB_wnaHefuBNzUVpI1GeW1ZpxhGN6OfYeFbiVNcnprvI4PQ_L-dNeA2BQwMCOSzoYayqSyzA4hKK7YMfikfFloQVsgO6zF_c-1EaAFYwULxuKvltaEslJ3Vw1-0F4jYDQRR13G6kICLZ3F6YIDcjT76cbDR8ELC2b_KGt1o8wVhL_7bL_MajwfLRSu-5Zg">
+</div>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-body-lg font-semibold text-on-surface leading-tight line-clamp-2">
+                Ecosystem Resilience and Forest Canopy Dynamics
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-1">Prof. Julian Sterling, Dr. Elena Rostova</p>
+<div class="mt-2 text-[12px] font-label-md text-outline">
+<span class="">Oxford University Press</span> • <span class="">2021 (2nd Ed.)</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full h-9 bg-primary text-on-primary rounded font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 shadow-xs cursor-default" type="button">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+          Selected as Base Schema
+        </button>
+</article>
+<!-- Match Card 2 (Google Books) -->
+<article class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between space-y-space-md hover:bg-surface-container-low transition-colors">
+<div class="space-y-space-sm">
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-metadata-caps text-metadata-caps font-medium">
+              Google Books • 94%
+            </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">MARC Excerpt</span>
+</div>
+<div class="flex gap-space-sm pt-space-xs">
+<div class="w-16 h-24 shrink-0 rounded bg-surface-container-high overflow-hidden shadow-xs">
+<img class="w-full h-full object-cover" data-alt="Cover of Ecosystem Resilience &amp; Forest Canopy Dynamics showing a stylized minimalist line art depiction of arboreal leaves and sunbeams against crisp parchment paper background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ59JmaqfEnqvwsgGdXejCqU8oJgKUYv2k4MdBvaAWPP9LHZ3uHSPwqsFPui1F0OPU-YDGxJHb0uhB4CtM8Bc6i4duOC302H42iW20xdiKDhz15vWNgDGwE8PIjz5hyki6TcsJKJnfnC2MpQCo6WjyFxBVqAl1YfCTLgvn3_SdvSkVSM16ZnjiwJTVmRhGHrs8wKIRnixMu4EEKD9T2x21TwO5DEjIaXqeirUo-JETSRhtoz_l-4Hb6A">
+</div>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-body-lg font-medium text-on-surface leading-tight line-clamp-2">
+                Ecosystem Resilience &amp; Forest Canopy Dynamics
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-1">Julian Sterling, E. Rostova</p>
+<div class="mt-2 text-[12px] font-label-md text-outline">
+<span class="">OUP Academic</span> • <span class="">2020 (Catalogued 2021)</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full h-9 bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+          Compare Fields (1 Conflict)
+        </button>
+</article>
+<!-- Match Card 3 (Hardcover / Community) -->
+<article class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between space-y-space-md hover:bg-surface-container-low transition-colors">
+<div class="space-y-space-sm">
+<div class="flex items-start justify-between gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-metadata-caps text-metadata-caps font-medium">
+              Hardcover Community • 88%
+            </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">Crowdsourced</span>
+</div>
+<div class="flex gap-space-sm pt-space-xs">
+<div class="w-16 h-24 shrink-0 rounded bg-surface-container-high overflow-hidden shadow-xs">
+<img class="w-full h-full object-cover" data-alt="Alternative edition cover of Ecosystem Resilience in Canopy Ecology showing dense botanical canopy photography with high contrast natural lighting and emerald green foliage." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdgHHEaQxMaplL4Ld4X9tqk3lQigimP_dx_y4zPbgRuHbRJrmN_--JJOx5Ke26rx1hpv4Ve7DrUhYmNP8g_volwCNbOLxWoBWSJ4tXWDZdyTgh9th7lxVRCrg-I6QjQzF6DPt1qJuOHjQGSqNaTAbZOU4DBarrJ0HsVaFb3xEi9gBdQtq_-YQxQWIhLwnOtowdKby8859jYkrfnFJNNCYURlsuzzeLFqa2L6UOhwO8jeHibYNwy3ay7w">
+</div>
+<div class="flex flex-col min-w-0">
+<h3 class="font-headline-sm text-body-lg font-medium text-on-surface leading-tight line-clamp-2">
+                Ecosystem Resilience in Canopy Ecology
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-1">J. Sterling</p>
+<div class="mt-2 text-[12px] font-label-md text-outline">
+<span class="">Oxford Univ Press</span> • <span class="">2021</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full h-9 bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">compare_arrows</span>
+          Compare Fields
+        </button>
+</article>
+</div>
+</section>
+<!-- STEP 3: EDITABLE METADATA FORM & CONFLICT RESOLUTION -->
+<section class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm space-y-space-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
+<div class="space-y-0.5">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Resource Metadata &amp; Conflict Resolution</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Fields with discrepancy between providers are flagged in amber. Select preferred source or type manual override.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-metadata-caps text-metadata-caps uppercase text-outline">Authority Standard:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-metadata-caps text-metadata-caps font-semibold">Dublin Core + MARC21</span>
+</div>
+</div>
+<!-- Alert Discrepancy Banner -->
+<div class="bg-surface-container-high p-space-md rounded-lg flex items-start gap-space-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5">rule_settings</span>
+<div class="flex-1 space-y-0.5">
+<div class="font-label-lg text-label-lg font-semibold text-on-surface">2 Discrepancies detected between Open Library and Google Books</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Review the highlighted <span class="font-medium text-primary">Authors &amp; Contributors</span> and <span class="font-medium text-primary">Publication Date</span> entries before committing to the main catalog ledger.</p>
+</div>
+<button class="text-primary font-label-md text-label-md font-semibold hover:underline" type="button">Accept All Recommended</button>
+</div>
+<!-- Form Fields Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Field 1: Title (Neutral / Validated) -->
+<div class="md:col-span-2 space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-metadata-caps text-metadata-caps uppercase text-on-surface font-bold tracking-wider">
+            Resource Title (245 $a)
+          </label>
+<span class="font-metadata-caps text-metadata-caps text-primary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> Source: Open Library (Verified)
+          </span>
+</div>
+<input class="w-full h-11 px-3 bg-surface-container-low rounded-lg font-body-lg text-body-lg text-on-surface focus:outline-none focus:bg-surface-container-lowest" type="text" value="Ecosystem Resilience and Forest Canopy Dynamics">
+</div>
+<!-- Field 2: Authors (FLAGGED AMBER) -->
+<div class="md:col-span-2 space-y-2 bg-surface-container-low p-space-md rounded-xl">
+<div class="flex items-center justify-between">
+<label class="font-metadata-caps text-metadata-caps uppercase text-on-surface font-bold tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">warning</span>
+            Authors &amp; Contributors (100 / 700)
+          </label>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-metadata-caps text-metadata-caps font-bold uppercase">
+            Discrepancy Detected
+          </span>
+</div>
+<input class="w-full h-11 px-3 bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none" id="authorInput" type="text" value="Prof. Julian Sterling; Dr. Elena Rostova">
+<!-- Source Selector Pills -->
+<div class="pt-1 flex flex-wrap items-center gap-2">
+<button class="px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md flex items-center gap-1.5 shadow-xs" onclick="document.getElementById('authorInput').value='Prof. Julian Sterling; Dr. Elena Rostova'" type="button">
+<span class="material-symbols-outlined text-[14px]">check</span>
+            Open Library: "Prof. Julian Sterling, Dr. Elena Rostova"
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant font-label-md text-label-md transition-colors" onclick="document.getElementById('authorInput').value='Julian Sterling; E. Rostova'" type="button">
+            Google Books: "Julian Sterling, E. Rostova"
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container text-outline font-label-md text-label-md transition-colors" type="button">
+            Custom Edit
+          </button>
+</div>
+</div>
+<!-- Field 3: Publication Year (FLAGGED AMBER) -->
+<div class="space-y-2 bg-surface-container-low p-space-md rounded-xl">
+<div class="flex items-center justify-between">
+<label class="font-metadata-caps text-metadata-caps uppercase text-on-surface font-bold tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_clock</span>
+            Publication Date / Year (260 $c)
+          </label>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-metadata-caps text-metadata-caps font-bold uppercase">
+            Year Mismatch
+          </span>
+</div>
+<input class="w-full h-11 px-3 bg-surface-container-lowest rounded-lg font-body-md text-body-md text-on-surface focus:outline-none" id="yearInput" type="text" value="2021">
+<div class="pt-1 flex flex-wrap items-center gap-2">
+<button class="px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md flex items-center gap-1.5 shadow-xs" onclick="document.getElementById('yearInput').value='2021'" type="button">
+<span class="material-symbols-outlined text-[14px]">check</span>
+            Open Library: 2021 (Copyright)
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container text-on-surface-variant font-label-md text-label-md transition-colors" onclick="document.getElementById('yearInput').value='2020'" type="button">
+            Google Books: 2020 (Pre-print)
+          </button>
+</div>
+</div>
+<!-- Field 4: Publisher & Imprint -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-metadata-caps text-metadata-caps uppercase text-on-surface font-bold tracking-wider">
+            Publisher &amp; Imprint (260 $b)
+          </label>
+<span class="font-metadata-caps text-metadata-caps text-primary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> Source: Open Library
+          </span>
+</div>
+<input class="w-full h-11 px-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container-lowest" type="text" value="Oxford University Press">
+</div>
+<!-- Field 5: LC Classification & Call Number -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-metadata-caps text-metadata-caps uppercase text-on-surface font-bold tracking-wider">
+            LC Classification / Call Number (050)
+          </label>
+<span class="font-metadata-caps text-metadata-caps text-secondary font-semibold">
+            LC Authority Linked
+          </span>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">shelves</span>
+<input class="w-full h-11 pl-10 pr-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container-lowest font-mono" type="text" value="QH541.15.R45 S74 2021">
+</div>
+</div>
+<!-- Field 6: Dewey Decimal (Additional catalog depth) -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-metadata-caps text-metadata-caps uppercase text-on-surface font-bold tracking-wider">
+            Dewey Decimal (DDC 082)
+          </label>
+<span class="font-metadata-caps text-metadata-caps text-outline">DDC 23rd Edition</span>
+</div>
+<input class="w-full h-11 px-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container-lowest font-mono" type="text" value="577.3">
+</div>
+<!-- Field 7: FAST / MeSH Subject Headings -->
+<div class="md:col-span-2 space-y-2">
+<label class="block font-metadata-caps text-metadata-caps uppercase text-on-surface font-bold tracking-wider">
+          FAST / MeSH Controlled Subject Headings (650)
+        </label>
+<div class="flex flex-wrap items-center gap-2 p-2 bg-surface-container-low rounded-lg">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-lowest rounded-full font-label-md text-label-md text-on-surface shadow-xs">
+            Forest ecology
+            <span class="material-symbols-outlined text-[14px] text-outline hover:text-error cursor-pointer">close</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-lowest rounded-full font-label-md text-label-md text-on-surface shadow-xs">
+            Ecosystem resilience
+            <span class="material-symbols-outlined text-[14px] text-outline hover:text-error cursor-pointer">close</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-lowest rounded-full font-label-md text-label-md text-on-surface shadow-xs">
+            Canopy biology
+            <span class="material-symbols-outlined text-[14px] text-outline hover:text-error cursor-pointer">close</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-lowest rounded-full font-label-md text-label-md text-on-surface shadow-xs">
+            Environmental changes
+            <span class="material-symbols-outlined text-[14px] text-outline hover:text-error cursor-pointer">close</span>
+</span>
+<button class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container hover:bg-surface-container-high rounded-full font-label-md text-label-md text-primary font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px]">add</span> Add Subject Heading
+          </button>
+</div>
+</div>
+<!-- Field 8: Abstract / Annotation Excerpt -->
+<div class="md:col-span-2 space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="font-metadata-caps text-metadata-caps uppercase text-on-surface font-bold tracking-wider">
+            Abstract &amp; Scope Summary (520)
+          </label>
+<span class="font-metadata-caps text-metadata-caps text-outline">English (en-GB)</span>
+</div>
+<textarea class="w-full p-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container-lowest leading-relaxed" rows="4">Synthesizing twenty-five years of arboreal flux tower data across boreal and temperate zones, this volume models microclimatic buffering and structural resilience within old-growth canopies under extreme meteorological variation. It incorporates Dublin Core cross-references for botanical bioclimatology research cohorts.</textarea>
+</div>
+</div>
+</section>
+<!-- CITATION QUOTATION BOX (Specialized System Element) -->
+<div class="bg-surface-container-low p-space-md rounded-lg flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-primary text-[24px] shrink-0">format_quote</span>
+<div class="font-title-editorial text-body-md text-on-surface truncate">
+        Sterling, J., &amp; Rostova, E. (2021). <span class="italic">Ecosystem Resilience and Forest Canopy Dynamics</span> (2nd ed.). Oxford University Press.
+      </div>
+</div>
+<button class="font-label-md text-label-md text-primary hover:underline font-semibold shrink-0" type="button">
+      Copy APA / BibTeX
+    </button>
+</div>
+<!-- BOTTOM ACTION BAR -->
+<div class="sticky bottom-4 z-20 bg-surface-container-lowest/95 backdrop-blur p-space-md rounded-xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<!-- Auto-save Status Indicator -->
+<div class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="">Draft saved automatically <time class="font-medium text-on-surface">2 minutes ago</time></span>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-wrap items-center gap-space-sm w-full sm:w-auto justify-end">
+<!-- Discard / Reset -->
+<button class="h-10 px-4 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-lg text-label-lg transition-colors" type="button">
+        Discard &amp; Reset
+      </button>
+<!-- Holdings Drawer Opener -->
+<button class="h-10 px-4 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-lg text-label-lg flex items-center gap-1.5 transition-colors shadow-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        Add Physical Copies &amp; Barcodes...
+      </button>
+<!-- Primary Save Resource Button -->
+<button class="h-10 px-6 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center gap-2 shadow-md transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[20px]">check</span>
+        Save Resource to Catalog
+      </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

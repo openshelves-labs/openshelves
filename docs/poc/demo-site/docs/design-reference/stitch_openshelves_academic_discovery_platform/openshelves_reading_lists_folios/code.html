@@ -1,0 +1,541 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Lora:ital,wght@0,400..700;1,400..700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;background-color:#F3F1EC;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-paper":"#F3F1EC","border-warm":"#E5E0D8","secondary-fixed":"#c6ebd3","on-error":"#ffffff","outline":"#717972","surface-container":"#f0eee9","on-tertiary-fixed":"#151d1a","surface-dim":"#dcdad5","tertiary-fixed-dim":"#bfc9c3","on-tertiary-fixed-variant":"#3f4945","on-error-container":"#93000a","error-container":"#ffdad6","secondary-fixed-dim":"#aacfb8","surface-variant":"#e4e2dd","on-surface":"#1b1c19","on-primary-container":"#a2d4b6","surface-container-highest":"#e4e2dd","on-primary-fixed-variant":"#214f38","surface-container-lowest":"#ffffff","on-primary-fixed":"#002112","background":"#F3F1EC","primary-container":"#2f5d45","surface-container-high":"#eae8e3","inverse-on-surface":"#f3f1ec","on-surface-variant":"#414943","secondary-container":"#c3e9d0","surface-tint":"#39684f","on-background":"#1b1c19","tertiary-fixed":"#dbe5df","on-secondary-container":"#486a56","on-tertiary":"#ffffff","on-tertiary-container":"#c1cbc5","primary-fixed":"#bbeecf","on-secondary":"#ffffff","primary":"#2F5D45","on-primary":"#ffffff","tertiary":"#363f3b","surface-bright":"#fbf9f4","surface-container-low":"#f5f3ee","tertiary-container":"#4d5652","inverse-primary":"#a0d2b3","inverse-surface":"#30312e","on-secondary-fixed":"#002112","outline-variant":"#E5E0D8","secondary":"#446652","error":"#ba1a1a","on-secondary-fixed-variant":"#2c4d3c","primary-fixed-dim":"#a0d2b3","surface":"#F3F1EC"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},fontFamily:{"body-md":["DM Sans", "sans-serif"],"body-sm":["DM Sans", "sans-serif"],"label-lg":["DM Sans", "sans-serif"],"metadata-caps":["DM Sans", "sans-serif"],"title-editorial":["Lora", "serif"],"headline-md":["Lora", "serif"],"headline-sm":["Lora", "serif"],"headline-lg":["Lora", "serif"]}}}}</script></head><body class="bg-[#F3F1EC] font-body-md text-on-surface antialiased flex min-h-screen">
+<!-- PERSISTENT FULL HEIGHT STICKY SIDEBAR -->
+<aside class="sticky top-0 h-screen w-64 bg-[#F3F1EC] border-r border-[#E5E0D8] z-40 flex flex-col justify-between overflow-y-auto shrink-0 select-none">
+<div>
+<!-- Logo Brand Header -->
+<div class="h-16 px-5 flex items-center gap-3 border-b border-[#E5E0D8]"><img alt="OpenShelves Logo" class="w-9 h-9 rounded-lg shrink-0 object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UevTnFaccMoOEDCGZr-gMjQcT3luuRbSH4GPdHpOjWy-1mag6H3mrYfTYFHGw5MdQuT-Qc57oB4_nkTSnmQyVw2ER1J4-syzJX3fjH-Gr5MccNT5pOpqwfAuAHb3PQa-B5wfaeOn4IFNlMSD1DZdjQPstZKo4ql6fRVgEvdNBYShuv8CPv-8iuvmUOJ8lvu9Rml90mDiUwPxWXPXK6VtOu7FotQZK7o5e0NxwKOiD7nf6yA8hcwAF4S8w"><div class="flex flex-col"><span class="font-title-editorial font-bold text-lg text-on-surface leading-tight tracking-tight">OpenShelves</span><span class="font-metadata-caps text-[10px] uppercase tracking-wider text-outline">Central University Library</span></div></div>
+<!-- Navigation Lists -->
+<div class="p-4 space-y-6">
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Discover</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<span class="font-label-lg text-sm">Home</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+<span class="font-label-lg text-sm">Browse Catalog</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+<span class="font-label-lg text-sm">New Arrivals</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">48</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">star</span>
+<span class="font-label-lg text-sm">Recommended</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">12</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">My Library</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+<span class="font-label-lg text-sm">Current Loans</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">3</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">bookmark_added</span>
+<span class="font-label-lg text-sm">Holds</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">1</span>
+</a>
+<a aria-current="page" class="flex items-center justify-between px-3 py-2 rounded-lg bg-[#c6ebd3]/70 text-[#2F5D45] font-semibold border border-[#2F5D45]/20 shadow-sm" href="#"><div class="flex items-center gap-2.5"><span class="material-symbols-outlined text-[20px]">folder</span><span class="font-label-lg text-sm">Reading Lists</span></div><span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white text-[#2F5D45] border border-[#E5E0D8] font-bold">3</span></a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="font-label-lg text-sm">Reading History</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="font-label-lg text-sm">Fines &amp; Fees</span>
+</div>
+<span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-white/70 text-on-surface-variant border border-[#E5E0D8]">$0.00</span>
+</a>
+</nav>
+<nav class="space-y-1">
+<div class="px-3 py-1 font-metadata-caps text-[11px] uppercase tracking-wider text-outline font-semibold">Collections</div>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+<span class="font-label-lg text-sm">Journals &amp; Serials</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-white/60 hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-[20px]">database</span>
+<span class="font-label-lg text-sm">Digital Resources</span>
+</div>
+</a>
+</nav>
+</div>
+</div>
+<!-- Bottom Network Badge -->
+<div class="p-4 border-t border-[#E5E0D8]">
+<div class="p-3 rounded-lg bg-white/80 border border-[#E5E0D8] flex items-start gap-2.5"><span class="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></span><div class="flex flex-col"><span class="font-label-lg text-xs font-semibold text-on-surface leading-tight">Central University Library Network</span><span class="font-metadata-caps text-[10px] text-primary mt-0.5 font-medium">Access Active &amp; Verified</span></div></div>
+</div>
+</aside>
+<!-- MAIN APP CONTAINER -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TOP HEADER -->
+<header class="sticky top-0 h-16 bg-[#F3F1EC]/90 backdrop-blur-sm border-b border-[#E5E0D8] px-8 flex items-center justify-between gap-6 z-30">
+<div class="flex-1 max-w-xl">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-lg pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-12 bg-white border border-[#E5E0D8] rounded-xl font-body-md text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors shadow-2xs" placeholder="Search titles, authors, subjects, ISBN, DOI…" type="search">
+<div class="absolute right-3 flex items-center">
+<kbd class="font-metadata-caps text-[10px] px-1.5 py-0.5 rounded bg-[#eae8e3] border border-[#E5E0D8] text-on-surface-variant font-medium">⌘K</kbd>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<button class="hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 bg-white border border-[#E5E0D8] hover:bg-stone-50 text-on-surface font-label-lg text-xs rounded-lg transition-colors shadow-2xs" type="button">
+<span class="material-symbols-outlined text-base text-primary">add</span>
+<span class="">New List</span>
+</button>
+<button aria-label="Notifications" class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-white/60 rounded-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-[#F3F1EC]"></span>
+</button>
+<div class="h-5 w-px bg-[#E5E0D8]"></div>
+<!-- User Identity: Arpan -->
+<div class="flex items-center gap-2.5 pl-1 cursor-pointer"><div class="w-8 h-8 rounded-full bg-[#2F5D45] text-white font-title-editorial font-semibold text-xs flex items-center justify-center border border-[#2F5D45]/30 shadow-2xs">A</div><div class="flex flex-col text-left"><span class="font-label-lg text-xs font-semibold text-on-surface leading-none">Arpan</span><span class="font-metadata-caps text-[10px] text-outline mt-0.5">Scholar Account</span></div><span class="material-symbols-outlined text-outline text-lg">expand_more</span></div>
+</div>
+</header>
+<!-- WORKSPACE CONTENT -->
+<main class="w-full max-w-6xl mx-auto px-8 py-8 space-y-9"><div class="flex flex-col w-full space-y-8">
+<!-- BREADCRUMB & HEADER SECTION -->
+<section class="flex flex-col gap-5">
+<nav aria-label="Breadcrumbs" class="flex items-center gap-2">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">home</span>
+<span class="">Home</span>
+</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">My Library</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="font-body-sm text-body-sm text-primary font-semibold">Reading Lists &amp; Bibliographic Folios</span>
+</nav>
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+<div class="space-y-2 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="font-metadata-caps text-metadata-caps uppercase text-secondary tracking-widest bg-secondary-fixed/50 px-2.5 py-0.5 rounded-full">
+            Scholarly Repository
+          </span>
+<span class="text-outline text-xs">•</span>
+<span class="font-metadata-caps text-metadata-caps text-outline uppercase tracking-wider">Cambridge Library System</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+          Curated Reading Lists &amp; Folios
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Curate syllabi, organize literature for research grants, and manage bibliographic folios across courses and collaborative laboratory projects.
+        </p>
+</div>
+<!-- Quick Header Actions -->
+<div class="flex items-center gap-3 shrink-0">
+<button class="h-10 px-4 bg-surface-container-lowest hover:bg-surface-container text-on-surface rounded-lg font-label-lg text-label-lg transition-colors flex items-center gap-2 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">file_download</span>
+<span class="">Export All (BibTeX/RIS)</span>
+</button>
+<button class="h-10 px-5 bg-primary text-on-primary hover:bg-primary-container rounded-lg font-label-lg text-label-lg transition-colors flex items-center gap-2 shadow-md" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="">Create New List</span>
+</button>
+</div>
+</div>
+</section>
+<!-- SUMMARY METRICS STRIP -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"><div class="bg-white border border-[#E5E0D8] p-4 rounded-xl shadow-xs flex flex-col justify-between hover:border-primary/40 transition-all"><div class="flex items-start justify-between"><div><span class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline block font-medium">Total Curations</span><div class="font-title-editorial text-2xl font-semibold text-on-surface mt-1">5 Folios</div></div><div class="w-10 h-10 rounded-lg bg-[#c6ebd3]/60 flex items-center justify-center text-primary shrink-0"><span class="material-symbols-outlined text-xl">auto_stories</span></div></div><div class="mt-3 pt-2.5 flex items-center justify-between text-on-surface-variant font-body-sm text-xs bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-[#E5E0D8]/60"><span class="">2 Course</span><span class="text-outline">•</span><span class="">2 Research</span><span class="text-outline">•</span><span class="">1 Personal</span></div></div><div class="bg-white border border-[#E5E0D8] p-4 rounded-xl shadow-xs flex flex-col justify-between hover:border-primary/40 transition-all"><div class="flex items-start justify-between"><div><span class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline block font-medium">Catalog Works</span><div class="font-title-editorial text-2xl font-semibold text-on-surface mt-1">48 Items</div></div><div class="w-10 h-10 rounded-lg bg-[#c6ebd3]/60 flex items-center justify-center text-primary shrink-0"><span class="material-symbols-outlined text-xl">menu_book</span></div></div><div class="mt-3 pt-2.5 flex items-center gap-1.5 text-on-surface-variant font-body-sm text-xs bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-[#E5E0D8]/60"><span class="material-symbols-outlined text-sm text-primary">picture_as_pdf</span><span class="truncate">34 PDFs Attached with DOIs</span></div></div><div class="bg-white border border-[#E5E0D8] p-4 rounded-xl shadow-xs flex flex-col justify-between hover:border-primary/40 transition-all"><div class="flex items-start justify-between"><div><span class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline block font-medium">Saved Citations</span><div class="font-title-editorial text-2xl font-semibold text-on-surface mt-1">132 Formatted</div></div><div class="w-10 h-10 rounded-lg bg-[#c6ebd3]/60 flex items-center justify-center text-primary shrink-0"><span class="material-symbols-outlined text-xl">format_quote</span></div></div><div class="mt-3 pt-2.5 flex items-center gap-1.5 text-on-surface-variant font-body-sm text-xs bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-[#E5E0D8]/60"><span class="font-metadata-caps text-[10px] bg-[#c6ebd3] text-[#2F5D45] font-bold px-1.5 py-0.5 rounded">APA</span><span class="font-metadata-caps text-[10px] bg-[#eae8e3] text-on-surface-variant font-bold px-1.5 py-0.5 rounded">MLA</span><span class="font-metadata-caps text-[10px] bg-[#eae8e3] text-on-surface-variant font-bold px-1.5 py-0.5 rounded">BibTeX</span></div></div><div class="bg-white border border-[#E5E0D8] p-4 rounded-xl shadow-xs flex flex-col justify-between hover:border-primary/40 transition-all"><div class="flex items-start justify-between"><div><span class="font-metadata-caps text-[11px] uppercase tracking-wider text-outline block font-medium">Network Engagement</span><div class="font-title-editorial text-2xl font-semibold text-on-surface mt-1">3 Shared</div></div><div class="w-10 h-10 rounded-lg bg-[#c6ebd3]/60 flex items-center justify-center text-primary shrink-0"><span class="material-symbols-outlined text-xl">group</span></div></div><div class="mt-3 pt-2.5 flex items-center gap-2 text-on-surface-variant font-body-sm text-xs bg-surface-container-low px-2.5 py-1.5 rounded-lg border border-[#E5E0D8]/60"><span class="w-2 h-2 rounded-full bg-primary shrink-0"></span><span class="truncate">24 Active Students &amp; Fellows</span></div></div></section>
+<!-- SEARCH, FILTER CHIPS & VIEW CONTROLS -->
+<section class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-white border border-[#E5E0D8] p-3.5 rounded-xl shadow-2xs"><div class="relative flex-1 max-w-md"><span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[18px] pointer-events-none">search</span><input class="w-full h-10 pl-10 pr-4 bg-surface-container-low border border-[#E5E0D8] rounded-lg font-body-md text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Filter lists by title, course code, tag, or topic…" type="text"></div><div class="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0"><button class="px-3.5 py-1.5 rounded-full font-label-md text-xs bg-[#c6ebd3] text-[#2F5D45] font-semibold shrink-0 transition-colors border border-primary/20" type="button">All (5)</button><button class="px-3.5 py-1.5 rounded-full font-label-md text-xs bg-white text-on-surface-variant hover:bg-stone-50 hover:text-on-surface border border-[#E5E0D8] shrink-0 transition-colors" type="button">Course Syllabi (2)</button><button class="px-3.5 py-1.5 rounded-full font-label-md text-xs bg-white text-on-surface-variant hover:bg-stone-50 hover:text-on-surface border border-[#E5E0D8] shrink-0 transition-colors" type="button">Research Grants (2)</button><button class="px-3.5 py-1.5 rounded-full font-label-md text-xs bg-white text-on-surface-variant hover:bg-stone-50 hover:text-on-surface border border-[#E5E0D8] shrink-0 transition-colors" type="button">Personal Archive (1)</button><button class="px-3.5 py-1.5 rounded-full font-label-md text-xs bg-white text-on-surface-variant hover:bg-stone-50 hover:text-on-surface border border-[#E5E0D8] shrink-0 transition-colors" type="button">Shared / Collaborative (3)</button></div><div class="flex items-center gap-2 self-end lg:self-auto shrink-0"><div class="flex items-center bg-surface-container-low border border-[#E5E0D8] p-0.5 rounded-lg"><button class="p-1.5 rounded-md bg-white text-primary shadow-xs" title="Grid View" type="button"><span class="material-symbols-outlined text-[18px]">grid_view</span></button><button class="p-1.5 rounded-md text-on-surface-variant hover:text-on-surface transition-colors" title="Table View" type="button"><span class="material-symbols-outlined text-[18px]">view_list</span></button></div><div class="relative"><button class="h-9 px-3 bg-white border border-[#E5E0D8] hover:bg-stone-50 text-on-surface font-label-md text-xs rounded-lg flex items-center gap-1.5 transition-colors shadow-2xs" type="button"><span class="">Recently Updated</span><span class="material-symbols-outlined text-[16px] text-outline">expand_more</span></button></div></div></section>
+<!-- READING LISTS GRID (CARDS 1-5 + CARD 6 SPECIAL) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- CARD 1: Course Syllabus -->
+<article class="group bg-white border border-[#E5E0D8] rounded-xl p-5 shadow-2xs hover:border-primary/40 hover:shadow-xs transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+<div class="space-y-3.5">
+<div class="flex items-center justify-between gap-2">
+<span class="font-metadata-caps text-[11px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-[#c6ebd3] text-[#2F5D45] font-semibold border border-primary/20">
+            Course Syllabus • 2024–25
+          </span>
+<button aria-label="Folio options" class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-stone-50 transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div>
+<h2 class="font-title-editorial text-lg font-semibold text-on-surface group-hover:text-primary transition-colors leading-snug">
+            Postgrad Seminar: Biogeochemistry &amp; Carbon Cycles
+          </h2>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1.5 line-clamp-2">
+            Weekly core readings, annotated seminar papers, and student discussion prompts for BIO-402.
+          </p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg flex items-center justify-between border border-[#E5E0D8]/60">
+<div class="flex items-center -space-x-3">
+<div class="w-8 h-12 bg-primary text-on-primary rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              BIO
+            </div>
+<div class="w-8 h-12 bg-tertiary-container text-on-tertiary rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              GEO
+            </div>
+<div class="w-8 h-12 bg-secondary text-on-secondary rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              CARB
+            </div>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-xs text-on-surface font-semibold block">14 Catalog Items</span>
+<span class="font-body-sm text-[11px] text-outline">8 PDFs • 14 DOIs indexed</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-0.5">
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Ecology</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#FallTerm</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#GraduateSeminar</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-[#E5E0D8] space-y-2.5">
+<div class="flex items-center justify-between text-xs text-outline">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">group</span>
+<span class="font-body-sm text-xs text-on-surface-variant">18 Enrolled • Thorne (Co-instr.)</span>
+</div>
+<span class="font-metadata-caps text-[11px]">Edited 2h ago</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<a class="inline-flex items-center gap-1 text-primary font-label-lg text-xs hover:underline font-semibold" href="#">
+<span class="">Open Folio</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+<button class="p-1 text-outline hover:text-primary transition-colors" title="Quick Share" type="button">
+<span class="material-symbols-outlined text-base">share</span>
+</button>
+</div>
+</div>
+</article>
+
+<!-- CARD 2: Research Proposal -->
+<article class="group bg-white border border-[#E5E0D8] rounded-xl p-5 shadow-2xs hover:border-primary/40 hover:shadow-xs transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+<div class="space-y-3.5">
+<div class="flex items-center justify-between gap-2">
+<span class="font-metadata-caps text-[11px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-semibold border border-[#E5E0D8]">
+            Research Proposal • UKRI Horizon
+          </span>
+<button aria-label="Folio options" class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-stone-50 transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div>
+<h2 class="font-title-editorial text-lg font-semibold text-on-surface group-hover:text-primary transition-colors leading-snug">
+            Peatland Restoration Meta-Analysis &amp; Boreal Dynamics
+          </h2>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1.5 line-clamp-2">
+            Evidence base for UKRI Horizon application with boreal fieldwork citations and carbon sink methodologies.
+          </p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg flex items-center justify-between border border-[#E5E0D8]/60">
+<div class="flex items-center -space-x-3">
+<div class="w-8 h-12 bg-tertiary text-on-tertiary rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              PEAT
+            </div>
+<div class="w-8 h-12 bg-primary-container text-on-primary-container rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              META
+            </div>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-xs text-on-surface font-semibold block">8 Catalog Items</span>
+<span class="font-body-sm text-[11px] text-outline">6 PDFs • 8 DOIs indexed</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-0.5">
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Peatlands</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#GrantDraft</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Methodology</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-[#E5E0D8] space-y-2.5">
+<div class="flex items-center justify-between text-xs text-outline">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">verified_user</span>
+<span class="font-body-sm text-xs text-on-surface-variant">Restricted Grant Pre-submission</span>
+</div>
+<span class="font-metadata-caps text-[11px]">Edited 3d ago</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<a class="inline-flex items-center gap-1 text-primary font-label-lg text-xs hover:underline font-semibold" href="#">
+<span class="">Open Folio</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+<button class="p-1 text-outline hover:text-primary transition-colors" title="Quick Share" type="button">
+<span class="material-symbols-outlined text-base">share</span>
+</button>
+</div>
+</div>
+</article>
+
+<!-- CARD 3: Independent Study -->
+<article class="group bg-white border border-[#E5E0D8] rounded-xl p-5 shadow-2xs hover:border-primary/40 hover:shadow-xs transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+<div class="space-y-3.5">
+<div class="flex items-center justify-between gap-2">
+<span class="font-metadata-caps text-[11px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-semibold border border-[#E5E0D8]">
+            Independent Study • Research
+          </span>
+<button aria-label="Folio options" class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-stone-50 transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div>
+<h2 class="font-title-editorial text-lg font-semibold text-on-surface group-hover:text-primary transition-colors leading-snug">
+            Environmental Ethics &amp; Degraded Landscapes
+          </h2>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1.5 line-clamp-2">
+            Philosophical foundations of rewilding, ecological restoration, and land stewardship frameworks.
+          </p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg flex items-center justify-between border border-[#E5E0D8]/60">
+<div class="flex items-center -space-x-3">
+<div class="w-8 h-12 bg-secondary text-on-secondary rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              ETH
+            </div>
+<div class="w-8 h-12 bg-surface-dim text-on-surface rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              LAND
+            </div>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-xs text-on-surface font-semibold block">5 Catalog Items</span>
+<span class="font-body-sm text-[11px] text-outline">4 PDFs • 5 DOIs indexed</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-0.5">
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Ethics</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Rewilding</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Philosophy</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-[#E5E0D8] space-y-2.5">
+<div class="flex items-center justify-between text-xs text-outline">
+<span class="font-body-sm text-xs text-on-surface-variant">Collaborators: Vance &amp; S. Wu</span>
+<span class="font-metadata-caps text-[11px]">Edited 1w ago</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<a class="inline-flex items-center gap-1 text-primary font-label-lg text-xs hover:underline font-semibold" href="#">
+<span class="">Open Folio</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+<button class="p-1 text-outline hover:text-primary transition-colors" title="Quick Share" type="button">
+<span class="material-symbols-outlined text-base">share</span>
+</button>
+</div>
+</div>
+</article>
+
+<!-- CARD 4: Personal Archive -->
+<article class="group bg-white border border-[#E5E0D8] rounded-xl p-5 shadow-2xs hover:border-primary/40 hover:shadow-xs transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+<div class="space-y-3.5">
+<div class="flex items-center justify-between gap-2">
+<span class="font-metadata-caps text-[11px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-semibold border border-[#E5E0D8]">
+            Personal Archive
+          </span>
+<button aria-label="Folio options" class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-stone-50 transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div>
+<h2 class="font-title-editorial text-lg font-semibold text-on-surface group-hover:text-primary transition-colors leading-snug">
+            Key Foundational Texts in Systems Ecology
+          </h2>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1.5 line-clamp-2">
+            Seminal monographs by Odum, Holling, Margalef, and early complex adaptive systems literature.
+          </p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg flex items-center justify-between border border-[#E5E0D8]/60">
+<div class="flex items-center -space-x-3">
+<div class="w-8 h-12 bg-primary text-on-primary rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              ODUM
+            </div>
+<div class="w-8 h-12 bg-tertiary-container text-on-tertiary-container rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              HOLL
+            </div>
+<div class="w-8 h-12 bg-surface-container-highest text-on-surface rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              SYS
+            </div>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-xs text-on-surface font-semibold block">12 Catalog Items</span>
+<span class="font-body-sm text-[11px] text-outline">7 PDFs • 12 DOIs indexed</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-0.5">
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Foundational</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#SystemsTheory</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Historical</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-[#E5E0D8] space-y-2.5">
+<div class="flex items-center justify-between text-xs text-outline">
+<span class="font-body-sm text-xs text-on-surface-variant">Private Archive (Only you)</span>
+<span class="font-metadata-caps text-[11px]">Edited 2w ago</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<a class="inline-flex items-center gap-1 text-primary font-label-lg text-xs hover:underline font-semibold" href="#">
+<span class="">Open Folio</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+<button class="p-1 text-outline hover:text-primary transition-colors" title="Quick Share" type="button">
+<span class="material-symbols-outlined text-base">share</span>
+</button>
+</div>
+</div>
+</article>
+
+<!-- CARD 5: Shared / Lab Folio -->
+<article class="group bg-white border border-[#E5E0D8] rounded-xl p-5 shadow-2xs hover:border-primary/40 hover:shadow-xs transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+<div class="space-y-3.5">
+<div class="flex items-center justify-between gap-2">
+<span class="font-metadata-caps text-[11px] tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-[#c6ebd3] text-[#2F5D45] font-semibold border border-primary/20">
+            Shared / Lab Folio
+          </span>
+<button aria-label="Folio options" class="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-stone-50 transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div>
+<h2 class="font-title-editorial text-lg font-semibold text-on-surface group-hover:text-primary transition-colors leading-snug">
+            Vance Lab: Soil Microbiome &amp; Hydrological Resilience
+          </h2>
+<p class="font-body-sm text-xs text-on-surface-variant mt-1.5 line-clamp-2">
+            Active lab reference library for doctoral candidates examining microbial network resilience under drought.
+          </p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg flex items-center justify-between border border-[#E5E0D8]/60">
+<div class="flex items-center -space-x-3">
+<div class="w-8 h-12 bg-primary text-on-primary rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              SOIL
+            </div>
+<div class="w-8 h-12 bg-secondary text-on-secondary rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              HYDR
+            </div>
+<div class="w-8 h-12 bg-surface-dim text-on-surface rounded shadow-xs flex flex-col justify-end p-1 text-[8px] font-metadata-caps uppercase font-bold overflow-hidden leading-none">
+              RES
+            </div>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-xs text-on-surface font-semibold block">9 Catalog Items</span>
+<span class="font-body-sm text-[11px] text-outline">9 Open Access PDFs • 9 DOIs</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-0.5">
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#LabShared</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#Microbiome</span>
+<span class="font-metadata-caps text-[10px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant border border-[#E5E0D8]">#VanceLab</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-[#E5E0D8] space-y-2.5">
+<div class="flex items-center justify-between text-xs text-outline">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">group</span>
+<span class="font-body-sm text-xs text-on-surface-variant">6 Vance Lab Members</span>
+</div>
+<span class="font-metadata-caps text-[11px]">Edited Oct 18</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<a class="inline-flex items-center gap-1 text-primary font-label-lg text-xs hover:underline font-semibold" href="#">
+<span class="">Open Folio</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+<button class="p-1 text-outline hover:text-primary transition-colors" title="Quick Share" type="button">
+<span class="material-symbols-outlined text-base">share</span>
+</button>
+</div>
+</div>
+</article>
+
+<!-- CARD 6: Special Action Card (Create New Reading List) -->
+<article class="bg-white border border-[#E5E0D8] rounded-xl p-5 shadow-2xs hover:border-primary/40 hover:shadow-xs transition-all duration-200 flex flex-col justify-between relative group">
+<div class="flex flex-col items-center text-center space-y-2.5 pt-1">
+<div class="w-12 h-12 rounded-full bg-[#c6ebd3]/70 flex items-center justify-center text-primary group-hover:scale-105 transition-transform border border-primary/20">
+<span class="material-symbols-outlined text-2xl">add</span>
+</div>
+<h2 class="font-title-editorial text-base font-semibold text-on-surface">
+          Create New Reading List
+        </h2>
+<p class="font-body-sm text-xs text-on-surface-variant max-w-xs leading-relaxed">
+          Group monographs, journal papers, and research data into a course syllabus, grant bibliography, or personal folio.
+        </p>
+</div>
+<div class="space-y-2 mt-4 pt-3 border-t border-[#E5E0D8]">
+<span class="font-metadata-caps text-[10px] text-outline uppercase tracking-wider block text-center font-medium">
+          Quick Start Templates
+        </span>
+<div class="flex flex-col gap-1.5">
+<button class="w-full h-8 px-3 bg-surface-paper hover:bg-stone-100 rounded-lg text-on-surface font-label-lg text-xs transition-colors flex items-center justify-between border border-[#E5E0D8]" type="button">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">school</span>
+<span class="">Course Syllabus Template</span>
+</span>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+</button>
+<button class="w-full h-8 px-3 bg-surface-paper hover:bg-stone-100 rounded-lg text-on-surface font-label-lg text-xs transition-colors flex items-center justify-between border border-[#E5E0D8]" type="button">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">description</span>
+<span class="">Blank Research Folio</span>
+</span>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+</button>
+<button class="w-full h-8 px-3 bg-surface-paper hover:bg-stone-100 rounded-lg text-on-surface font-label-lg text-xs transition-colors flex items-center justify-between border border-[#E5E0D8]" type="button">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary">cloud_download</span>
+<span class="">Import Zotero / RIS File</span>
+</span>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+</button>
+</div>
+</div>
+</article></section>
+<!-- RECENT BIBLIOGRAPHIC ACTIVITY DRAWER / LEDGER CALLOUT -->
+<section class="bg-white border border-[#E5E0D8] rounded-xl p-6 shadow-2xs space-y-4"><div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E0D8] pb-3"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-lg bg-[#c6ebd3]/60 text-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-xl">history_edu</span></div><div><h3 class="font-title-editorial text-lg font-semibold text-on-surface">Recent Bibliographic Ledger</h3><p class="font-body-sm text-xs text-on-surface-variant">Last accessioned works added across your active research folios</p></div></div><a class="font-label-lg text-xs text-primary hover:underline inline-flex items-center gap-1 self-start sm:self-auto font-medium" href="#"><span class="">View Full Ingestion Log</span><span class="material-symbols-outlined text-sm">open_in_new</span></a></div><div class="space-y-2.5 pt-1"><div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3.5 bg-surface-container-low rounded-xl border border-[#E5E0D8]/60 hover:border-primary/30 transition-all"><div class="flex items-start gap-3"><div class="w-8 h-8 rounded-lg bg-white border border-[#E5E0D8] text-primary flex items-center justify-center shrink-0 mt-0.5"><span class="material-symbols-outlined text-lg">article</span></div><div><h4 class="font-title-editorial text-sm font-semibold text-on-surface">Holling, C.S. (1973). Resilience and Stability of Ecological Systems.</h4><div class="flex flex-wrap items-center gap-2 mt-1"><span class="font-metadata-caps text-[10px] text-outline uppercase">DOI: 10.1146/annurev.es.04.110173.000245</span><span class="text-outline text-xs">•</span><span class="font-metadata-caps text-[10px] text-primary font-medium">Added to: Foundational Texts</span><span class="text-outline text-xs">•</span><span class="font-body-sm text-xs text-on-surface-variant">Full-text PDF verified (1.4 MB)</span></div></div></div><div class="flex items-center gap-2.5 self-end md:self-auto shrink-0"><span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-[#c6ebd3] text-[#2F5D45] font-semibold">Indexed</span><button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-white border border-[#E5E0D8] transition-colors" title="Download Citation" type="button"><span class="material-symbols-outlined text-base">file_download</span></button></div></div><div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3.5 bg-surface-container-low rounded-xl border border-[#E5E0D8]/60 hover:border-primary/30 transition-all"><div class="flex items-start gap-3"><div class="w-8 h-8 rounded-lg bg-white border border-[#E5E0D8] text-secondary flex items-center justify-center shrink-0 mt-0.5"><span class="material-symbols-outlined text-lg">menu_book</span></div><div><h4 class="font-title-editorial text-sm font-semibold text-on-surface">Rydin, H. &amp; Jeglum, J.K. (2013). The Biology of Peatlands (2nd Ed.).</h4><div class="flex flex-wrap items-center gap-2 mt-1"><span class="font-metadata-caps text-[10px] text-outline uppercase">ISBN: 978-0199602995</span><span class="text-outline text-xs">•</span><span class="font-metadata-caps text-[10px] text-primary font-medium">Added to: Peatland Restoration Meta-Analysis</span><span class="text-outline text-xs">•</span><span class="font-body-sm text-xs text-on-surface-variant">Physical Copy: Main Library QK938.M3</span></div></div></div><div class="flex items-center gap-2.5 self-end md:self-auto shrink-0"><span class="font-metadata-caps text-[11px] px-2 py-0.5 rounded-full bg-[#eae8e3] text-on-surface-variant font-medium border border-[#E5E0D8]">On Loan (Due Nov 12)</span><button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-white border border-[#E5E0D8] transition-colors" title="Download Citation" type="button"><span class="material-symbols-outlined text-base">file_download</span></button></div></div></div></section>
+</div>
+<script>
+  // Ensure the persistent shell sidebar highlights 'Reading Lists' as active
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      const sidebarLinks = document.querySelectorAll('aside nav a');
+      sidebarLinks.forEach(link => {
+        const textSpan = link.querySelector('span.font-label-lg');
+        if (textSpan && textSpan.textContent.trim() === 'Reading Lists') {
+          // Add active scholarly styling
+          link.classList.add('bg-secondary-fixed/50', 'text-primary', 'font-semibold');
+          link.classList.remove('text-on-surface-variant');
+          
+          // Update count badge to 5
+          const countBadge = link.querySelector('span.font-metadata-caps');
+          if (countBadge) {
+            countBadge.textContent = '5';
+            countBadge.classList.add('bg-primary', 'text-on-primary');
+            countBadge.classList.remove('text-on-surface-variant');
+          }
+        }
+      });
+    } catch (e) {
+      console.warn('Sidebar link sync note:', e);
+    }
+  });
+</script></main>
+</div>
+
+
+</body></html>

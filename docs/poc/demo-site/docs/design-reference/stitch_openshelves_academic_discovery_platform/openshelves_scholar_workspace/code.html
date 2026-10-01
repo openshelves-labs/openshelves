@@ -1,0 +1,527 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&amp;family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary-fixed":"#c6ebd3","on-error":"#ffffff","outline":"#717972","surface-container":"#f0eee9","on-tertiary-fixed":"#151d1a","surface-dim":"#dcdad5","tertiary-fixed-dim":"#bfc9c3","on-tertiary-fixed-variant":"#3f4945","on-error-container":"#93000a","error-container":"#ffdad6","secondary-fixed-dim":"#aacfb8","surface-variant":"#e4e2dd","on-surface":"#1b1c19","on-primary-container":"#a2d4b6","surface-container-highest":"#e4e2dd","on-primary-fixed-variant":"#214f38","surface-container-lowest":"#ffffff","on-primary-fixed":"#002112","background":"#fbf9f4","primary-container":"#2f5d45","surface-container-high":"#eae8e3","inverse-on-surface":"#f3f1ec","on-surface-variant":"#414943","secondary-container":"#c3e9d0","surface-tint":"#39684f","on-background":"#1b1c19","tertiary-fixed":"#dbe5df","on-secondary-container":"#486a56","on-tertiary":"#ffffff","on-tertiary-container":"#c1cbc5","primary-fixed":"#bbeecf","on-secondary":"#ffffff","primary":"#16452f","on-primary":"#ffffff","tertiary":"#363f3b","surface-bright":"#fbf9f4","surface-container-low":"#f5f3ee","tertiary-container":"#4d5652","inverse-primary":"#a0d2b3","inverse-surface":"#30312e","on-secondary-fixed":"#002112","outline-variant":"#c0c9c1","secondary":"#446652","error":"#ba1a1a","on-secondary-fixed-variant":"#2c4d3c","primary-fixed-dim":"#a0d2b3","surface":"#fbf9f4"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xl":"2.5rem","margin":"2rem","gutter-sm":"1rem","gutter-lg":"2rem","margin-sm":"1rem","space-md":"1rem","space-lg":"1.5rem","space-sm":"0.5rem","gutter":"1.5rem","space-xs":"0.25rem","margin-lg":"3.5rem"},fontFamily:{"metadata-caps":["DM Sans"],"title-editorial":["Literata"],"label-lg":["DM Sans"],"body-md":["DM Sans"],"headline-md":["Literata"],"body-sm":["DM Sans"],"label-md":["DM Sans"],"display-lg-mobile":["Literata"],"headline-sm":["Literata"],"headline-lg":["Literata"],"headline-lg-mobile":["Literata"],"body-lg":["DM Sans"],"display-lg":["Literata"]},fontSize:{"metadata-caps":["11px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"600"}],"title-editorial":["18px",{"lineHeight":"26px","fontWeight":"500"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],"display-lg-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"500"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"600"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"600"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["17px",{"lineHeight":"28px","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"500"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 h-16 bg-surface-container-low border-b border-outline-variant z-50"><div class="h-16 w-full px-gutter flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0 w-64"><img alt="OpenShelves Academic Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UGimSU-fxrpGA1zbw7gB1x-iJ6COBZUXfxcvYbwlNyQv_D6EcPHw9s8fgXlNK7NhWgP4qfm0axIfpzJSWF0ji6Dx_gkDzGRHBETZ5kHhC7Qd46jnEen_nwXY4r2vRLpS8tDsrSzuWLSqD9be2ZROfuNCcWSed-rtGJUFvL9UWdWqO-DbOJoBacYquLbCVHMVRKL-C1XjlABsSKB9Q5mlgWqSZ_akrkCGV-XJ9ImI6K2v43TZ5PRWBMh6c"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface leading-none">OpenShelves</span><span class="font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline mt-0.5">University Library &amp; Archives</span></div></div><div class="flex-1 max-w-2xl px-space-md hidden md:block"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-3.5 text-outline pointer-events-none text-xl">search</span><input class="w-full h-10 pl-11 pr-14 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-md text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Search titles, authors, subjects, ISBN, DOI…" type="search"><div class="absolute right-3 flex items-center"><kbd class="font-metadata-caps text-metadata-caps px-1.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-on-surface-variant">⌘K</kbd></div></div></div><div class="flex items-center gap-space-md shrink-0"><button class="hidden sm:inline-flex items-center gap-space-xs h-9 px-space-md bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-high hover:border-outline text-on-surface font-label-lg text-label-md rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-lg text-primary">add</span><span>New List</span></button><button aria-label="Notifications" class="relative p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container-low"></span></button><div class="h-6 w-px bg-outline-variant mx-1 hidden sm:block"></div><div class="flex items-center gap-space-sm pl-1"><img alt="Profile" class="w-8 h-8 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2OYT9PJMVePt4HLQa1TJBGSRb4Pb8RnjGix-erMgGY9pS4DBTt3Y78srr0emkzotyccUJgjdn8Fw5-Gq6xJr7dtL_By1sQpdkI4-kqiQGQWfjDCuwxTuo0X0_Rkdy4U4hvBF3EeIell-9dySi8SgYDCJOynCv8IpJDOBraW285syg64OPkoxg_VW6D5HbKl0yHfeXSLnCnY0JW98El-IK2P5PidlfzS5guFRH1wg5oa1GNXrynk9rnw"><div class="hidden xl:flex flex-col text-left"><span class="font-label-lg text-label-md font-semibold text-on-surface leading-none">Dr. Eleanor Vance</span><span class="font-metadata-caps text-metadata-caps text-outline truncate max-w-[150px] mt-0.5">Ecology &amp; Earth Systems</span></div><span class="material-symbols-outlined text-outline text-lg hidden xl:block">expand_more</span></div></div></div></header><aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-low border-r border-outline-variant z-40 flex flex-col justify-between overflow-y-auto"><div class="p-space-md space-y-space-lg"><nav class="space-y-space-xs" data-active-classes="bg-secondary-fixed text-primary font-semibold border border-primary/20"><div class="px-space-sm py-1 font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">Discover</div><a aria-current="page" class="flex items-center justify-between px-space-sm py-2 rounded-lg transition-colors bg-secondary-fixed text-primary font-semibold border border-primary/20" data-path="home" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">explore</span><span class="font-label-lg text-label-md">Home</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="browse-catalog" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">menu_book</span><span class="font-label-lg text-label-md">Browse Catalog</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="new-arrivals" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">auto_awesome</span><span class="font-label-lg text-label-md">New Arrivals</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">48</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="recommended" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">star</span><span class="font-label-lg text-label-md">Recommended</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">12</span></a></nav><nav class="space-y-space-xs" data-active-classes="bg-secondary-fixed text-primary font-semibold border border-primary/20"><div class="px-space-sm py-1 font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">My Library</div><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="current-loans" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">schedule</span><span class="font-label-lg text-label-md">Current Loans</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">3</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="holds" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">bookmark_added</span><span class="font-label-lg text-label-md">Holds</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">1</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="reading-lists" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">folder</span><span class="font-label-lg text-label-md">Reading Lists</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">5</span></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="reading-history" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">history</span><span class="font-label-lg text-label-md">Reading History</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="fines-and-fees" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">receipt_long</span><span class="font-label-lg text-label-md">Fines &amp; Fees</span></div><span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant">$0.00</span></a></nav><nav class="space-y-space-xs" data-active-classes="bg-secondary-fixed text-primary font-semibold border border-primary/20"><div class="px-space-sm py-1 font-metadata-caps text-metadata-caps uppercase tracking-wider text-outline">Collections</div><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="journals-and-serials" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">auto_stories</span><span class="font-label-lg text-label-md">Journals &amp; Serials</span></div></a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="digital-resources" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-xl">database</span><span class="font-label-lg text-label-md">Digital Resources</span></div></a></nav></div><div class="p-space-md border-t border-outline-variant"><div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex items-start gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></span><div class="flex flex-col"><span class="font-label-lg text-metadata-caps font-semibold text-on-surface leading-tight">Cambridge Inter-Library Network</span><span class="font-metadata-caps text-metadata-caps text-primary mt-0.5">Access Active &amp; Verified</span></div></div></div></aside><div class="pl-64"><main class="relative pt-16 min-h-screen bg-surface w-full px-gutter-lg py-margin"><div class="flex flex-col w-full">
+<!-- TOP EDITORIAL GREETING & WORKBENCH -->
+<section class="mb-margin-lg">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg mb-space-lg">
+<div class="space-y-space-xs max-w-3xl">
+<div class="flex items-center gap-space-sm text-secondary">
+<span class="font-metadata-caps text-metadata-caps uppercase tracking-wider">Cambridge Library System</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-metadata-caps text-metadata-caps tracking-wider text-outline">Michaelmas Term • Week 4</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+          Good morning, Dr. Vance
+        </h1>
+<p class="font-body-lg text-body-md text-on-surface-variant max-w-2xl leading-relaxed">
+          Welcome to your scholarly workbench. You have <span class="font-semibold text-primary">3 loans active</span> and <span class="font-semibold text-primary">1 requested hold</span> arriving today at the Seeley Historical Library.
+        </p>
+</div>
+<div class="flex items-center gap-space-sm self-start lg:self-end">
+<span class="font-metadata-caps text-metadata-caps text-outline px-3 py-1.5 rounded-full bg-surface-container">
+          Thursday, October 24
+        </span>
+<button class="inline-flex items-center gap-space-xs px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-lg text-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-base text-primary">tune</span>
+<span>Workspace Preferences</span>
+</button>
+</div>
+</div>
+<!-- ACTION CHIPS BAR -->
+<div class="flex flex-wrap items-center gap-space-xs pt-space-xs pb-space-md">
+<button class="inline-flex items-center gap-space-xs px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-secondary-fixed transition-colors font-label-lg text-label-md" type="button">
+<span class="material-symbols-outlined text-base text-primary">format_quote</span>
+<span>Generate Citation (APA/MLA/BibTeX)</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-secondary-fixed transition-colors font-label-lg text-label-md" type="button">
+<span class="material-symbols-outlined text-base text-primary">local_shipping</span>
+<span>Request Inter-Library Loan</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-secondary-fixed transition-colors font-label-lg text-label-md" type="button">
+<span class="material-symbols-outlined text-base text-primary">ios_share</span>
+<span>Export Zotero / EndNote .ris</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-secondary-fixed transition-colors font-label-lg text-label-md" type="button">
+<span class="material-symbols-outlined text-base text-primary">meeting_room</span>
+<span>Book Archive Study Carrel</span>
+</button>
+</div>
+<!-- ANNOUNCEMENT STRIP -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-xl">dataset</span>
+</div>
+<div>
+<span class="font-label-lg text-label-md text-on-surface font-semibold block">Academic Repository Notice</span>
+<p class="font-body-md text-body-sm text-on-surface-variant">
+            New JSTOR &amp; Springer Nature 2024 environmental biology archives are now fully indexed and searchable in full-text.
+          </p>
+</div>
+</div>
+<a class="inline-flex items-center gap-1 font-label-lg text-label-md text-primary hover:underline shrink-0" href="#">
+<span>View Index Ledger</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- SECTION 2: DESK IN PROGRESS / ACTIVE STACK -->
+<section class="mb-margin-lg">
+<div class="flex items-baseline justify-between mb-space-md">
+<div class="flex items-baseline gap-space-sm">
+<h2 class="font-headline-md text-headline-sm text-on-surface">Active Research Materials &amp; Loans</h2>
+<span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">3 Physical &amp; Digital Items</span>
+</div>
+<a class="font-label-lg text-label-md text-primary hover:underline inline-flex items-center gap-1" href="#">
+<span>Complete Circulation Ledger</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</div>
+<!-- 3-COL MONOGRAPH GRID -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-space-lg">
+<!-- ITEM 1 -->
+<article class="bg-surface-container-lowest rounded-xl p-space-lg flex flex-col justify-between transition-colors hover:bg-surface-bright">
+<div>
+<div class="flex gap-space-md mb-space-md">
+<!-- Book Cover 2:3 -->
+<div class="w-24 h-36 shrink-0 rounded bg-surface-container-high overflow-hidden relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Scholarly book cover of The Structure of Scientific Revolutions by Thomas S. Kuhn, published by University of Chicago Press, featuring minimal typography on aged parchment cream and sage green paper finish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3JIHKfCiQxxk6QWHGwwpn0UWzEKP9H4Ckz1CrOrP98DptpB27c6KTvUqZl-CJ6XD2rOGifKelQ5UwWABT7PwD3HKQd9uuD5lDZleFKvouzpGgb5rR29pXwqhqZnH3vOiL52TJf1WYNiA98NXwJVcWwSlp4TyNsxBkabhfQcF2JAxnJbq8ZCXF_SKrsJ-mlN5WhnQq7ex0sGHTqvZkTT4oP1ScnhEkTgBw2kRuBaAFPex-QZ0l76RfuA">
+<div class="absolute inset-y-0 left-0 w-1.5 bg-tertiary/20"></div>
+</div>
+<!-- Details -->
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap gap-1 mb-1.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata-caps font-metadata-caps bg-error-container text-on-error-container">
+                  Due in 3 days
+                </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata-caps font-metadata-caps bg-surface-container text-on-surface-variant">
+                  Monograph
+                </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-snug line-clamp-2">
+                The Structure of Scientific Revolutions
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Thomas S. Kuhn
+              </p>
+<p class="font-metadata-caps text-metadata-caps text-outline mt-1 truncate">
+                Univ. of Chicago Press (50th Anniv.)
+              </p>
+</div>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low mb-space-md">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-metadata-caps text-metadata-caps">
+<span class="material-symbols-outlined text-sm text-outline">location_on</span>
+<span>Main Library — Stacks 4B</span>
+</div>
+<div class="font-metadata-caps text-metadata-caps font-semibold text-on-surface tracking-wide mt-0.5">
+              Call No: Q175 .K95 2012
+            </div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="pt-space-sm flex items-center justify-between gap-space-xs">
+<button class="flex-1 inline-flex items-center justify-center gap-1 h-9 px-3 rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">autorenew</span>
+<span>Renew Loan</span>
+</button>
+<button aria-label="Open Digital Notes" class="h-9 w-9 inline-flex items-center justify-center rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-base">sticky_note_2</span>
+</button>
+<button aria-label="Cite" class="h-9 w-9 inline-flex items-center justify-center rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-base">format_quote</span>
+</button>
+</div>
+</article>
+<!-- ITEM 2 -->
+<article class="bg-surface-container-lowest rounded-xl p-space-lg flex flex-col justify-between transition-colors hover:bg-surface-bright">
+<div>
+<div class="flex gap-space-md mb-space-md">
+<!-- Book Cover 2:3 -->
+<div class="w-24 h-36 shrink-0 rounded bg-surface-container-high overflow-hidden relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Academic textbook cover for Principles of Terrestrial Ecosystem Ecology by Chapin and Matson, high-resolution botanical and geological soil strata diagram in natural earthy olive and raw umber ink." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMndDIwj-A9RaZgEnpVYBcWWJ-MYwgrgKqDDVsU_GImeJP9Ein0z5dXBY3Yp_zdhIejozfWQP2-YfDins-fu_7o0OZNzkSF9C9x2YVeZulllWKl8yz7eUFMcGYRtuh9AYQfNaY-r-m6yFpuTgdsa3zksBEWQYPbqRSOBOjD_nU8CytpRbKHyY_a5qGCdzogrLsg60q00lzMOrNdIheemUTbuwoUsB8B9Vw4iH3dtWDH-YPduaSj8L1Jg">
+<div class="absolute inset-y-0 left-0 w-1.5 bg-tertiary/20"></div>
+</div>
+<!-- Details -->
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap gap-1 mb-1.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata-caps font-metadata-caps bg-secondary-fixed text-primary font-semibold">
+                  Due in 18 days
+                </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata-caps font-metadata-caps bg-surface-container text-primary font-semibold">
+                  Full PDF
+                </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-snug line-clamp-2">
+                Principles of Terrestrial Ecosystem Ecology
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                F. Stuart Chapin III, P. A. Matson
+              </p>
+<p class="font-metadata-caps text-metadata-caps text-outline mt-1 truncate">
+                Springer Science &amp; Business Media
+              </p>
+</div>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low mb-space-md">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-metadata-caps text-metadata-caps">
+<span class="material-symbols-outlined text-sm text-primary">cloud_done</span>
+<span>Cambridge Institutional License</span>
+</div>
+<div class="font-metadata-caps text-metadata-caps font-semibold text-on-surface tracking-wide mt-0.5">
+              Available Online (Unlimited Seats)
+            </div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="pt-space-sm flex items-center justify-between gap-space-xs">
+<button class="flex-1 inline-flex items-center justify-center gap-1 h-9 px-3 rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span>Read Online</span>
+</button>
+<button aria-label="Cite" class="h-9 w-9 inline-flex items-center justify-center rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-base">format_quote</span>
+</button>
+<button aria-label="Add to Reading List" class="h-9 w-9 inline-flex items-center justify-center rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-base">bookmark_add</span>
+</button>
+</div>
+</article>
+<!-- ITEM 3 -->
+<article class="bg-surface-container-lowest rounded-xl p-space-lg flex flex-col justify-between transition-colors hover:bg-surface-bright">
+<div>
+<div class="flex gap-space-md mb-space-md">
+<!-- Book Cover 2:3 -->
+<div class="w-24 h-36 shrink-0 rounded bg-surface-container-high overflow-hidden relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Editorial book cover of Silent Spring: 60th Anniversary Edition by Rachel Carson with delicate woodblock botanical print of songbirds and meadow foliage on archival off-white card stock." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACBdKAkLEfPZYHdkEbj5tj6NAiGOoEw8WqfIH_Y6RWZfxF3bXJVGAl3A2qki1JdHMfo6YRLlTdc09NGZOEjJci8JFlsFyNpQ30iv9vvx1v8QFoi4aK4CZdCyH5AiSnEdBKBUetKTBFJSDcjF3AnQo002iunSseqyyrGm72bGSmnhh75LQYxr-lMu-hChWARYdGZRnDJEMVusUFp8klDTufk6_2L9HwKPn7jyf2pybM6TbcIWg923MiFg">
+<div class="absolute inset-y-0 left-0 w-1.5 bg-tertiary/20"></div>
+</div>
+<!-- Details -->
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap gap-1 mb-1.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata-caps font-metadata-caps bg-secondary-fixed text-primary font-semibold">
+                  Due in 24 days
+                </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-metadata-caps font-metadata-caps bg-surface-container text-on-surface-variant">
+                  Standard Loan
+                </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-snug line-clamp-2">
+                Silent Spring: 60th Anniversary Edition
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                Rachel Carson
+              </p>
+<p class="font-metadata-caps text-metadata-caps text-outline mt-1 truncate">
+                Mariner Books / Houghton Mifflin
+              </p>
+</div>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low mb-space-md">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-metadata-caps text-metadata-caps">
+<span class="material-symbols-outlined text-sm text-outline">location_on</span>
+<span>Whipple Science History Library</span>
+</div>
+<div class="font-metadata-caps text-metadata-caps font-semibold text-on-surface tracking-wide mt-0.5">
+              Call No: QH545 .P4 C3 2022
+            </div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="pt-space-sm flex items-center justify-between gap-space-xs">
+<button class="flex-1 inline-flex items-center justify-center gap-1 h-9 px-3 rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">autorenew</span>
+<span>Renew Loan</span>
+</button>
+<button aria-label="Open Digital Notes" class="h-9 w-9 inline-flex items-center justify-center rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-base">sticky_note_2</span>
+</button>
+<button aria-label="Cite" class="h-9 w-9 inline-flex items-center justify-center rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined text-base">format_quote</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<!-- SECTION 3: SCHOLARLY DISCOVERY FEEDS & WORKSPACES (2-COL) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg mb-margin-lg">
+<!-- LEFT 7 COLS: DISCIPLINE DISCOVERY FEED -->
+<div class="lg:col-span-7 space-y-space-md">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-metadata-caps text-metadata-caps text-secondary uppercase tracking-wider block">Faculty Subject Feed</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Ecology &amp; Climate Policy</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-2.5 py-1 rounded bg-secondary-fixed text-primary font-label-lg text-label-md font-semibold" type="button">
+            All Sources
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-label-lg text-label-md" type="button">
+            Peer Reviewed
+          </button>
+</div>
+</div>
+<!-- FEED ITEM 1 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest transition-colors hover:bg-surface-bright">
+<div class="flex items-start justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1 font-metadata-caps text-metadata-caps px-2 py-0.5 rounded bg-secondary-fixed text-primary font-semibold">
+<span class="material-symbols-outlined text-xs">lock_open</span>
+<span>Open Access</span>
+</span>
+<span class="font-metadata-caps text-metadata-caps text-outline">Cambridge Univ. Press • Oct 2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface hover:text-primary cursor-pointer leading-snug">
+              Biodiversity in Anthropocene Forests: Long-Term Stand Resilience and Soil Moisture Regimes
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Dr. Henrik M. Lindqvist, Sarah Jenkins, &amp; Dr. Eleanor Vance
+            </p>
+</div>
+<button aria-label="Save bookmark" class="p-2 text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+</button>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="font-metadata-caps text-metadata-caps text-primary inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Physical &amp; Repository Access
+            </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">10.1017/cbo.2024.18029</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high font-label-lg text-label-md text-on-surface transition-colors" type="button">
+              PDF Read
+            </button>
+<button class="px-3 py-1 rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors" type="button">
+              Cite
+            </button>
+</div>
+</div>
+</div>
+<!-- FEED ITEM 2 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest transition-colors hover:bg-surface-bright">
+<div class="flex items-start justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1 font-metadata-caps text-metadata-caps px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
+                Journal Paper
+              </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">Journal of Applied Ecology (Vol. 61, Issue 4)</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface hover:text-primary cursor-pointer leading-snug">
+              Quantifying Carbon Sinks in Boreal Peatlands: Multi-Decadal Eddy Covariance Syntheses
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              T. K. Westergaard, L. Niemi, K. A. Thorne
+            </p>
+</div>
+<button aria-label="Save bookmark" class="p-2 text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+</button>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm">
+<span class="font-metadata-caps text-metadata-caps text-outline">DOI: 10.1111/1365-2664.14582</span>
+<div class="flex items-center gap-space-xs">
+<button class="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high font-label-lg text-label-md text-on-surface transition-colors" type="button">
+              Add to Workspace
+            </button>
+<button class="px-3 py-1 rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors" type="button">
+              Fast Cite
+            </button>
+</div>
+</div>
+</div>
+<!-- FEED ITEM 3 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest transition-colors hover:bg-surface-bright">
+<div class="flex items-start justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1 font-metadata-caps text-metadata-caps px-2 py-0.5 rounded bg-secondary-fixed text-primary font-semibold">
+                Physical Shelved
+              </span>
+<span class="font-metadata-caps text-metadata-caps text-outline">Oxford Academic Press • 2024</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface hover:text-primary cursor-pointer leading-snug">
+              Ethical Frameworks for Global Conservation in Degraded Landscapes
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Prof. Alistair MacIntyre-Green
+            </p>
+</div>
+<button aria-label="Save bookmark" class="p-2 text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+</button>
+</div>
+<div class="mt-space-md pt-space-sm flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs font-metadata-caps text-metadata-caps text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary">inventory_2</span>
+<span>Balfour Library — Shelf GE42 .M33 2024</span>
+</div>
+<button class="px-3 py-1 rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors" type="button">
+            Place Hold
+          </button>
+</div>
+</div>
+</div>
+<!-- RIGHT 5 COLS: READING LISTS & HOLDS -->
+<div class="lg:col-span-5 space-y-space-md">
+<div>
+<span class="font-metadata-caps text-metadata-caps text-secondary uppercase tracking-wider block">Active Curation</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Reading Lists &amp; Holds</h2>
+</div>
+<!-- HOLD READY BANNER -->
+<div class="p-space-lg rounded-xl bg-surface-container-low">
+<div class="flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl">mark_email_unread</span>
+</div>
+<div class="flex-1 min-w-0">
+<span class="font-metadata-caps text-metadata-caps text-primary uppercase font-bold tracking-wider block">Hold Ready for Pickup</span>
+<h4 class="font-title-editorial text-title-editorial text-on-surface mt-0.5 leading-snug">The Ecological World View</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">by Charles J. Krebs</p>
+<p class="font-body-sm text-body-sm text-on-surface mt-2">
+              Waiting at <span class="font-semibold">Seeley Historical Library</span> circulation counter.
+            </p>
+<div class="flex items-center justify-between gap-space-sm mt-3 pt-2">
+<span class="font-metadata-caps text-metadata-caps text-outline">Held until Tuesday, Oct 29</span>
+<button class="px-3 py-1 rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors" type="button">
+                View Hold Code
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- READING LIST 1 -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest transition-colors hover:bg-surface-bright">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-metadata-caps text-metadata-caps text-secondary font-semibold uppercase">Syllabus 2024–25</span>
+<span class="font-metadata-caps text-metadata-caps text-outline">Edited 2h ago</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface font-semibold">
+          Postgrad Seminar: Biogeochemistry
+        </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          Weekly core readings, annotated papers, and primary student discussion prompts.
+        </p>
+<div class="flex items-center justify-between mt-space-md pt-space-xs">
+<div class="flex items-center gap-space-md text-on-surface-variant font-metadata-caps text-metadata-caps">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">auto_stories</span>
+<span>14 Items</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">attachment</span>
+<span>4 PDFs</span>
+</span>
+</div>
+<button class="font-label-lg text-label-md text-primary hover:underline inline-flex items-center" type="button">
+            Open List <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- READING LIST 2 -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest transition-colors hover:bg-surface-bright">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-metadata-caps text-metadata-caps text-secondary font-semibold uppercase">Research Proposal</span>
+<span class="font-metadata-caps text-metadata-caps text-outline">Edited 3d ago</span>
+</div>
+<h3 class="font-title-editorial text-title-editorial text-on-surface font-semibold">
+          Grant Proposal: Peatland Restoration Meta-Analysis
+        </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          Evidence base for UKRI Horizon application with boreal fieldwork citations.
+        </p>
+<div class="flex items-center justify-between mt-space-md pt-space-xs">
+<div class="flex items-center gap-space-md text-on-surface-variant font-metadata-caps text-metadata-caps">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">auto_stories</span>
+<span>8 Items</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">link</span>
+<span>3 DOIs</span>
+</span>
+</div>
+<button class="font-label-lg text-label-md text-primary hover:underline inline-flex items-center" type="button">
+            Open List <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- NEW LIST ACTION BUTTON -->
+<button class="w-full p-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-high transition-colors flex items-center justify-center gap-space-xs text-on-surface font-label-lg text-label-md group" type="button">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">add_circle</span>
+<span>Create New Scholar Reading List</span>
+</button>
+</div>
+</section>
+<!-- SECTION 4: FAST SCHOLARLY TOOLS BAR -->
+<section class="p-space-lg rounded-2xl bg-surface-container-lowest">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
+<!-- TOOL 1: FAST CITATION GENERATOR -->
+<div class="lg:col-span-8 space-y-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-xl">auto_stories</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Instant Scholar Citation Engine</h3>
+<span class="font-metadata-caps text-metadata-caps px-2 py-0.5 rounded bg-surface-container text-outline">BibTeX / APA 7 / Chicago / Harvard</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Paste any ISBN, DOI, arXiv ID, or title to instantly generate formatted bibliographic references.
+        </p>
+<div class="flex flex-col sm:flex-row gap-space-xs pt-space-xs">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+<input class="w-full h-11 pl-11 pr-4 bg-surface-container-lowest text-on-surface rounded-lg font-body-md text-body-sm placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary" id="citation-input" placeholder="e.g. 10.1017/cbo.2024.18029 or 978-0226458120…" type="text" value="10.1111/1365-2664.14582">
+</div>
+<button class="h-11 px-space-lg rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors inline-flex items-center justify-center gap-space-xs shrink-0" onclick="copyCitationDemo(this)" type="button">
+<span class="material-symbols-outlined text-base">content_copy</span>
+<span id="citation-btn-label">Copy APA Citation</span>
+</button>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface leading-relaxed" id="citation-preview">
+<span class="font-semibold text-primary">Generated Preview (APA 7th):</span> Westergaard, T. K., Niemi, L., &amp; Thorne, K. A. (2024). Quantifying Carbon Sinks in Boreal Peatlands: Multi-Decadal Eddy Covariance Syntheses. <span class="italic">Journal of Applied Ecology</span>, 61(4), 842–859. https://doi.org/10.1111/1365-2664.14582
+        </div>
+</div>
+<!-- TOOL 2: ASK A LIBRARIAN -->
+<div class="lg:col-span-4 p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between h-full">
+<div>
+<div class="flex items-center gap-space-xs text-primary mb-1">
+<span class="material-symbols-outlined text-lg">support_agent</span>
+<span class="font-metadata-caps text-metadata-caps uppercase font-bold tracking-wider">Faculty Research Help</span>
+</div>
+<h4 class="font-title-editorial text-title-editorial text-on-surface font-semibold">
+            Ask Dr. Marianne Howard
+          </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Subject Liaison for Ecology, Genetics &amp; Earth Sciences. Online for live consultation.
+          </p>
+</div>
+<div class="pt-space-md flex items-center gap-space-xs">
+<button class="flex-1 py-2 px-space-md rounded-lg bg-primary text-on-primary font-label-lg text-label-md hover:bg-primary-container transition-colors text-center inline-flex items-center justify-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-sm">chat</span>
+<span>Chat Desk</span>
+</button>
+<button class="py-2 px-space-md rounded-lg bg-surface-container-lowest hover:bg-surface-container-high text-on-surface font-label-lg text-label-md transition-colors text-center" type="button">
+            Book 1:1
+          </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<script>
+  function copyCitationDemo(btn) {
+    const label = document.getElementById('citation-btn-label');
+    const originalText = label.innerText;
+    
+    // Animate copy micro-interaction
+    label.innerText = 'Copied to Clipboard!';
+    btn.classList.add('bg-secondary');
+    
+    setTimeout(() => {
+      label.innerText = originalText;
+      btn.classList.remove('bg-secondary');
+    }, 2000);
+  }
+</script></main></div></body></html>

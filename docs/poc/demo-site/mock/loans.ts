@@ -1,0 +1,53 @@
+import type { Loan } from "@/types";
+import { currentUser } from "./users";
+
+/** Canonical values follow the Current Loans screen; Home derives its rows from the same entities. */
+export const loans: Loan[] = [
+  {
+    id: "ln-kuhn",
+    userId: currentUser.id,
+    bookId: "bk-kuhn",
+    barcode: "390880194821",
+    branchName: "Seeley Historical Library",
+    location: "Main Library, Stacks 4B",
+    checkedOutOn: "2024-09-27",
+    dueDate: "2024-10-27",
+    renewalsUsed: 1,
+    renewalsMax: 3,
+    loanKind: "physical",
+    notesCount: 4,
+    ledgerTitle: "The Structure of Scientific Revolutions (50th Anniv. Ed.)",
+  },
+  {
+    id: "ln-chapin",
+    userId: currentUser.id,
+    bookId: "bk-chapin",
+    barcode: "390880287114",
+    branchName: "Balfour & Newton Botanical Library",
+    location: "Springer Science",
+    checkedOutOn: "2024-10-02",
+    dueDate: "2024-11-11",
+    renewalsUsed: 0,
+    renewalsMax: 3,
+    loanKind: "physical",
+    licenseNote: "Online E-Book • Institutional License",
+    policyNote: "Standard Loan Term",
+    studyGuideUrl: "#",
+  },
+  {
+    id: "ln-carson",
+    userId: currentUser.id,
+    bookId: "bk-carson",
+    barcode: "390880312980",
+    branchName: "Central University Library",
+    location: "Whipple Science History Library",
+    checkedOutOn: "2024-10-15",
+    dueDate: "2024-11-17",
+    renewalsUsed: 0,
+    renewalsMax: 3,
+    loanKind: "physical",
+    policyNote: "Auto-Grace Eligible",
+    ledgerTitle: "Silent Spring: 60th Anniversary Edition",
+    compactTitle: "Silent Spring: 60th Anniversary Edition",
+  },
+];

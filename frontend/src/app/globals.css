@@ -1,17 +1,88 @@
 @import "tailwindcss";
 @import "@fontsource-variable/literata";
 @import "@fontsource-variable/dm-sans";
-@import "material-symbols/outlined.css";
+@import "material-symbols/outlined.css" layer(components);
 
-/* Design tokens — Scholastic Paper (docs/poc/demo-site). Only the ones in use so far. */
+/* Design tokens — see docs/Design System.md */
 @theme {
-  --color-paper: #f3f1ec;   /* warm paper canvas */
-  --color-ink: #1e2320;     /* primary text */
-  --color-primary: #2f5d45; /* deep forest green */
+  /* Colors */
+  --color-background: #f3f1ec;          /* warm paper */
+  --color-foreground: #1e2320;          /* main text */
+  --color-muted-foreground: #5c6460;    /* secondary text, metadata */
 
-  /* Literata = editorial voice, DM Sans = interface. --font-sans is also Preflight's default family. */
+  --color-card: #ffffff;
+  --color-card-foreground: #1e2320;
+
+  --color-border: #e5e0d8;              /* hairlines, dividers */
+  --color-border-strong: #d8d2c7;       /* inputs, hover */
+  --color-ring: #2f5d45;                /* focus ring */
+
+  --color-primary: #2f5d45;             /* forest green */
+  --color-primary-foreground: #ffffff;
+  --color-primary-hover: #1e3f2e;
+
+  --color-accent: #e4eee8;              /* selected chips, "available" */
+  --color-accent-foreground: #2f5d45;
+
+  --color-warning: #c27d23;             /* due soon */
+  --color-warning-subtle: #fdf4e7;
+  --color-destructive: #b83a30;         /* overdue */
+  --color-destructive-subtle: #fbeae8;
+
+  /* Fonts */
   --font-sans: "DM Sans Variable", "DM Sans", sans-serif;
   --font-serif: "Literata Variable", "Literata", serif;
+
+  /* Text sizes (size / line-height / letter-spacing / weight) */
+  --text-display-lg: 48px;
+  --text-display-lg--line-height: 56px;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 500;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--letter-spacing: -0.015em;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 600;
+
+  --text-headline-sm: 20px;
+  --text-headline-sm--line-height: 28px;
+  --text-headline-sm--font-weight: 600;
+
+  --text-title: 18px;
+  --text-title--line-height: 26px;
+  --text-title--font-weight: 500;
+
+  --text-body-lg: 17px;
+  --text-body-lg--line-height: 28px;
+
+  --text-body-md: 15px;
+  --text-body-md--line-height: 24px;
+
+  --text-body-sm: 13px;
+  --text-body-sm--line-height: 20px;
+
+  --text-label-lg: 14px;
+  --text-label-lg--line-height: 20px;
+  --text-label-lg--letter-spacing: 0.01em;
+  --text-label-lg--font-weight: 600;
+
+  --text-label-md: 12px;
+  --text-label-md--line-height: 16px;
+  --text-label-md--letter-spacing: 0.02em;
+  --text-label-md--font-weight: 500;
+
+  --text-caps: 11px;               /* use with `uppercase` */
+  --text-caps--line-height: 14px;
+  --text-caps--letter-spacing: 0.06em;
+  --text-caps--font-weight: 600;
+
+  /* Shadow — only for floating layers (modals, popovers); everything else is flat */
+  --shadow-overlay: 0 4px 20px -2px rgb(30 35 32 / 0.06);
 }
 
 @layer base {
@@ -25,24 +96,36 @@
 
   body {
     min-height: 100dvh;
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Titles and headings use the editorial serif */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+  }
+
   /* Double-rule focus: 2px paper gap + 1.5px forest stroke */
   :focus-visible {
-    outline: 1.5px solid var(--color-primary);
+    outline: 1.5px solid var(--color-ring);
     outline-offset: 2px;
   }
 }
 
-/* Material Symbols: outline by default, add `.fill` for the filled glyph */
-.material-symbols-outlined {
-  --icon-fill: 0;
-  font-variation-settings: "FILL" var(--icon-fill), "wght" 400, "GRAD" 0, "opsz" 24;
-}
-.material-symbols-outlined.fill {
-  --icon-fill: 1;
+@layer components {
+  /* Material Symbols: outline by default, add `.fill` for the filled glyph */
+  .material-symbols-outlined {
+    --icon-fill: 0;
+    font-variation-settings: "FILL" var(--icon-fill), "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+  .material-symbols-outlined.fill {
+    --icon-fill: 1;
+  }
 }

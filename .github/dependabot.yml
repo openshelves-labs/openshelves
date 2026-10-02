@@ -1,7 +1,7 @@
 version: 2
-updates:
-  - package-ecosystem: "gradle"
-    directory: "/backend"
+
+multi-ecosystem-groups:
+  all-dependencies:
     schedule:
       interval: "weekly"
       day: "friday"
@@ -9,7 +9,33 @@ updates:
       timezone: "Asia/Kolkata"
     labels:
       - "dependencies"
-    groups:
-      all-dependencies:
-        patterns:
-          - "*"
+
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/backend"
+    patterns: ["*"]
+    multi-ecosystem-group: "all-dependencies"
+    labels:
+      - "backend"
+
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    patterns: ["*"]
+    multi-ecosystem-group: "all-dependencies"
+    labels:
+      - "frontend"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    patterns: ["*"]
+    multi-ecosystem-group: "all-dependencies"
+    labels:
+      - "ci"
+
+  # Enable once the Dockerfile(s) exist in infra/
+  # - package-ecosystem: "docker"
+  #   directory: "/infra"
+  #   patterns: ["*"]
+  #   multi-ecosystem-group: "all-dependencies"
+  #   labels:
+  #     - "infra"

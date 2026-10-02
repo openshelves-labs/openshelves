@@ -2,3 +2,47 @@
 @import "@fontsource-variable/literata";
 @import "@fontsource-variable/dm-sans";
 @import "material-symbols/outlined.css";
+
+/* Design tokens — Scholastic Paper (docs/poc/demo-site). Only the ones in use so far. */
+@theme {
+  --color-paper: #f3f1ec;   /* warm paper canvas */
+  --color-ink: #1e2320;     /* primary text */
+  --color-primary: #2f5d45; /* deep forest green */
+
+  /* Literata = editorial voice, DM Sans = interface. --font-sans is also Preflight's default family. */
+  --font-sans: "DM Sans Variable", "DM Sans", sans-serif;
+  --font-serif: "Literata Variable", "Literata", serif;
+}
+
+@layer base {
+  html {
+    /* Hide scrollbars; scrolling still works */
+    scrollbar-width: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Double-rule focus: 2px paper gap + 1.5px forest stroke */
+  :focus-visible {
+    outline: 1.5px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Material Symbols: outline by default, add `.fill` for the filled glyph */
+.material-symbols-outlined {
+  --icon-fill: 0;
+  font-variation-settings: "FILL" var(--icon-fill), "wght" 400, "GRAD" 0, "opsz" 24;
+}
+.material-symbols-outlined.fill {
+  --icon-fill: 1;
+}

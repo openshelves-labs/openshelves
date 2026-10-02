@@ -43,6 +43,13 @@ When generating code for this repository, AI agents MUST adhere to the following
 - **Resilience**: Wrap external service calls with Resilience4j patterns where applicable.
 - **Testing**: Write JUnit 5 tests for all new business logic. Mock external dependencies appropriately.
 
+### Frontend (Next.js)
+- **Folder Structure** (`frontend/src`):
+  - `app/`: Routing only (pages, layouts, `globals.css`). No components or logic here.
+  - `components/`: All UI components. Shared ones at the top level; feature-specific ones in a subfolder (e.g. `components/catalog/`).
+  - `lib/`: Utilities and helpers. `lib/api/` holds the client calls to the backend.
+  - `types/`: TypeScript types shared across files (e.g. backend response shapes).
+
 ## 4. Documentation & Workflows
 - **Pull Requests**: When asked to draft a PR, strictly follow the format outlined in `.github/PULL_REQUEST_TEMPLATE.md`. Keep descriptions concise and professional.
 - **AI Usage Policy**: Any code generated must comply with `AI_USAGE_POLICY.md` (e.g., no insertion of copyrighted/GPL code).

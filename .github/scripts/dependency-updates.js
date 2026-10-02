@@ -17,6 +17,7 @@ const MAVEN_CENTRAL = 'https://repo.maven.apache.org/maven2';
 const ISSUE_LABEL    = 'dependency-updates';
 const AREA_LABELS    = ['backend', 'frontend', 'docker'];
 const MAX_BODY_CHARS = 60000;
+const MAX_LOG_CHARS  = 5000;
 
 const GRADLE_FILE = /^(build|settings)\.gradle(\.kts)?$/;
 
@@ -41,6 +42,17 @@ function table(headers, rows) {
         ...rows.map(r => `| ${r.join(' | ')} |`),
     ];
     return lines.join('\n');
+}
+
+function withLog(message, log) {
+    const e = new Error(message);
+    e.log = log;
+    return e;
+}
+
+function logBlock(log, runUrl) {
+    const tail = log.length > MAX_LOG_CHARS ? '…\n' + log.slice(-MAX_LOG_CHARS) : log;
+    return `\n<details><summary>Log</summary>\n\n\`\`\`text\n${tail}\n\`\`\`\n\n[Full run log](${runUrl})\n</details>\n`;
 }
 
 const vkey = v => (v.match(/\d+/g) || []).map(Number);
@@ -223,13 +235,22 @@ async function checkNpm(dir) {
         const args = [hasLock ? 'ci' : 'install', '--ignore-scripts', '--no-audit', '--no-fund'];
         const install = spawnSync('npm', args, { cwd: dir, encoding: 'utf8' });
         if (install.status !== 0) {
-            const lastLine = (install.stderr || '').trim().split('\n').pop();
-            throw new Error(`npm ${args[0]} failed: ${lastLine}`);
+            const err = (install.stderr || '').trim();
+            console.error(err);
+            const msg = err.split('\n')
+                .filter(l => l.startsWith('npm error') && !/complete log|_logs\//.test(l))
+                .slice(0, 3)
+                .map(l => l.replace(/^npm error\s*/, ''))
+                .join(' ') || 'see job log';
+            throw withLog(`npm ${args[0]} failed: ${msg}`, err);
         }
     }
 
     const p = spawnSync('npm', ['outdated', '--json'], { cwd: dir, encoding: 'utf8' });
-    if (p.status > 1) throw new Error((p.stderr || '').trim() || `npm exited with ${p.status}`);
+    if (p.status > 1) {
+        const err = (p.stderr || '').trim();
+        throw withLog(err.split('\n')[0] || `npm exited with ${p.status}`, err);
+    }
 
     const data = JSON.parse(p.stdout || '{}');
     const rows = Object.keys(data).sort().map(name => {
@@ -427,6 +448,8 @@ async function upsertIssue(github, context, body, areaLabels) {
 module.exports = async ({ github, context, core }) => {
     core.info('Scanning the repository for Gradle, npm and Docker files');
 
+    const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
     const results = [];
     const labels  = new Set();
     let total  = 0;
@@ -441,7 +464,9 @@ module.exports = async ({ github, context, core }) => {
             results.push(`### ${title}\n${result.md}\n`);
         } catch (e) {
             core.warning(`[${title}] failed: ${e.message}`);
-            results.push(`### ${title}\n⚠️ Check failed: \`${e.message}\`\n`);
+            let md = `### ${title}\n⚠️ Check failed: \`${e.message}\`\n`;
+            if (e.log) md += logBlock(e.log, runUrl);
+            results.push(md);
             failed++;
         }
     }

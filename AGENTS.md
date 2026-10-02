@@ -7,7 +7,7 @@ OpenShelves is a platform modernizing the university library experience, turning
 
 The repository is structured as a monorepo:
 - `/backend`: The core API services.
-- `/frontend`: The user interface (currently pending initialization).
+- `/frontend`: The user interface (Next.js app).
 - `/infra`: Infrastructure as Code and deployment configurations (currently pending initialization).
 
 ## 2. Technology Stack
@@ -20,7 +20,12 @@ The repository is structured as a monorepo:
 - **Testing**: JUnit 5 Platform.
 
 ### Frontend (`/frontend`)
-- *Stack to be determined.*
+- **Framework**: Next.js 16 (App Router) with React 19.
+- **Language**: TypeScript (strict mode).
+- **Styling**: Tailwind CSS v4.
+- **Linting**: ESLint 9 (`eslint-config-next`).
+- **Package Manager**: npm (Node version pinned in `frontend/.nvmrc`).
+- **Note**: This Next.js version has breaking changes. Read `frontend/AGENTS.md` and the guides in `frontend/node_modules/next/dist/docs/` before writing frontend code.
 
 ### Infrastructure (`/infra`)
 - *Stack to be determined.*

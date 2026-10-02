@@ -15,13 +15,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Check for dependency updates
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const runScript = require('./.github/scripts/dependency-updates.js');

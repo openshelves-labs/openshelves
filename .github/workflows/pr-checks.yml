@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Check CLA checkbox
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const check = require('./.github/scripts/cla-check.js');
@@ -24,7 +24,7 @@ jobs:
 
       - name: Check PR Checklists checkbox
         if: always() # Run even if CLA fails so the user sees all missing requirements at once
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const check = require('./.github/scripts/pr-checklist-check.js');

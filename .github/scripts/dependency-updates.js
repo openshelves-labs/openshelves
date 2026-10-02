@@ -234,11 +234,11 @@ async function checkNpm(dir) {
     const data = JSON.parse(p.stdout || '{}');
     const rows = Object.keys(data).sort().map(name => {
         const info = Array.isArray(data[name]) ? data[name][0] : data[name];
-        return [`\`${name}\``, info.current ?? '?', info.wanted ?? '?', info.latest ?? '?'];
+        return [`\`${name}\``, info.current ?? '?', (info.wanted === info.current ? '—' : (info.wanted ?? '?')), info.latest ?? '?'];
     });
     return {
         md: rows.length
-            ? table(['Package', 'Current', 'Wanted', 'Latest'], rows)
+            ? table(['Package', 'Current', 'Compatible', 'Latest'], rows)
             : 'All npm packages are up to date.',
         count: rows.length,
     };

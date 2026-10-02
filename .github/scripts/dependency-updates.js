@@ -406,7 +406,7 @@ function buildSections() {
 async function ensureLabels(github, context, names) {
     for (const name of names) {
         try {
-            await github.rest.issues.createLabel({ ...context.repo, name, color: '0E8A16' });
+            await github.rest.issues.createLabel({ ...context.repo, name, color: 'c2e0c6' });
         } catch (e) {
             if (e.status !== 422) throw e; // 422 = already exists
         }

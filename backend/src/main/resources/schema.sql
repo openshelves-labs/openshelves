@@ -100,8 +100,8 @@ CREATE TABLE books (
     cover_image_url     TEXT,
 
     -- audit
-    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
-    updated_at          TIMESTAMP       NOT NULL DEFAULT now(),
+    created_at          TIMESTAMPTZ       NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMPTZ       NOT NULL DEFAULT now(),
 
     -- constraints
     CONSTRAINT books_pk                 PRIMARY KEY (id),
@@ -110,7 +110,7 @@ CREATE TABLE books (
     CONSTRAINT books_asin_uk            UNIQUE (asin),
     CONSTRAINT books_olid_uk            UNIQUE (olid),
     CONSTRAINT books_publication_year_chk
-        CHECK (publication_year BETWEEN 1000 AND EXTRACT(YEAR FROM CURRENT_DATE))
+        CHECK (publication_year BETWEEN 1000 AND EXTRACT(YEAR FROM CURRENT_DATE) + 1)   -- Publishers often print the next year on books released late in the year
 );
 
 
@@ -138,8 +138,8 @@ CREATE TABLE authors (
     profile_image_url   TEXT,
 
     -- audit
-    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
-    updated_at          TIMESTAMP       NOT NULL DEFAULT now(),
+    created_at          TIMESTAMPTZ       NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMPTZ       NOT NULL DEFAULT now(),
 
     -- constraints
     CONSTRAINT authors_pk               PRIMARY KEY (id),
@@ -207,7 +207,7 @@ CREATE TABLE users (
     phone_number        TEXT,
 
     -- localization
-    locale              VARCHAR(3),                            -- ISO language code
+    language            VARCHAR(3),                            -- ISO language code
     timezone            VARCHAR(50),
 
     -- status
@@ -217,15 +217,15 @@ CREATE TABLE users (
     avatar_image_url    TEXT,
 
     -- audit
-    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
-    updated_at          TIMESTAMP       NOT NULL DEFAULT now(),
-    deleted_at          TIMESTAMP,
+    created_at          TIMESTAMPTZ       NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMPTZ       NOT NULL DEFAULT now(),
+    deleted_at          TIMESTAMPTZ,
 
     -- constraints
     CONSTRAINT users_pk                 PRIMARY KEY (id)
 );
 
-CREATE UNIQUE INDEX users_email_idx     ON users (email);
+CREATE UNIQUE INDEX users_email_idx     ON users (lower(email));
 
 
 -- -------------------------------------------------------
@@ -248,20 +248,22 @@ CREATE TABLE user_credentials (
 
     -- other details
     failed_attempts         INT             NOT NULL DEFAULT 0,
-    locked_until            TIMESTAMP,
-    last_used_at            TIMESTAMP,
-    password_changed_at     TIMESTAMP,
+    locked_until            TIMESTAMPTZ,
+    last_used_at            TIMESTAMPTZ,
+    password_changed_at     TIMESTAMPTZ,
 
     -- audit
-    created_at              TIMESTAMP       NOT NULL DEFAULT now(),
-    updated_at              TIMESTAMP       NOT NULL DEFAULT now(),
+    created_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
+    updated_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
 
     -- constraints
     CONSTRAINT user_credentials_pk      PRIMARY KEY (id),
     CONSTRAINT user_credentials_user_fk
-        FOREIGN KEY (user_id)           REFERENCES user_credentials      (id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id)           REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT user_credentials_type_fk
-        FOREIGN KEY (type)              REFERENCES lu_user_credential_types (code) ON UPDATE CASCADE ON DELETE RESTRICT
+        FOREIGN KEY (type)              REFERENCES lu_user_credential_types (code) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT user_credentials_password_chk
+        CHECK (type != 'PASSWORD' OR password_hash IS NOT NULL)
 );
 
 CREATE INDEX user_credentials_user_idx      ON user_credentials (user_id);
@@ -279,26 +281,27 @@ CREATE TABLE user_sessions (
     user_id                 BIGINT          NOT NULL,
 
     -- tokens (SHA-256 hashed)
-    session_id_hash         TEXT,
+    session_id_hash         TEXT            NOT NULL,
 
     -- metadata
     ip_address              TEXT,
     user_agent              TEXT,
     device_name             TEXT,
     device_location         TEXT,
-    last_active_at          TIMESTAMP       NOT NULL DEFAULT now(),
+    last_active_at          TIMESTAMPTZ       NOT NULL DEFAULT now(),
 
     -- timeouts
-    expires_at              TIMESTAMP       NOT NULL,
-    revoked_at              TIMESTAMP,
+    expires_at              TIMESTAMPTZ       NOT NULL,
+    revoked_at              TIMESTAMPTZ,
 
     -- audit
-    created_at              TIMESTAMP       NOT NULL DEFAULT now(),
+    created_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
 
     -- constraints
     CONSTRAINT user_sessions_pk      PRIMARY KEY (id),
     CONSTRAINT user_sessions_user_fk
-        FOREIGN KEY (user_id)           REFERENCES user_sessions      (id) ON DELETE CASCADE
+        FOREIGN KEY (user_id)           REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE INDEX user_sessions_user_idx      ON user_sessions (user_id);
+CREATE INDEX user_sessions_user_idx             ON user_sessions (user_id);
+CREATE UNIQUE INDEX user_sessions_id_hash_idx   ON user_sessions (session_id_hash);

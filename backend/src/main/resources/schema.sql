@@ -281,7 +281,7 @@ CREATE TABLE user_sessions (
     user_id                 BIGINT          NOT NULL,
 
     -- tokens (SHA-256 hashed)
-    session_id_hash         TEXT            NOT NULL,
+    session_token_hash      TEXT            NOT NULL,
 
     -- metadata
     ip_address              TEXT,
@@ -303,5 +303,5 @@ CREATE TABLE user_sessions (
         FOREIGN KEY (user_id)           REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE INDEX user_sessions_user_idx             ON user_sessions (user_id);
-CREATE UNIQUE INDEX user_sessions_id_hash_idx   ON user_sessions (session_id_hash);
+CREATE INDEX user_sessions_user_idx                ON user_sessions (user_id);
+CREATE UNIQUE INDEX user_sessions_token_hash_idx   ON user_sessions (session_token_hash);

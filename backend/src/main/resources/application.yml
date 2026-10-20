@@ -11,6 +11,10 @@ spring:
   application:
     name: openshelves-api
 
+  # CORS Configuration
+  cors:
+    allowed-origins: http://localhost:3000
+
   # DataSource Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/openshelves

@@ -1,4 +1,4 @@
-package com.openshelves.auth.enums;
+package com.openshelves.security.enums;
 
 /// Represents the different types of credentials a user can have in the OpenShelves system.
 ///

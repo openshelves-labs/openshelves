@@ -1,22 +1,28 @@
-package com.openshelves.auth.entity;
+package com.openshelves.security.entity;
 
+import com.openshelves.security.enums.CredentialType;
 import com.openshelves.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
+import java.util.Map;
 
-/// Entity representing a user session in the OpenShelves system, including session metadata and expiration details.
+/// Entity representing a way a user can prove their identity in the OpenShelves system,
+/// including credentials and authentication methods.
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "user_sessions")
-public class UserSessionEntity extends BaseEntity<Long> {
+@Table(name = "user_credentials")
+public class UserCredentialEntity extends BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,46 +38,47 @@ public class UserSessionEntity extends BaseEntity<Long> {
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private UserEntity userProfile;
 
-
-    // -------------------------------------------------------------------------
-    // Token
-    // -------------------------------------------------------------------------
-
-    /// SHA-256 hash of the session identifier; unique.
-    @Column(name = "session_token_hash", nullable = false, updatable = false)
-    private String sessionTokenHash;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private CredentialType credentialType;
 
 
     // -------------------------------------------------------------------------
-    // Device metadata
+    // Metadata
     // -------------------------------------------------------------------------
 
-    @Column(name = "ip_address")
-    private String ipAddress;
-
-    @Column(name = "user_agent")
-    private String userAgent;
-
-    @Column(name = "device_name")
-    private String deviceName;
-
-    @Column(name = "device_location")
-    private String deviceLocation;
-
-    @CreatedDate
-    @Column(name = "last_active_at", nullable = false)
-    private Instant lastActiveAt;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "metadata")
+    private Map<String, Object> metadata;
 
 
     // -------------------------------------------------------------------------
-    // Timeouts
+    // Secrets
     // -------------------------------------------------------------------------
 
-    @Column(name = "expires_at", nullable = false)
-    private Instant expiresAt;
+    @Column(name = "password_hash")
+    private String passwordHash;
 
-    @Column(name = "revoked_at")
-    private Instant revokedAt;
+    /// Identifier at the external provider (SAML NameID, OIDC `sub`, etc.).
+    @Column(name = "provider_key")
+    private String providerKey;
+
+
+    // -------------------------------------------------------------------------
+    // Usage & lockout
+    // -------------------------------------------------------------------------
+
+    @Column(name = "failed_attempts", nullable = false)
+    private int failedAttempts;
+
+    @Column(name = "locked_until")
+    private Instant lockedUntil;
+
+    @Column(name = "last_used_at")
+    private Instant lastUsedAt;
+
+    @Column(name = "password_changed_at")
+    private Instant passwordChangedAt;
 
 
     // -------------------------------------------------------------------------
@@ -81,6 +88,10 @@ public class UserSessionEntity extends BaseEntity<Long> {
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
 
 
     // -------------------------------------------------------------------------
@@ -94,9 +105,6 @@ public class UserSessionEntity extends BaseEntity<Long> {
     }
 
     private void trimStringFields() {
-        this.ipAddress = StringUtils.trimToNull(this.ipAddress);
-        this.userAgent = StringUtils.trimToNull(this.userAgent);
-        this.deviceName = StringUtils.trimToNull(this.deviceName);
-        this.deviceLocation = StringUtils.trimToNull(this.deviceLocation);
+        this.providerKey = StringUtils.trimToNull(this.providerKey);
     }
 }

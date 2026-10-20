@@ -1,4 +1,4 @@
-package com.openshelves.auth.entity;
+package com.openshelves.security.entity;
 
 import com.openshelves.common.entity.BaseEntity;
 import jakarta.persistence.*;

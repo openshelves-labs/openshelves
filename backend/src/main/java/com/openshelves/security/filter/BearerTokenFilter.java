@@ -38,7 +38,7 @@ public class BearerTokenFilter extends OncePerRequestFilter {
 
         if (authToken.isPresent()) {
             // Resolve the token to an authenticated user; empty if unknown, expired or revoked
-            Optional<Authentication> authentication = authService.authenticate(authToken.get());
+            Optional<Authentication> authentication = authService.authenticateSessionToken(authToken.get());
 
             if (authentication.isPresent()) {
                 // Store the authentication in the SecurityContext for the rest of the request

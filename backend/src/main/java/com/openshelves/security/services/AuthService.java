@@ -10,9 +10,9 @@ public class AuthService {
 
     /// Resolves a raw bearer token to an authenticated principal.
     ///
-    /// @param token the raw token from the `Authorization` header
+    /// @param sessionToken the raw token from the `Authorization` header
     /// @return the authentication, or empty if the token is unknown, expired or revoked
-    public Optional<Authentication> authenticate(String token) {
+    public Optional<Authentication> authenticateSessionToken(String sessionToken) {
         // TODO: Hash the token, look up the session, and check expiry, revocation and user status
         return Optional.empty();
     }

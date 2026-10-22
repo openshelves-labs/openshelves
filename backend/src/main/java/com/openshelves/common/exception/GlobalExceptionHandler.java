@@ -7,14 +7,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.*;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.net.URI;
 import java.util.function.Predicate;
@@ -45,7 +54,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /// Handles [ThirdPartyClientException] thrown during external API calls.
     ///
-    /// @param e the exception
     /// @return a 502 Bad Gateway response with a generic user-facing error message
     @ExceptionHandler(ThirdPartyClientException.class)
     public ResponseEntity<ApiErrorResponse> handleThirdPartyClientException(ThirdPartyClientException e, HttpServletRequest req) {
@@ -53,6 +61,35 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         String detail = "Unable to process your request due to an external service error. Please try again later.";
         return buildErrorResponse(HttpStatus.BAD_GATEWAY, null, detail, req.getRequestURI(), null);
+    }
+
+    /// Handles [AuthenticationException] thrown by services, e.g. bad credentials on login.
+    ///
+    /// @return a 401 Unauthorized response with the exception's message and a code per failure type
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiErrorResponse> handleAuthenticationException(AuthenticationException e, HttpServletRequest req) {
+        log.debug("Authentication failed: {}", e.getMessage());
+
+        String code = switch (e) {
+            case BadCredentialsException _ -> "INVALID_CREDENTIALS";
+            case LockedException _ -> "ACCOUNT_LOCKED";
+            case DisabledException _ -> "ACCOUNT_DISABLED";
+            case CredentialsExpiredException _ -> "PASSWORD_EXPIRED";
+            default -> null;    // Falls back to UNAUTHORIZED
+        };
+
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, code, e.getMessage(), req.getRequestURI(), null);
+    }
+
+    /// Handles [AccessDeniedException] thrown by method security, e.g. `@PreAuthorize`.
+    ///
+    /// @return a 403 Forbidden response with a generic user-facing error message
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiErrorResponse> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest req) {
+        log.debug("Access denied: {}", e.getMessage());
+
+        String detail = "You do not have permission to access this resource.";
+        return buildErrorResponse(HttpStatus.FORBIDDEN, null, detail, req.getRequestURI(), null);
     }
 
     /// Catch-all for any exception without a dedicated handler.
@@ -74,11 +111,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected @Nullable ResponseEntity<Object> handleExceptionInternal(@NonNull Exception ex, @Nullable Object body, @NonNull HttpHeaders headers, @NonNull HttpStatusCode statusCode, @NonNull WebRequest request) {
         log.debug("Spring MVC exception", ex);
 
+        // Most Spring MVC exceptions pass a null body and expect it to be resolved here
+        if (body == null && ex instanceof ErrorResponse errorResponse) {
+            body = errorResponse.updateAndGetBody(getMessageSource(), LocaleContextHolder.getLocale());
+        }
+
         String detail = body instanceof ProblemDetail pd ? pd.getDetail() : null;
         String path = request instanceof ServletWebRequest swr ? swr.getRequest().getRequestURI() : null;
 
         ResponseEntity<ApiErrorResponse> response = buildErrorResponse(statusCode, null, detail, path, headers);
         return new ResponseEntity<>(response.getBody(), response.getHeaders(), response.getStatusCode());
+    }
+
+    /// Replaces Spring's "No static resource" message with an API-friendly one.
+    @Override
+    protected @Nullable ResponseEntity<Object> handleNoResourceFoundException(@NonNull NoResourceFoundException ex, @NonNull HttpHeaders headers, @NonNull HttpStatusCode status, @NonNull WebRequest request) {
+        ProblemDetail body = ProblemDetail.forStatusAndDetail(status, "The requested resource was not found.");
+        return handleExceptionInternal(ex, body, headers, status, request);
     }
 
 

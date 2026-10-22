@@ -31,7 +31,7 @@ OpenShelves is organized as a high-performance monorepo:
 
 Our backend is built with cutting-edge technologies to ensure stability and performance:
 
-- **Core**: Java 25 (Azul JVM) & Spring Boot 4.0.6
+- **Core**: Java 25 (Azul JVM) & Spring Boot 4.1.2
 - **Persistence**: PostgreSQL with Spring Data JPA
 - **Resilience**: Fault tolerance via Resilience4j
 - **Client**: High-performance HTTP via OkHttp3

@@ -1,6 +1,6 @@
 package com.openshelves.common.config;
 
-import com.openshelves.common.filter.BearerTokenFilter;
+import com.openshelves.security.filter.BearerTokenFilter;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletResponse;

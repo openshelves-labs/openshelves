@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.openshelves.common.exception.GlobalExceptionHandler.handleExceptionInternal;
+import static com.openshelves.common.exception.GlobalExceptionHandler.buildErrorResponse;
 
 @Slf4j
 @RestController
@@ -32,6 +32,6 @@ public class GlobalErrorController implements ErrorController {
             log.error("Error occurred at path: {} with status: {} and message: {}", path, status.value(), msg, ex);
         }
 
-        return handleExceptionInternal(status, null, detail, path != null ? path.toString() : null, null);
+        return buildErrorResponse(status, null, detail, path != null ? path.toString() : null, null);
     }
 }

@@ -5,11 +5,16 @@ import com.openshelves.security.filter.BearerTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
 import java.util.function.Predicate;
@@ -20,7 +25,7 @@ import java.util.function.Predicate;
 /// in the application without requiring per-controller error handling.
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /*
      * NOTE: Convention for error responses
@@ -33,6 +38,9 @@ public class GlobalExceptionHandler {
      *
      * - Add a dedicated @ExceptionHandler for every new exception type; anything
      *   unmapped falls through to the catch-all and is returned as a 500.
+     *
+     * - Spring MVC exceptions (400, 405, 415, ...) are already mapped by the
+     *   handleExceptionInternal override; don't add handlers for them.
      */
 
     /// Handles [ThirdPartyClientException] thrown during external API calls.
@@ -44,15 +52,33 @@ public class GlobalExceptionHandler {
         log.error("Third party client exception", e);
 
         String detail = "Unable to process your request due to an external service error. Please try again later.";
-        return handleExceptionInternal(HttpStatus.BAD_GATEWAY, null, detail, req.getRequestURI(), null);
+        return buildErrorResponse(HttpStatus.BAD_GATEWAY, null, detail, req.getRequestURI(), null);
     }
 
+    /// Catch-all for any exception without a dedicated handler.
+    ///
+    /// @return a 500 Internal Server Error response with a generic user-facing error message
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGenericException(Exception e, HttpServletRequest req) {
         log.error("Unhandled exception", e);
 
         String detail = "An unexpected error occurred. Please try again later.";
-        return handleExceptionInternal(HttpStatus.INTERNAL_SERVER_ERROR, null, detail, req.getRequestURI(), null);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, null, detail, req.getRequestURI(), null);
+    }
+
+    /// Renders Spring MVC exceptions as [ApiErrorResponse], keeping Spring's status and headers.
+    ///
+    /// @return the error response with Spring's status (e.g. 400, 405, 415)
+    @Override
+    @SuppressWarnings("JvmTaintAnalysis")
+    protected @Nullable ResponseEntity<Object> handleExceptionInternal(@NonNull Exception ex, @Nullable Object body, @NonNull HttpHeaders headers, @NonNull HttpStatusCode statusCode, @NonNull WebRequest request) {
+        log.debug("Spring MVC exception", ex);
+
+        String detail = body instanceof ProblemDetail pd ? pd.getDetail() : null;
+        String path = request instanceof ServletWebRequest swr ? swr.getRequest().getRequestURI() : null;
+
+        ResponseEntity<ApiErrorResponse> response = buildErrorResponse(statusCode, null, detail, path, headers);
+        return new ResponseEntity<>(response.getBody(), response.getHeaders(), response.getStatusCode());
     }
 
 
@@ -74,7 +100,7 @@ public class GlobalExceptionHandler {
     ///
     /// @return the error response
     @SuppressWarnings("JvmTaintAnalysis")
-    static ResponseEntity<ApiErrorResponse> handleExceptionInternal(HttpStatusCode status, String code, String detail, String path, HttpHeaders headers) {
+    static ResponseEntity<ApiErrorResponse> buildErrorResponse(HttpStatusCode status, String code, String detail, String path, HttpHeaders headers) {
         HttpHeaders responseHeaders = withDefaultHeaders(status, headers);
 
         ApiErrorResponse body = ApiErrorResponse.forStatus(status.value())

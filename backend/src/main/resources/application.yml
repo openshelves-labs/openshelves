@@ -46,6 +46,11 @@ spring:
     deserialization:
       fail-on-unknown-properties: false     # Prevent crashing when API receives unrecognized fields
 
+  # Auto-configuration exclusions
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration   # No default in-memory user; auth uses our own bearer tokens
+
 # Logging Configuration
 logging:
   level:

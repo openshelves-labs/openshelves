@@ -57,8 +57,8 @@ public class SecurityConfig {
 
             // Exception handling
             .exceptionHandling(e -> e
-                .authenticationEntryPoint((_, res, _) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-                .accessDeniedHandler((_, res, _) -> res.sendError(HttpServletResponse.SC_FORBIDDEN))
+                .authenticationEntryPoint((_, res, _) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication is required to access this resource."))
+                .accessDeniedHandler((_, res, _) -> res.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to access this resource."))
             );
 
         return http.build();

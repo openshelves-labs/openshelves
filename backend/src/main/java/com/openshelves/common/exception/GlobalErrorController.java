@@ -32,6 +32,6 @@ public class GlobalErrorController implements ErrorController {
             log.error("Error occurred at path: {} with status: {} and message: {}", path, status.value(), msg, ex);
         }
 
-        return handleExceptionInternal(status, detail, path != null ? path.toString() : null, null);
+        return handleExceptionInternal(status, null, detail, path != null ? path.toString() : null, null);
     }
 }

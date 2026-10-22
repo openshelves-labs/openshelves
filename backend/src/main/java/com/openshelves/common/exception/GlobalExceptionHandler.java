@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
         log.error("Third party client exception", e);
 
         String detail = "Unable to process your request due to an external service error. Please try again later.";
-        return handleExceptionInternal(HttpStatus.BAD_GATEWAY, detail, req.getRequestURI(), null);
+        return handleExceptionInternal(HttpStatus.BAD_GATEWAY, null, detail, req.getRequestURI(), null);
     }
 
     @ExceptionHandler(Exception.class)
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
         log.error("Unhandled exception", e);
 
         String detail = "An unexpected error occurred. Please try again later.";
-        return handleExceptionInternal(HttpStatus.INTERNAL_SERVER_ERROR, detail, req.getRequestURI(), null);
+        return handleExceptionInternal(HttpStatus.INTERNAL_SERVER_ERROR, null, detail, req.getRequestURI(), null);
     }
 
 
@@ -67,18 +67,24 @@ public class GlobalExceptionHandler {
     /// present on the response or in `headers` (see [#withDefaultHeaders]).
     ///
     /// @param status  the HTTP status of the response
+    /// @param code    the machine-readable error code; may be `null` to use the default for the status
     /// @param detail  the client-facing explanation of this occurrence
     /// @param path    the request path the error relates to; may be `null`
     /// @param headers additional response headers; may be `null`
     ///
     /// @return the error response
     @SuppressWarnings("JvmTaintAnalysis")
-    static ResponseEntity<ApiErrorResponse> handleExceptionInternal(HttpStatusCode status, String detail, String path, HttpHeaders headers) {
+    static ResponseEntity<ApiErrorResponse> handleExceptionInternal(HttpStatusCode status, String code, String detail, String path, HttpHeaders headers) {
         HttpHeaders responseHeaders = withDefaultHeaders(status, headers);
 
         ApiErrorResponse body = ApiErrorResponse.forStatus(status.value())
             .withDetail(detail)
             .withInstance(createInstanceUri(path));
+
+        // Keep the status-based default code unless the caller provides one
+        if (code != null) {
+            body.withCode(code);
+        }
 
         return ResponseEntity.status(status)
             .headers(responseHeaders)

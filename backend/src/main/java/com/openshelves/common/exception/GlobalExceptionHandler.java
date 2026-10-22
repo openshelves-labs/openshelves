@@ -1,11 +1,11 @@
 package com.openshelves.common.exception;
 
 import com.openshelves.common.model.ApiErrorResponse;
+import com.openshelves.security.filter.BearerTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -116,8 +116,7 @@ public class GlobalExceptionHandler {
 
         // WWW-Authenticate challenge (RFC 6750 §3.1)
         if (!containsHeader.test(HttpHeaders.WWW_AUTHENTICATE)) {
-            String authToken = req.getHeader(HttpHeaders.AUTHORIZATION);
-            boolean hadToken = StringUtils.startsWithIgnoreCase(authToken, "Bearer ");
+            boolean hadToken = BearerTokenFilter.extractBearerToken(req).isPresent();
 
             // 401 Unauthorized: Token missing or invalid
             if (status.isSameCodeAs(HttpStatus.UNAUTHORIZED)) {

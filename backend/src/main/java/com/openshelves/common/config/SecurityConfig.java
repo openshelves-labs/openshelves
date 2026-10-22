@@ -1,6 +1,7 @@
 package com.openshelves.common.config;
 
 import com.openshelves.security.filter.BearerTokenFilter;
+import com.openshelves.security.services.AuthService;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,8 +30,8 @@ public class SecurityConfig {
     private List<String> allowedOrigins;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        Filter authFilter = new BearerTokenFilter();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthService authService) throws Exception {
+        Filter authFilter = new BearerTokenFilter(authService);
 
         http
             // CORS configuration

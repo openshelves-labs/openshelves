@@ -5,7 +5,7 @@ import lombok.ToString;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-/// Request body for `POST /api/auth/login`.
+/// Request body for `POST /api/v1/auth/login`.
 @Value
 @Builder(setterPrefix = "with")
 @Jacksonized

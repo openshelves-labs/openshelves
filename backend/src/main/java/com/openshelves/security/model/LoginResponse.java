@@ -7,7 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 
 import java.time.Instant;
 
-/// Response body for `POST /api/auth/login`.
+/// Response body for `POST /api/v1/auth/login`.
 @Value
 @Builder(setterPrefix = "with")
 @Jacksonized

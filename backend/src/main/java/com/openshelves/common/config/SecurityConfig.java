@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,7 +49,16 @@ public class SecurityConfig {
 
             // Authorize requests
             .authorizeHttpRequests(auth -> auth
+                // Login, since the caller has no token yet
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+
+                // Health checks for load balancers and probes
+                .requestMatchers("/actuator/health/**").permitAll()
+
+                // Error dispatches, so error responses aren't turned into 401s
                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+
+                // Everything else requires a valid bearer token
                 .anyRequest().authenticated()
             )
 

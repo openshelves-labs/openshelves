@@ -22,13 +22,18 @@ import java.util.function.Predicate;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // NOTE: Convention for error responses
-    // - Controllers return only success responses (2xx). For any error, throw an
-    //   exception instead of returning an error ResponseEntity directly.
-    // - Each exception type is mapped to its HTTP status here, once. This keeps the
-    //   problem+json body and default headers (e.g. WWW-Authenticate) consistent.
-    // - Add a dedicated @ExceptionHandler for every new exception type; anything
-    //   unmapped falls through to the catch-all and is returned as a 500.
+    /*
+     * NOTE: Convention for error responses
+     *
+     * - Controllers return only success responses (2xx). For any error, throw an
+     *   exception instead of returning an error ResponseEntity directly.
+     *
+     * - Each exception type is mapped to its HTTP status here, once. This keeps the
+     *   problem+json body and default headers (e.g. WWW-Authenticate) consistent.
+     *
+     * - Add a dedicated @ExceptionHandler for every new exception type; anything
+     *   unmapped falls through to the catch-all and is returned as a 500.
+     */
 
     /// Handles [ThirdPartyClientException] thrown during external API calls.
     ///

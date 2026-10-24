@@ -16,7 +16,22 @@ const PLUGIN_PORTAL = 'https://plugins.gradle.org/m2';
 const MAVEN_CENTRAL = 'https://repo.maven.apache.org/maven2';
 
 const ISSUE_LABEL    = 'dependency-updates';
-const AREA_LABELS    = ['backend', 'frontend', 'docker', 'toolchain'];
+const FAILED_LABEL   = 'check-failed';
+
+// Every label this workflow uses, with the colour and description it should have.
+const LABELS = {
+    [ISSUE_LABEL]:    { color: '0e8a16', description: 'Dependency update report' },
+    'toolchain':      { color: 'fbca04', description: 'Java, Node.js or Gradle version is behind' },
+    'backend':        { color: '1d76db', description: 'Gradle libraries, plugins or BOMs have updates' },
+    'frontend':       { color: '5319e7', description: 'npm packages have updates' },
+    'docker':         { color: '0db7ed', description: 'Docker images have newer tags' },
+    [FAILED_LABEL]:   { color: 'd93f0b', description: 'A dependency check failed; see the issue for details' },
+    // Not used by this script; created here for Dependabot's PR labels.
+    'github-actions': { color: '000000', description: 'GitHub Actions version updates' },
+};
+
+// Recalculated on every run; any other label on the issue is left alone.
+const MANAGED_LABELS = ['toolchain', 'backend', 'frontend', 'docker', FAILED_LABEL];
 const MAX_BODY_CHARS = 60000;
 const MAX_LOG_CHARS  = 5000;
 
@@ -509,17 +524,18 @@ function buildSections() {
 
 // ---------- issue handling ----------
 
-async function ensureLabels(github, context, names) {
-    for (const name of names) {
+async function ensureLabels(github, context) {
+    for (const [name, { color, description }] of Object.entries(LABELS)) {
         try {
-            await github.rest.issues.createLabel({ ...context.repo, name, color: 'c2e0c6' });
+            await github.rest.issues.createLabel({ ...context.repo, name, color, description });
         } catch (e) {
-            if (e.status !== 422) throw e; // 422 = already exists
+            if (e.status !== 422) throw e; // 422 = already exists, so bring it in line
+            await github.rest.issues.updateLabel({ ...context.repo, name, color, description });
         }
     }
 }
 
-async function upsertIssue(github, context, title, body, areaLabels) {
+async function upsertIssue(github, context, title, body, managed) {
     const { data: open } = await github.rest.issues.listForRepo({
         ...context.repo, labels: ISSUE_LABEL, state: 'open', per_page: 10,
     });
@@ -530,21 +546,21 @@ async function upsertIssue(github, context, title, body, areaLabels) {
             ...context.repo,
             title,
             body,
-            labels: [ISSUE_LABEL, ...areaLabels],
+            labels: [ISSUE_LABEL, ...managed],
         });
         return created.data.html_url;
     }
 
-    // Keep labels added by hand; only the managed area labels are recalculated.
+    // Keep labels added by hand; only the managed labels are recalculated.
     const kept = existing.labels
         .map(l => (typeof l === 'string' ? l : l.name))
-        .filter(n => !AREA_LABELS.includes(n));
+        .filter(n => !MANAGED_LABELS.includes(n));
     const updated = await github.rest.issues.update({
         ...context.repo,
         issue_number: existing.number,
         title,
         body,
-        labels: [...new Set([...kept, ...areaLabels])],
+        labels: [...new Set([...kept, ...managed])],
     });
     return updated.data.html_url;
 }
@@ -618,7 +634,8 @@ module.exports = async ({ github, context, core }) => {
         ...(summary.length
             ? ['#### At a glance', '', table(['', 'Area', 'Updates'], summary), '', '---', '']
             : ['_No toolchain pins or Gradle, npm or Docker files found in the repository._', '']),
-        ...results,
+        // GitHub collapses blank lines, so <br> is what actually adds space.
+        results.join('\n<br>\n\n'),
         '---',
         '',
         `<sub>📝 This is an informational report; no branches or PRs are opened. It's refreshed on every relevant push to \`main\` and every Friday evening. [View the run](${runUrl}).</sub>`,
@@ -631,8 +648,8 @@ module.exports = async ({ github, context, core }) => {
     const title = issueTitle(total, failed);
     await core.summary.addRaw(body).write();
 
-    // 'github-actions' is not used by this script; it's created here for Dependabot's PR labels.
-    await ensureLabels(github, context, [ISSUE_LABEL, ...AREA_LABELS, 'github-actions']);
+    if (failed) labels.add(FAILED_LABEL);
+    await ensureLabels(github, context);
     const url = await upsertIssue(github, context, title, body, [...labels].sort());
     core.info(`Report updated: ${url} (${title})`);
 };

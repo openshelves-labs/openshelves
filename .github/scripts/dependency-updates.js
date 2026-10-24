@@ -20,14 +20,14 @@ const FAILED_LABEL   = 'check-failed';
 
 // Every label this workflow uses, with the colour and description it should have.
 const LABELS = {
-    [ISSUE_LABEL]:    { color: '0e8a16', description: 'Dependency update report' },
-    'toolchain':      { color: 'fbca04', description: 'Java, Node.js or Gradle version is behind' },
-    'backend':        { color: '1d76db', description: 'Gradle libraries, plugins or BOMs have updates' },
-    'frontend':       { color: '5319e7', description: 'npm packages have updates' },
-    'docker':         { color: '0db7ed', description: 'Docker images have newer tags' },
-    [FAILED_LABEL]:   { color: 'd93f0b', description: 'A dependency check failed; see the issue for details' },
+    [ISSUE_LABEL]:    { color: 'bfd4f2', description: 'Dependency update report' },
+    'toolchain':      { color: 'f5e6c4', description: 'Java, Node.js or Gradle version is behind' },
+    'backend':        { color: 'c2e0c6', description: 'Gradle libraries, plugins or BOMs have updates' },
+    'frontend':       { color: 'd8cff0', description: 'npm packages have updates' },
+    'docker':         { color: 'c9e4f0', description: 'Docker images have newer tags' },
+    [FAILED_LABEL]:   { color: 'f2c4c0', description: 'A dependency check failed; see the issue for details' },
     // Not used by this script; created here for Dependabot's PR labels.
-    'github-actions': { color: '000000', description: 'GitHub Actions version updates' },
+    'github-actions': { color: 'e1e4e8', description: 'GitHub Actions version updates' },
 };
 
 // Recalculated on every run; any other label on the issue is left alone.
@@ -63,6 +63,17 @@ function table(headers, rows) {
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
 const allGood  = msg => `✅ ${msg} Nothing to do here.`;
 const code     = v => `\`${v}\``;
+
+const isMajorBump = (cur, latest) => (vkey(latest)[0] ?? 0) > (vkey(cur)[0] ?? 0);
+const majorNote   = (cur, latest) => (isMajorBump(cur, latest) ? ' ⚠️ _major version, read the release notes first_' : '');
+const shell       = (...lines) => '```sh\n' + lines.join('\n') + '\n```';
+
+// "How to update" block shown under a section; each step is one bullet.
+function howTo(steps) {
+    if (!steps.length) return '';
+    const bullets = steps.map(st => '- ' + st.split('\n').join('\n  '));
+    return `\n**🛠️ How to update**\n\n${bullets.join('\n')}\n`;
+}
 
 function withLog(message, log) {
     const e = new Error(message);
@@ -155,13 +166,14 @@ function npmProjects() {
 
 // ---------- checks (each returns { md, count } or null to skip) ----------
 
-// First Gradle file under `dir` that mentions `group:name`; versions that come
-// from a BOM or a transitive dependency are not declared anywhere directly.
-function gradleDeclaredIn(dir, coord) {
-    const hit = allFiles().find(f => f.startsWith(dir + path.sep)
+// First Gradle file under `dir` that mentions `group:name`, and whether it
+// pins a version there. Versions from a BOM or a transitive dependency aren't.
+function gradleDeclaration(dir, coord) {
+    const file = allFiles().find(f => f.startsWith(dir + path.sep)
         && GRADLE_FILE.test(path.basename(f))
         && fs.readFileSync(f, 'utf8').includes(coord));
-    return hit ? code(rel(hit)) : '_transitive / BOM_';
+    const pinned = !!file && fs.readFileSync(file, 'utf8').includes(coord + ':');
+    return { file, pinned };
 }
 
 async function checkGradleDeps(dir) {
@@ -176,12 +188,14 @@ async function checkGradleDeps(dir) {
     const parts = [];
     let count = 0;
 
-    const rows = (data.outdated?.dependencies || []).map(d => {
+    const outdated = (data.outdated?.dependencies || []).map(d => {
         const av = d.available || {};
-        const latest = av.release || av.milestone || av.integration || '?';
         const coord = `${d.group}:${d.name}`;
-        return [code(coord), d.version, `**${latest}**`, gradleDeclaredIn(dir, coord)];
+        return { coord, cur: d.version, latest: av.release || av.milestone || av.integration || '?',
+                 ...gradleDeclaration(dir, coord) };
     });
+    const rows = outdated.map(d => [code(d.coord), d.cur, `**${d.latest}**`,
+        d.file ? code(rel(d.file)) : '_transitive / BOM_']);
     count += rows.length;
     parts.push(rows.length
         ? `${plural(rows.length, 'library has', 'libraries have')} a newer release out:\n\n`
@@ -192,6 +206,20 @@ async function checkGradleDeps(dir) {
     if (unresolved) {
         parts.push(`\n> 🤷 ${plural(unresolved, 'dependency', 'dependencies')} couldn't be resolved, so I couldn't check them.`);
     }
+
+    const steps = [];
+    for (const d of outdated.filter(x => x.pinned)) {
+        steps.push(`In ${code(rel(d.file))}, change ${code(`${d.coord}:${d.cur}`)} to ${code(`${d.coord}:${d.latest}`)}.${majorNote(d.cur, d.latest)}`);
+    }
+    const managed = outdated.filter(x => !x.pinned);
+    if (managed.length) {
+        steps.push(`${managed.map(d => code(d.coord)).join(', ')} ${managed.length === 1 ? 'gets its' : 'get their'} version from a BOM `
+            + '(usually Spring Boot) or another library. Bump that instead of pinning a version here, '
+            + 'or wait for the next Spring Boot release to pick it up.');
+    }
+    if (steps.length) steps.push('Check that everything still builds and re-run the check:\n'
+        + shell(`cd ${rel(dir)}`, './gradlew build dependencyUpdates'));
+    parts.push(howTo(steps));
     return { md: parts.join('\n'), count };
 }
 
@@ -206,12 +234,19 @@ async function checkGradlePlugins() {
     if (!found.length) return null;
 
     const rows = [];
+    const steps = [];
     for (const { file, id, cur } of found) {
         try {
             const latest = latestStable(
                 await mavenVersions(PLUGIN_PORTAL, id, `${id}.gradle.plugin`));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
                 rows.push([code(id), cur, `**${latest}**`, code(rel(file))]);
+                let step = `In ${code(rel(file))}, change ${code(`id '${id}' version '${cur}'`)} to ${code(`'${latest}'`)}.${majorNote(cur, latest)}`;
+                if (id === 'org.springframework.boot') {
+                    step += ' This also moves every library Spring Boot manages, so skim the '
+                        + `[release notes](https://github.com/spring-projects/spring-boot/releases/tag/v${latest}).`;
+                }
+                steps.push(step);
             }
         } catch (e) {
             console.error(`plugin ${id}: ${e.message}`);
@@ -220,7 +255,7 @@ async function checkGradlePlugins() {
     return {
         md: rows.length
             ? `${plural(rows.length, 'plugin')} can be bumped:\n\n`
-                + table(['Plugin', 'Current', 'Latest', 'Declared in'], rows)
+                + table(['Plugin', 'Current', 'Latest', 'Declared in'], rows) + '\n' + howTo(steps)
             : allGood('All Gradle plugins are current.'),
         count: rows.length,
     };
@@ -237,11 +272,13 @@ async function checkBoms() {
     if (!found.length) return null;
 
     const rows = [];
+    const steps = [];
     for (const { file, g, a, cur } of found) {
         try {
             const latest = latestStable(await mavenVersions(MAVEN_CENTRAL, g, a));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
                 rows.push([code(`${g}:${a}`), cur, `**${latest}**`, code(rel(file))]);
+                steps.push(`In ${code(rel(file))}, change ${code(`mavenBom '${g}:${a}:${cur}'`)} to ${code(`'${g}:${a}:${latest}'`)}.${majorNote(cur, latest)}`);
             }
         } catch (e) {
             console.error(`bom ${g}:${a}: ${e.message}`);
@@ -250,11 +287,59 @@ async function checkBoms() {
     return {
         md: rows.length
             ? `${plural(rows.length, 'BOM has', 'BOMs have')} a newer version. Bumping it also moves every library it manages:\n\n`
-                + table(['BOM', 'Current', 'Latest', 'Declared in'], rows)
+                + table(['BOM', 'Current', 'Latest', 'Declared in'], rows) + '\n' + howTo(steps)
             : allGood('All BOMs are current.'),
         count: rows.length,
     };
 }
+
+// Packages the Next.js upgrade codemod moves together with `next`.
+const NEXT_FAMILY = new Set(['next', 'eslint-config-next', 'react', 'react-dom', '@types/react', '@types/react-dom']);
+
+function npmHowTo(dir, outdated) {
+    const pkg   = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
+    const specs = { ...pkg.dependencies, ...pkg.devDependencies };
+    const cd    = `cd ${rel(dir)}`;
+    const steps = [];
+
+    let rest = outdated;
+    if (outdated.some(o => o.name === 'next' && o.latest !== o.cur)) {
+        const n = outdated.find(o => o.name === 'next');
+        steps.push(`**Next.js ${n.cur} → ${n.latest}**: use the official upgrade codemod. It bumps \`next\`, `
+            + `\`eslint-config-next\`, React and the React types together and applies any code changes the release needs.${majorNote(n.cur, n.latest)}\n`
+            + shell(cd, 'npx @next/codemod@canary upgrade latest'));
+        rest = outdated.filter(o => !NEXT_FAMILY.has(o.name));
+    }
+
+    const inRange = rest.filter(o => o.wanted !== o.cur);
+    if (inRange.length) {
+        steps.push(`${inRange.map(o => code(o.name)).join(', ')} can move within the current range:\n`
+            + shell(cd, 'npm update'));
+    }
+
+    const beyond  = rest.filter(o => o.latest !== o.wanted);
+    const install = (list, exact) => list.length
+        ? `npm install ${exact ? '--save-exact ' : ''}${list.map(o => `${o.name}@${o.latest}`).join(' ')}` : null;
+    const isExact = o => /^\d/.test(specs[o.name] || '');
+    for (const [list, label] of [
+        [beyond.filter(o => !isMajorBump(o.cur, o.latest)), 'need a range change'],
+        [beyond.filter(o =>  isMajorBump(o.cur, o.latest)), 'are **major** upgrades, so read their changelogs first'],
+    ]) {
+        if (!list.length) continue;
+        const cmds = [install(list.filter(o => !isExact(o)), false), install(list.filter(isExact), true)].filter(Boolean);
+        steps.push(`${list.map(o => code(o.name)).join(', ')} ${label}:\n` + shell(cd, ...cmds));
+    }
+
+    const overridden = rest.filter(o => pkg.overrides && o.name in pkg.overrides);
+    if (overridden.length) {
+        steps.push(`${overridden.map(o => code(o.name)).join(', ')} ${overridden.length === 1 ? 'is' : 'are'} also listed under `
+            + `\`overrides\` in ${manifestPath(dir)}; update ${overridden.length === 1 ? 'it' : 'them'} there too.`);
+    }
+    if (steps.length) steps.push('Then check that it still lints and builds:\n' + shell(cd, 'npm run lint && npm run build'));
+    return howTo(steps);
+}
+
+const manifestPath = dir => code(rel(path.join(dir, 'package.json')));
 
 async function checkNpm(dir) {
     if (!fs.existsSync(path.join(dir, 'node_modules'))) {
@@ -281,15 +366,15 @@ async function checkNpm(dir) {
 
     const data = JSON.parse(p.stdout || '{}');
     const manifest = code(rel(path.join(dir, 'package.json')));
-    const rows = Object.keys(data).sort().map(name => {
+    const outdated = Object.keys(data).sort().map(name => {
         const info = Array.isArray(data[name]) ? data[name][0] : data[name];
-        const wanted = info.wanted === info.current ? '—' : (info.wanted ?? '?');
-        return [code(name), info.current ?? '?', wanted, `**${info.latest ?? '?'}**`, manifest];
+        return { name, cur: info.current ?? '?', wanted: info.wanted ?? '?', latest: info.latest ?? '?' };
     });
+    const rows = outdated.map(o => [code(o.name), o.cur, o.wanted === o.cur ? '—' : o.wanted, `**${o.latest}**`, manifest]);
     return {
         md: rows.length
             ? `${plural(rows.length, 'package')} behind. _Compatible_ is what \`npm update\` would give you within the current range; _Latest_ may need a range change:\n\n`
-                + table(['Package', 'Current', 'Compatible', 'Latest', 'Declared in'], rows)
+                + table(['Package', 'Current', 'Compatible', 'Latest', 'Declared in'], rows) + '\n' + npmHowTo(dir, outdated)
             : allGood('Every npm package is on its latest version.'),
         count: rows.length,
     };
@@ -364,6 +449,7 @@ async function checkDocker() {
     if (!files.length) return null;
 
     const rows = [];
+    const steps = [];
     const seen = new Set();
     for (const file of files) {
         for (const ref of dockerRefs(file)) {
@@ -390,14 +476,17 @@ async function checkDocker() {
                 .sort((a, b) => compareKeys(b.s.ver, a.s.ver));
 
             if (better.length) {
-                rows.push([code(parsed.repo.replace(/^library\//, '')), parsed.tag, `**${better[0].t}**`, code(rel(file))]);
+                const image = parsed.repo.replace(/^library\//, '');
+                rows.push([code(image), parsed.tag, `**${better[0].t}**`, code(rel(file))]);
+                steps.push(`In ${code(rel(file))}, change ${code(`${image}:${parsed.tag}`)} to ${code(`${image}:${better[0].t}`)}.`
+                    + majorNote(parsed.tag, better[0].t));
             }
         }
     }
     return {
         md: rows.length
             ? `${plural(rows.length, 'image has', 'images have')} a newer tag on Docker Hub:\n\n`
-                + table(['Image', 'Current', 'Newer tag', 'Declared in'], rows)
+                + table(['Image', 'Current', 'Newer tag', 'Declared in'], rows) + '\n' + howTo(steps)
             : allGood('All pinned Docker Hub images are current.'),
         count: rows.length,
     };
@@ -443,6 +532,29 @@ function toolStatus(pin, r, byMajor) {
     return { text: '⬆️ update', outdated: true };
 }
 
+function toolchainStep(tool, file, pin, r) {
+    const where  = code(rel(file));
+    const major  = v => String(vkey(v)[0]);
+    const choice = r.lts && major(r.lts) !== major(r.latest)
+        ? `the LTS (**${major(r.lts)}**) or the latest (**${major(r.latest)}**)`
+        : `**${major(r.latest)}**`;
+    if (tool === 'Java') {
+        return `**Java**: in ${where}, change ${code(`JavaLanguageVersion.of(${pin})`)} to ${choice}. `
+            + 'The foojay resolver downloads the new JDK on the next build; also switch the project SDK in your IDE.';
+    }
+    if (tool === 'Node.js') {
+        const dir = path.dirname(file);
+        const extra = fs.existsSync(path.join(dir, 'package.json'))
+            && JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8')).engines?.node
+            ? ` and \`engines.node\` in ${manifestPath(dir)}` : '';
+        return `**Node.js**: set ${where}${extra} to ${choice}, run \`nvm use\`, then reinstall with \`npm ci\`. `
+            + 'If the README has a Node.js badge, update it too.';
+    }
+    return `**Gradle ${pin} → ${r.latest}**: run the wrapper task, then run it once more so the wrapper scripts and jar come from the new version:\n`
+        + shell(`cd ${rel(path.dirname(path.dirname(path.dirname(file))))}`,
+                `./gradlew wrapper --gradle-version ${r.latest}`, './gradlew wrapper');
+}
+
 async function checkToolchain() {
     const pins = [];
 
@@ -478,23 +590,34 @@ async function checkToolchain() {
     }
 
     let count = 0;
+    const steps = [];
     const rows = pins.map(({ tool, file, pin }) => {
         const r = releases[tool];
         if (!r) return [tool, pin, '?', '?', '⚠️ lookup failed', code(rel(file))];
         const st = toolStatus(pin, r, sources[tool].byMajor);
-        if (st.outdated) count++;
+        if (st.outdated) {
+            count++;
+            steps.push(toolchainStep(tool, file, pin, r));
+        }
         return [tool, `**${pin}**`, r.lts ?? '—', r.latest, st.text, code(rel(file))];
     });
     const intro = count
         ? `${plural(count, 'tool is', 'tools are')} behind both the latest LTS and the latest release:`
         : 'All pinned tools are on either the latest LTS or the latest release 👍';
     return {
-        md: `${intro}\n\n` + table(['Tool', 'Pinned', 'Latest LTS', 'Latest', 'Status', 'Declared in'], rows),
+        md: `${intro}\n\n` + table(['Tool', 'Pinned', 'Latest LTS', 'Latest', 'Status', 'Declared in'], rows) + '\n' + howTo(steps),
         count,
     };
 }
 
 // ---------- sections (built from whatever the scan finds) ----------
+
+// Section title from the project folder: ('frontend', 'packages') -> 'Frontend packages'.
+// The repo root has no folder name, so it falls back to `rootTitle`.
+function projectTitle(dir, noun, rootTitle) {
+    const name = rel(dir);
+    return name === '.' ? rootTitle : `${name[0].toUpperCase()}${name.slice(1)} ${noun}`;
+}
 
 function buildSections() {
     const sections = [
@@ -503,7 +626,7 @@ function buildSections() {
 
     for (const dir of gradleProjects()) {
         sections.push({
-            emoji: '☕', title: `Gradle dependencies (${rel(dir)})`, label: 'backend',
+            emoji: '☕', title: projectTitle(dir, 'dependencies', 'Gradle dependencies'), label: 'backend',
             run:   () => checkGradleDeps(dir),
         });
     }
@@ -512,7 +635,7 @@ function buildSections() {
 
     for (const dir of npmProjects()) {
         sections.push({
-            emoji: '📦', title: `npm packages (${rel(dir)})`, label: 'frontend',
+            emoji: '📦', title: projectTitle(dir, 'packages', 'npm packages'), label: 'frontend',
             run:   () => checkNpm(dir),
         });
     }
@@ -568,10 +691,16 @@ async function upsertIssue(github, context, title, body, managed) {
 
 // ---------- entry point ----------
 
-function issueTitle(total, failed) {
-    const broken = failed ? ` (${plural(failed, 'check')} failed)` : '';
-    if (total) return `⬆️ ${plural(total, 'dependency update')} available${broken}`;
-    if (failed) return `⚠️ Dependency check: ${plural(failed, 'check')} failed`;
+// ['backend', 'frontend', 'toolchain'] -> 'backend, frontend & toolchain'
+function areaList(areas) {
+    const a = [...new Set(areas)].sort();
+    return a.length > 1 ? `${a.slice(0, -1).join(', ')} & ${a.at(-1)}` : (a[0] || '');
+}
+
+function issueTitle(total, failed, areas, failedAreas) {
+    const broken = failed ? `⚠️ ${plural(failed, 'check')} failed in ${areaList(failedAreas)}` : '';
+    if (total)  return `⬆️ ${plural(total, 'dependency update')} in ${areaList(areas)}${broken ? ` · ${broken}` : ''}`;
+    if (failed) return broken;
     return '✅ All dependencies are up to date';
 }
 
@@ -591,6 +720,7 @@ module.exports = async ({ github, context, core }) => {
     const results = [];
     const summary = [];
     const labels  = new Set();
+    const failedAreas = new Set();
     let total  = 0;
     let failed = 0;
 
@@ -608,6 +738,7 @@ module.exports = async ({ github, context, core }) => {
             let md = `${heading}\n\n⚠️ This check didn't finish: ${code(e.message)}\n`;
             if (e.log) md += logBlock(e.log, runUrl);
             summary.push([emoji, title, '⚠️ failed']);
+            failedAreas.add(label);
             results.push(md);
             failed++;
         }
@@ -645,7 +776,7 @@ module.exports = async ({ github, context, core }) => {
         body = body.slice(0, MAX_BODY_CHARS) + '\n\n_Report truncated; see the run log for the rest._';
     }
 
-    const title = issueTitle(total, failed);
+    const title = issueTitle(total, failed, labels, failedAreas);
     await core.summary.addRaw(body).write();
 
     if (failed) labels.add(FAILED_LABEL);

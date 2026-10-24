@@ -19,12 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Set up Java 25 (Zulu)
-        uses: actions/setup-java@v6
-        with:
-          java-version: '25'
-          distribution: 'zulu'
-
       - name: Submit dependency graph
         uses: gradle/actions/dependency-submission@v6
         with:

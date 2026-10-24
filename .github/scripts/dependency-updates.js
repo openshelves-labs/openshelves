@@ -660,34 +660,43 @@ async function ensureLabels(github, context) {
     }
 }
 
-async function upsertIssue(github, context, title, body, managed) {
-    const { data: open } = await github.rest.issues.listForRepo({
-        ...context.repo, labels: ISSUE_LABEL, state: 'open', per_page: 10,
+// One issue is reused for good: it's open while there's something to act on,
+// closed once everything is clean, and reopened when updates show up again.
+async function syncIssue(github, context, { title, body, managed, clean }) {
+    const { data: issues } = await github.rest.issues.listForRepo({
+        ...context.repo, labels: ISSUE_LABEL, state: 'all', sort: 'created', direction: 'desc', per_page: 20,
     });
-    const existing = open.find(i => !i.pull_request);
+    const existing = issues.find(i => !i.pull_request); // Dependabot PRs share the label
 
     if (!existing) {
-        const created = await github.rest.issues.create({
-            ...context.repo,
-            title,
-            body,
-            labels: [ISSUE_LABEL, ...managed],
+        if (clean) return 'nothing to report, no issue created';
+        const { data } = await github.rest.issues.create({
+            ...context.repo, title, body, labels: [ISSUE_LABEL, ...managed],
         });
-        return created.data.html_url;
+        return `opened ${data.html_url}`;
     }
+
+    // Already closed and still clean: leave it alone rather than touching it on every push.
+    if (clean && existing.state === 'closed') return `still clean, ${existing.html_url} stays closed`;
 
     // Keep labels added by hand; only the managed labels are recalculated.
     const kept = existing.labels
         .map(l => (typeof l === 'string' ? l : l.name))
         .filter(n => !MANAGED_LABELS.includes(n));
-    const updated = await github.rest.issues.update({
-        ...context.repo,
-        issue_number: existing.number,
-        title,
-        body,
-        labels: [...new Set([...kept, ...managed])],
+    const issue = { ...context.repo, issue_number: existing.number };
+
+    if (clean) {
+        await github.rest.issues.update({ ...issue, title, body, labels: kept });
+        await github.rest.issues.createComment({ ...issue,
+            body: "✅ Everything is up to date, so I'm closing this. It'll reopen when new updates show up." });
+        await github.rest.issues.update({ ...issue, state: 'closed', state_reason: 'completed' });
+        return `closed ${existing.html_url}`;
+    }
+
+    await github.rest.issues.update({
+        ...issue, title, body, state: 'open', labels: [...new Set([...kept, ...managed])],
     });
-    return updated.data.html_url;
+    return `${existing.state === 'closed' ? 'reopened' : 'updated'} ${existing.html_url}`;
 }
 
 
@@ -788,6 +797,8 @@ module.exports = async ({ github, context, core }) => {
 
     if (failed) labels.add(FAILED_LABEL);
     await ensureLabels(github, context);
-    const url = await upsertIssue(github, context, title, body, [...labels].sort());
-    core.info(`Report updated: ${url} (${title})`);
+    const outcome = await syncIssue(github, context, {
+        title, body, managed: [...labels].sort(), clean: !total && !failed,
+    });
+    core.info(`Issue ${outcome} (${title})`);
 };

@@ -14,10 +14,10 @@ The repository is structured as a monorepo:
 ### Backend (`/backend`)
 - **Language**: Java 25 (Azul JVM).
 - **Build Tool**: Gradle.
-- **Framework**: Spring Boot 4.0.6 (Spring WebMVC, Spring Data JPA).
+- **Framework**: Spring Boot 4 (Spring WebMVC, Spring Data JPA).
 - **Database**: PostgreSQL.
-- **Key Libraries**: Lombok (for boilerplate reduction), Resilience4j (for fault tolerance/rate limiting), OkHttp3 (for HTTP clients).
-- **Testing**: JUnit 5 Platform.
+- **Key Libraries**: Lombok (for boilerplate reduction), Resilience4j (for fault tolerance/rate limiting), OkHttp 5 (for HTTP clients).
+- **Testing**: JUnit 6 (Jupiter).
 
 ### Frontend (`/frontend`)
 - **Framework**: Next.js 16 (App Router) with React 19.
@@ -41,7 +41,7 @@ When generating code for this repository, AI agents MUST adhere to the following
 - **Lombok First**: Use Lombok annotations (`@Data`, `@Getter`, `@Setter`, `@Builder`, `@RequiredArgsConstructor`) to minimize boilerplate code.
 - **Dependency Injection**: Use constructor injection (via Lombok's `@RequiredArgsConstructor`) rather than field injection (`@Autowired`).
 - **Resilience**: Wrap external service calls with Resilience4j patterns where applicable.
-- **Testing**: Write JUnit 5 tests for all new business logic. Mock external dependencies appropriately.
+- **Testing**: Write JUnit 6 tests for all new business logic. Mock external dependencies appropriately.
 
 ### Frontend (Next.js)
 - **Folder Structure** (`frontend/src`):

@@ -3,6 +3,12 @@ name: Dependency Submission
 on:
   push:
     branches: ["main"]
+    paths:
+      - 'backend/**/*.gradle'
+      - 'backend/**/*.gradle.kts'
+      - 'backend/gradle.properties'
+      - 'backend/gradle/**'
+      - '.github/workflows/dependency-submission.yml'
 
 jobs:
   dependency-submission:

@@ -68,11 +68,13 @@ const isMajorBump = (cur, latest) => (vkey(latest)[0] ?? 0) > (vkey(cur)[0] ?? 0
 const majorNote   = (cur, latest) => (isMajorBump(cur, latest) ? ' ⚠️ _major version, read the release notes first_' : '');
 const shell       = (...lines) => '```sh\n' + lines.join('\n') + '\n```';
 
-// "How to update" block shown under a section; each step is one bullet.
+// "How to update" tip box shown under a section; each step is one bullet.
+// Every line needs a '>' prefix to stay inside GitHub's [!TIP] alert.
 function howTo(steps) {
     if (!steps.length) return '';
     const bullets = steps.map(st => '- ' + st.split('\n').join('\n  '));
-    return `\n**🛠️ How to update**\n\n${bullets.join('\n')}\n`;
+    const lines = ['[!TIP]', '**🛠️ How to update**', '', ...bullets.join('\n').split('\n')];
+    return '\n' + lines.map(l => (l ? `> ${l}` : '>')).join('\n') + '\n';
 }
 
 function withLog(message, log) {

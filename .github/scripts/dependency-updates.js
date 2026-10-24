@@ -1,5 +1,6 @@
-// Scans the repo for Gradle, npm and Docker files, checks them for available
-// updates, and keeps a single GitHub issue up to date with the results.
+// Scans the repo for Gradle, npm and Docker files and toolchain pins (Java,
+// Node.js, Gradle), checks them for available updates, and keeps a single
+// GitHub issue up to date with the results.
 // Informational only: opens no branches or PRs.
 
 const { spawnSync } = require('child_process');
@@ -15,7 +16,7 @@ const PLUGIN_PORTAL = 'https://plugins.gradle.org/m2';
 const MAVEN_CENTRAL = 'https://repo.maven.apache.org/maven2';
 
 const ISSUE_LABEL    = 'dependency-updates';
-const AREA_LABELS    = ['backend', 'frontend', 'docker'];
+const AREA_LABELS    = ['backend', 'frontend', 'docker', 'toolchain'];
 const MAX_BODY_CHARS = 60000;
 const MAX_LOG_CHARS  = 5000;
 
@@ -146,12 +147,6 @@ async function checkGradleDeps(dir) {
 
     const parts = [];
     let count = 0;
-
-    const g = data.gradle || {};
-    if (g.current?.isUpdateAvailable) {
-        parts.push(`**Gradle wrapper:** ${g.running.version} → ${g.current.version}\n`);
-        count++;
-    }
 
     const rows = (data.outdated?.dependencies || []).map(d => {
         const av = d.available || {};
@@ -373,6 +368,93 @@ async function checkDocker() {
 }
 
 
+// --- Toolchain (Java, Node.js, Gradle) ---
+
+const JAVA_PIN_RES = [
+    /JavaLanguageVersion\.of\(\s*(\d+)\s*\)/g,
+    /(?:source|target)Compatibility\s*=\s*(?:JavaVersion\.VERSION_)?['"]?(\d+)/g,
+];
+const NODE_PIN_FILES = new Set(['.nvmrc', '.node-version']);
+const GRADLE_DIST_RE = /gradle-(\d[\w.\-]*?)-(?:bin|all)\.zip/;
+
+const newest = versions => versions.reduce((a, b) => (compareKeys(vkey(a), vkey(b)) >= 0 ? a : b));
+
+async function javaReleases() {
+    const d = JSON.parse(await httpGet('https://api.adoptium.net/v3/info/available_releases'));
+    return { lts: String(d.most_recent_lts), latest: String(d.most_recent_feature_release) };
+}
+
+async function nodeReleases() {
+    const list = JSON.parse(await httpGet('https://nodejs.org/dist/index.json'));
+    const strip = r => r.version.replace(/^v/, '');
+    return {
+        lts:    newest(list.filter(r => r.lts).map(strip)),
+        latest: newest(list.map(strip)),
+    };
+}
+
+async function gradleReleases() {
+    const d = JSON.parse(await httpGet('https://services.gradle.org/versions/current'));
+    return { lts: null, latest: d.version };
+}
+
+// Java and Node.js are compared by major version, Gradle by full version.
+function toolStatus(pin, r, byMajor) {
+    const key = v => (byMajor ? vkey(v).slice(0, 1) : vkey(v));
+    if (!vkey(pin).length) return { text: 'floating', outdated: false };
+    if (compareKeys(key(pin), key(r.latest)) >= 0) return { text: '✅ latest', outdated: false };
+    if (r.lts && compareKeys(key(pin), key(r.lts)) === 0) return { text: '✅ LTS', outdated: false };
+    return { text: '⬆️ update', outdated: true };
+}
+
+async function checkToolchain() {
+    const pins = [];
+
+    for (const file of findFiles(n => GRADLE_FILE.test(n))) {
+        const text = fs.readFileSync(file, 'utf8');
+        const found = new Set(JAVA_PIN_RES.flatMap(re => [...text.matchAll(re)].map(m => m[1])));
+        for (const v of found) pins.push({ tool: 'Java', file, pin: v });
+    }
+    for (const file of findFiles(n => NODE_PIN_FILES.has(n))) {
+        const v = fs.readFileSync(file, 'utf8').trim().replace(/^v/, '');
+        if (v) pins.push({ tool: 'Node.js', file, pin: v });
+    }
+    for (const dir of gradleProjects()) {
+        const file = path.join(dir, 'gradle/wrapper/gradle-wrapper.properties');
+        if (!fs.existsSync(file)) continue;
+        const m = fs.readFileSync(file, 'utf8').match(GRADLE_DIST_RE);
+        if (m) pins.push({ tool: 'Gradle', file, pin: m[1] });
+    }
+    if (!pins.length) return null;
+
+    const sources = {
+        'Java':    { fetch: javaReleases,   byMajor: true  },
+        'Node.js': { fetch: nodeReleases,   byMajor: true  },
+        'Gradle':  { fetch: gradleReleases, byMajor: false },
+    };
+    const releases = {};
+    for (const tool of new Set(pins.map(p => p.tool))) {
+        try {
+            releases[tool] = await sources[tool].fetch();
+        } catch (e) {
+            console.error(`toolchain ${tool}: ${e.message}`);
+        }
+    }
+
+    let count = 0;
+    const rows = pins.map(({ tool, file, pin }) => {
+        const r = releases[tool];
+        if (!r) return [tool, pin, '?', '?', '⚠️ lookup failed', `\`${rel(file)}\``];
+        const st = toolStatus(pin, r, sources[tool].byMajor);
+        if (st.outdated) count++;
+        return [tool, pin, r.lts ?? '—', r.latest, st.text, `\`${rel(file)}\``];
+    });
+    return {
+        md: table(['Tool', 'Pinned', 'Latest LTS', 'Latest', 'Status', 'Declared in'], rows),
+        count,
+    };
+}
+
 // ---------- sections (built from whatever the scan finds) ----------
 
 function buildSections() {
@@ -397,6 +479,7 @@ function buildSections() {
     }
 
     sections.push({ title: 'Docker images', label: 'docker', run: checkDocker });
+    sections.push({ title: 'Toolchain', label: 'toolchain', run: checkToolchain });
     return sections;
 }
 

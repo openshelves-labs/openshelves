@@ -757,6 +757,10 @@ module.exports = async ({ github, context, core }) => {
         workflow_dispatch: 'a manual run',
     }[context.eventName] || context.eventName;
 
+    // Scheduled runs may not carry repository details, so fall back to plain words.
+    const branch = context.payload?.repository?.default_branch;
+    const defaultBranch = branch ? `\`${branch}\`` : 'the default branch';
+
     let body = [
         '## 👋 Dependency check-in',
         '',
@@ -771,7 +775,7 @@ module.exports = async ({ github, context, core }) => {
         results.join('\n<br>\n\n'),
         '---',
         '',
-        `<sub>📝 This is an informational report; no branches or PRs are opened. It's refreshed on every relevant push to \`main\` and every Friday evening. [View the run](${runUrl}).</sub>`,
+        `<sub>📝 This is an informational report; no branches or PRs are opened. It's refreshed on every relevant push to ${defaultBranch} and every Friday evening. [View the run](${runUrl}).</sub>`,
     ].join('\n');
 
     if (body.length > MAX_BODY_CHARS) {

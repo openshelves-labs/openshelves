@@ -1,10 +1,12 @@
 # OpenShelves: The Future of Academic Discovery
 
-[![License](https://img.shields.io/badge/License-BUSL%201.1-blue.svg)](LICENSE)
-[![Java 25](https://img.shields.io/badge/Java-25-blue.svg)](https://www.java.com/)
-[![Spring Boot 4.1.2](https://img.shields.io/badge/Spring_Boot-4.1.2-6DB33F.svg?logo=spring)](https://spring.io/projects/spring-boot)
-[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome!-6DB33F.svg)](CONTRIBUTING.md)
-[![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-Adopted-blue.svg)](CODE_OF_CONDUCT.md)
+[![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL_1.1-0366D6?style=flat)](LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-2EA44F?style=flat)](CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Adopted-0366D6?style=flat)](CODE_OF_CONDUCT.md)
+[![Spring Boot 4.1.2](https://img.shields.io/badge/Spring_Boot-4.1.2-6DB33F?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
+[![Java 25](https://img.shields.io/badge/Java-25-ED8B00?style=flat&logo=openjdk)](https://openjdk.org/projects/jdk/25/)
+[![Next.js 16.4.2](https://img.shields.io/badge/Next.js-16.4.2-000000?style=flat&logo=nextdotjs)](https://nextjs.org/)
+[![Node.js 24](https://img.shields.io/badge/Node.js-24-5FA04E?style=flat&logo=nodedotjs)](https://nodejs.org/)
 
 OpenShelves is a modern platform designed to revolutionize the university library experience. We are turning complex, legacy academic catalogs into intuitive, high-performance, and open discovery platforms that empower students and researchers.
 

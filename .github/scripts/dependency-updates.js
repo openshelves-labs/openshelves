@@ -746,10 +746,11 @@ module.exports = async ({ github, context, core }) => {
         }
     }
 
-    const stamp = new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
-    }).format(new Date());
+    // e.g. "24 Oct 2026, 1:11 PM"
+    const now  = new Date();
+    const zone = { timeZone: 'Asia/Kolkata' };
+    const stamp = new Intl.DateTimeFormat('en-GB', { ...zone, day: 'numeric', month: 'short', year: 'numeric' }).format(now)
+        + ', ' + new Intl.DateTimeFormat('en-US', { ...zone, hour: 'numeric', minute: '2-digit', hour12: true }).format(now);
 
     const trigger = {
         schedule:          'the weekly schedule',

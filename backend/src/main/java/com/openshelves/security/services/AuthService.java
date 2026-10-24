@@ -26,6 +26,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+/// Service for creating, resolving and revoking login sessions.
+///
+/// Sessions use opaque random tokens; only their SHA-256 hash is stored.
 @Service
 @RequiredArgsConstructor
 public class AuthService {

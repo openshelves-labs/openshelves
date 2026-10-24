@@ -1,6 +1,22 @@
 name: Dependency Updates
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '**/build.gradle'
+      - '**/build.gradle.kts'
+      - '**/settings.gradle'
+      - '**/settings.gradle.kts'
+      - '**/package.json'
+      - '**/Dockerfile*'
+      - '**/*.dockerfile'
+      - '**/compose*.yml'
+      - '**/compose*.yaml'
+      - '**/docker-compose*.yml'
+      - '**/docker-compose*.yaml'
+      - '.github/workflows/dependency-updates.yml'
+      - '.github/scripts/dependency-updates.js'
   schedule:
     - cron: "30 11 * * 5"   # Fridays 17:00 IST (cron is UTC-only: 11:30 UTC)
   workflow_dispatch:

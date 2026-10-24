@@ -3,11 +3,13 @@ package com.openshelves.security.controller;
 import com.openshelves.common.model.SessionPrincipal;
 import com.openshelves.security.model.LoginRequest;
 import com.openshelves.security.model.LoginResponse;
+import com.openshelves.security.model.SessionResponse;
 import com.openshelves.security.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,12 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse loginUser(@Valid @RequestBody LoginRequest request) {
         return authService.createSession(request);
+    }
+
+    /// Returns the current session and basic details of its user.
+    @GetMapping("/user-session")
+    public SessionResponse getSessionDetails(@AuthenticationPrincipal SessionPrincipal principal) {
+        return authService.getSessionDetails(principal.getSessionId());
     }
 
     /// Revokes the current session.

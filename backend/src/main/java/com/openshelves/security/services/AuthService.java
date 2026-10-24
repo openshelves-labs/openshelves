@@ -7,6 +7,7 @@ import com.openshelves.security.entity.UserSessionEntity;
 import com.openshelves.security.enums.CredentialType;
 import com.openshelves.security.model.LoginRequest;
 import com.openshelves.security.model.LoginResponse;
+import com.openshelves.security.model.SessionResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -104,13 +105,38 @@ public class AuthService {
             .build();
     }
 
+    /// Returns the session with the given ID, with basic details of its user.
+    public SessionResponse getSessionDetails(Long sessionId) {
+        UserSessionEntity session = findSession(sessionId)
+            .orElseThrow(() -> new BadCredentialsException("Session not found."));
+
+        UserEntity user = session.getUserProfile();
+
+        return SessionResponse.builder()
+            .withUserId(user.getId())
+            .withDisplayName(user.getDisplayName())
+            .withEmail(user.getEmail())
+            .withInstitutionalId(user.getInstitutionalId())
+            .withDepartment(user.getDepartment())
+            .withProgram(user.getProgram())
+            .withAvatarImageUrl(user.getAvatarImageUrl())
+            .withLanguage(user.getLanguage())
+            .withTimezone(user.getTimezone())
+            .withExpiresAt(session.getExpiresAt())
+            .build();
+    }
+
     /// Revokes the session with the given ID.
     public void revokeSession(Long sessionId) {
+        findSession(sessionId).ifPresent(s -> s.setRevokedAt(Instant.now()));
+    }
+
+    /// Finds a session by its ID.
+    private Optional<UserSessionEntity> findSession(Long sessionId) {
         // TODO: Find the session through the repository
-        mockSessions.values().stream()
+        return mockSessions.values().stream()
             .filter(s -> s.getId().equals(sessionId))
-            .findFirst()
-            .ifPresent(s -> s.setRevokedAt(Instant.now()));
+            .findFirst();
     }
 
 

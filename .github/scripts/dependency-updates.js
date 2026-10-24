@@ -45,6 +45,10 @@ function table(headers, rows) {
     return lines.join('\n');
 }
 
+const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
+const allGood  = msg => `✅ ${msg} Nothing to do here.`;
+const code     = v => `\`${v}\``;
+
 function withLog(message, log) {
     const e = new Error(message);
     e.log = log;
@@ -136,6 +140,15 @@ function npmProjects() {
 
 // ---------- checks (each returns { md, count } or null to skip) ----------
 
+// First Gradle file under `dir` that mentions `group:name`; versions that come
+// from a BOM or a transitive dependency are not declared anywhere directly.
+function gradleDeclaredIn(dir, coord) {
+    const hit = allFiles().find(f => f.startsWith(dir + path.sep)
+        && GRADLE_FILE.test(path.basename(f))
+        && fs.readFileSync(f, 'utf8').includes(coord));
+    return hit ? code(rel(hit)) : '_transitive / BOM_';
+}
+
 async function checkGradleDeps(dir) {
     const run = spawnSync('./gradlew',
         ['dependencyUpdates', '-DoutputFormatter=json', '--console=plain'],
@@ -151,16 +164,18 @@ async function checkGradleDeps(dir) {
     const rows = (data.outdated?.dependencies || []).map(d => {
         const av = d.available || {};
         const latest = av.release || av.milestone || av.integration || '?';
-        return [`\`${d.group}:${d.name}\``, d.version, latest];
+        const coord = `${d.group}:${d.name}`;
+        return [code(coord), d.version, `**${latest}**`, gradleDeclaredIn(dir, coord)];
     });
     count += rows.length;
     parts.push(rows.length
-        ? table(['Dependency', 'Current', 'Latest'], rows)
-        : 'All resolved dependencies are up to date.');
+        ? `${plural(rows.length, 'library has', 'libraries have')} a newer release out:\n\n`
+            + table(['Dependency', 'Current', 'Latest', 'Declared in'], rows)
+        : allGood('Every library is already on its latest release.'));
 
     const unresolved = data.unresolved?.count || 0;
     if (unresolved) {
-        parts.push(`\n_${unresolved} dependencies could not be resolved by the plugin._`);
+        parts.push(`\n> 🤷 ${plural(unresolved, 'dependency', 'dependencies')} couldn't be resolved, so I couldn't check them.`);
     }
     return { md: parts.join('\n'), count };
 }
@@ -181,7 +196,7 @@ async function checkGradlePlugins() {
             const latest = latestStable(
                 await mavenVersions(PLUGIN_PORTAL, id, `${id}.gradle.plugin`));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
-                rows.push([`\`${id}\``, cur, latest, `\`${rel(file)}\``]);
+                rows.push([code(id), cur, `**${latest}**`, code(rel(file))]);
             }
         } catch (e) {
             console.error(`plugin ${id}: ${e.message}`);
@@ -189,8 +204,9 @@ async function checkGradlePlugins() {
     }
     return {
         md: rows.length
-            ? table(['Plugin', 'Current', 'Latest', 'Declared in'], rows)
-            : 'All plugins are up to date.',
+            ? `${plural(rows.length, 'plugin')} can be bumped:\n\n`
+                + table(['Plugin', 'Current', 'Latest', 'Declared in'], rows)
+            : allGood('All Gradle plugins are current.'),
         count: rows.length,
     };
 }
@@ -210,7 +226,7 @@ async function checkBoms() {
         try {
             const latest = latestStable(await mavenVersions(MAVEN_CENTRAL, g, a));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
-                rows.push([`\`${g}:${a}\``, cur, latest, `\`${rel(file)}\``]);
+                rows.push([code(`${g}:${a}`), cur, `**${latest}**`, code(rel(file))]);
             }
         } catch (e) {
             console.error(`bom ${g}:${a}: ${e.message}`);
@@ -218,8 +234,9 @@ async function checkBoms() {
     }
     return {
         md: rows.length
-            ? table(['BOM', 'Current', 'Latest', 'Declared in'], rows)
-            : 'All BOMs are up to date.',
+            ? `${plural(rows.length, 'BOM has', 'BOMs have')} a newer version. Bumping it also moves every library it manages:\n\n`
+                + table(['BOM', 'Current', 'Latest', 'Declared in'], rows)
+            : allGood('All BOMs are current.'),
         count: rows.length,
     };
 }
@@ -248,14 +265,17 @@ async function checkNpm(dir) {
     }
 
     const data = JSON.parse(p.stdout || '{}');
+    const manifest = code(rel(path.join(dir, 'package.json')));
     const rows = Object.keys(data).sort().map(name => {
         const info = Array.isArray(data[name]) ? data[name][0] : data[name];
-        return [`\`${name}\``, info.current ?? '?', (info.wanted === info.current ? '—' : (info.wanted ?? '?')), info.latest ?? '?'];
+        const wanted = info.wanted === info.current ? '—' : (info.wanted ?? '?');
+        return [code(name), info.current ?? '?', wanted, `**${info.latest ?? '?'}**`, manifest];
     });
     return {
         md: rows.length
-            ? table(['Package', 'Current', 'Compatible', 'Latest'], rows)
-            : 'All npm packages are up to date.',
+            ? `${plural(rows.length, 'package')} behind. _Compatible_ is what \`npm update\` would give you within the current range; _Latest_ may need a range change:\n\n`
+                + table(['Package', 'Current', 'Compatible', 'Latest', 'Declared in'], rows)
+            : allGood('Every npm package is on its latest version.'),
         count: rows.length,
     };
 }
@@ -355,14 +375,15 @@ async function checkDocker() {
                 .sort((a, b) => compareKeys(b.s.ver, a.s.ver));
 
             if (better.length) {
-                rows.push([`\`${rel(file)}\``, `\`${ref}\``, `\`${better[0].t}\``]);
+                rows.push([code(parsed.repo.replace(/^library\//, '')), parsed.tag, `**${better[0].t}**`, code(rel(file))]);
             }
         }
     }
     return {
         md: rows.length
-            ? table(['File', 'Current', 'Newer tag'], rows)
-            : 'All pinned Docker Hub images are up to date.',
+            ? `${plural(rows.length, 'image has', 'images have')} a newer tag on Docker Hub:\n\n`
+                + table(['Image', 'Current', 'Newer tag', 'Declared in'], rows)
+            : allGood('All pinned Docker Hub images are current.'),
         count: rows.length,
     };
 }
@@ -444,13 +465,16 @@ async function checkToolchain() {
     let count = 0;
     const rows = pins.map(({ tool, file, pin }) => {
         const r = releases[tool];
-        if (!r) return [tool, pin, '?', '?', '⚠️ lookup failed', `\`${rel(file)}\``];
+        if (!r) return [tool, pin, '?', '?', '⚠️ lookup failed', code(rel(file))];
         const st = toolStatus(pin, r, sources[tool].byMajor);
         if (st.outdated) count++;
-        return [tool, pin, r.lts ?? '—', r.latest, st.text, `\`${rel(file)}\``];
+        return [tool, `**${pin}**`, r.lts ?? '—', r.latest, st.text, code(rel(file))];
     });
+    const intro = count
+        ? `${plural(count, 'tool is', 'tools are')} behind both the latest LTS and the latest release:`
+        : 'All pinned tools are on either the latest LTS or the latest release 👍';
     return {
-        md: table(['Tool', 'Pinned', 'Latest LTS', 'Latest', 'Status', 'Declared in'], rows),
+        md: `${intro}\n\n` + table(['Tool', 'Pinned', 'Latest LTS', 'Latest', 'Status', 'Declared in'], rows),
         count,
     };
 }
@@ -458,28 +482,27 @@ async function checkToolchain() {
 // ---------- sections (built from whatever the scan finds) ----------
 
 function buildSections() {
-    const sections = [];
+    const sections = [
+        { emoji: '🧰', title: 'Toolchain', label: 'toolchain', run: checkToolchain },
+    ];
 
     for (const dir of gradleProjects()) {
         sections.push({
-            title: `Gradle dependencies (${rel(dir)})`,
-            label: 'backend',
+            emoji: '☕', title: `Gradle dependencies (${rel(dir)})`, label: 'backend',
             run:   () => checkGradleDeps(dir),
         });
     }
-    sections.push({ title: 'Gradle plugins', label: 'backend', run: checkGradlePlugins });
-    sections.push({ title: 'Managed BOMs',   label: 'backend', run: checkBoms });
+    sections.push({ emoji: '🔌', title: 'Gradle plugins', label: 'backend', run: checkGradlePlugins });
+    sections.push({ emoji: '📋', title: 'Managed BOMs',   label: 'backend', run: checkBoms });
 
     for (const dir of npmProjects()) {
         sections.push({
-            title: `npm packages (${rel(dir)})`,
-            label: 'frontend',
+            emoji: '📦', title: `npm packages (${rel(dir)})`, label: 'frontend',
             run:   () => checkNpm(dir),
         });
     }
 
-    sections.push({ title: 'Docker images', label: 'docker', run: checkDocker });
-    sections.push({ title: 'Toolchain', label: 'toolchain', run: checkToolchain });
+    sections.push({ emoji: '🐳', title: 'Docker images', label: 'docker', run: checkDocker });
     return sections;
 }
 
@@ -496,7 +519,7 @@ async function ensureLabels(github, context, names) {
     }
 }
 
-async function upsertIssue(github, context, body, areaLabels) {
+async function upsertIssue(github, context, title, body, areaLabels) {
     const { data: open } = await github.rest.issues.listForRepo({
         ...context.repo, labels: ISSUE_LABEL, state: 'open', per_page: 10,
     });
@@ -505,7 +528,7 @@ async function upsertIssue(github, context, body, areaLabels) {
     if (!existing) {
         const created = await github.rest.issues.create({
             ...context.repo,
-            title:  'Dependency updates available',
+            title,
             body,
             labels: [ISSUE_LABEL, ...areaLabels],
         });
@@ -519,6 +542,7 @@ async function upsertIssue(github, context, body, areaLabels) {
     const updated = await github.rest.issues.update({
         ...context.repo,
         issue_number: existing.number,
+        title,
         body,
         labels: [...new Set([...kept, ...areaLabels])],
     });
@@ -528,57 +552,87 @@ async function upsertIssue(github, context, body, areaLabels) {
 
 // ---------- entry point ----------
 
+function issueTitle(total, failed) {
+    const broken = failed ? ` (${plural(failed, 'check')} failed)` : '';
+    if (total) return `⬆️ ${plural(total, 'dependency update')} available${broken}`;
+    if (failed) return `⚠️ Dependency check: ${plural(failed, 'check')} failed`;
+    return '✅ All dependencies are up to date';
+}
+
+function opening(total, failed) {
+    if (!total && !failed) return 'Good news: everything is up to date. Nothing to do this time 🎉';
+    const parts = [];
+    if (total)  parts.push(`I found **${plural(total, 'update')}** worth a look`);
+    if (failed) parts.push(`**${plural(failed, 'check')}** didn't finish, so some areas couldn't be checked`);
+    return parts.join(', and ') + '. Details are below.';
+}
+
 module.exports = async ({ github, context, core }) => {
-    core.info('Scanning the repository for Gradle, npm and Docker files');
+    core.info('Scanning the repository for toolchain pins and Gradle, npm and Docker files');
 
     const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
     const results = [];
+    const summary = [];
     const labels  = new Set();
     let total  = 0;
     let failed = 0;
 
-    for (const { title, label, run } of buildSections()) {
+    for (const { emoji, title, label, run } of buildSections()) {
+        const heading = `### ${emoji} ${title}`;
         try {
             const result = await run();
             if (!result) continue;
             total += result.count;
             if (result.count) labels.add(label);
-            results.push(`### ${title}\n${result.md}\n`);
+            summary.push([emoji, title, result.count ? `⬆️ ${result.count}` : '✅ 0']);
+            results.push(`${heading}\n\n${result.md}\n`);
         } catch (e) {
             core.warning(`[${title}] failed: ${e.message}`);
-            let md = `### ${title}\n⚠️ Check failed: \`${e.message}\`\n`;
+            let md = `${heading}\n\n⚠️ This check didn't finish: ${code(e.message)}\n`;
             if (e.log) md += logBlock(e.log, runUrl);
+            summary.push([emoji, title, '⚠️ failed']);
             results.push(md);
             failed++;
         }
     }
 
-    if (!results.length) {
-        results.push('_No Gradle, npm or Docker files found in the repository._\n');
-    }
-
-    const stamp = new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
+    const stamp = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric',
         hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
-    }).format(new Date()).replace(', ', ' ');
+    }).format(new Date());
+
+    const trigger = {
+        schedule:          'the weekly schedule',
+        push:              `a push to \`${context.ref.replace('refs/heads/', '')}\``,
+        workflow_dispatch: 'a manual run',
+    }[context.eventName] || context.eventName;
 
     let body = [
-        `_Last checked ${stamp} IST. Informational only; no PRs are opened._`,
+        '## 👋 Dependency check-in',
         '',
-        `**${total} update(s) available**${failed ? ` · ⚠️ ${failed} check(s) failed` : ''}`,
+        `${opening(total, failed)}`,
         '',
+        `🕒 Checked on **${stamp} IST**, triggered by ${trigger}.`,
+        '',
+        ...(summary.length
+            ? ['#### At a glance', '', table(['', 'Area', 'Updates'], summary), '', '---', '']
+            : ['_No toolchain pins or Gradle, npm or Docker files found in the repository._', '']),
         ...results,
+        '---',
+        '',
+        `<sub>📝 This is an informational report; no branches or PRs are opened. It's refreshed on every relevant push to \`main\` and every Friday evening. [View the run](${runUrl}).</sub>`,
     ].join('\n');
 
     if (body.length > MAX_BODY_CHARS) {
-        body = body.slice(0, MAX_BODY_CHARS) + '\n\n_Report truncated._';
+        body = body.slice(0, MAX_BODY_CHARS) + '\n\n_Report truncated; see the run log for the rest._';
     }
 
+    const title = issueTitle(total, failed);
     await core.summary.addRaw(body).write();
 
     // 'github-actions' is not used by this script; it's created here for Dependabot's PR labels.
     await ensureLabels(github, context, [ISSUE_LABEL, ...AREA_LABELS, 'github-actions']);
-    const url = await upsertIssue(github, context, body, [...labels].sort());
-    core.info(`Report updated: ${url} (${total} update(s), ${failed} failed check(s))`);
+    const url = await upsertIssue(github, context, title, body, [...labels].sort());
+    core.info(`Report updated: ${url} (${title})`);
 };

@@ -63,9 +63,9 @@ public class UserEntity extends BaseEntity<Long> {
     // Localization
     // -------------------------------------------------------------------------
 
+    /// ISO language code
     @Column(name = "language")
     private String language;
-    /// ISO language code
 
     @Column(name = "timezone")
     private String timezone;

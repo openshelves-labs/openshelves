@@ -226,6 +226,7 @@ CREATE TABLE users (
 );
 
 CREATE UNIQUE INDEX users_email_idx     ON users (lower(email));
+CREATE UNIQUE INDEX users_institutional_id_idx ON users (institutional_id);
 
 
 -- -------------------------------------------------------

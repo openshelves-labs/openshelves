@@ -58,7 +58,6 @@ public class UserSessionEntity extends BaseEntity<Long> {
     @Column(name = "device_location")
     private String deviceLocation;
 
-    @CreatedDate
     @Column(name = "last_active_at", nullable = false)
     private Instant lastActiveAt;
 

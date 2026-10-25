@@ -34,7 +34,11 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequiredArgsConstructor
 public class AuthService {
 
+    /// Lifetime of a normal session.
     private static final Duration SESSION_TTL = Duration.ofHours(24);
+
+    /// Lifetime of a remember-me session.
+    private static final Duration REMEMBER_ME_SESSION_TTL = Duration.ofDays(30);
 
     private static final int SESSION_TOKEN_BYTES = 32;
 
@@ -87,13 +91,14 @@ public class AuthService {
 
         String token = generateSessionToken();
         Instant now = Instant.now();
+        Duration ttl = request.isPersistent() ? REMEMBER_ME_SESSION_TTL : SESSION_TTL;
 
         UserSessionEntity session = new UserSessionEntity();
         session.setId(mockSessionIds.incrementAndGet());
         session.setUserProfile(credential.getUserProfile());
         session.setSessionTokenHash(hashSessionToken(token));
         session.setLastActiveAt(now);
-        session.setExpiresAt(now.plus(SESSION_TTL));
+        session.setExpiresAt(now.plus(ttl));
         session.setCreatedAt(now);
 
         // TODO: Save through the session repository
@@ -113,16 +118,13 @@ public class AuthService {
         UserEntity user = session.getUserProfile();
 
         return SessionResponse.builder()
-            .withUserId(user.getId())
             .withDisplayName(user.getDisplayName())
             .withEmail(user.getEmail())
             .withInstitutionalId(user.getInstitutionalId())
             .withDepartment(user.getDepartment())
-            .withProgram(user.getProgram())
             .withAvatarImageUrl(user.getAvatarImageUrl())
             .withLanguage(user.getLanguage())
             .withTimezone(user.getTimezone())
-            .withExpiresAt(session.getExpiresAt())
             .build();
     }
 

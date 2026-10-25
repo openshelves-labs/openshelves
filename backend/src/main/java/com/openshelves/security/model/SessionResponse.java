@@ -4,17 +4,13 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import java.time.Instant;
-
-/// Response body for `GET /api/v1/auth/user-session`.
+/// Response body for `GET /api/v1/auth/session`.
 ///
-/// Basic details of the signed-in user, safe for the frontend to cache until [#expiresAt] or logout.
+/// Basic details of the signed-in user.
 @Value
 @Builder(setterPrefix = "with")
 @Jacksonized
 public class SessionResponse {
-
-    Long userId;
 
     String displayName;
 
@@ -25,8 +21,6 @@ public class SessionResponse {
 
     String department;
 
-    String program;
-
     String avatarImageUrl;
 
     /// ISO language code.
@@ -34,7 +28,4 @@ public class SessionResponse {
 
     /// IANA time zone, e.g. `Asia/Kolkata`.
     String timezone;
-
-    /// When the session expires, in UTC.
-    Instant expiresAt;
 }

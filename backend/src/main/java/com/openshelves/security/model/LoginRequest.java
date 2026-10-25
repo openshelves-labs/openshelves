@@ -23,4 +23,7 @@ public class LoginRequest {
     @NotNull
     @ToString.Exclude
     String password;
+
+    /// Opens a long-lived ("remember me") session instead of a normal one.
+    boolean persistent;
 }

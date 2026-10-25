@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     /// Returns the current session and basic details of its user.
-    @GetMapping("/user-session")
+    @GetMapping("/session")
     public SessionResponse getSessionDetails(@AuthenticationPrincipal SessionPrincipal principal) {
         return authService.getSessionDetails(principal.getSessionId());
     }

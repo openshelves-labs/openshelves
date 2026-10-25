@@ -98,6 +98,8 @@ function compareKeys(a, b) {
     return 0;
 }
 
+const newest = versions => versions.reduce((a, b) => (compareKeys(vkey(a), vkey(b)) >= 0 ? a : b));
+
 function isStable(v) {
     if (/(^|[.\-_])(release|final|ga)($|[.\-_])/i.test(v)) return true;
     return /^[0-9,.v-]+(-r)?$/.test(v);
@@ -196,12 +198,20 @@ async function checkGradleDeps(dir) {
         return { coord, cur: d.version, latest: av.release || av.milestone || av.integration || '?',
                  ...gradleDeclaration(dir, coord) };
     });
+
+    // Only versions pinned in our own build files can be bumped here. The rest get
+    // their version from elsewhere, so they're shown as blocked and not counted.
+    const updatable  = outdated.filter(d => d.pinned);
+    const viaBom     = outdated.filter(d => !d.pinned && d.file);
+    const undeclared = outdated.filter(d => !d.file);
+
     const rows = outdated.map(d => [code(d.coord), d.cur, `**${d.latest}**`,
-        d.file ? code(rel(d.file)) : '_transitive / BOM_']);
-    count += rows.length;
+        d.pinned ? 'UPDATABLE' : 'BLOCKED',
+        d.file ? code(rel(d.file)) : '_not found_']);
+    count += updatable.length;
     parts.push(rows.length
-        ? `${plural(rows.length, 'library has', 'libraries have')} a newer release out:\n\n`
-            + table(['Dependency', 'Current', 'Latest', 'Declared in'], rows)
+        ? `${plural(rows.length, 'library has', 'libraries have')} a newer release out, ${updatable.length} updatable:\n\n`
+            + table(['Dependency', 'Current', 'Latest', 'Status', 'Declared in'], rows)
         : allGood('Every library is already on its latest release.'));
 
     const unresolved = data.unresolved?.count || 0;
@@ -209,18 +219,23 @@ async function checkGradleDeps(dir) {
         parts.push(`\n> 🤷 ${plural(unresolved, 'dependency', 'dependencies')} couldn't be resolved, so I couldn't check them.`);
     }
 
-    const steps = [];
-    for (const d of outdated.filter(x => x.pinned)) {
-        steps.push(`In ${code(rel(d.file))}, change ${code(`${d.coord}:${d.cur}`)} to ${code(`${d.coord}:${d.latest}`)}.${majorNote(d.cur, d.latest)}`);
-    }
-    const managed = outdated.filter(x => !x.pinned);
-    if (managed.length) {
-        steps.push(`${managed.map(d => code(d.coord)).join(', ')} ${managed.length === 1 ? 'gets its' : 'get their'} version from a BOM `
-            + '(usually Spring Boot) or another library. Bump that instead of pinning a version here, '
-            + 'or wait for the next Spring Boot release to pick it up.');
-    }
+    const steps = updatable.map(d =>
+        `In ${code(rel(d.file))}, change ${code(`${d.coord}:${d.cur}`)} to ${code(`${d.coord}:${d.latest}`)}.${majorNote(d.cur, d.latest)}`);
     if (steps.length) steps.push('Check that everything still builds and re-run the check:\n'
         + shell(`cd ${rel(dir)}`, './gradlew build dependencyUpdates'));
+
+    // Why the blocked ones can't be bumped from here.
+    const names = ds => ds.map(d => code(d.coord)).join(', ');
+    if (viaBom.length) {
+        const one = viaBom.length === 1;
+        steps.push(`**Blocked:** ${names(viaBom)} ${one ? 'is' : 'are'} declared without a version, so ${one ? 'it gets its' : 'they get their'} `
+            + `version from one of the BOMs we import. ${one ? 'It moves' : 'They move'} when that BOM is bumped.`);
+    }
+    if (undeclared.length) {
+        const one = undeclared.length === 1;
+        steps.push(`**Blocked:** ${names(undeclared)} ${one ? "isn't" : "aren't"} declared in any build file this check reads, `
+            + 'so there is no version here to bump.');
+    }
     parts.push(howTo(steps));
     return { md: parts.join('\n'), count };
 }
@@ -298,7 +313,8 @@ async function checkBoms() {
 // Packages the Next.js upgrade codemod moves together with `next`.
 const NEXT_FAMILY = new Set(['next', 'eslint-config-next', 'react', 'react-dom', '@types/react', '@types/react-dom']);
 
-function npmHowTo(dir, outdated) {
+// Update steps for the packages that can move now; the caller adds any blocked notes.
+function npmSteps(dir, outdated) {
     const pkg   = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
     const specs = { ...pkg.dependencies, ...pkg.devDependencies };
     const cd    = `cd ${rel(dir)}`;
@@ -323,11 +339,13 @@ function npmHowTo(dir, outdated) {
     const install = (list, exact) => list.length
         ? `npm install ${exact ? '--save-exact ' : ''}${list.map(o => `${o.name}@${o.latest}`).join(' ')}` : null;
     const isExact = o => /^\d/.test(specs[o.name] || '');
-    for (const [list, label] of [
-        [beyond.filter(o => !isMajorBump(o.cur, o.latest)), 'need a range change'],
-        [beyond.filter(o =>  isMajorBump(o.cur, o.latest)), 'are **major** upgrades, so read their changelogs first'],
+    for (const [list, one, many] of [
+        [beyond.filter(o => !isMajorBump(o.cur, o.latest)), 'needs a range change', 'need a range change'],
+        [beyond.filter(o =>  isMajorBump(o.cur, o.latest)), 'is a **major** upgrade, so read its changelog first',
+                                                            'are **major** upgrades, so read their changelogs first'],
     ]) {
         if (!list.length) continue;
+        const label = list.length === 1 ? one : many;
         const cmds = [install(list.filter(o => !isExact(o)), false), install(list.filter(isExact), true)].filter(Boolean);
         steps.push(`${list.map(o => code(o.name)).join(', ')} ${label}:\n` + shell(cd, ...cmds));
     }
@@ -338,10 +356,62 @@ function npmHowTo(dir, outdated) {
             + `\`overrides\` in ${manifestPath(dir)}; update ${overridden.length === 1 ? 'it' : 'them'} there too.`);
     }
     if (steps.length) steps.push('Then check that it still lints and builds:\n' + shell(cd, 'npm run lint && npm run build'));
-    return howTo(steps);
+    return steps;
 }
 
 const manifestPath = dir => code(rel(path.join(dir, 'package.json')));
+
+// npm prints a peer clash in one of two shapes; both yield [name, range, required by].
+const PEER_CONFLICT_RES = [
+    /Conflicting peer dependency: (\S+)@\S+\s[\s\S]*?peer \S+@"([^"]+)" from (\S+)/,
+    /Could not resolve dependency:\s+(?:npm error\s+)?peer (\S+)@"([^"]+)" from (\S+)/,
+];
+
+// Dry-runs `npm install name@version` with strict peer checks; nothing is written.
+// (Without --strict-peer-deps npm only warns and installs anyway.)
+// Returns { ok: true } if it would install cleanly, otherwise { ok: false, reason },
+// where `reason` says which package needs which range, or is null when npm
+// failed for some unrelated reason (network, an older conflict in the tree, ...).
+function npmProbe(dir, name, version) {
+    const args = ['install', '--dry-run', '--no-save', '--strict-peer-deps',
+        '--ignore-scripts', '--no-audit', '--no-fund', `${name}@${version}`];
+    const p = spawnSync('npm', args, { cwd: dir, encoding: 'utf8' });
+    if (p.status === 0) return { ok: true };
+
+    const err = p.stderr || '';
+    for (const re of PEER_CONFLICT_RES) {
+        const m = err.match(re);
+        // Only count it if the clash is about this package, not some older conflict in the tree.
+        if (m && m[1] === name) return { ok: false, reason: `${code(m[3])} needs ${code(`${name}@${m[2]}`)}` };
+    }
+
+    console.error(`npm dry-run of ${name}@${version} failed:\n${err}`);
+    return { ok: false, reason: null };
+}
+
+// When the latest version is blocked, finds the newest release that does install:
+// tries the newest stable release of each lower major, down to the one in use.
+// Returns that version, or null if nothing newer than `wanted` installs.
+function newestInstallable(dir, o) {
+    const p = spawnSync('npm', ['view', o.name, 'versions', '--json'], { cwd: dir, encoding: 'utf8' });
+    if (p.status !== 0) {
+        console.error(`npm view ${o.name} versions failed:\n${p.stderr}`);
+        return null;
+    }
+
+    const all    = [].concat(JSON.parse(p.stdout || '[]'));
+    const stable = all.filter(v => /^\d+\.\d+\.\d+$/.test(v));
+    const major  = v => vkey(v)[0] ?? 0;
+
+    for (let m = major(o.latest) - 1; m >= major(o.cur); m--) {
+        const candidates = stable.filter(v => major(v) === m && compareKeys(vkey(v), vkey(o.wanted)) > 0);
+        if (!candidates.length) continue;
+
+        const v = newest(candidates);
+        if (npmProbe(dir, o.name, v).ok) return v;
+    }
+    return null;
+}
 
 async function checkNpm(dir) {
     if (!fs.existsSync(path.join(dir, 'node_modules'))) {
@@ -372,13 +442,48 @@ async function checkNpm(dir) {
         const info = Array.isArray(data[name]) ? data[name][0] : data[name];
         return { name, cur: info.current ?? '?', wanted: info.wanted ?? '?', latest: info.latest ?? '?' };
     });
-    const rows = outdated.map(o => [code(o.name), o.cur, o.wanted === o.cur ? '—' : o.wanted, `**${o.latest}**`, manifest]);
+
+    // Try each update that needs a range change; a peer conflict means it's blocked.
+    // The Next.js family is skipped when `next` moves, since the codemod bumps them together.
+    const nextMoves = outdated.some(o => o.name === 'next' && o.latest !== o.cur);
+    for (const o of outdated) {
+        if (o.latest === o.wanted || (nextMoves && NEXT_FAMILY.has(o.name))) continue;
+
+        const probe = npmProbe(dir, o.name, o.latest);
+        if (probe.ok || !probe.reason) continue;
+
+        o.blockedBy = probe.reason;
+        o.fallback  = newestInstallable(dir, o);   // e.g. a lower major that still fits
+    }
+
+    // Updatable = has somewhere to move now. A blocked package may still move to an
+    // older major that installs, or at least within its current range.
+    const updatable = outdated
+        .map(o => (o.blockedBy ? { ...o, latest: o.fallback || o.wanted } : o))
+        .filter(o => o.latest !== o.cur);
+    const target = o => updatable.find(u => u.name === o.name)?.latest;
+
+    const status = o => {
+        const to = target(o);
+        if (!to) return 'BLOCKED';
+        return to === o.latest ? 'UPDATABLE' : `UPDATABLE (to ${to})`;
+    };
+    const rows = outdated.map(o => [code(o.name), o.cur, o.wanted === o.cur ? '—' : o.wanted, `**${o.latest}**`,
+        status(o), manifest]);
+
+    // Why the blocked ones can't go to their latest version.
+    const steps = npmSteps(dir, updatable);
+    for (const o of outdated.filter(x => x.blockedBy)) {
+        const instead = o.fallback ? ` ${code(o.fallback)} is the newest release that installs.` : '';
+        steps.push(`**Blocked:** ${code(`${o.name}@${o.latest}`)} can't be installed yet: ${o.blockedBy}.${instead}`);
+    }
+
     return {
         md: rows.length
-            ? `${plural(rows.length, 'package')} behind. _Compatible_ is what \`npm update\` would give you within the current range; _Latest_ may need a range change:\n\n`
-                + table(['Package', 'Current', 'Compatible', 'Latest', 'Declared in'], rows) + '\n' + npmHowTo(dir, outdated)
+            ? `${plural(rows.length, 'package')} behind, ${updatable.length} updatable. _Compatible_ is what \`npm update\` would give you within the current range; _Latest_ may need a range change:\n\n`
+                + table(['Package', 'Current', 'Compatible', 'Latest', 'Status', 'Declared in'], rows) + '\n' + howTo(steps)
             : allGood('Every npm package is on its latest version.'),
-        count: rows.length,
+        count: updatable.length,
     };
 }
 
@@ -504,7 +609,6 @@ const JAVA_PIN_RES = [
 const NODE_PIN_FILES = new Set(['.nvmrc', '.node-version']);
 const GRADLE_DIST_RE = /gradle-(\d[\w.\-]*?)-(?:bin|all)\.zip/;
 
-const newest = versions => versions.reduce((a, b) => (compareKeys(vkey(a), vkey(b)) >= 0 ? a : b));
 
 async function javaReleases() {
     const d = JSON.parse(await httpGet('https://api.adoptium.net/v3/info/available_releases'));
@@ -660,8 +764,9 @@ async function ensureLabels(github, context) {
     }
 }
 
-// One issue is reused for good: it's open while there's something to act on,
-// closed once everything is clean, and reopened when updates show up again.
+// One issue is reused for good and refreshed on every run, open or closed.
+// It's open while there's something to act on, closed when there isn't
+// (blocked updates may still be listed), and reopened when updates show up again.
 async function syncIssue(github, context, { title, body, managed, clean }) {
     const { data: issues } = await github.rest.issues.listForRepo({
         ...context.repo, labels: ISSUE_LABEL, state: 'all', sort: 'created', direction: 'desc', per_page: 20,
@@ -676,9 +781,6 @@ async function syncIssue(github, context, { title, body, managed, clean }) {
         return `opened ${data.html_url}`;
     }
 
-    // Already closed and still clean: leave it alone rather than touching it on every push.
-    if (clean && existing.state === 'closed') return `still clean, ${existing.html_url} stays closed`;
-
     // Keep labels added by hand; only the managed labels are recalculated.
     const kept = existing.labels
         .map(l => (typeof l === 'string' ? l : l.name))
@@ -687,8 +789,10 @@ async function syncIssue(github, context, { title, body, managed, clean }) {
 
     if (clean) {
         await github.rest.issues.update({ ...issue, title, body, labels: kept });
+        if (existing.state === 'closed') return `refreshed ${existing.html_url}, stays closed`;
+
         await github.rest.issues.createComment({ ...issue,
-            body: "✅ Everything is up to date, so I'm closing this. It'll reopen when new updates show up." });
+            body: "✅ Nothing to act on right now, so I'm closing this. I'll keep it updated and reopen it when new updates show up." });
         await github.rest.issues.update({ ...issue, state: 'closed', state_reason: 'completed' });
         return `closed ${existing.html_url}`;
     }

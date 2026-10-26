@@ -58,7 +58,7 @@ public class AuthService {
 
         // Reject locked accounts before the password is checked, so a lock can't be used
         // to test guesses, and attempts made while locked don't count
-        credential.ifPresent(lockoutService::checkNotLocked);
+        credential.ifPresent(lockoutService::ensureCredentialNotLocked);
 
         // Verify the password before the account's status, so a wrong one never reveals it.
         // It runs even for an unknown identifier, so both cases take just as long.

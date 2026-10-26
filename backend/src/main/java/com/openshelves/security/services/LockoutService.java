@@ -45,7 +45,7 @@ public class LockoutService {
     ///
     /// @param credential the credential the user is signing in with
     /// @throws LockedException if the credential is locked
-    public void checkNotLocked(UserCredentialEntity credential) {
+    public void ensureCredentialNotLocked(UserCredentialEntity credential) {
         if (isLocked(credential)) {
             // The message is shown to the user, so it includes the time left until the lock expires
             String message = buildLockedMessage(credential.getLockedUntil());
@@ -97,7 +97,7 @@ public class LockoutService {
         UserCredentialEntity credential = credentialRepository.findAndLockById(credentialId).orElseThrow();
 
         // Locked by a parallel request since this one started; a correct password mustn't lift the lock
-        checkNotLocked(credential);
+        ensureCredentialNotLocked(credential);
 
         credential.setFailedAttempts(0);
         credential.setLockedUntil(null);

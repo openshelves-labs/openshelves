@@ -47,7 +47,6 @@ library-web/
     │
     ├── features/                       # domain slices backed by Spring endpoints
     │   ├── auth/
-    │   │   ├── index.ts                # public API of the feature
     │   │   ├── auth.service.ts         # login, logout, getSession
     │   │   ├── auth.actions.ts         # "use server"
     │   │   ├── auth.types.ts           # LoginRequest, SessionUser
@@ -55,7 +54,6 @@ library-web/
     │   │       └── LoginForm.tsx
     │   │
     │   ├── books/
-    │   │   ├── index.ts
     │   │   ├── book.service.ts         # getBooks, getBook, createBook, updateBook, deleteBook
     │   │   ├── book.actions.ts         # createBookAction, updateBookAction, deleteBookAction
     │   │   ├── book.types.ts           # BookDto, CreateBookRequest, UpdateBookRequest
@@ -66,7 +64,6 @@ library-web/
     │   │       └── BookSearchBar.tsx   # "use client"
     │   │
     │   ├── members/
-    │   │   ├── index.ts
     │   │   ├── member.service.ts
     │   │   ├── member.actions.ts
     │   │   ├── member.types.ts
@@ -75,22 +72,23 @@ library-web/
     │   │       └── MemberForm.tsx
     │   │
     │   └── loans/
-    │       ├── index.ts
     │       ├── loan.service.ts         # issueLoan, returnLoan, getActiveLoans
     │       ├── loan.actions.ts
     │       ├── loan.types.ts
     │       └── components/
     │           ├── LoanTable.tsx
-    │           └── IssueLoanForm.tsx   # imports via @/features/books, @/features/members
+    │           └── IssueLoanForm.tsx   # imports @/features/books/..., @/features/members/... directly
     │
     ├── server/                         # shared, server-only
-    │   ├── http.ts                     # api<T>(): base URL, auth header, error mapping
-    │   └── errors.ts                   # ApiError, NotFoundError
+    │   ├── http-client.ts              # api<T>(): base URL, auth header, error mapping
+    │   ├── http-errors.ts              # ApiError
+    │   ├── session.ts                  # (later) session cookie name/options + get/set/clear; used by http-client, auth
+    │   └── env.ts                      # (later) reads + checks server env vars (BACKEND_URL), fails fast if missing
     │
     ├── shared/
     │   ├── types/
-    │   │   ├── page.types.ts           # Page<T> mirroring Spring Data Page
-    │   │   └── api-error.types.ts      # Spring ProblemDetail shape
+    │   │   ├── paginated-response.types.ts # (later) PaginatedResponse<T>: backend paging response (PagedModel)
+    │   │   └── error-response.types.ts # ErrorResponse: backend error body (ApiErrorResponse.java)
     │   ├── components/
     │   │   ├── ui/                     # generic, app-agnostic, props-driven
     │   │   │   ├── Button.tsx
@@ -115,7 +113,7 @@ library-web/
 
 1. **Feature-local first.** Code used by one feature lives in that feature's folder.
 2. **Promote on second use.** Used by 2+ features → move to `shared/` or `server/`.
-3. **No reaching into other features.** Import only via a feature's `index.ts`; never `@/features/books/book.types`.
+3. **No barrel files.** Import feature files directly (`@/features/books/book.types`). No `index.ts` re-exports — they leak `server-only` services into client bundles and add a file to keep in sync.
 4. **`app/` stays thin.** Pages compose feature components and call feature services — no logic.
 5. **Features = domain slices** (service + types + actions + components backed by backend endpoints). UI chrome is not a feature.
 6. **Server-only code** (`server/*`, `*.service.ts`) starts with `import "server-only";`.
@@ -131,9 +129,9 @@ library-web/
 | Backend calls | `features/*/x.service.ts` | Feign client |
 | Mutations from client | `features/*/x.actions.ts` | — |
 | DTOs | `features/*/x.types.ts`, `shared/types/` | DTO |
-| HTTP plumbing | `server/http.ts` | RestTemplate/WebClient config |
+| HTTP plumbing | `server/http-client.ts` | RestTemplate/WebClient config |
 
-**Reads:** Server Component → feature service → `server/http.ts` → Spring
+**Reads:** Server Component → feature service → `server/http-client.ts` → Spring
 **Writes:** Client component → Server Action → feature service → Spring
 
 ---
@@ -162,7 +160,7 @@ Navbar stays dumb. Anything with backend logic (notifications, user menu from se
 
 ```tsx
 // shared/components/layout/Navbar.tsx
-import { NotificationBell } from "@/features/notifications";
+import { NotificationBell } from "@/features/notifications/components/NotificationBell";
 
 const NAV_ITEMS = [
   { href: "/books", label: "Books" },
@@ -188,7 +186,7 @@ Alternative: if a shell component is used by only one route group, colocate it i
 
 - **Location:** `src/proxy.ts` when using `src/`; project root otherwise. Wrong location is silently ignored.
 - **Next 16+:** file is `proxy.ts`, export `proxy`. `middleware.ts` still works but is deprecated.
-- **Keep it cheap:** check cookie presence only. Don't call Spring here — real validation happens when `http.ts` forwards the token and Spring returns 401.
+- **Keep it cheap:** check cookie presence only. Don't call Spring here — real validation happens when `http-client.ts` forwards the token and Spring returns 401.
 
 ```ts
 // src/proxy.ts
@@ -210,12 +208,12 @@ export const config = {
 
 ## 7. Key snippets
 
-**`server/http.ts`**
+**`server/http-client.ts`**
 
 ```ts
 import "server-only";
 import { cookies } from "next/headers";
-import { ApiError } from "./errors";
+import { ApiError } from "./http-errors";
 
 const BASE = process.env.BACKEND_URL!; // no NEXT_PUBLIC_ → never reaches the browser
 
@@ -229,33 +227,75 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
       ...init?.headers,
     },
   });
-  if (!res.ok) throw new ApiError(res.status, await res.text());
+  if (!res.ok) {
+    const body = await res.json().catch(() => undefined); // non-JSON errors (e.g. proxy 502)
+    throw new ApiError(res.status, body);
+  }
   return res.json() as Promise<T>;
 }
 ```
+
+**`shared/types/paginated-response.types.ts`** — add once the backend paginates
+
+```ts
+// Mirrors Spring Data PagedModel (@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)).
+// Don't return Page<T> from controllers — its JSON shape isn't stable.
+export type PaginatedResponse<T> = {
+  content: T[];
+  page: { size: number; number: number; totalElements: number; totalPages: number };
+};
+```
+
+**`server/http-errors.ts`**
+
+```ts
+import "server-only";
+import type { ErrorResponse } from "@/shared/types/error-response.types";
+
+export class ApiError extends Error {
+  constructor(public status: number, public body?: ErrorResponse) {
+    super(body?.detail ?? body?.title ?? `HTTP ${status}`);
+  }
+}
+```
+
+**`shared/types/error-response.types.ts`**
+
+```ts
+// Mirrors backend ApiErrorResponse (RFC 9457 + extensions)
+export type ErrorResponse = {
+  title: string;
+  status: number;
+  detail?: string;
+  instance?: string;
+  code: string;            // machine-readable, e.g. "UNAUTHORIZED" — branch on this
+  timestamp: string;       // ISO instant
+  [key: string]: unknown;  // extra top-level properties
+};
+```
+
+`ErrorResponse` vs `ApiError`:
+
+| | `ErrorResponse` | `ApiError` |
+|---|---|---|
+| What | Type: JSON body the backend sends | `Error` class thrown by `http-client` |
+| Where | `shared/types/` — server + client | `server/` — server only |
+| Serializable to client | Yes | No (Next strips server errors) |
+
+`ApiError` wraps `ErrorResponse`. Server code catches `ApiError`; a Server Action returns `error.body` when the client form needs it.
 
 **`features/books/book.service.ts`**
 
 ```ts
 import "server-only";
-import { api } from "@/server/http";
-import type { Page } from "@/shared/types/page.types";
+import { api } from "@/server/http-client";
+import type { PaginatedResponse } from "@/shared/types/paginated-response.types";
 import type { BookDto, CreateBookRequest } from "./book.types";
 
-export const getBooks = (page = 0) => api<Page<BookDto>>(`/api/books?page=${page}`);
+export const getBooks = (page = 0) => api<PaginatedResponse<BookDto>>(`/api/books?page=${page}`);
 export const getBook = (id: string) => api<BookDto>(`/api/books/${id}`);
 export const createBook = (b: CreateBookRequest) =>
   api<BookDto>("/api/books", { method: "POST", body: JSON.stringify(b) });
-```
-
-**`features/books/index.ts`**
-
-```ts
-export * from "./book.service";
-export * from "./book.actions";
-export type * from "./book.types";
-export { BookTable } from "./components/BookTable";
-export { BookForm } from "./components/BookForm";
 ```
 
 ---

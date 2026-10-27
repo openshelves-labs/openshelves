@@ -1,3 +1,0 @@
-[submodule "docs/poc/demo-site"]
-	path = docs/poc/demo-site
-	url = https://github.com/openshelves-labs/openshelves-demo-site.git

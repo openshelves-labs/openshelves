@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../docs/assets/banner-backend.svg" alt="OpenShelves backend, the engine room: REST API on Spring Boot 4, Java 25 and PostgreSQL. A card-catalogue cabinet and a desk lamp on a wooden desk." width="100%">
+  <img src="../docs/assets/banner-backend.svg" alt="OpenShelves backend, the engine room: the API behind every search, loan and sign-in. A card-catalogue cabinet and a desk lamp on a wooden desk." width="100%">
 </p>
 
 *The archive no one sees, so the reading room never has to wait.*

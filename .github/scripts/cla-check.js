@@ -12,7 +12,7 @@ module.exports = async ({ github, context, core }) => {
         repo:       context.repo.repo,
         sha,
         context:    'CLA / Contributor License Agreement',
-        target_url: 'https://github.com/openshelves-labs/openshelves/blob/develop/CLA.md',
+        target_url: 'https://github.com/openshelves-labs/openshelves/blob/main/CLA.md',
     };
 
     if (claChecked) {

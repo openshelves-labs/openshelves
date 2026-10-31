@@ -1,26 +1,28 @@
-# Contributing to OpenShelves
+# 🌱 Contributing to OpenShelves
 
-> **Modernizing the university library experience — together.**
+*The first pages are still being written, which makes now the best time to add yours.*
 
-Welcome, and thank you for your interest in contributing to OpenShelves! Whether you're fixing a bug, proposing a feature, improving documentation, or asking a question — you are part of something meaningful. We're building an open discovery platform for academic libraries, and every contribution matters.
+[← Project README](README.md)
+
+Welcome, and thank you for being here! Whether you're fixing a bug, proposing a feature, improving the docs or just asking a question, you're helping build something meaningful. We're building an open discovery platform for academic libraries, and every contribution matters.
 
 Please read this guide before submitting your first contribution. It covers how to contribute, what to expect, and the agreements that protect both you and the project.
 
 ---
 
-## Table of Contents
+**Contents**
 
-- [Our Philosophy](#our-philosophy)
-- [Contributor License Agreement](#contributor-license-agreement)
-- [How to Contribute](#how-to-contribute)
-- [Code of Conduct](#code-of-conduct)
-- [Attribution and Credit](#attribution-and-credit)
-- [Governance and Decisions](#governance-and-decisions)
-- [License](#license)
+1. [💡 Our philosophy](#-our-philosophy)
+2. [✍️ Contributor License Agreement](#️-contributor-license-agreement)
+3. [🛠️ How to contribute](#️-how-to-contribute)
+4. [💛 Code of Conduct](#-code-of-conduct)
+5. [🏅 Attribution and credit](#-attribution-and-credit)
+6. [🏛️ Governance and decisions](#️-governance-and-decisions)
+7. [📄 License](#-license)
 
 ---
 
-## Our Philosophy
+## 💡 Our philosophy
 
 OpenShelves is built on the belief that library technology should be **open, accessible, and community-driven**. We actively welcome contributions from developers, librarians, designers, students, and anyone who shares that vision.
 
@@ -28,7 +30,7 @@ At the same time, we have a responsibility to keep the project **legally sound, 
 
 ---
 
-## Contributor License Agreement
+## ✍️ Contributor License Agreement
 
 **Before your first contribution is merged, you must agree to the [OpenShelves Contributor License Agreement (CLA)](./CLA.md).**
 
@@ -56,9 +58,9 @@ Acceptance is done directly in your pull request. When you open a PR, the templa
 
 ---
 
-## How to Contribute
+## 🛠️ How to contribute
 
-### Reporting Issues
+### 🐛 Reporting issues
 
 If you've found a bug or have a feature request, please [open an issue](https://github.com/openshelves-labs/openshelves/issues). Before filing, check whether a similar issue already exists.
 
@@ -68,33 +70,33 @@ When reporting a bug, please include:
 - Expected vs. actual behavior
 - Your environment (OS, Java version, etc.)
 
-### Suggesting Features
+### 💡 Suggesting features
 
 Have an idea? We'd love to hear it. Open a [Discussion](https://github.com/openshelves-labs/openshelves/discussions) to share your proposal before building it. This avoids duplicated effort and helps ensure your contribution aligns with the project's direction.
 
-### Submitting Code
+### 🧑‍💻 Submitting code
 
 > [!IMPORTANT]
 > **Checklists First!**
 > Before you open your pull request, please review the **[PR Checklists](./.github/PR_CHECKLISTS.md)** to ensure your code meets our project standards and AI-assistance rules.
 
-1. **Fork the repository** and create a branch from `develop`.
+1. **Fork the repository** and create a branch from `main`.
 2. **Write your code.** Follow the existing code style and conventions.
 3. **Write tests** where applicable.
 4. **Commit your changes** with a clear, descriptive commit message.
-5. **Open a pull request** against the `develop` branch.
+5. **Open a pull request** against the `main` branch.
 6. **Check the CLA and Checklist boxes** in the PR description to confirm you've met the requirements.
 7. **Respond to review feedback** — a maintainer will review your PR and may request changes.
 
 Pull requests that pass review and CI will be merged by a maintainer. We aim to review PRs within a reasonable timeframe, though this may vary depending on the complexity and the team's availability.
 
-### Documentation
+### 📝 Documentation
 
 Good documentation is as valuable as good code. Improvements to READMEs, inline comments, API docs, or user guides are always welcome.
 
 ---
 
-## Code of Conduct
+## 💛 Code of Conduct
 
 We are committed to a welcoming and respectful community. All contributors are expected to:
 
@@ -107,7 +109,7 @@ Harassment, discrimination, or disrespectful behavior of any kind will not be to
 
 ---
 
-## Attribution and Credit
+## 🏅 Attribution and credit
 
 Every contributor's work is preserved in the project's git history and is considered a permanent part of the project's record. Significant contributions may also be recognized in a `CONTRIBUTORS` file or release notes.
 
@@ -115,7 +117,7 @@ We do not erase or suppress contributor history. If you believe your contributio
 
 ---
 
-## Governance and Decisions
+## 🏛️ Governance and decisions
 
 OpenShelves Labs values community input and welcomes open discussion on project direction, feature priorities, and policies. All major discussions happen publicly in [GitHub Discussions](https://github.com/openshelves-labs/openshelves/discussions).
 
@@ -127,7 +129,7 @@ We believe this is the right balance between openness and sustainability. If you
 
 ---
 
-## License
+## 📄 License
 
 OpenShelves is licensed under the **Business Source License 1.1 (BUSL)**, converting to Apache License 2.0 on a rolling basis per the Change Date defined in the `LICENSE` file. By contributing, you agree to the terms described in the [Contributor License Agreement](./CLA.md).
 
@@ -135,6 +137,12 @@ You are free to use, fork, and build upon OpenShelves in your own projects under
 
 ---
 
-*Thank you for helping build OpenShelves. Every line of code, every bug report, and every suggestion makes a difference.*
+<div align="center">
+
+*Thank you for helping build OpenShelves. Every line of code, every bug report and every suggestion is another book on the shelf.*
 
 — The OpenShelves Labs Core Team
+
+[← Back to the project README](README.md)
+
+</div>

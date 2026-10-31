@@ -12,7 +12,7 @@ module.exports = async ({ github, context, core }) => {
         repo:       context.repo.repo,
         sha,
         context:    'PR Checks / Quality Checklists',
-        target_url: 'https://github.com/openshelves-labs/openshelves/blob/develop/.github/PR_CHECKLISTS.md',
+        target_url: 'https://github.com/openshelves-labs/openshelves/blob/main/.github/PR_CHECKLISTS.md',
     };
 
     if (checklistChecked) {

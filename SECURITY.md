@@ -2,11 +2,11 @@
 
 ## Supported Versions
 
-As OpenShelves is in early development, security fixes are applied to the latest version on the `develop` branch. Once stable releases are published, this table will reflect which versions receive security updates.
+As OpenShelves is in early development, security fixes are applied to the latest version on the `main` branch. Once stable releases are published, this table will reflect which versions receive security updates.
 
 | Version | Supported |
 |---------|-----------|
-| Latest (`develop`) | ✅ |
+| Latest (`main`) | ✅ |
 
 ## Reporting a Vulnerability
 

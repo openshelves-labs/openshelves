@@ -1,17 +1,21 @@
-# Demo Site (Proof of Concept)
+# 🧪 Demo Site · The first sketch
 
-The early UI prototype of OpenShelves lives in its own repository:
+*Before the library was built, someone drew the reading room.*
 
-**https://github.com/openshelves-labs/openshelves-demo-site**
+[← Project README](../../../README.md)
 
-It is a frontend-only demo (Next.js, React, TypeScript, Tailwind) built on typed mock data to explore
-design and user flows. It has no backend and is not the OpenShelves product.
+The demo site is where OpenShelves started: a clickable prototype that showed what searching, borrowing and managing a reading list could feel like, before any of it was real. It now lives in its own repository:
 
-- Not maintained or supported; not intended for production use.
-- Issues and pull requests go to this repository, not the demo repo.
-- Licensed under the same terms as this repository (Business Source License 1.1).
+**👉 [openshelves-labs/openshelves-demo-site](https://github.com/openshelves-labs/openshelves-demo-site)**
 
-## Running it locally
+It's frontend only (Next.js, React, TypeScript, Tailwind) and runs on typed sample data. There is no backend behind it, and it isn't the OpenShelves product; the [frontend](../../../frontend/README.md) in this repository is.
+
+> [!NOTE]
+> - 🧊 **Frozen:** it's kept for reference and no longer maintained or supported. Don't use it in production.
+> - 📮 **Feedback goes here:** open issues and pull requests in this repository, not the demo repo.
+> - 📄 **Same licence:** Business Source License 1.1, like this repository.
+
+## 🚀 Running it locally
 
 ```bash
 git clone https://github.com/openshelves-labs/openshelves-demo-site.git

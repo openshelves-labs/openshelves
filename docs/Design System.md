@@ -1,5 +1,7 @@
 # 🎨 OpenShelves Design System · *Scholastic Paper*
 
+*Paper remembers what screens forget: be quiet, be legible, be kind to tired eyes.*
+
 > The look of an archival reading room: warm paper, forest-green ink, hairline rules, and editorial type.
 > Calm and dense enough for long research sessions; never flashy.
 

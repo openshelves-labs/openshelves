@@ -1,7 +1,9 @@
 # 📚 OpenShelves API Design
 
-The REST API between the OpenShelves frontend and the Spring Boot backend.
-Derived from the demo site (`openshelves-demo-site`: what each screen reads and does) and shaped for the backend we want, not the one we have today.
+*Every shelf needs an index; every index, a careful hand.*
+
+This is the contract between the OpenShelves web app and the backend: every endpoint, what it takes and what it returns.
+It was worked out screen by screen from the [demo site](../poc/demo-site/README.md) (what each page needs to show and do) and describes the API we're building towards, not only what exists today.
 
 **Contents**
 

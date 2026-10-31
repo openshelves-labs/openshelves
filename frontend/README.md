@@ -1,13 +1,17 @@
-# 🖥️ OpenShelves Frontend
+<p align="center">
+  <img src="../docs/assets/banner-frontend.svg" alt="OpenShelves frontend, the front door: web app on Next.js 16, React 19 and Tailwind CSS 4. Open library doors with warm light spilling out." width="100%">
+</p>
+
+*The front door of the library: it should feel warm the moment you step in.*
 
 [← Project README](../README.md)
 
-The OpenShelves web app: what patrons and librarians use in the browser. It talks to the [backend API](../backend/README.md) over REST.
+This is the part of OpenShelves people actually see: the web app where students search and borrow, and librarians keep the catalog in order. It holds no data of its own; everything comes from the [backend API](../backend/README.md).
 
 > [!NOTE]
-> **Early scaffold.** The app currently renders a placeholder page. The UI is being rebuilt from the [demo site](../docs/poc/demo-site/README.md) against the real API ([API design](../docs/api-design/README.md)).
+> **Still a scaffold.** For now the app shows a placeholder page. The screens are being rebuilt from the [demo site](../docs/poc/demo-site/README.md), this time on the real API ([API design](../docs/api-design/README.md)).
 >
-> The full structure, data flow and auth design are in [Frontend architecture](../docs/Frontend%20Architecture.md).
+> For the bigger picture (structure, data flow and sign-in) read [Frontend architecture](../docs/Frontend%20Architecture.md).
 
 **Contents**
 
@@ -46,7 +50,7 @@ The OpenShelves web app: what patrons and librarians use in the browser. It talk
   nvm use
   ```
 
-- The **backend** running on http://localhost:8080 for anything that loads data ([how](../backend/README.md#-running-locally)).
+- The **backend** running on http://localhost:8080, for any page that loads data ([how to start it](../backend/README.md#-running-locally)).
 
 ### 2. Install and run
 
@@ -140,7 +144,7 @@ sequenceDiagram
 
 - Tailwind CSS 4, configured in [`globals.css`](src/app/globals.css) and [`postcss.config.mjs`](postcss.config.mjs).
 - Colours, type and spacing follow the **Scholastic Paper** design system: [`docs/Design System.md`](../docs/Design%20System.md).
-- Show **data from the API, formatted here**: dates, relative times ("2h ago"), money and status labels are the frontend's job.
+- The API sends raw data; **the frontend makes it readable**: dates, relative times ("2h ago"), money and status labels are formatted here.
 
 ---
 
@@ -152,3 +156,13 @@ The full rules are in [`AGENTS.md`](../AGENTS.md). In short:
 - 🧭 Keep `app/` to routing; put UI in `components/` and calls in `services/api/`.
 - 📦 **No new dependencies** without agreement.
 - 🧹 Run `npm run lint` before pushing.
+
+---
+
+<div align="center">
+
+*Every visit should end with the right book in hand.*
+
+[← Back to the project README](../README.md)
+
+</div>

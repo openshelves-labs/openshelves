@@ -1,31 +1,40 @@
-# OpenShelves: The Future of Academic Discovery
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="OpenShelves, the future of academic discovery: backend API, web app and infrastructure, in one repository. Late-afternoon sunlight through an arched library window falls on an open book, between tall bookshelves." width="100%">
+</p>
 
-[![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL_1.1-0366D6?style=flat)](LICENSE)
+<div align="center">
+
+[![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL_1.1-7A4E33?style=flat)](LICENSE)
 [![Spring Boot 4.1.2](https://img.shields.io/badge/Spring_Boot-4.1.2-6DB33F?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
 [![Java 25](https://img.shields.io/badge/Java-25-ED8B00?style=flat&logo=openjdk)](https://openjdk.org/projects/jdk/25/)
 [![Next.js 16.4.3](https://img.shields.io/badge/Next.js-16.4.3-6E7681?style=flat&logo=nextdotjs)](https://nextjs.org/)
 [![Node.js 26](https://img.shields.io/badge/Node.js-26-5FA04E?style=flat&logo=nodedotjs)](https://nodejs.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-2EA44F?style=flat)](CONTRIBUTING.md)
-[![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Adopted-0366D6?style=flat)](CODE_OF_CONDUCT.md)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-A8652C?style=flat)](CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Adopted-6B5240?style=flat)](CODE_OF_CONDUCT.md)
 
-OpenShelves turns complex, legacy university library catalogs into fast, intuitive and open discovery platforms for students and researchers.
+*Somewhere in every university, the answer to someone's question already sits on a shelf.*<br>
+*OpenShelves exists so it can be found.*
+
+</div>
+
+Most university catalogs still feel like the 1990s: slow searches, cryptic records and a dozen separate portals. OpenShelves replaces that with one open platform where students find what they need, borrow it without queuing at a desk, and keep their research in one place, while librarians get a calm workspace to run it all.
 
 > [!IMPORTANT]
-> **Project status: early development.**
-> Not ready for production. We're building the core architecture and the first features (sign-in, catalog, circulation).
+> **Early days.** OpenShelves isn't ready for production yet.
+> The foundations are going in now: sign-in, the catalog and borrowing come first.
 
 ---
 
-## 🌟 The vision
+## 🌟 Prologue · The vision
 
-Libraries should be as easy to search as the web, and as reliable as a scholarly archive.
+A library should be as easy to search as the web, and as trustworthy as the archive behind it.
 
-- 🔎 **Intuitive discovery:** a fast, modern UI that makes finding resources effortless.
-- 🧱 **Robust architecture:** a resilient backend built for reliability and scale.
-- 🌍 **Open standards:** built on open principles to serve the global academic community.
+- 🔎 **Find it in one search:** books, journals and digital resources in one place, with filters that make sense to a first-year student.
+- 🧱 **Built to stay up:** a backend that keeps working through exam-week traffic and slow outside services.
+- 🌍 **Open by design:** open code and open standards, so any university can run it, adapt it and trust it.
 
-## ✨ What it does (planned)
+## ✨ The Shelves · What it does (planned)
 
 | | Area | For |
 |---|---|---|
@@ -37,21 +46,25 @@ Libraries should be as easy to search as the web, and as reliable as a scholarly
 | 🛠️ | Cataloging from external metadata providers (Open Library, Google Books, …) | Librarians |
 | 🔐 | Password and campus SSO (SAML / OIDC) sign-in | Everyone |
 
-The full list of API groups is in [docs/api-design](docs/api-design/README.md).
+Each area maps to a group of endpoints; the full map is in the [API design](docs/api-design/README.md).
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ The Blueprint · Architecture
+
+Two apps and a database: a web app people use, an API that does the work, and PostgreSQL underneath.
 
 <p align="center">
   <img src="docs/assets/architecture.svg" alt="OpenShelves architecture: patrons and librarians use the Next.js frontend, which calls the Spring Boot backend API with a bearer token. The backend's layers are security, REST controllers, services and metadata clients. It stores data in PostgreSQL, looks up book metadata from Open Library, Google Books, Hardcover, Comic Vine and RanobeDB, and will later integrate with a campus IdP, payments, email and a library proxy." width="100%">
 </p>
 
-- 🔐 **Stateless auth:** the frontend sends an opaque bearer token on every call; the backend resolves it to a session in Postgres.
-- 🧠 **One backend, feature packages:** auth, catalog, circulation, fines and cataloging live in one Spring Boot app, split by package.
-- 🛡️ **External calls are guarded:** each metadata provider has its own HTTP client with timeouts, rate limiting and retries, so one slow provider can't stall the rest.
+- 🔐 **Simple, revocable sessions:** the web app sends an opaque token with every call, and the API looks it up in PostgreSQL, so signing out of a device takes effect at once.
+- 🧠 **One API, organised by feature:** auth, catalog, circulation, fines and cataloging live in one Spring Boot app, each in its own package.
+- 🛡️ **Outside services can't drag it down:** every metadata provider has its own client with timeouts, rate limits and retries, so one slow provider never stalls the rest.
 
-## 📁 Repository structure
+## 📁 The Stacks · Repository structure
+
+Everything lives in this one repository.
 
 | Path | What's in it |
 |---|---|
@@ -60,7 +73,7 @@ The full list of API groups is in [docs/api-design](docs/api-design/README.md).
 | [`infra/`](infra) | Infrastructure as Code *(not started)* |
 | [`docs/`](docs) | API design, design system, user journeys, proofs of concept |
 
-## 🛠️ Technology stack
+## 🛠️ The Craft · Technology stack
 
 | Layer | Stack |
 |---|---|
@@ -72,7 +85,9 @@ The full list of API groups is in [docs/api-design](docs/api-design/README.md).
 
 ---
 
-## 🚀 Getting started
+## 🚀 First Pages · Getting started
+
+Three steps to run it locally: a database, the API, then the web app.
 
 ### Prerequisites
 
@@ -107,11 +122,13 @@ npm install
 npm run dev
 ```
 
-More detail (configuration, project layout, conventions) is in [`backend/README.md`](backend/README.md) and [`frontend/README.md`](frontend/README.md).
+For configuration, project layout and conventions, see the [backend](backend/README.md) and [frontend](frontend/README.md) guides.
 
 ---
 
-## 📚 Documentation
+## 📚 Reading Guides · Documentation
+
+Where to look before you change something.
 
 | | Doc | What's in it |
 |---|---|---|
@@ -122,15 +139,17 @@ More detail (configuration, project layout, conventions) is in [`backend/README.
 | 🧪 | [Demo site](docs/poc/demo-site/README.md) | Frontend-only prototype the UI is based on |
 | 🤖 | [AGENTS.md](AGENTS.md) | Instructions for AI coding assistants |
 
-## 🤝 Contributing
+## 🤝 An Open Invitation · Contributing
 
-We're looking for early contributors, library enthusiasts and anyone who cares about open academic tools.
+The first pages are still being written, which makes now the best time to add yours. Developers, designers, librarians and anyone who has ever lost an afternoon to a library portal are all welcome.
 
-- Start with [CONTRIBUTING.md](CONTRIBUTING.md).
-- See [GOVERNANCE.md](GOVERNANCE.md) for how the project is run.
-- Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+- 📝 Start with the [contributing guide](CONTRIBUTING.md).
+- 🏛️ Read [how the project is run](GOVERNANCE.md).
+- 💛 Follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## 📄 Policies
+## 📄 House Rules · Policies
+
+The fine print, in one place.
 
 - [AI Usage Policy](AI_USAGE_POLICY.md)
 - [Security Policy](SECURITY.md)
@@ -140,4 +159,10 @@ We're looking for early contributors, library enthusiasts and anyone who cares a
 
 ---
 
-© 2026 OpenShelves Labs. Built with ❤️ for the academic community.
+<div align="center">
+
+*Every great library began as a single shelf. This is ours.*
+
+**© 2026 OpenShelves Labs** · Built with care for the academic community
+
+</div>

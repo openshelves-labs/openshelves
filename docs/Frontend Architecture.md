@@ -1,5 +1,7 @@
 # 🖥️ Frontend Architecture
 
+*A reading room is only as calm as the corridors behind it.*
+
 > How the Next.js app is organised, where code runs, and how it talks to the backend.
 > Setup and scripts are in [`frontend/README.md`](../frontend/README.md); look and feel in the [Design System](Design%20System.md); endpoints in the [API design](api-design/README.md).
 

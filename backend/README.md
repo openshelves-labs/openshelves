@@ -1,8 +1,14 @@
-# ⚙️ OpenShelves Backend
+<p align="center">
+  <img src="../docs/assets/banner-backend.svg" alt="OpenShelves backend, the engine room: REST API on Spring Boot 4, Java 25 and PostgreSQL. A card-catalogue cabinet and a desk lamp on a wooden desk." width="100%">
+</p>
+
+*The archive no one sees, so the reading room never has to wait.*
 
 [← Project README](../README.md)
 
-The OpenShelves REST API: authentication, catalog, circulation and librarian tools, built with Spring Boot on PostgreSQL.
+This is the engine room of OpenShelves: the REST API behind every search, loan and sign-in. It's a single Spring Boot app on PostgreSQL, organised by feature, and it's the only part of the system that talks to the database or to outside metadata services.
+
+New here? [Run it locally](#-running-locally) and sign in with the seeded user; it takes about five minutes.
 
 **Contents**
 
@@ -37,8 +43,8 @@ The OpenShelves REST API: authentication, catalog, circulation and librarian too
 
 ### 1. Prerequisites
 
-- **Java 25.** Gradle's toolchain will use it; `java -version` should show 25.
-- **PostgreSQL**, with a database the app can reach (defaults below).
+- **Java 25.** Gradle's toolchain picks it up; `java -version` should report 25.
+- **PostgreSQL**, reachable with the [default settings](#️-configuration) or your own.
 
 ### 2. Create the database
 
@@ -54,7 +60,7 @@ psql -d openshelves -f src/main/resources/seed.sql   # sample data, local only
 ./gradlew bootRun
 ```
 
-The API starts on **http://localhost:8080**.
+The API is ready when the log shows `Started OpenShelvesApplication`, on **http://localhost:8080**.
 
 ### 4. Try it
 
@@ -81,7 +87,7 @@ curl http://localhost:8080/api/v1/auth/session -H 'Authorization: Bearer <token>
 
 ## ⚙️ Configuration
 
-All settings live in [`src/main/resources/application.yml`](src/main/resources/application.yml). Override any of them with environment variables (Spring's relaxed binding), so nothing local needs to be committed:
+Every setting lives in [`src/main/resources/application.yml`](src/main/resources/application.yml). You can override any of them with an environment variable, so your local passwords never need to be committed:
 
 | Setting | Default | Env var |
 |---|---|---|
@@ -199,7 +205,7 @@ flowchart LR
 
 ## 🌐 External metadata providers
 
-Used by librarian cataloging to look books up by ISBN, title or author.
+When a librarian catalogs a new book, the API asks these services for its details, so nobody types a record by hand. Lookups work by ISBN, title or author.
 
 | Provider | Package | Good for |
 |---|---|---|
@@ -219,7 +225,7 @@ impl/<provider>/
 └── <Provider>Config.java        dedicated OkHttpClient (timeouts, pool, interceptor)
 ```
 
-To add a provider: add a `MetadataProvider` enum value and create those four classes. `MetadataClientRegistry` picks up every `MetadataClient` bean automatically (and fails startup if two claim the same provider).
+**Adding a provider** takes two steps: add a `MetadataProvider` enum value, then create those four classes. `MetadataClientRegistry` finds every `MetadataClient` bean on its own, and refuses to start if two claim the same provider.
 
 ---
 
@@ -233,3 +239,13 @@ The full rules are in [`AGENTS.md`](../AGENTS.md). In short:
 - 🛡️ **Wrap external calls** with Resilience4j.
 - 🧪 **Test new business logic** with JUnit (tests go in `src/test/java`).
 - 📦 **No new dependencies** without agreement; stick to the Spring Boot BOM.
+
+---
+
+<div align="center">
+
+*Quiet, careful work in the back room, so the front desk never keeps anyone waiting.*
+
+[← Back to the project README](../README.md)
+
+</div>

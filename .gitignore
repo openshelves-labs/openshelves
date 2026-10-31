@@ -139,3 +139,6 @@ bin/
 # User-specific files
 .DS_Store
 Thumbs.db
+
+# Files saved by the Claude desktop app
+Claude outputs/

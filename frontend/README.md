@@ -6,6 +6,8 @@ The OpenShelves web app: what patrons and librarians use in the browser. It talk
 
 > [!NOTE]
 > **Early scaffold.** The app currently renders a placeholder page. The UI is being rebuilt from the [demo site](../docs/poc/demo-site/README.md) against the real API ([API design](../docs/api-design/README.md)).
+>
+> The full structure, data flow and auth design are in [Frontend architecture](../docs/Frontend%20Architecture.md).
 
 **Contents**
 

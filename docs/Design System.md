@@ -1,235 +1,253 @@
----
-name: Scholastic Paper
-colors:
-  surface: '#fbf9f4'
-  surface-dim: '#dcdad5'
-  surface-bright: '#fbf9f4'
-  surface-container-lowest: '#ffffff'
-  surface-container-low: '#f5f3ee'
-  surface-container: '#f0eee9'
-  surface-container-high: '#eae8e3'
-  surface-container-highest: '#e4e2dd'
-  on-surface: '#1b1c19'
-  on-surface-variant: '#414943'
-  inverse-surface: '#30312e'
-  inverse-on-surface: '#f3f1ec'
-  outline: '#717972'
-  outline-variant: '#c0c9c1'
-  surface-tint: '#39684f'
-  primary: '#16452f'
-  on-primary: '#ffffff'
-  primary-container: '#2f5d45'
-  on-primary-container: '#a2d4b6'
-  inverse-primary: '#a0d2b3'
-  secondary: '#446652'
-  on-secondary: '#ffffff'
-  secondary-container: '#c3e9d0'
-  on-secondary-container: '#486a56'
-  tertiary: '#363f3b'
-  on-tertiary: '#ffffff'
-  tertiary-container: '#4d5652'
-  on-tertiary-container: '#c1cbc5'
-  error: '#ba1a1a'
-  on-error: '#ffffff'
-  error-container: '#ffdad6'
-  on-error-container: '#93000a'
-  primary-fixed: '#bbeecf'
-  primary-fixed-dim: '#a0d2b3'
-  on-primary-fixed: '#002112'
-  on-primary-fixed-variant: '#214f38'
-  secondary-fixed: '#c6ebd3'
-  secondary-fixed-dim: '#aacfb8'
-  on-secondary-fixed: '#002112'
-  on-secondary-fixed-variant: '#2c4d3c'
-  tertiary-fixed: '#dbe5df'
-  tertiary-fixed-dim: '#bfc9c3'
-  on-tertiary-fixed: '#151d1a'
-  on-tertiary-fixed-variant: '#3f4945'
-  background: '#fbf9f4'
-  on-background: '#1b1c19'
-  surface-variant: '#e4e2dd'
-typography:
-  display-lg:
-    fontFamily: Literata
-    fontSize: 48px
-    fontWeight: '500'
-    lineHeight: 56px
-    letterSpacing: -0.02em
-  display-lg-mobile:
-    fontFamily: Literata
-    fontSize: 32px
-    fontWeight: '500'
-    lineHeight: 40px
-    letterSpacing: -0.015em
-  headline-lg:
-    fontFamily: Literata
-    fontSize: 32px
-    fontWeight: '600'
-    lineHeight: 40px
-    letterSpacing: -0.015em
-  headline-lg-mobile:
-    fontFamily: Literata
-    fontSize: 26px
-    fontWeight: '600'
-    lineHeight: 34px
-    letterSpacing: -0.01em
-  headline-md:
-    fontFamily: Literata
-    fontSize: 24px
-    fontWeight: '600'
-    lineHeight: 32px
-    letterSpacing: -0.01em
-  headline-sm:
-    fontFamily: Literata
-    fontSize: 20px
-    fontWeight: '600'
-    lineHeight: 28px
-  title-editorial:
-    fontFamily: Literata
-    fontSize: 18px
-    fontWeight: '500'
-    lineHeight: 26px
-  body-lg:
-    fontFamily: DM Sans
-    fontSize: 17px
-    fontWeight: '400'
-    lineHeight: 28px
-  body-md:
-    fontFamily: DM Sans
-    fontSize: 15px
-    fontWeight: '400'
-    lineHeight: 24px
-  body-sm:
-    fontFamily: DM Sans
-    fontSize: 13px
-    fontWeight: '400'
-    lineHeight: 20px
-  label-lg:
-    fontFamily: DM Sans
-    fontSize: 14px
-    fontWeight: '600'
-    lineHeight: 20px
-    letterSpacing: 0.01em
-  label-md:
-    fontFamily: DM Sans
-    fontSize: 12px
-    fontWeight: '500'
-    lineHeight: 16px
-    letterSpacing: 0.02em
-  metadata-caps:
-    fontFamily: DM Sans
-    fontSize: 11px
-    fontWeight: '600'
-    lineHeight: 14px
-    letterSpacing: 0.06em
-rounded:
-  sm: 0.25rem
-  DEFAULT: 0.5rem
-  md: 0.75rem
-  lg: 1rem
-  xl: 1.5rem
-  full: 9999px
-spacing:
-  gutter: 1.5rem
-  gutter-sm: 1rem
-  gutter-lg: 2rem
-  margin: 2rem
-  margin-sm: 1rem
-  margin-lg: 3.5rem
-  space-xs: 0.25rem
-  space-sm: 0.5rem
-  space-md: 1rem
-  space-lg: 1.5rem
-  space-xl: 2.5rem
+# 🎨 OpenShelves Design System · *Scholastic Paper*
+
+> The look of an archival reading room: warm paper, forest-green ink, hairline rules, and editorial type.
+> Calm and dense enough for long research sessions; never flashy.
+
+> [!NOTE]
+> **Source of truth:** the tokens are implemented in [`frontend/src/app/globals.css`](../frontend/src/app/globals.css) (Tailwind 4 `@theme`). This doc explains them and how to use them. **Change both together.**
+
+**Contents**
+
+1. [🧭 Principles](#-principles)
+2. [🎨 Colour](#-colour)
+3. [🔤 Typography](#-typography)
+4. [📐 Layout & spacing](#-layout--spacing)
+5. [⬜ Shape](#-shape)
+6. [🪶 Elevation & borders](#-elevation--borders)
+7. [🎯 Interaction states](#-interaction-states)
+8. [🔣 Icons](#-icons)
+9. [🧩 Components](#-components)
+
 ---
 
-## Brand & Style
-The design system embodies the serene, deliberate atmosphere of an archival university library, rare books reading room, and independent academic press. Designed for researchers, faculty, librarians, and students navigating deep inquiry, the interface serves as a quiet, dignified vessel for knowledge rather than a distraction.
+## 🧭 Principles
 
-The aesthetic marries classical editorial print with contemporary utilitarian clarity:
-- **Tone:** Intellectual, contemplative, archival, rigorously ordered, and warm.
-- **Visual Stance:** Restrained minimalism meeting editorial typography. Surfaces evoke unbleached cotton rag paper and vellum, anchored by scholarly forest greens and crisp card stock.
-- **Rhythm & Texture:** Generous intellectual breathing room, hairline rules reminiscent of archival ledgers, disciplined typographic hierarchies, and tactile metadata treatments that prioritize reading endurance over flash.
+| | Principle | In practice |
+|---|---|---|
+| 📜 | **Paper, not glass** | White cards on a warm paper background. No gradients, no glow. |
+| ✒️ | **Ink for meaning** | Forest green marks what's actionable or confirmed. Everything else is charcoal and stone. |
+| 📏 | **Hairlines over shadows** | Separate things with 1px warm borders. Shadows only for things that float. |
+| 📖 | **Editorial type** | Serif for titles of works and headings; sans for the interface. |
+| 🗂️ | **Dense but calm** | Catalog data is rich; give it clear hierarchy and room, not decoration. |
 
-## Colors
-The color palette reflects an analog scholarly lineage: archival paper stocks, natural calfskin bindings, deep forest inks, and mineral pigments.
+---
 
-### Roles and Application
-- **Primary (`#2F5D45`):** Reserved for core interactive states, authoritative scholarly actions, confirmed statuses, and prominent focal points.
-- **Primary Dark (`#1E3F2E`):** Serves hover/pressed states on primary actions, high-contrast headings, and foundational institutional elements.
-- **Surface Tint (`#E4EEE8`):** Pale botanical wash used for active chip backgrounds, subtle selections, and contextual highlights.
-- **Background (`#F3F1EC`):** Warm unbleached paper tone framing the entire viewport canvas, eliminating glare during prolonged archival sessions.
-- **Surface / Cards (`#FFFFFF`):** High-clarity white cardstock providing optimal contrast against the warm canvas.
-- **Borders & Dividers:** Warm hairline grays (`#E5E0D8` for standard boundaries, `#D8D2C7` for interactive or demarcated divisions).
-- **Text Primary (`#1E2320`):** Deep charcoal ink formulated to soften optical fatigue while preserving crisp readability.
-- **Text Muted (`#5C6460`):** Scholarly stone for catalog metadata, citations, ISBNs, timestamps, and secondary captions.
-- **Semantic Accents:**
-  - *Success / Available:* Deep Green (`#2F5D45`) over Pale Green Tint (`#E4EEE8`).
-  - *Warning / Due Soon:* Amber Ink (`#C27D23`) over Parchment Warmth (`#FDF4E7`).
-  - *Critical / Overdue:* Terracotta Red (`#B83A30`) over Pale Blush (`#FBEAE8`).
+## 🎨 Colour
 
-## Typography
-Typography creates a deliberate dialogue between classical academic publishing and modern research tooling.
+<p align="center">
+  <img src="assets/palette.svg" alt="Colour palette: background #F3F1EC, card #FFFFFF, border #E5E0D8, border-strong #D8D2C7, foreground #1E2320, muted-foreground #5C6460, primary #2F5D45, primary-hover #1E3F2E, accent #E4EEE8, and status pairs for available, due soon and overdue." width="100%">
+</p>
 
-- **Literata** acts as the primary editorial voice. With its bookish proportions and refined transitional serifs, it establishes gravitas for book volumes, research treatises, monograph titles, quotes, and primary section headers.
-- **DM Sans** delivers unadorned, clear utility for interface navigation, faceted search panels, tabular data, shelf metadata, call numbers, and administrative workflows.
+### Tokens
 
-### Editorial Guidelines
-- Use `metadata-caps` in uppercase styling with deliberate tracking for call numbers, categorization indices, and catalog tags (e.g., `DEWEY 028.5`, `ARCHIVAL REF`).
-- Titles of published works, theses, and journals should consistently utilize `Literata` with normal casing.
-- Body text prioritizes legibility with proportional leading to support long-form analytical reading.
+Use the **Tailwind class**, never the raw hex.
 
-## Layout & Spacing
-The layout follows an asymmetrical academic grid inspired by classic folio spreads: a disciplined lateral hierarchy with structural sidebars and generous reading gutters.
+| Token | Hex | Tailwind | Use for |
+|---|---|---|---|
+| `background` | `#F3F1EC` | `bg-background` | Page canvas, sidebar, top bar |
+| `foreground` | `#1E2320` | `text-foreground` | Body text, headings |
+| `muted-foreground` | `#5C6460` | `text-muted-foreground` | Metadata, captions, call numbers, timestamps, placeholders |
+| `card` | `#FFFFFF` | `bg-card` | Cards, inputs, menus, modals |
+| `card-foreground` | `#1E2320` | `text-card-foreground` | Text on cards |
+| `border` | `#E5E0D8` | `border-border` | Hairlines, dividers, card edges |
+| `border-strong` | `#D8D2C7` | `border-border-strong` | Inputs, secondary buttons, hover edges |
+| `ring` | `#2F5D45` | `outline-ring` | Focus ring |
+| `primary` | `#2F5D45` | `bg-primary` · `text-primary` | Primary actions, links, active nav, "available" |
+| `primary-foreground` | `#FFFFFF` | `text-primary-foreground` | Text on primary |
+| `primary-hover` | `#1E3F2E` | `hover:bg-primary-hover` | Hover / pressed primary; dark emphasis |
+| `accent` | `#E4EEE8` | `bg-accent` | Selected chips, active rows, "available" background |
+| `accent-foreground` | `#2F5D45` | `text-accent-foreground` | Text on accent |
+| `warning` / `warning-subtle` | `#C27D23` / `#FDF4E7` | `text-warning` · `bg-warning-subtle` | Due soon, action needed |
+| `destructive` / `destructive-subtle` | `#B83A30` / `#FBEAE8` | `text-destructive` · `bg-destructive-subtle` | Overdue, fines, errors, destructive actions |
 
-- **Desktop (>= 1200px):** 12-column responsive grid with a standard outer margin of `margin-lg` (3.5rem) and `gutter-lg` (2rem). Standard desktop catalogs utilize a 3-column facet sidebar (filters, shelves, taxonomy) paired with a 9-column content ledger.
-- **Tablet (768px - 1199px):** 8-column layout with `margin` (2rem) and `gutter` (1.5rem). Filter sidebars collapse into persistent horizontal drawers or tabbed registers.
-- **Mobile (< 768px):** 4-column layout with `margin-sm` (1rem) and `gutter-sm` (1rem). Dense book ledgers convert to stacked horizontal catalog cards.
+### Status colours
 
-Internal card padding respects an 8pt modular cadence, using `space-lg` (24px) for desktop card containers and `space-md` (16px) for compact catalog index rows.
+Always a **pair**: strong colour for text / icon / dot, subtle colour for the background.
 
-## Elevation & Depth
-Depth in this system rejects digital drop shadows, relying instead on flat paper layering, tonal gradation, and 1px hairline ink borders.
+| Status | Text / dot | Background | Examples |
+|---|---|---|---|
+| 🟢 Success | `primary` | `accent` | Available, renewed, paid, hold ready |
+| 🟠 Warning | `warning` | `warning-subtle` | Due in 3 days, action needed |
+| 🔴 Critical | `destructive` | `destructive-subtle` | Overdue, fine outstanding, failed |
+| ⚪ Neutral | `muted-foreground` | `background` | Checked out, on order, archived |
 
-- **Paper Layering:** Depth is conveyed by placing Pure White (`#FFFFFF`) leaves against the archival Warm Paper (`#F3F1EC`) foundation. 
-- **Hairline Borders:** Surfaces and partitions are demarcated by 1px solid borders in `#E5E0D8`. Hover or active states darken this border to `#D8D2C7` or `#2F5D45` rather than elevating via shadows.
-- **Overlays & Modals:** Floating elements, such as citation sheets or reader settings, employ a strictly diffuse ambient blur: `box-shadow: 0 4px 20px -2px rgba(30, 35, 32, 0.06)` combined with a crisp 1px `#D8D2C7` perimeter rule.
-- **Focus Rings:** Subtle double-rule focus outline with a 2px gap in `#F3F1EC` and a 1.5px solid stroke in `#2F5D45`.
+> ♿ Don't rely on colour alone: pair status colour with a label or icon ("Overdue", not just a red dot).
 
-## Shapes
-Geometry leans gentle, scholarly, and tactile—reminiscent of deckled book edges, rounded cloth bookbindings, and archival filing boxes.
+---
 
-- **Containers & Surface Cards:** Standard radius of 12px (`rounded`), scaling to 16px (`rounded-lg`) for major workspace viewports and research canvases.
-- **Interactive Controls (Inputs, Buttons, Dropdowns):** Standard radius of 8px to maintain operational crispness.
-- **Chips, Pills, & Status Badges:** Fully rounded or soft pill geometries (24px - 999px) to distinguish metadata from structural containers.
-- **Book Cover Media:** Rigid 2:3 vertical aspect ratio preserved with calibrated 6px corner radii to honor authentic physical proportions without sharp digital corners.
+## 🔤 Typography
 
-## Components
+| Font | Role | Tailwind |
+|---|---|---|
+| **Literata** (serif) | Editorial voice: page titles, headings, titles of books / journals / theses, quotations | `font-serif` (headings get it automatically) |
+| **DM Sans** (sans) | Interface: navigation, forms, tables, filters, metadata | `font-sans` (default) |
+
+### Scale
+
+| Token | Size / line | Weight | Font | Use for |
+|---|---|---|---|---|
+| `display-lg` | 48 / 56 | 500 | Serif | Landing / hero titles |
+| `headline-lg` | 32 / 40 | 600 | Serif | Page titles |
+| `headline-md` | 24 / 32 | 600 | Serif | Section titles |
+| `headline-sm` | 20 / 28 | 600 | Serif | Card titles, book titles in lists |
+| `title` | 18 / 26 | 500 | Serif | Sub-headings, quotations, book titles in compact cards |
+| `body-lg` | 17 / 28 | 400 | Sans | Abstracts, long reading |
+| `body-md` | 15 / 24 | 400 | Sans | Default body text |
+| `body-sm` | 13 / 20 | 400 | Sans | Secondary text, table cells |
+| `label-lg` | 14 / 20 | 600 | Sans | Buttons, nav items, form labels |
+| `label-md` | 12 / 16 | 500 | Sans | Chips, small buttons, badges |
+| `caps` | 11 / 14 | 600 | Sans + `uppercase` | Section eyebrows, call numbers, catalog tags |
+
+Use as `text-<token>`, e.g. `text-headline-md font-serif`, `text-caps uppercase`.
+
+### Rules
+
+- 📚 **Titles of works** (books, journals, theses) are always **serif**, in normal case.
+- 🏷️ **`caps`** is always uppercase with its tracking: `DEWEY 577.18`, `NEW ARRIVAL`, `LC: QH541`.
+- 🔢 Use `tabular-nums` for numbers that line up: due dates, amounts, counts, barcodes.
+- 📏 Keep long text to about 70 characters per line (`max-w-prose`).
+
+---
+
+## 📐 Layout & spacing
+
+### App shell
+
+```
+┌────────────┬──────────────────────────────────────────────────┐
+│            │  Top bar · 64px · search, notifications, profile │
+│  Sidebar   ├──────────────────────────────────────────────────┤
+│  256px     │                                                  │
+│            │   Content · padding 32px · max-width 1600px      │
+│  nav       │                                                  │
+│  sections  │                                                  │
+│            │                                                  │
+└────────────┴──────────────────────────────────────────────────┘
+          all on bg-background, separated by border-border
+```
+
+| Part | Size | Tailwind |
+|---|---|---|
+| Sidebar | 256px, fixed, full height | `w-64` |
+| Top bar | 64px, sticky, translucent paper | `h-16 bg-background/90 backdrop-blur-sm` |
+| Content | 32px side padding, max 1600px | `px-8 max-w-[1600px]` |
+
+### Spacing
+
+Tailwind's 4px scale. Stick to these steps:
+
+| Step | px | Typical use |
+|---|---|---|
+| `1` · `1.5` · `2` | 4 · 6 · 8 | Icon-to-label gaps, chip padding |
+| `3` · `4` | 12 · 16 | Inside compact rows, gaps between controls |
+| `5` · `6` | 20 · 24 | Card padding |
+| `8` | 32 | Page padding, gaps between sections |
+| `10` · `14` | 40 · 56 | Large section breaks |
+
+### Breakpoints
+
+| Width | Layout |
+|---|---|
+| ≥ 1280px (`xl`) | Sidebar + facet column + results |
+| 768 – 1279px (`md`) | Sidebar; facets collapse into a drawer or tabs |
+| < 768px | No sidebar (menu button); cards stack in one column |
+
+---
+
+## ⬜ Shape
+
+| Radius | px | Tailwind | Use for |
+|---|---|---|---|
+| Small | 4 | `rounded` | Status chips, tags, checkboxes |
+| Default | 8 | `rounded-lg` | Buttons, inputs, menus, list rows |
+| Card | 12 | `rounded-xl` | Cards, search bar, panels |
+| Large | 16 | `rounded-2xl` | Modals, large workspace panels |
+| Pill | full | `rounded-full` | Filter chips, avatars, counts, toggle pills |
+
+📕 **Book covers** keep a 2:3 ratio (`aspect-[2/3]`) with `rounded-md` (6px).
+
+---
+
+## 🪶 Elevation & borders
+
+Depth comes from **paper layering**, not shadows.
+
+| Layer | How |
+|---|---|
+| 📄 Page | `bg-background` |
+| 🗂️ Card / panel | `bg-card border border-border rounded-xl` |
+| 🖱️ Hover | Border to `border-border-strong` (or `border-primary` when selected). No lift, no shadow. |
+| 🪟 Floating (menus, popovers, modals, toasts) | `shadow-overlay` + `border border-border-strong` |
+| 🌫️ Modal backdrop | `bg-foreground/30` |
+
+---
+
+## 🎯 Interaction states
+
+| State | Treatment |
+|---|---|
+| 🎯 **Focus** | 1.5px `ring` outline, 2px offset (paper gap). Global in `globals.css`; don't remove it. |
+| 🖱️ **Hover** | Primary: `bg-primary-hover`. Secondary / cards: `border-border-strong`, text to `primary`. Rows: `bg-background`. |
+| ✅ **Selected** | `bg-accent text-accent-foreground`, plus `border-primary` where there's a border. |
+| ⏳ **Loading** | Keep the size; swap the icon for a spinning `progress_activity`, disable the control. |
+| 🚫 **Disabled** | `opacity-50 cursor-not-allowed`; no hover change. |
+
+---
+
+## 🔣 Icons
+
+- **Material Symbols Outlined**, from the `material-symbols` package.
+- Default is the outline glyph; add `.fill` for the filled one (e.g. a saved bookmark).
+- Sizes: **20px** in nav and buttons, **16–18px** inline with text, **24px** standalone.
+- Icons inherit text colour; colour them with the same tokens as text.
+
+```html
+<span class="material-symbols-outlined text-[20px]">bookmark</span>
+<span class="material-symbols-outlined fill text-[20px] text-primary">bookmark</span>
+```
+
+---
+
+## 🧩 Components
+
+Recipes use the tokens above. Heights: **40px** default (`h-10`), **36px** compact (`h-9`), **44px** prominent (`h-11`).
 
 ### Buttons
-- **Primary Button:** `#2F5D45` solid background with pure `#FFFFFF` label (`label-lg`). Border: 1px solid `#1E3F2E`. Hover: `#1E3F2E`. Height: 40px; padding: 0 20px; border-radius: 8px.
-- **Secondary Button:** Pure `#FFFFFF` background with `#1E2320` text. Border: 1px solid `#D8D2C7`. Hover: `#F3F1EC` background with `#2F5D45` text and `#2F5D45` border.
-- **Tertiary / Archival Text Button:** Ghost style with no border. Text: `#2F5D45` with subtle underline on hover.
 
-### Chips & Filter Tags
-- **Default State:** `#FFFFFF` background, `#1E2320` text, 1px solid `#E5E0D8` border, pill shape (999px radius), padding: 4px 12px.
-- **Active / Selected State:** Pale Green Tint (`#E4EEE8`) background, Deep Forest Green (`#2F5D45`) label, 1px solid `#2F5D45` border.
-- **Metadata Badge:** Archival Stone (`#5C6460`) on `#F3F1EC` with `metadata-caps` typography.
+| Variant | Classes | When |
+|---|---|---|
+| 🟩 Primary | `h-10 px-5 rounded-lg bg-primary text-primary-foreground text-label-lg hover:bg-primary-hover` | The main action on a page or card: Place hold, Renew, Pay |
+| ⬜ Secondary | `h-10 px-5 rounded-lg bg-card border border-border-strong text-foreground text-label-lg hover:border-primary hover:text-primary` | Other actions: Cite, Add to list |
+| 🔗 Ghost | `h-10 px-3 rounded-lg text-primary text-label-lg hover:bg-accent` | Low-emphasis actions, "View all" |
+| 🟥 Destructive | Secondary shape with `text-destructive hover:border-destructive` | Cancel hold, delete list |
 
-### Input Fields & Search Ledgers
-- Surface `#FFFFFF`, 1px solid `#D8D2C7` border, 8px radius, height: 42px, padding: 0 14px.
-- Focus: `#FFFFFF` surface, border: 1.5px solid `#2F5D45`, box-shadow: none.
-- Placeholder styled in `#5C6460` using `body-md`. Search inputs incorporate an integrated serif indicator (e.g., "Search archive, ISBN, or author...").
+One primary button per area.
 
-### Cards & Shelf Displays
-- **Monograph / Research Card:** Pure white background, 1px solid `#E5E0D8` perimeter, 12px radius, padded with 20px. Features a 2:3 book thumbnail container (6px radius) alongside an editorial layout with `headline-sm` in Literata and metadata in DM Sans.
-- **Hover State:** Border transitions to `#D8D2C7` with background remaining pure white; no physical jump or heavy shadow.
+### Inputs & search
 
-### Checkboxes & Radios
-- Square with 4px corner radius (checkbox) or circular (radio), 18px size.
-- 1px solid `#D8D2C7` border over `#FFFFFF`.
-- Checked state: `#2F5D45` fill with pure white tick mark; no glowing halos.
+- `h-10 px-3.5 rounded-lg bg-card border border-border-strong text-body-md placeholder:text-muted-foreground`
+- Focus: `focus:border-primary` (plus the global focus ring).
+- The global search in the top bar is `rounded-xl` with a leading search icon.
 
-### Specialized Components
-- **Citation Quotation Box:** Left-bordered with a 3px solid `#2F5D45` spine, unbordered on remaining sides, backed by `#F3F1EC`, utilizing `title-editorial` in Literata.
-- **Archival Callout Ledger:** Segmented list using 1px horizontal `#E5E0D8` divider rules, where every row displays an archival document, accession number, and preservation status pill.
+### Chips
+
+| Kind | Classes |
+|---|---|
+| Filter chip | `h-8 px-3 rounded-full bg-card border border-border text-label-md` |
+| Filter chip, selected | `bg-accent text-accent-foreground border-primary` |
+| Status chip | `px-2 py-0.5 rounded text-label-md` + status pair, optional 6px dot |
+| Metadata tag | `px-2 py-0.5 rounded bg-background text-muted-foreground text-caps uppercase` |
+
+### Cards
+
+- `bg-card border border-border rounded-xl p-5` (compact rows: `p-4`).
+- Book card: 2:3 cover on the left, serif title (`text-headline-sm` or `text-title`), contributors and metadata in `text-body-sm text-muted-foreground`, status chip, actions at the bottom.
+- Hover: `hover:border-border-strong`. No lift.
+
+### Checkboxes & radios
+
+18px; `rounded` (checkbox) or `rounded-full` (radio); `border-border-strong` on `bg-card`. Checked: `bg-primary` with a white tick.
+
+### Citation / quotation block
+
+`border-l-[3px] border-primary bg-background pl-4 py-2 font-serif text-title`

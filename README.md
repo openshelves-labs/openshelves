@@ -117,6 +117,7 @@ More detail (configuration, project layout, conventions) is in [`backend/README.
 |---|---|---|
 | 🔌 | [API design](docs/api-design/README.md) | Every API group, endpoint and convention |
 | 🎨 | [Design system](docs/Design%20System.md) | Colours, typography, components |
+| 🖥️ | [Frontend architecture](docs/Frontend%20Architecture.md) | Folder structure, data flow, auth, API client |
 | 🧭 | [User journey maps](docs/User%20Journey%20Maps.pdf) | How patrons and librarians move through the product |
 | 🧪 | [Demo site](docs/poc/demo-site/README.md) | Frontend-only prototype the UI is based on |
 | 🤖 | [AGENTS.md](AGENTS.md) | Instructions for AI coding assistants |

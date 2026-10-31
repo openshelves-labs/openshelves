@@ -43,46 +43,9 @@ The full list of API groups is in [docs/api-design](docs/api-design/README.md).
 
 ## 🏗️ Architecture
 
-```mermaid
-flowchart TB
-    PAT["🎓 Patrons<br/><small>students · faculty</small>"]
-    LIB["👩‍💼 Librarians"]
-
-    FE["🖥️ <b>Frontend</b><br/>Next.js 16 · React 19"]
-
-    subgraph BE["⚙️ Backend API · Spring Boot 4"]
-        SEC["🔐 Security<br/><small>bearer token → session</small>"]
-        API["🎛️ REST controllers<br/><small>/api/v1/*</small>"]
-        SVC["🧠 Services<br/><small>auth · catalog · circulation · fines</small>"]
-        META["🌐 Metadata clients<br/><small>timeouts · rate limit · retry</small>"]
-        SEC --> API --> SVC --> META
-    end
-
-    DB[("🗄️ PostgreSQL")]
-    PROV["📖 Metadata providers<br/><small>Open Library · Google Books · Hardcover · Comic Vine · RanobeDB</small>"]
-
-    subgraph PLAN["🕓 Planned integrations"]
-        IDP["🏛️ Campus IdP<br/><small>SAML / OIDC</small>"]
-        PAY["💳 Payments"]
-        MAIL["✉️ Email"]
-        PROXY["🔑 Library proxy"]
-    end
-
-    PAT --> FE
-    LIB --> FE
-    FE -- "REST + JSON · Bearer token" --> SEC
-    SVC --> DB
-    META --> PROV
-    SVC -.-> PLAN
-
-    classDef planned stroke-dasharray: 5 5
-    class IDP,PAY,MAIL,PROXY planned
-```
-
-| Line | Meaning |
-|---|---|
-| **Solid** | Built or being built now |
-| **Dashed** | Planned integrations (see the [API design](docs/api-design/README.md) open decisions) |
+<p align="center">
+  <img src="docs/assets/architecture.svg" alt="OpenShelves architecture: patrons and librarians use the Next.js frontend, which calls the Spring Boot backend API with a bearer token. The backend's layers are security, REST controllers, services and metadata clients. It stores data in PostgreSQL, looks up book metadata from Open Library, Google Books, Hardcover, Comic Vine and RanobeDB, and will later integrate with a campus IdP, payments, email and a library proxy." width="100%">
+</p>
 
 - 🔐 **Stateless auth:** the frontend sends an opaque bearer token on every call; the backend resolves it to a session in Postgres.
 - 🧠 **One backend, feature packages:** auth, catalog, circulation, fines and cataloging live in one Spring Boot app, split by package.

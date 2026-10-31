@@ -5,10 +5,10 @@
 <div align="center">
 
 [![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL_1.1-7A4E33?style=flat)](LICENSE)
-[![Spring Boot 4.1.2](https://img.shields.io/badge/Spring_Boot-4.1.2-6DB33F?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
-[![Java 25](https://img.shields.io/badge/Java-25-ED8B00?style=flat&logo=openjdk)](https://openjdk.org/projects/jdk/25/)
-[![Next.js 16.4.3](https://img.shields.io/badge/Next.js-16.4.3-6E7681?style=flat&logo=nextdotjs)](https://nextjs.org/)
-[![Node.js 26](https://img.shields.io/badge/Node.js-26-5FA04E?style=flat&logo=nodedotjs)](https://nodejs.org/)
+[![Spring Boot](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fspring-boot.json&style=flat)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fjava.json&style=flat)](https://openjdk.org/)
+[![Next.js](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fnextjs.json&style=flat)](https://nextjs.org/)
+[![Node.js](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fnodejs.json&style=flat)](https://nodejs.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-A8652C?style=flat)](CONTRIBUTING.md)
 [![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Adopted-6B5240?style=flat)](CODE_OF_CONDUCT.md)

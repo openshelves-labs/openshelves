@@ -218,8 +218,7 @@ function toolchainStep(tool, file, pin, r) {
         const extra = fs.existsSync(path.join(dir, 'package.json'))
             && JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8')).engines?.node
             ? ` and \`engines.node\` in ${manifestPath(dir)}` : '';
-        return `**Node.js**: set ${where}${extra} to ${choice}, run \`nvm use\`, then reinstall with \`npm ci\`. `
-            + 'If the README has a Node.js badge, update it too.';
+        return `**Node.js**: set ${where}${extra} to ${choice}, run \`nvm use\`, then reinstall with \`npm ci\`.`;
     }
     return `**Gradle ${pin} → ${r.latest}**: run the wrapper task, then run it once more so the wrapper scripts and jar come from the new version:\n`
         + shell(`cd ${rel(path.dirname(path.dirname(path.dirname(file))))}`,

@@ -1,0 +1,43 @@
+# Keeps the version badges in the README current.
+# Reads the versions from the build files and publishes one shields.io endpoint
+# file per badge to the `badges` branch, which the README badges read from.
+# Runs whenever a pinned version may have changed, and on demand from the Actions tab.
+
+name: Version Badges
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/build.gradle'
+      - 'frontend/package.json'
+      - 'frontend/.nvmrc'
+      - '.github/workflows/version-badges.yml'
+      - '.github/scripts/version-badges.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Publish badge data
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Read versions
+        run: node .github/scripts/version-badges.js dist
+
+      - name: Publish to the badges branch
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: badges
+          build_dir: dist
+          keep_history: false
+          commit_message: Update version badges
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,5 +1,7 @@
 # Next.js Project Structure — Reference
 
+> **⚠️ Deprecated.** Outdated and no longer reflects `frontend/src`. Do not follow it for new code.
+
 Next.js frontend (App Router, TypeScript) acting as a client/BFF for a **separate Spring Boot backend**. Organized **by feature**, with a thin shared layer.
 
 ---

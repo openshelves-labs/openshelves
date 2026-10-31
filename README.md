@@ -3,57 +3,177 @@
 [![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL_1.1-0366D6?style=flat)](LICENSE)
 [![Spring Boot 4.1.2](https://img.shields.io/badge/Spring_Boot-4.1.2-6DB33F?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
 [![Java 25](https://img.shields.io/badge/Java-25-ED8B00?style=flat&logo=openjdk)](https://openjdk.org/projects/jdk/25/)
-[![Next.js 16.4.2](https://img.shields.io/badge/Next.js-16.4.2-6E7681?style=flat&logo=nextdotjs)](https://nextjs.org/)
+[![Next.js 16.4.3](https://img.shields.io/badge/Next.js-16.4.3-6E7681?style=flat&logo=nextdotjs)](https://nextjs.org/)
 [![Node.js 26](https://img.shields.io/badge/Node.js-26-5FA04E?style=flat&logo=nodedotjs)](https://nodejs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-2EA44F?style=flat)](CONTRIBUTING.md)
 [![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Adopted-0366D6?style=flat)](CODE_OF_CONDUCT.md)
 
-OpenShelves is a modern platform designed to revolutionize the university library experience. We are turning complex, legacy academic catalogs into intuitive, high-performance, and open discovery platforms that empower students and researchers.
+OpenShelves turns complex, legacy university library catalogs into fast, intuitive and open discovery platforms for students and researchers.
 
 > [!IMPORTANT]
-> **Project Status: Under Active Development**
-> OpenShelves is currently in an early development phase. The project is **not yet ready for production deployment**. We are focusing on building the core architecture and defining our primary feature set.
+> **Project status: early development.**
+> Not ready for production. We're building the core architecture and the first features (sign-in, catalog, circulation).
 
-## 🌟 The Vision
+---
 
-Libraries should be as easy to search as the web, yet as reliable as a scholarly archive. OpenShelves bridges this gap by providing:
-- **Intuitive Discovery**: A fast, modern UI that makes finding resources effortless.
-- **Robust Architecture**: A resilient backend built for scale and reliability.
-- **Open Standards**: Built on open principles to serve the global academic community.
+## 🌟 The vision
 
-## 📁 Repository Structure
+Libraries should be as easy to search as the web, and as reliable as a scholarly archive.
 
-OpenShelves is organized as a high-performance monorepo:
+- 🔎 **Intuitive discovery:** a fast, modern UI that makes finding resources effortless.
+- 🧱 **Robust architecture:** a resilient backend built for reliability and scale.
+- 🌍 **Open standards:** built on open principles to serve the global academic community.
 
-- **`/backend`**: Core API services providing the intelligence behind the platform.
-- **`/frontend`**: The next-generation user interface (Coming Soon).
-- **`/infra`**: Modern Infrastructure as Code for seamless scaling (Coming Soon).
+## ✨ What it does (planned)
 
-## 🛠 Modern Technology Stack
+| | Area | For |
+|---|---|---|
+| 🔎 | Catalog search, facets, new arrivals, recommendations | Patrons |
+| 🔄 | Loans, renewals and holds | Patrons |
+| 🗃️ | Reading lists (course syllabi, research folios) | Patrons, faculty |
+| 💳 | Fines and online payments | Patrons |
+| 💾 | Digital resources and journals | Patrons |
+| 🛠️ | Cataloging from external metadata providers (Open Library, Google Books, …) | Librarians |
+| 🔐 | Password and campus SSO (SAML / OIDC) sign-in | Everyone |
 
-Our backend is built with cutting-edge technologies to ensure stability and performance:
+The full list of API groups is in [docs/api-design](docs/api-design/README.md).
 
-- **Core**: Java 25 (Azul JVM) & Spring Boot 4.1.2
-- **Persistence**: PostgreSQL with Spring Data JPA
-- **Resilience**: Fault tolerance via Resilience4j
-- **Client**: High-performance HTTP via OkHttp3
-- **Testing**: Comprehensive coverage with JUnit 5
+---
 
-## 🤝 Join the Journey
+## 🏗️ Architecture
 
-We are looking for early contributors, visionaries, and library enthusiasts! 
+```mermaid
+flowchart TB
+    PAT["🎓 Patrons<br/><small>students · faculty</small>"]
+    LIB["👩‍💼 Librarians"]
 
-- Check out our [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
-- Review our [GOVERNANCE.md](GOVERNANCE.md) to see how we operate.
-- Help us shape the future of academic discovery.
+    FE["🖥️ <b>Frontend</b><br/>Next.js 16 · React 19"]
 
-## 📄 Documentation & Policies
+    subgraph BE["⚙️ Backend API · Spring Boot 4"]
+        SEC["🔐 Security<br/><small>bearer token → session</small>"]
+        API["🎛️ REST controllers<br/><small>/api/v1/*</small>"]
+        SVC["🧠 Services<br/><small>auth · catalog · circulation · fines</small>"]
+        META["🌐 Metadata clients<br/><small>timeouts · rate limit · retry</small>"]
+        SEC --> API --> SVC --> META
+    end
 
-- [AI Agent Instructions (AGENTS.md)](AGENTS.md)
+    DB[("🗄️ PostgreSQL")]
+    PROV["📖 Metadata providers<br/><small>Open Library · Google Books · Hardcover · Comic Vine · RanobeDB</small>"]
+
+    subgraph PLAN["🕓 Planned integrations"]
+        IDP["🏛️ Campus IdP<br/><small>SAML / OIDC</small>"]
+        PAY["💳 Payments"]
+        MAIL["✉️ Email"]
+        PROXY["🔑 Library proxy"]
+    end
+
+    PAT --> FE
+    LIB --> FE
+    FE -- "REST + JSON · Bearer token" --> SEC
+    SVC --> DB
+    META --> PROV
+    SVC -.-> PLAN
+
+    classDef planned stroke-dasharray: 5 5
+    class IDP,PAY,MAIL,PROXY planned
+```
+
+| Line | Meaning |
+|---|---|
+| **Solid** | Built or being built now |
+| **Dashed** | Planned integrations (see the [API design](docs/api-design/README.md) open decisions) |
+
+- 🔐 **Stateless auth:** the frontend sends an opaque bearer token on every call; the backend resolves it to a session in Postgres.
+- 🧠 **One backend, feature packages:** auth, catalog, circulation, fines and cataloging live in one Spring Boot app, split by package.
+- 🛡️ **External calls are guarded:** each metadata provider has its own HTTP client with timeouts, rate limiting and retries, so one slow provider can't stall the rest.
+
+## 📁 Repository structure
+
+| Path | What's in it |
+|---|---|
+| [`backend/`](backend) | REST API: Java 25, Spring Boot 4, PostgreSQL |
+| [`frontend/`](frontend) | Web app: Next.js 16, React 19, TypeScript, Tailwind CSS 4 |
+| [`infra/`](infra) | Infrastructure as Code *(not started)* |
+| [`docs/`](docs) | API design, design system, user journeys, proofs of concept |
+
+## 🛠️ Technology stack
+
+| Layer | Stack |
+|---|---|
+| ⚙️ Backend | Java 25 (Azul) · Spring Boot 4.1 (WebMVC, Data JPA, Security, Validation, Actuator) · Gradle |
+| 🗄️ Database | PostgreSQL |
+| 🛡️ Resilience & HTTP | Resilience4j · OkHttp 5 |
+| 🖥️ Frontend | Next.js 16 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS 4 |
+| 🧪 Testing | JUnit 6 (Jupiter) |
+
+---
+
+## 🚀 Getting started
+
+### Prerequisites
+
+- **Java 25** (Azul Zulu recommended)
+- **Node.js 26** (pinned in [`frontend/.nvmrc`](frontend/.nvmrc))
+- **PostgreSQL** (local install or Docker)
+
+### 1. Database
+
+```bash
+createdb openshelves
+psql -d openshelves -f backend/src/main/resources/schema.sql
+psql -d openshelves -f backend/src/main/resources/seed.sql   # optional sample data
+```
+
+Connection settings (URL, user, password) are in [`backend/src/main/resources/application.yml`](backend/src/main/resources/application.yml).
+
+### 2. Backend → http://localhost:8080
+
+```bash
+cd backend
+./gradlew bootRun
+```
+
+Health check: `GET http://localhost:8080/actuator/health`
+
+### 3. Frontend → http://localhost:3000
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+More detail (configuration, project layout, conventions) is in [`backend/README.md`](backend/README.md) and [`frontend/README.md`](frontend/README.md).
+
+---
+
+## 📚 Documentation
+
+| | Doc | What's in it |
+|---|---|---|
+| 🔌 | [API design](docs/api-design/README.md) | Every API group, endpoint and convention |
+| 🎨 | [Design system](docs/Design%20System.md) | Colours, typography, components |
+| 🧭 | [User journey maps](docs/User%20Journey%20Maps.pdf) | How patrons and librarians move through the product |
+| 🧪 | [Demo site](docs/poc/demo-site/README.md) | Frontend-only prototype the UI is based on |
+| 🤖 | [AGENTS.md](AGENTS.md) | Instructions for AI coding assistants |
+
+## 🤝 Contributing
+
+We're looking for early contributors, library enthusiasts and anyone who cares about open academic tools.
+
+- Start with [CONTRIBUTING.md](CONTRIBUTING.md).
+- See [GOVERNANCE.md](GOVERNANCE.md) for how the project is run.
+- Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## 📄 Policies
+
 - [AI Usage Policy](AI_USAGE_POLICY.md)
 - [Security Policy](SECURITY.md)
 - [Anti-Impersonation Policy](ANTI-IMPERSONATION.md)
-- [License (Business Source License 1.1)](LICENSE)
+- [Contributor License Agreement](CLA.md)
+- [License: Business Source License 1.1](LICENSE)
 
 ---
+
 © 2026 OpenShelves Labs. Built with ❤️ for the academic community.

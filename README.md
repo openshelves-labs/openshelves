@@ -1,17 +1,17 @@
 <p align="center">
-  <img src="docs/assets/banner.svg" alt="OpenShelves, the future of academic discovery: backend API, web app and infrastructure, in one repository. Late-afternoon sunlight through an arched library window falls on an open book, between tall bookshelves." width="100%">
+  <img src="docs/assets/banner.svg" alt="OpenShelves, the future of academic discovery: backend API, web app and infrastructure, in one repository. Early light through an arched library window, a pale green dawn beyond, falls on an open book between tall bookshelves." width="100%">
 </p>
 
 <div align="center">
 
-[![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL_1.1-7A4E33?style=flat)](LICENSE)
+[![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL_1.1-1E3F2E?style=flat)](LICENSE)
 [![Spring Boot](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fspring-boot.json&style=flat&cacheSeconds=300)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fjava.json&style=flat&cacheSeconds=300)](https://openjdk.org/)
 [![Next.js](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fnextjs.json&style=flat&cacheSeconds=300)](https://nextjs.org/)
 [![Node.js](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fnodejs.json&style=flat&cacheSeconds=300)](https://nodejs.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-A8652C?style=flat)](CONTRIBUTING.md)
-[![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Adopted-6B5240?style=flat)](CODE_OF_CONDUCT.md)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-2F5D45?style=flat)](CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Adopted-5C6460?style=flat)](CODE_OF_CONDUCT.md)
 
 *Somewhere in every university, the answer to someone's question already sits on a shelf.*<br>
 *OpenShelves exists so it can be found.*

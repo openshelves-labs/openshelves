@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../docs/assets/banner-frontend.svg" alt="OpenShelves frontend, the front door: the web app where readers search, borrow and come back. Open library doors with warm light spilling out." width="100%">
+  <img src="../docs/assets/banner-frontend.svg" alt="OpenShelves frontend, the front door: the web app where readers search, borrow and come back. Open library doors with soft light spilling out." width="100%">
 </p>
 
 *The front door of the library: it should feel warm the moment you step in.*

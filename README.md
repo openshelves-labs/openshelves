@@ -4,14 +4,23 @@
 
 <div align="center">
 
-[![License: BUSL 1.1](https://img.shields.io/badge/License-BUSL_1.1-1E3F2E?style=flat)](LICENSE)
-[![Spring Boot](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fspring-boot.json&style=flat&cacheSeconds=300)](https://spring.io/projects/spring-boot)
-[![Java](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fjava.json&style=flat&cacheSeconds=300)](https://openjdk.org/)
-[![Next.js](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fnextjs.json&style=flat&cacheSeconds=300)](https://nextjs.org/)
-[![Node.js](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fopenshelves-labs%2Fopenshelves%2Fbadges%2Fnodejs.json&style=flat&cacheSeconds=300)](https://nodejs.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-2F5D45?style=flat)](CONTRIBUTING.md)
-[![Code of Conduct](https://img.shields.io/badge/Code_of_Conduct-Adopted-5C6460?style=flat)](CODE_OF_CONDUCT.md)
+[![License: BUSL 1.1][license-badge]](LICENSE)
+[![Spring Boot][spring-boot-badge]](https://spring.io/projects/spring-boot)
+[![Java][java-badge]](https://openjdk.org/)
+[![Next.js][nextjs-badge]](https://nextjs.org/)
+[![Node.js][nodejs-badge]](https://nodejs.org/)
+[![PostgreSQL][postgresql-badge]](https://www.postgresql.org/)
+[![Contributions Welcome][contributing-badge]](CONTRIBUTING.md)
+[![Code of Conduct][conduct-badge]](CODE_OF_CONDUCT.md)
+
+[license-badge]: https://img.shields.io/badge/License-BUSL_1.1-0F766E
+[spring-boot-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/openshelves-labs/openshelves/badges/spring-boot.json&color=2E7D4F&logo=spring&logoColor=white&cacheSeconds=300
+[java-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/openshelves-labs/openshelves/badges/java.json&color=C2410C&logo=openjdk&logoColor=white&cacheSeconds=300
+[nextjs-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/openshelves-labs/openshelves/badges/nextjs.json&color=3B6E8F&logo=nextdotjs&logoColor=white&cacheSeconds=300
+[nodejs-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/openshelves-labs/openshelves/badges/nodejs.json&color=4D7A1F&logo=nodedotjs&logoColor=white&cacheSeconds=300
+[postgresql-badge]: https://img.shields.io/badge/PostgreSQL-2563A8?logo=postgresql&logoColor=white
+[contributing-badge]: https://img.shields.io/badge/Contributions-Welcome-2F7A4A
+[conduct-badge]: https://img.shields.io/badge/Code_of_Conduct-Adopted-8B5A2B
 
 *Somewhere in every university, the answer to someone's question already sits on a shelf.*<br>
 *OpenShelves exists so it can be found.*

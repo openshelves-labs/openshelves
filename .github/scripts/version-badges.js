@@ -27,19 +27,19 @@ function npmVersion(file, name) {
 
 const BADGES = [
     {
-        file: 'spring-boot', label: 'Spring Boot', color: '6DB33F', logo: 'spring',
+        file: 'spring-boot', label: 'Spring Boot',
         version: () => find('backend/build.gradle', /id\s+['"]org\.springframework\.boot['"]\s+version\s+['"]([^'"]+)['"]/, 'Spring Boot plugin version'),
     },
     {
-        file: 'java', label: 'Java', color: 'ED8B00', logo: 'openjdk',
+        file: 'java', label: 'Java',
         version: () => find('backend/build.gradle', /JavaLanguageVersion\.of\(\s*(\d+)\s*\)/, 'Java toolchain version'),
     },
     {
-        file: 'nextjs', label: 'Next.js', color: '6E7681', logo: 'nextdotjs',
+        file: 'nextjs', label: 'Next.js',
         version: () => npmVersion('frontend/package.json', 'next'),
     },
     {
-        file: 'nodejs', label: 'Node.js', color: '5FA04E', logo: 'nodedotjs',
+        file: 'nodejs', label: 'Node.js',
         version: () => read('frontend/.nvmrc').trim().replace(/^v/, ''),
     },
 ];
@@ -50,7 +50,7 @@ fs.mkdirSync(outDir, { recursive: true });
 
 for (const b of BADGES) {
     const version = b.version();
-    const badge = { schemaVersion: 1, label: b.label, message: version, color: b.color, namedLogo: b.logo };
+    const badge = { schemaVersion: 1, label: b.label, message: version };
     fs.writeFileSync(path.join(outDir, `${b.file}.json`), JSON.stringify(badge, null, 2) + '\n');
     console.log(`${b.label}: ${version}`);
 }

@@ -70,6 +70,9 @@ public class SecurityConfig {
                 // Logout, so a stale or missing token can still clear itself
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/logout").permitAll()
 
+                // Setting a password by email, for users who can't sign in yet
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/password/reset-request", "/api/v1/auth/password/reset").permitAll()
+
                 // SSO: the sign-in page's provider list, and the whole round-trip
                 // (start, provider redirects, callbacks, metadata, exchange), which happens before there's a token
                 .requestMatchers("/api/v1/auth/sso/**").permitAll()

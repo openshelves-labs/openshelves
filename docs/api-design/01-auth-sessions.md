@@ -14,7 +14,8 @@
 5. [💻 Devices](#-devices)
 6. [🏛️ Single sign-on (SAML / OIDC)](#️-single-sign-on-saml--oidc)
 7. [🔗 Sign-in methods](#-sign-in-methods)
-8. [🔮 Future improvements](#-future-improvements)
+8. [🔒 Passwords](#-passwords)
+9. [🔮 Future improvements](#-future-improvements)
 
 ---
 
@@ -35,6 +36,7 @@ erDiagram
     USERS ||--o{ USER_IDENTITIES : "signs in via"
     USERS ||--o{ USER_SESSIONS : "is signed in on"
     USERS ||--o{ SSO_CODES : "is finishing SSO with"
+    USERS ||--o{ PASSWORD_RESET_TOKENS : "is resetting with"
     AUTH_PROVIDERS ||..o{ USER_IDENTITIES : "matched by issuer, no FK"
 
     USERS {
@@ -77,6 +79,12 @@ erDiagram
         boolean is_persistent "LOGIN only"
         text code_challenge "PKCE S256, LOGIN only"
         timestamptz expires_at "about 60 s / a few minutes"
+    }
+    PASSWORD_RESET_TOKENS {
+        bigint id
+        bigint user_id
+        text token_hash "SHA-256, never the raw token"
+        timestamptz expires_at "30 min"
     }
     USER_SESSIONS {
         bigint id
@@ -154,6 +162,9 @@ flowchart LR
 | 🔗 Sign-in methods | `GET` | `/api/v1/auth/identities` | 🔒 Bearer | Providers I've connected |
 | | `POST` | `/api/v1/auth/identities/{provider}` | 🔒 Bearer | Start connecting a provider |
 | | `DELETE` | `/api/v1/auth/identities/{id}` | 🔒 Bearer | Disconnect a provider |
+| 🔒 Passwords | `PUT` | `/api/v1/auth/password` | 🔒 Bearer | Change my password |
+| | `POST` | `/api/v1/auth/password/reset-request` | 🌐 Public | Email me a link to set a new password |
+| | `POST` | `/api/v1/auth/password/reset` | 🌐 Public | Set a new password with the emailed link |
 
 ---
 
@@ -497,6 +508,88 @@ Disconnects a provider. `204`.
 - `404` if the identity isn't the caller's.
 - `409 LAST_SIGN_IN_METHOD` if it's the user's only way to sign in (no password, no other identity).
 - Existing sessions opened with it stay signed in; sign them out from [Devices](#-devices) if needed.
+
+---
+
+## 🔒 Passwords
+
+Changing a password while signed in, and setting one through an emailed link. The emailed link covers both **forgot password** and **first-time setup**: there's no sign-up, so a provisioned user (or one who has only used SSO) gets their first password this way.
+
+**Rules for a new password**
+
+- 12 to 128 characters, any characters. No composition rules (digits, symbols), following current NIST guidance.
+- When changing, it can't be the same as the current one.
+
+### `PUT /api/v1/auth/password`
+
+Changes the signed-in user's password. `204`.
+
+```json
+{ "currentPassword": "…", "newPassword": "…" }
+```
+
+- Signs out **every other device**; this one stays signed in.
+- A wrong `currentPassword` counts towards the [lockout](#post-apiv1authlogin), like a failed login.
+- Users without a password (SSO only) set one through the emailed link instead.
+
+| Status · `code` | When |
+|---|---|
+| `400` (validation) | `newPassword` isn't 12–128 characters |
+| `400 INVALID_CURRENT_PASSWORD` | `currentPassword` is wrong, or the user has no password |
+| `400 PASSWORD_UNCHANGED` | `newPassword` is the same as the current one |
+| `401 ACCOUNT_LOCKED` | Too many wrong attempts |
+
+### 🔁 Setting a password by email
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as 🧑 User
+    participant FE as 🖥️ Frontend
+    participant BE as ⚙️ Backend
+
+    FE->>BE: POST /auth/password/reset-request { identifier, frontendResetUrl }
+    BE->>BE: Find active user with an email, store token hash (30 min)
+    BE-->>U: Email: {frontendResetUrl}?token=…
+    BE-->>FE: 202 (always, user found or not)
+    U->>FE: Open the link
+    FE->>BE: POST /auth/password/reset { token, newPassword }
+    BE->>BE: Delete token, set password, clear lockout, sign out every device
+    BE-->>FE: 204
+    Note over FE: Go to sign-in
+```
+
+### `POST /api/v1/auth/password/reset-request`
+
+```json
+{ "identifier": "arpan@uni.edu", "frontendResetUrl": "https://app.uni.edu/reset-password" }
+```
+
+- Always `202`, whether or not the user exists, has an email, or is disabled, so it can't be used to find accounts.
+- `frontendResetUrl` is the frontend page the emailed link opens; `400` unless CORS allows its origin, as for SSO.
+- A new request replaces any earlier link for that user. Requests within a minute of the last one are ignored, so the endpoint can't be used to flood an inbox.
+- Works for users without a password too: setting one creates it.
+
+### `POST /api/v1/auth/password/reset`
+
+```json
+{ "token": "…", "newPassword": "…" }
+```
+
+Sets the password and returns `204`. The user then signs in normally.
+
+- The link is single use and expires after **30 minutes**. Only its hash is stored, and it's used up by any attempt, even a failed one.
+- Clears any lockout, and signs out **every device**.
+
+| Status · `code` | When |
+|---|---|
+| `400` (validation) | `newPassword` isn't 12–128 characters |
+| `400 RESET_LINK_EXPIRED` | The token is unknown, used or expired |
+| `401 ACCOUNT_DISABLED` | The user was disabled since the link was sent |
+
+> 📧 **Email delivery:** sent through the app's email sender. For now that only logs the message, so in development the link is in the server log.
+
+> 🔐 **Whoever controls the email controls the account**, including SSO-only accounts, which this flow can give a password. That's acceptable because emails are university-issued; it's also why the flow never reveals whether an account exists.
 
 ---
 

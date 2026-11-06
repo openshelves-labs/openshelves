@@ -31,4 +31,7 @@ public interface UserPasswordRepository extends JpaRepository<UserPasswordEntity
 
     /// Checks whether the user has a password.
     boolean existsByUserProfileId(Long userId);
+
+    /// Looks up the user's password, if they have one.
+    Optional<UserPasswordEntity> findByUserProfileId(Long userId);
 }

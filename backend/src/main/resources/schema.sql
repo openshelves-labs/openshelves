@@ -418,3 +418,34 @@ CREATE TABLE sso_codes (
 
 CREATE UNIQUE INDEX sso_codes_code_hash_idx        ON sso_codes (code_hash);
 CREATE INDEX sso_codes_expires_idx                 ON sso_codes (expires_at);
+
+
+-- -------------------------------------------------------
+-- Password Reset Tokens: emailed links to set a new password
+-- -------------------------------------------------------
+-- Covers forgot password and first-time setup (there's no sign-up).
+-- Single use: deleted when used, and replaced by any newer request for the same user.
+CREATE TABLE password_reset_tokens (
+    -- identity
+    id                      BIGINT          NOT NULL GENERATED ALWAYS AS IDENTITY,
+
+    -- primary relationship
+    user_id                 BIGINT          NOT NULL,
+
+    -- token (SHA-256 hashed)
+    token_hash              TEXT            NOT NULL,
+
+    -- timeouts
+    expires_at              TIMESTAMPTZ       NOT NULL,
+
+    -- audit
+    created_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
+
+    -- constraints
+    CONSTRAINT password_reset_tokens_pk      PRIMARY KEY (id),
+    CONSTRAINT password_reset_tokens_user_fk
+        FOREIGN KEY (user_id)           REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX password_reset_tokens_token_hash_idx   ON password_reset_tokens (token_hash);
+CREATE INDEX password_reset_tokens_user_idx                ON password_reset_tokens (user_id);

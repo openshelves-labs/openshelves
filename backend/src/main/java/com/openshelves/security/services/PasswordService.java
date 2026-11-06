@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-/// Service for checking passwords against their stored hashes.
+/// Service for hashing passwords and checking them against their stored hashes.
 ///
 /// Hashing itself is delegated to the configured [PasswordEncoder].
 /// Checks take the same time whether or not the account exists, so failed
@@ -64,6 +64,14 @@ public class PasswordService {
             log.error("Stored password hash is malformed; it must carry an encoder prefix such as {bcrypt}", e);
             return false;
         }
+    }
+
+    /// Hashes a new password for storage, with the encoder's `{id}` prefix (e.g. `{bcrypt}`).
+    ///
+    /// @param rawPassword the new password
+    /// @return the hash to store
+    public String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
     }
 
     /// Runs a password check against the stand-in hash and discards the result,

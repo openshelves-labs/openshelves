@@ -69,4 +69,16 @@ public interface UserSessionRepository extends JpaRepository<UserSessionEntity, 
           AND s.revokedAt IS NULL AND s.expiresAt > :now
         """)
     int revokeAllExcept(Long userId, Long keepSessionId, Instant now);
+
+    /// Revokes every active session of the user.
+    ///
+    /// @return the number of sessions revoked
+    @Transactional
+    @Modifying
+    @Query("""
+        UPDATE UserSessionEntity s
+        SET s.revokedAt = :now
+        WHERE s.userProfile.id = :userId AND s.revokedAt IS NULL AND s.expiresAt > :now
+        """)
+    int revokeAll(Long userId, Instant now);
 }

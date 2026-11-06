@@ -1,5 +1,6 @@
 package com.openshelves.security.controller;
 
+import com.openshelves.common.util.FrontendUrlValidator;
 import com.openshelves.security.entity.AuthProviderEntity;
 import com.openshelves.security.enums.AuthProviderType;
 import com.openshelves.security.exception.LinkExpiredException;
@@ -23,17 +24,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 /// REST controller for signing in with an SSO identity provider.
@@ -55,8 +51,7 @@ public class SsoSignInController {
     private final SsoService ssoService;
     private final SsoCookieStore cookieStore;
 
-    /// The API's CORS rules; a frontend allowed to call the API is also allowed to receive the sign-in.
-    private final CorsConfigurationSource corsConfigurationSource;
+    private final FrontendUrlValidator frontendUrlValidator;
 
     /// Lists the providers for the sign-in page's dropdown.
     @GetMapping("/providers")
@@ -87,7 +82,7 @@ public class SsoSignInController {
                       HttpServletResponse response) throws IOException {
 
         // Checked first: it's where every later outcome, including errors, is sent
-        checkFrontendRedirectUrl(frontendRedirectUrl, request);
+        frontendUrlValidator.check(frontendRedirectUrl, "frontendRedirectUrl", request);
 
         // Signing in ends in a code exchange, which must be bound to this client
         if (link == null && (codeChallenge == null || !PKCE_CHALLENGE.matcher(codeChallenge).matches())) {
@@ -125,44 +120,5 @@ public class SsoSignInController {
     @PostMapping("/exchange")
     public LoginResponse exchangeCode(@Valid @RequestBody ExchangeRequest request, HttpServletRequest httpRequest) {
         return ssoService.exchangeCode(request.getCode(), request.getCodeVerifier(), DeviceInfo.from(httpRequest));
-    }
-
-
-    // -----------------------------------------------------------------------
-    // Helper Methods
-    // -----------------------------------------------------------------------
-
-    /// Accepts `frontendRedirectUrl` only as an absolute http(s) URL whose origin the API's CORS rules allow,
-    /// so the browser, and the one-time code with it, can only go back to our own frontends.
-    ///
-    /// @throws ResponseStatusException `400` otherwise
-    private void checkFrontendRedirectUrl(String frontendRedirectUrl, HttpServletRequest request) {
-        URI uri = parseOrNull(frontendRedirectUrl);
-        CorsConfiguration cors = corsConfigurationSource.getCorsConfiguration(request);
-
-        boolean allowed = uri != null
-            && ("https".equalsIgnoreCase(uri.getScheme()) || "http".equalsIgnoreCase(uri.getScheme()))
-            && uri.getHost() != null
-            && uri.getRawUserInfo() == null
-            && cors != null
-            && cors.checkOrigin(originOf(uri)) != null;
-
-        if (!allowed) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "frontendRedirectUrl must be a page on an allowed frontend origin.");
-        }
-    }
-
-    private static URI parseOrNull(String url) {
-        try {
-            return new URI(url);
-        } catch (URISyntaxException e) {
-            return null;
-        }
-    }
-
-    /// The origin of a URL, e.g. `https://app.uni.edu` or `http://localhost:3000`.
-    private static String originOf(URI uri) {
-        String origin = uri.getScheme().toLowerCase(Locale.ROOT) + "://" + uri.getHost().toLowerCase(Locale.ROOT);
-        return uri.getPort() != -1 ? origin + ":" + uri.getPort() : origin;
     }
 }

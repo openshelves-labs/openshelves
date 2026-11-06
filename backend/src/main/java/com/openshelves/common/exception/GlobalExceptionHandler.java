@@ -1,7 +1,10 @@
 package com.openshelves.common.exception;
 
 import com.openshelves.common.model.ApiErrorResponse;
+import com.openshelves.security.exception.InvalidCurrentPasswordException;
 import com.openshelves.security.exception.LastSignInMethodException;
+import com.openshelves.security.exception.PasswordUnchangedException;
+import com.openshelves.security.exception.ResetLinkExpiredException;
 import com.openshelves.security.filter.BearerTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -71,6 +74,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleLastSignInMethodException(LastSignInMethodException e, HttpServletRequest req) {
         log.debug("Refused to remove last sign-in method: {}", e.getMessage());
         return buildErrorResponse(HttpStatus.CONFLICT, "LAST_SIGN_IN_METHOD", e.getMessage(), req.getRequestURI(), null);
+    }
+
+    /// Handles password changes and resets refused because of what the user sent.
+    ///
+    /// @return a 400 Bad Request response with the exception's message and a code per failure type
+    @ExceptionHandler({InvalidCurrentPasswordException.class, PasswordUnchangedException.class, ResetLinkExpiredException.class})
+    public ResponseEntity<ApiErrorResponse> handlePasswordException(RuntimeException e, HttpServletRequest req) {
+        log.debug("Password request refused: {}", e.getMessage());
+
+        String code = switch (e) {
+            case InvalidCurrentPasswordException _ -> "INVALID_CURRENT_PASSWORD";
+            case PasswordUnchangedException _ -> "PASSWORD_UNCHANGED";
+            case ResetLinkExpiredException _ -> "RESET_LINK_EXPIRED";
+            default -> null;
+        };
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, code, e.getMessage(), req.getRequestURI(), null);
     }
 
     /// Handles [AuthenticationException] thrown by services, e.g. bad credentials on login.

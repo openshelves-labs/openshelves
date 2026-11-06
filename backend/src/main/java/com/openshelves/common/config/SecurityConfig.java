@@ -2,10 +2,9 @@ package com.openshelves.common.config;
 
 import com.openshelves.security.filter.BearerTokenFilter;
 import com.openshelves.security.services.AuthService;
-import com.openshelves.security.sso.CookieOidcRequestRepository;
-import com.openshelves.security.sso.DbOidcRegistrationRepository;
-import com.openshelves.security.sso.DbSamlRegistrationRepository;
-import com.openshelves.security.sso.SsoCallbackHandler;
+import com.openshelves.security.services.IdentityProviderService;
+import com.openshelves.security.services.SsoCallbackHandler;
+import com.openshelves.security.services.SsoCookieStore;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +22,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -43,9 +43,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    AuthService authService,
-                                                   DbOidcRegistrationRepository oidcRegistrations,
-                                                   DbSamlRegistrationRepository samlRegistrations,
-                                                   CookieOidcRequestRepository oidcRequests,
+                                                   IdentityProviderService identityProviderService,
+                                                   SsoCookieStore ssoCookieStore,
+                                                   RelyingPartyRegistrationRepository samlRegistrations,
                                                    SsoCallbackHandler ssoCallbackHandler) throws Exception {
         Filter authFilter = new BearerTokenFilter(authService);
 
@@ -72,7 +72,6 @@ public class SecurityConfig {
 
                 // SSO: the sign-in page's provider list, and the whole round-trip
                 // (start, provider redirects, callbacks, metadata, exchange), which happens before there's a token
-                .requestMatchers(HttpMethod.GET, "/api/v1/auth/providers").permitAll()
                 .requestMatchers("/api/v1/auth/sso/**").permitAll()
 
                 // Health checks for load balancers and probes
@@ -91,22 +90,22 @@ public class SecurityConfig {
             // SSO with OIDC: providers from auth_providers, pending request in a cookie, our own callback handling.
             // Start is our controller (/sso/{provider}/start), which redirects to the authorize endpoint below.
             .oauth2Login(oidc -> oidc
-                .loginPage("/api/v1/auth/providers")    // Turns off Spring's generated login page
-                .clientRegistrationRepository(oidcRegistrations)
+                .loginPage("/api/v1/auth/sso/providers")    // Turns off Spring's generated login page
+                .clientRegistrationRepository(identityProviderService::findOidc)
                 .authorizedClientRepository(new NoStoredClients())
                 .authorizationEndpoint(a -> a
                     .baseUri("/api/v1/auth/sso/oidc-authorize")
-                    .authorizationRequestRepository(oidcRequests))
+                    .authorizationRequestRepository(ssoCookieStore))
                 .loginProcessingUrl("/api/v1/auth/sso/*/oidc-callback")
                 .successHandler(ssoCallbackHandler)
                 .failureHandler(ssoCallbackHandler)
             )
 
-            // SSO with SAML: same idea; the pending request lives in a cookie (CookieSamlRequestRepository bean)
+            // SSO with SAML: same idea; Spring finds the pending-request store (SsoCookieStore) as a bean
             .saml2Login(saml -> saml
-                .loginPage("/api/v1/auth/providers")    // Turns off Spring's generated login page
+                .loginPage("/api/v1/auth/sso/providers")    // Turns off Spring's generated login page
                 .relyingPartyRegistrationRepository(samlRegistrations)
-                .authenticationRequestUri("/api/v1/auth/sso/saml-authorize/{registrationId}")
+                .authenticationRequestUriQuery("/api/v1/auth/sso/saml-authorize/{registrationId}")
                 .loginProcessingUrl("/api/v1/auth/sso/{registrationId}/saml-callback")
                 .successHandler(ssoCallbackHandler)
                 .failureHandler(ssoCallbackHandler)
@@ -124,6 +123,12 @@ public class SecurityConfig {
             );
 
         return http.build();
+    }
+
+    /// SAML providers from `auth_providers`, as a bean: the SAML metadata endpoint looks it up from the context.
+    @Bean
+    public RelyingPartyRegistrationRepository samlRegistrations(IdentityProviderService identityProviderService) {
+        return identityProviderService::findSaml;
     }
 
     @Bean

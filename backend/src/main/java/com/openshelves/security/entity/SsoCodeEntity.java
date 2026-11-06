@@ -55,6 +55,10 @@ public class SsoCodeEntity extends BaseEntity<Long> {
     @Column(name = "is_persistent", updatable = false)
     private Boolean persistent;
 
+    /// PKCE challenge (`BASE64URL(SHA-256(verifier))`) the exchange must answer; `LOGIN` only.
+    @Column(name = "code_challenge", updatable = false)
+    private String codeChallenge;
+
 
     // -------------------------------------------------------------------------
     // Timeouts & audit

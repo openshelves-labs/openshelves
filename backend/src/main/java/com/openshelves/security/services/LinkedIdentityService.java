@@ -1,9 +1,9 @@
 package com.openshelves.security.services;
 
-import com.openshelves.common.exception.ApiException;
 import com.openshelves.common.model.SessionPrincipal;
 import com.openshelves.security.entity.AuthProviderEntity;
 import com.openshelves.security.entity.UserIdentityEntity;
+import com.openshelves.security.exception.LastSignInMethodException;
 import com.openshelves.security.model.IdentityResponse;
 import com.openshelves.security.model.LinkResponse;
 import com.openshelves.security.repository.AuthProviderRepository;
@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class IdentityService {
+public class LinkedIdentityService {
 
     private final SsoService ssoService;
 
@@ -70,7 +71,7 @@ public class IdentityService {
     /// @param principal the caller
     /// @param providerKey the provider to connect
     /// @return where to send the browser
-    /// @throws ApiException `404` if the provider is unknown or disabled
+    /// @throws ResponseStatusException `404` if the provider is unknown or disabled
     @Transactional
     public LinkResponse startLink(SessionPrincipal principal, String providerKey) {
         AuthProviderEntity provider = ssoService.getEnabledProvider(providerKey);
@@ -92,22 +93,21 @@ public class IdentityService {
     ///
     /// @param principal the caller
     /// @param identityId the identity to disconnect
-    /// @throws ApiException `404` if the identity isn't the caller's
-    /// @throws ApiException `409 LAST_SIGN_IN_METHOD` if it's the caller's only way to sign in
+    /// @throws ResponseStatusException `404` if the identity isn't the caller's
+    /// @throws LastSignInMethodException if it's the caller's only way to sign in
     @Transactional
     public void unlink(SessionPrincipal principal, Long identityId) {
         Long userId = principal.getUserId();
 
         UserIdentityEntity identity = identityRepository.findByIdAndUserProfileId(identityId, userId)
-            .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, null, "Sign-in method not found."));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sign-in method not found."));
 
         // Keep at least one way to sign in: a password, or another identity
         boolean hasOtherMethod = passwordRepository.existsByUserProfileId(userId)
             || identityRepository.countByUserProfileId(userId) > 1;
 
         if (!hasOtherMethod) {
-            throw new ApiException(HttpStatus.CONFLICT, "LAST_SIGN_IN_METHOD",
-                "This is your only way to sign in, so it can't be disconnected.");
+            throw new LastSignInMethodException("This is your only way to sign in, so it can't be disconnected.");
         }
 
         identityRepository.delete(identity);

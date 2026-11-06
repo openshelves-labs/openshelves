@@ -3,6 +3,8 @@ package com.openshelves.security.services;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -40,5 +42,24 @@ public class TokenService {
     /// @return the SHA-256 hash of the token, as hex
     public String hashToken(String token) {
         return DigestUtils.sha256Hex(token);
+    }
+
+
+    // -----------------------------------------------------------------------
+    // PKCE
+    // -----------------------------------------------------------------------
+
+    /// Checks a PKCE verifier against the challenge sent earlier (S256, RFC 7636).
+    ///
+    /// @param verifier the secret the client kept, sent at exchange
+    /// @param challenge the challenge the client sent at start: `BASE64URL(SHA-256(verifier))`
+    /// @return `true` if they match; compared in constant time
+    public boolean verifyPkce(String verifier, String challenge) {
+        byte[] hash = DigestUtils.sha256(verifier.getBytes(StandardCharsets.US_ASCII));
+        String expected = Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
+
+        return MessageDigest.isEqual(
+            expected.getBytes(StandardCharsets.US_ASCII),
+            challenge.getBytes(StandardCharsets.US_ASCII));
     }
 }

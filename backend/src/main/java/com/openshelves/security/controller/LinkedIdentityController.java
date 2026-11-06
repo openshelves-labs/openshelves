@@ -3,7 +3,7 @@ package com.openshelves.security.controller;
 import com.openshelves.common.model.SessionPrincipal;
 import com.openshelves.security.model.IdentityResponse;
 import com.openshelves.security.model.LinkResponse;
-import com.openshelves.security.services.IdentityService;
+import com.openshelves.security.services.LinkedIdentityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,26 +21,26 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth/identities")
-public class IdentityController {
+public class LinkedIdentityController {
 
-    private final IdentityService identityService;
+    private final LinkedIdentityService linkedIdentityService;
 
     /// Lists the providers the caller has connected.
     @GetMapping
     public List<IdentityResponse> listIdentities(@AuthenticationPrincipal SessionPrincipal principal) {
-        return identityService.listIdentities(principal);
+        return linkedIdentityService.listIdentities(principal);
     }
 
     /// Starts connecting a provider; returns where to send the browser.
     @PostMapping("/{provider}")
     public LinkResponse startLink(@AuthenticationPrincipal SessionPrincipal principal, @PathVariable String provider) {
-        return identityService.startLink(principal, provider);
+        return linkedIdentityService.startLink(principal, provider);
     }
 
     /// Disconnects a provider.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unlink(@AuthenticationPrincipal SessionPrincipal principal, @PathVariable Long id) {
-        identityService.unlink(principal, id);
+        linkedIdentityService.unlink(principal, id);
     }
 }

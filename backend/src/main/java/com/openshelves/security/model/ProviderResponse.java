@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-/// One entry of `GET /api/v1/auth/providers`: an option in the sign-in page's SSO dropdown.
+/// One entry of `GET /api/v1/auth/sso/providers`: an option in the sign-in page's SSO dropdown.
 @Value
 @Builder(setterPrefix = "with")
 @Jacksonized

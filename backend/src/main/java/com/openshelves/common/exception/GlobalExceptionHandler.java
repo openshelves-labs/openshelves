@@ -1,6 +1,7 @@
 package com.openshelves.common.exception;
 
 import com.openshelves.common.model.ApiErrorResponse;
+import com.openshelves.security.exception.LastSignInMethodException;
 import com.openshelves.security.filter.BearerTokenFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -63,13 +64,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_GATEWAY, null, detail, req.getRequestURI(), null);
     }
 
-    /// Handles [ApiException] thrown by services for requests the API refuses.
+    /// Handles [LastSignInMethodException], thrown when a user tries to disconnect their only way to sign in.
     ///
-    /// @return a response with the exception's status, code and message
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ApiErrorResponse> handleApiException(ApiException e, HttpServletRequest req) {
-        log.debug("Request refused: {} {}", e.getStatus(), e.getMessage());
-        return buildErrorResponse(e.getStatus(), e.getCode(), e.getMessage(), req.getRequestURI(), null);
+    /// @return a 409 Conflict response with the exception's message
+    @ExceptionHandler(LastSignInMethodException.class)
+    public ResponseEntity<ApiErrorResponse> handleLastSignInMethodException(LastSignInMethodException e, HttpServletRequest req) {
+        log.debug("Refused to remove last sign-in method: {}", e.getMessage());
+        return buildErrorResponse(HttpStatus.CONFLICT, "LAST_SIGN_IN_METHOD", e.getMessage(), req.getRequestURI(), null);
     }
 
     /// Handles [AuthenticationException] thrown by services, e.g. bad credentials on login.

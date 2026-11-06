@@ -61,6 +61,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'    // OIDC sign-in
     implementation 'org.springframework.boot:spring-boot-starter-security-saml2'            // SAML sign-in
+    implementation 'org.bouncycastle:bcpkix-jdk18on'                                        // Self-signed certificates for SAML key pairs
 
     // Bean Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'

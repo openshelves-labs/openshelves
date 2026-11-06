@@ -394,8 +394,9 @@ CREATE TABLE sso_codes (
     purpose                 VARCHAR(10)     NOT NULL,
     code_hash               TEXT            NOT NULL,
 
-    -- session options
-    is_persistent           BOOLEAN,                               -- LOGIN only
+    -- LOGIN only
+    is_persistent           BOOLEAN,
+    code_challenge          TEXT,                                  -- PKCE S256: exchange must present the matching verifier
 
     -- timeouts
     expires_at              TIMESTAMPTZ       NOT NULL,
@@ -411,8 +412,8 @@ CREATE TABLE sso_codes (
         FOREIGN KEY (provider_key)      REFERENCES auth_providers (key) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT sso_codes_purpose_chk
         CHECK (purpose IN ('LOGIN', 'LINK')),
-    CONSTRAINT sso_codes_persistent_chk
-        CHECK ((purpose = 'LOGIN') = (is_persistent IS NOT NULL))
+    CONSTRAINT sso_codes_login_fields_chk
+        CHECK ((purpose = 'LOGIN') = (is_persistent IS NOT NULL AND code_challenge IS NOT NULL))
 );
 
 CREATE UNIQUE INDEX sso_codes_code_hash_idx        ON sso_codes (code_hash);

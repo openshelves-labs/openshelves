@@ -63,6 +63,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_GATEWAY, null, detail, req.getRequestURI(), null);
     }
 
+    /// Handles [ApiException] thrown by services for requests the API refuses.
+    ///
+    /// @return a response with the exception's status, code and message
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ApiErrorResponse> handleApiException(ApiException e, HttpServletRequest req) {
+        log.debug("Request refused: {} {}", e.getStatus(), e.getMessage());
+        return buildErrorResponse(e.getStatus(), e.getCode(), e.getMessage(), req.getRequestURI(), null);
+    }
+
     /// Handles [AuthenticationException] thrown by services, e.g. bad credentials on login.
     ///
     /// @return a 401 Unauthorized response with the exception's message and a code per failure type

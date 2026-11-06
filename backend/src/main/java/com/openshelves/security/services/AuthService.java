@@ -90,14 +90,25 @@ public class AuthService {
         // Clear any failures now that the login has succeeded
         lockoutService.recordSuccessfulLogin(userPassword.get().getId());
 
-        // Open the session; only the token's hash is stored.
-        // No auth provider: this session was opened with a password.
+        // No auth provider: this session is opened with a password
+        return openSession(user, request.isPersistent(), device, null);
+    }
+
+    /// Opens a new session for a user who has already proven who they are.
+    /// Only the token's hash is stored; the raw token is returned once, here.
+    ///
+    /// @param user the signed-in user
+    /// @param persistent whether a long-lived ("remember me") session was requested
+    /// @param device the device the sign-in comes from
+    /// @param authProvider display name of the identity provider used, or `null` for a password
+    /// @return the token and when it expires
+    public LoginResponse openSession(UserEntity user, boolean persistent, DeviceInfo device, String authProvider) {
         String token = tokenService.generateToken();
 
-        UserSessionEntity session = buildSession(user, token, request.isPersistent(), device, null);
+        UserSessionEntity session = buildSession(user, token, persistent, device, authProvider);
         sessionRepository.save(session);
 
-        log.debug("Session opened [sessionId={}, persistent={}]", session.getId(), request.isPersistent());
+        log.debug("Session opened [sessionId={}, persistent={}, authProvider={}]", session.getId(), persistent, authProvider);
 
         return LoginResponse.builder()
             .withToken(token)

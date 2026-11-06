@@ -28,4 +28,7 @@ public interface UserPasswordRepository extends JpaRepository<UserPasswordEntity
     /// so concurrent logins update its failed-attempt count one at a time.
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<UserPasswordEntity> findAndLockById(Long id);
+
+    /// Checks whether the user has a password.
+    boolean existsByUserProfileId(Long userId);
 }

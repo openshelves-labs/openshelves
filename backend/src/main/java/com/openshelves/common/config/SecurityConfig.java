@@ -56,6 +56,9 @@ public class SecurityConfig {
 
                 // Logout, so a stale or missing token can still clear itself
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/logout").permitAll()
+                // SSO: the sign-in page's provider list, and swapping the callback code for a token
+                .requestMatchers(HttpMethod.GET, "/api/v1/auth/providers").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/sso/exchange").permitAll()
 
                 // Health checks for load balancers and probes
                 .requestMatchers("/actuator/health/**").permitAll()

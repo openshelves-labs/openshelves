@@ -33,7 +33,7 @@ jobs:
         run: node .github/scripts/version-badges.js dist
 
       - name: Publish to the badges branch
-        uses: crazy-max/ghaction-github-pages@v4
+        uses: crazy-max/ghaction-github-pages@v5
         with:
           target_branch: badges
           build_dir: dist

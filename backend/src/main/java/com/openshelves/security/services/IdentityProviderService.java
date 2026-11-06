@@ -1,5 +1,6 @@
 package com.openshelves.security.services;
 
+import com.openshelves.common.util.CipherUtils;
 import com.openshelves.security.entity.AuthProviderEntity;
 import com.openshelves.security.enums.AuthProviderType;
 import com.openshelves.security.repository.AuthProviderRepository;
@@ -63,7 +64,7 @@ public class IdentityProviderService {
     private static final List<String> DEFAULT_OIDC_SCOPES = List.of("openid", "email", "profile");
 
     private final AuthProviderRepository providerRepository;
-    private final SecretCipher cipher;
+    private final CipherUtils cipher;
 
     private final Map<String, Cached<ClientRegistration>> oidcCache = new ConcurrentHashMap<>();
     private final Map<String, Cached<RelyingPartyRegistration>> samlCache = new ConcurrentHashMap<>();
@@ -132,7 +133,7 @@ public class IdentityProviderService {
     /// Settings used: `clientId`, optional `scopes` (list); `secret` holds the client secret.
     private ClientRegistration buildOidc(AuthProviderEntity provider) {
         String clientSecret = provider.getSecret() != null
-            ? new String(cipher.decrypt(provider.getSecret()), StandardCharsets.UTF_8)
+            ? cipher.decryptString(provider.getSecret())
             : null;
 
         return ClientRegistrations.fromIssuerLocation(provider.getIssuer())
@@ -194,7 +195,7 @@ public class IdentityProviderService {
         }
 
         SamlKeys generated = generateSamlKeys(provider.getKey());
-        String encryptedKey = cipher.encrypt(toPem("PRIVATE KEY", generated.privateKey().getEncoded()).getBytes(StandardCharsets.US_ASCII));
+        String encryptedKey = cipher.encryptString(toPem("PRIVATE KEY", generated.privateKey().getEncoded()));
         String certificatePem = toPem("CERTIFICATE", encoded(generated.certificate()));
 
         if (providerRepository.storeSamlKeysIfAbsent(provider.getId(), encryptedKey, certificatePem) == 1) {
@@ -214,7 +215,7 @@ public class IdentityProviderService {
             return Optional.empty();
         }
 
-        PrivateKey privateKey = parsePrivateKey(new String(cipher.decrypt(provider.getSecret()), StandardCharsets.US_ASCII));
+        PrivateKey privateKey = parsePrivateKey(cipher.decryptString(provider.getSecret()));
         return Optional.of(new SamlKeys(privateKey, parseCertificate(certificatePem.get())));
     }
 

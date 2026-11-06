@@ -59,9 +59,10 @@ spring:
 # OpenShelves Configuration
 openshelves:
   security:
-    # AES-256 key (32 bytes, Base64) encrypting provider secrets and SSO cookies. Needed only for SSO.
+    # AES-256 key (32 bytes, Base64) encrypting provider secrets and SSO cookies.
+    # The default is for local development only; always set OPENSHELVES_SECRET_KEY elsewhere.
     # Generate with: openssl rand -base64 32
-    secret-key: ${OPENSHELVES_SECRET_KEY:}
+    secret-key: ${OPENSHELVES_SECRET_KEY:pO5PBAj5dwfm81R1ugSeqHIi5p3xfWi0bX+SniqcZ+M=}
 
 # Logging Configuration
 logging:

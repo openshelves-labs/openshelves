@@ -1,5 +1,6 @@
 package com.openshelves.security.services;
 
+import com.openshelves.common.util.CipherUtils;
 import com.openshelves.security.enums.AuthProviderType;
 import com.openshelves.security.model.SsoContext;
 import jakarta.servlet.http.Cookie;
@@ -48,7 +49,7 @@ public class SsoCookieStore implements
     private static final String PATH = "/api/v1/auth/sso";
     private static final Duration MAX_AGE = Duration.ofMinutes(10);
 
-    private final SecretCipher cipher;
+    private final CipherUtils cipher;
 
 
     // -----------------------------------------------------------------------

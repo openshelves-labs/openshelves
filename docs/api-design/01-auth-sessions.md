@@ -13,7 +13,8 @@
 4. [🪪 Current session](#-current-session)
 5. [💻 Devices](#-devices)
 6. [🏛️ Single sign-on (SAML / OIDC)](#️-single-sign-on-saml--oidc)
-7. [🤔 Open decisions](#-open-decisions)
+7. [🔗 Sign-in methods](#-sign-in-methods)
+8. [🔮 Future improvements](#-future-improvements)
 
 ---
 
@@ -22,33 +23,67 @@
 | | Concept | In one line |
 |---|---|---|
 | 👤 | **User** | One library member. |
-| 🗝️ | **Credential** | One way that user can prove who they are: `PASSWORD`, `SAML` or `OIDC`. |
+| 🗝️ | **Password** | A secret we hold and verify ourselves. At most one per user. |
+| 🏛️ | **Identity provider** | The university's SAML / OIDC sign-in service. Configured by library admins at runtime, not at deployment. |
+| 🔗 | **Identity** | An account at an identity provider that the user linked from settings (*"Connect to Google"*). Zero or more per user. |
 | 🎫 | **Session** | One signed-in device. Created at login, ended by logout, expiry or revocation. |
 | 🪙 | **Token** | Opaque random string handed to the client. Sent as `Authorization: Bearer <token>`. |
 
 ```mermaid
 erDiagram
-    USERS ||--o{ USER_CREDENTIALS : "signs in with"
+    USERS ||--o| USER_PASSWORDS : "signs in with"
+    USERS ||--o{ USER_IDENTITIES : "signs in via"
     USERS ||--o{ USER_SESSIONS : "is signed in on"
+    USERS ||--o{ SSO_CODES : "is finishing SSO with"
+    AUTH_PROVIDERS ||..o{ USER_IDENTITIES : "matched by issuer, no FK"
 
     USERS {
         bigint id
         text display_name
         boolean is_active
     }
-    USER_CREDENTIALS {
+    USER_PASSWORDS {
         bigint id
-        varchar type "PASSWORD | SAML | OIDC"
+        bigint user_id "unique"
         text password_hash
-        text provider_key
+        timestamptz password_changed_at
         int failed_attempts
         timestamptz locked_until
+    }
+    AUTH_PROVIDERS {
+        bigint id
+        text key "unique, used in URLs"
+        varchar type "SAML | OIDC"
+        text display_name
+        boolean enabled
+        int sort_order
+        text issuer "unique, OIDC iss / SAML entityID"
+        jsonb settings "client ID, metadata URL, attribute mapping"
+        text client_secret "encrypted"
+    }
+    USER_IDENTITIES {
+        bigint id
+        bigint user_id
+        text issuer "OIDC iss / SAML entityID"
+        text subject "OIDC sub / SAML NameID"
+        jsonb metadata "display hints from the provider"
+    }
+    SSO_CODES {
+        bigint id
+        bigint user_id
+        varchar purpose "LOGIN | LINK"
+        text provider_key
+        text code_hash "SHA-256, never the raw code"
+        boolean is_persistent "LOGIN only"
+        timestamptz expires_at "about 60 s / a few minutes"
     }
     USER_SESSIONS {
         bigint id
         text session_token_hash "SHA-256, never the raw token"
+        text auth_provider "provider display name, null = password"
         text device_name
         timestamptz last_active_at
+        boolean is_persistent "keep me signed in"
         timestamptz expires_at
         timestamptz revoked_at
     }
@@ -57,9 +92,16 @@ erDiagram
 **Good to know**
 
 - 🔒 The raw token is never stored, only its SHA-256 hash. A leaked database can't be replayed.
-- ⏳ Session lifetime is **24 h**, or **30 days** with "keep me signed in" (`persistent: true`).
+- ⏳ Session lifetime is **24 h**, or **30 days** with "keep me signed in" (`persistent: true`, stored as `is_persistent`).
 - 🖥️ **Kiosk mode** (shared desks) is frontend-only: it just forces `persistent: false`.
 - 🏷️ Naming: `/auth/session` is always *the current one*; all of a user's sessions are exposed as **devices**.
+- 🏛️ An SSO identity is **`(issuer, subject)`**, as OIDC and SAML define it: the provider's own ID (OIDC `iss`, SAML `entityID`) plus the user's ID there. Unique together, so two providers can never collide. The provider key used in URLs (`campus-shibboleth`) is only a label.
+- 🏛️ Identity providers live in **`auth_providers`**, so library admins can add, edit or disable them without a redeploy. Identities match a provider by `issuer`, not a foreign key, so deleting and re-adding a provider keeps its users linked.
+- 🔐 Provider secrets (OIDC client secret, SAML signing keys) are **encrypted** in the table. The encryption key comes from the deployment environment, never the database.
+- 🔒 Lockout lives on `user_passwords` only. For SSO, the identity provider handles it.
+- 📝 Each session records **how** it was opened in `auth_provider`: `null` for a password, otherwise the provider's display name. A snapshot taken at sign-in, not a foreign key. Unlinking an identity or renaming a provider doesn't touch existing sessions.
+- 🎟️ `sso_codes` holds short-lived, single-use codes: `LOGIN` bridges the SSO callback and `POST /sso/exchange`, `LINK` starts [connecting a provider](#-sign-in-methods). A row is deleted when it's used. The session is only opened at exchange, so `user_sessions` holds nothing but signed-in devices.
+- ⏱️ `last_active_at` is **tracked, not enforced**: written at most once a minute per session, shown in the devices list. There is no idle timeout; only `expires_at` ends a session.
 
 ### 🔄 Session lifecycle
 
@@ -82,7 +124,7 @@ flowchart LR
     B -- yes --> C[Hash token<br/>look up session]
     C --> D{Found, not revoked,<br/>not expired,<br/>user active?}
     D -- no --> X
-    D -- yes --> E[✅ Authenticated<br/>userId + sessionId]
+    D -- yes --> E[✅ Authenticated<br/>userId + sessionId<br/>touch last_active_at ≤ 1/min]
     X --> F{Endpoint public?}
     F -- yes --> G[Handle]
     F -- no --> H[❌ 401]
@@ -96,7 +138,7 @@ flowchart LR
 | Group | Method | Path | Auth | Purpose |
 |---|---|---|---|---|
 | 🔑 Sign in & out | `POST` | `/api/v1/auth/login` | 🌐 Public | Password login → token |
-| | `POST` | `/api/v1/auth/logout` | 🔒 Bearer | End the current session |
+| | `POST` | `/api/v1/auth/logout` | 🌐 Public | End the current session, if any |
 | 🪪 Current session | `GET` | `/api/v1/auth/session` | 🔒 Bearer | Signed-in check + app-shell data |
 | 💻 Devices | `GET` | `/api/v1/auth/devices` | 🔒 Bearer | Devices I'm signed in on |
 | | `DELETE` | `/api/v1/auth/devices/{id}` | 🔒 Bearer | Sign one device out |
@@ -105,6 +147,10 @@ flowchart LR
 | | `GET` | `/api/v1/auth/sso/{provider}/start` | 🌐 Public | Redirect to the identity provider |
 | | `GET` / `POST` | `/api/v1/auth/sso/{provider}/callback` | 🌐 Public | Identity provider returns here |
 | | `POST` | `/api/v1/auth/sso/exchange` | 🌐 Public | One-time code → token |
+| | `GET` | `/api/v1/auth/sso/{provider}/metadata` | 🌐 Public | SAML service-provider metadata for the university's IT |
+| 🔗 Sign-in methods | `GET` | `/api/v1/auth/identities` | 🔒 Bearer | Providers I've connected |
+| | `POST` | `/api/v1/auth/identities/{provider}` | 🔒 Bearer | Start connecting a provider |
+| | `DELETE` | `/api/v1/auth/identities/{id}` | 🔒 Bearer | Disconnect a provider |
 
 ---
 
@@ -122,7 +168,7 @@ sequenceDiagram
     participant DB as 🗄️ Postgres
 
     FE->>BE: POST /auth/login { identifier, password, persistent }
-    BE->>DB: Find PASSWORD credential by email / institutional ID
+    BE->>DB: Find user_passwords row by email / institutional ID
     BE->>BE: Locked? → 401 ACCOUNT_LOCKED
     BE->>BE: Verify password (runs even if user unknown)
     alt wrong password / unknown user
@@ -130,7 +176,7 @@ sequenceDiagram
         BE-->>FE: 401 INVALID_CREDENTIALS
     else correct
         BE->>BE: User disabled? → 401 ACCOUNT_DISABLED
-        BE->>DB: Reset failures, insert session (token hash)
+        BE->>DB: Reset failures, insert session (token hash, auth_provider = null)
         BE-->>FE: 200 { token, expiresAt }
     end
 ```
@@ -161,7 +207,7 @@ sequenceDiagram
 | 🔒 `ACCOUNT_LOCKED` | Too many failures. Message includes the time left. |
 | 🚫 `ACCOUNT_DISABLED` | `users.is_active = false` |
 
-**🔒 Lockout ladder**: every 5 consecutive failures lock the credential, a bit longer each time:
+**🔒 Lockout ladder**: every 5 consecutive failures lock the password, a bit longer each time:
 
 ```
  5 fails ──▶ 🔒 15 min
@@ -172,10 +218,11 @@ sequenceDiagram
 
 ### `POST /api/v1/auth/logout`
 
-Ends the current session (`revoked_at = now()`).
+Ends the session behind the bearer token, if there is one (`revoked_at = now()`).
 
-- Response `204`.
-- Idempotent: logging out twice is fine.
+- Always `204`, with or without a token, and whether it's valid, expired or already revoked. Safe to call any number of times.
+- Public, so a client with a stale token can still clear itself without handling a `401`.
+- The frontend drops the token either way.
 
 ---
 
@@ -188,7 +235,7 @@ One cheap call, two jobs:
 | | Job | How |
 |---|---|---|
 | ✅ | **Am I signed in?** | `200` = token valid · `401` = not signed in, expired or revoked. Like OAuth2 token introspection. |
-| 🧩 | **App-shell bootstrap** | The small set of data every page needs: name and avatar in the top bar, locale, feature flags. |
+| 🧩 | **App-shell bootstrap** | The small set of data every page needs: name and avatar in the top bar, locale. |
 
 ```mermaid
 sequenceDiagram
@@ -196,7 +243,7 @@ sequenceDiagram
     participant BE as ⚙️ Backend
     FE->>BE: GET /auth/session
     alt token valid
-        BE-->>FE: 200 { user, expiresAt, persistent, featureFlags }
+        BE-->>FE: 200 { user, expiresAt, persistent }
         Note over FE: Render app shell
     else no / bad token
         BE-->>FE: 401
@@ -215,8 +262,7 @@ sequenceDiagram
     "timezone": "Asia/Kolkata"
   },
   "expiresAt": "2026-11-01T10:00:00Z",
-  "persistent": false,
-  "featureFlags": { }
+  "persistent": false
 }
 ```
 
@@ -225,11 +271,10 @@ sequenceDiagram
 | `user` | Only what the shell displays or formats with |
 | `expiresAt` | Warn before sign-out, or redirect without waiting for a `401` |
 | `persistent` | Whether this is a "keep me signed in" session |
-| `featureFlags` | Fine here while small and global; own endpoint only if they grow large or page-specific |
+
+> 🔮 Feature flags aren't part of the response yet. See [Future improvements](#-future-improvements).
 
 > 💡 Keep it small: it's called on every app load. The full profile and settings belong to [02. Profile & Settings](./02-profile-settings.md).
-
-> 📝 **Note:** the current implementation returns a flat body (`displayName`, `email`, `institutionalId`, `department`, `avatarImageUrl`, `language`, `timezone`) with no session fields or flags. `email`, `institutionalId` and `department` move to [02. Profile & Settings](./02-profile-settings.md).
 
 ---
 
@@ -257,6 +302,7 @@ Active (not revoked, not expired) sessions of the current user, most recently ac
     "userAgent": "…",
     "ipAddress": "10.0.0.5",
     "deviceLocation": "Bengaluru, IN",
+    "authProvider": "University Shibboleth",
     "createdAt": "…",
     "lastActiveAt": "…",
     "expiresAt": "…"
@@ -264,7 +310,8 @@ Active (not revoked, not expired) sessions of the current user, most recently ac
 ]
 ```
 
-- Backed by existing `user_sessions` columns.
+- Backed by `user_sessions` columns.
+- `authProvider` lets the UI show *"Signed in with University Shibboleth"*. It's the provider's display name at sign-in, and absent for a password sign-in.
 - No pagination; the list is small.
 
 ### `DELETE /api/v1/auth/devices/{id}`
@@ -285,7 +332,7 @@ Signs out **every device except this one**. `204`.
 
 ### `GET /api/v1/auth/providers`
 
-Feeds the SAML / OIDC dropdown on the sign-in page.
+Feeds the SAML / OIDC dropdown on the sign-in page: the **enabled** rows of `auth_providers`, by `sort_order`. Issuer, settings and secrets are never exposed.
 
 ```json
 [
@@ -308,33 +355,146 @@ sequenceDiagram
     BE-->>U: 302 → IdP (persistent + returnTo in state / RelayState)
     U->>IdP: Sign in at the university
     IdP-->>BE: callback (OIDC: GET · SAML: POST to ACS)
-    BE->>BE: Verify assertion → find/create user + credential
-    BE->>BE: Open session, mint one-time code (~60 s, single use)
-    BE-->>U: 302 → {frontend}/auth/callback?code=…
+    BE->>BE: Verify assertion → find user_identities row by (issuer, subject)
+    alt identity not linked / user disabled
+        BE-->>U: 302 → {frontend}/auth/callback?error=IDENTITY_NOT_LINKED or ACCOUNT_DISABLED
+    else found & active
+        BE->>BE: Store LOGIN code hash in sso_codes (~60 s, with provider_key + persistent)
+        BE-->>U: 302 → {frontend}/auth/callback?code=…
+    end
     U->>FE: Load callback page
     FE->>BE: POST /auth/sso/exchange { code }
+    BE->>BE: Delete the code row, open session (auth_provider = provider's display name)
     BE-->>FE: 200 { token, expiresAt }
 ```
 
 | Endpoint | What it does |
 |---|---|
-| `GET /sso/{provider}/start` | Redirects to the identity provider. Carries `persistent` and `returnTo` through the round-trip. |
-| `GET` / `POST /sso/{provider}/callback` | Identity provider returns here (OIDC `GET`, SAML ACS `POST`). Signs the user in. |
-| `POST /sso/exchange` | Swaps the one-time code for `{ token, expiresAt }`, same shape as login. `401 INVALID_CREDENTIALS` if the code is unknown, used or expired. |
+| `GET /sso/{provider}/start` | Redirects to the identity provider. Carries `persistent` and `returnTo` through the round-trip, or a `link` code when [connecting a provider](#-sign-in-methods). `404` if the provider is unknown or disabled. |
+| `GET` / `POST /sso/{provider}/callback` | Identity provider returns here (OIDC `GET`, SAML ACS `POST`). Signs the user in, or redirects with `error` (see below). |
+| `POST /sso/exchange` | Swaps the one-time code for `{ token, expiresAt }`, same shape as login. Deletes the code and opens the session. `401 INVALID_CREDENTIALS` if the code is unknown, used or expired. |
+
+**Callback errors** (sent as `?error=` on the frontend callback URL, nothing in the URL reveals the user)
+
+| `error` | When |
+|---|---|
+| 🚪 `IDENTITY_NOT_LINKED` | No identity matches `(issuer, subject)`. The user must sign in another way and [connect the provider](#-sign-in-methods) first. SSO never creates users. |
+| 🚫 `ACCOUNT_DISABLED` | Identity found, but `users.is_active = false` |
+
+### `GET /api/v1/auth/sso/{provider}/metadata`
+
+SAML only. Returns OpenShelves' **service-provider metadata** (XML): entity ID, ACS URL (the callback) and signing certificate. The university's IT imports it into their IdP to register OpenShelves.
+
+- `404` for an unknown, disabled or OIDC provider.
+- Served by Spring Security's SAML2 metadata filter, mapped to this path.
 
 **Why this shape**
 
+- 🚪 **No JIT creation:** SSO only signs in users who already [connected that provider](#-sign-in-methods) from settings. No matching by email, so an identity provider can't claim an existing account just by asserting its email.
 - 🙈 **One-time code, not the token, in the URL:** URLs end up in browser history, logs and `Referer` headers.
 - ✅ **`returnTo` is validated** against the allowed frontend origins (no open redirects).
 - 🧱 **Built on Spring Security's SAML2 / OAuth2 *login* support**, not the resource-server support that bearer auth deliberately avoids.
 
 ---
 
-## 🤔 Open decisions
+## 🔗 Sign-in methods
 
-| | Decision | Why it matters |
+A signed-in user can connect an identity provider from settings (*"Connect to Google"*), and sign in with it from then on. This is the only way an identity gets linked.
+
+```
+🔑 Password                                    [Change]
+🏛️ University Shibboleth · arpan@uni.edu       [Disconnect]
+🟢 Google                                      [Connect]
+```
+
+The available providers come from [`GET /auth/providers`](#get-apiv1authproviders); the connected ones from `GET /auth/identities`.
+
+### `GET /api/v1/auth/identities`
+
+Identities linked to the current user.
+
+```json
+[
+  {
+    "id": 7,
+    "providerKey": "campus-shibboleth",
+    "providerName": "University Shibboleth",
+    "linkedAs": "arpan@uni.edu",
+    "createdAt": "…",
+    "lastUsedAt": "…"
+  }
+]
+```
+
+- `providerKey` / `providerName` come from the `auth_providers` row with the same `issuer`; both are absent if that provider no longer exists.
+- `linkedAs` is a display hint from `metadata` (email or name the provider sent), absent if it sent none.
+
+### 🔁 Connecting a provider
+
+The bearer token lives in a header, which a browser redirect can't carry. So the frontend first asks for a short-lived **link code** with its token, then sends the browser through the normal SSO `start` with that code.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as 🧑 Browser
+    participant FE as 🖥️ Frontend
+    participant BE as ⚙️ Backend
+    participant IdP as 🏛️ Identity Provider
+
+    FE->>BE: POST /auth/identities/{provider} (Bearer)
+    BE->>BE: Store LINK code hash in sso_codes (a few minutes)
+    BE-->>FE: 200 { redirectUrl }
+    FE->>U: Navigate to redirectUrl
+    U->>BE: GET /auth/sso/{provider}/start?link=…
+    BE->>BE: Check link code, delete it
+    BE-->>U: 302 → IdP (user ID in state / RelayState)
+    U->>IdP: Sign in at the provider
+    IdP-->>BE: callback
+    BE->>BE: Verify assertion
+    alt (issuer, subject) linked to another user
+        BE-->>U: 302 → {frontend}/settings/sign-in-methods?error=IDENTITY_IN_USE
+    else not linked, or already linked to this user
+        BE->>BE: Insert user_identities row (if new)
+        BE-->>U: 302 → {frontend}/settings/sign-in-methods?linked={provider}
+    end
+```
+
+### `POST /api/v1/auth/identities/{provider}`
+
+Starts connecting a provider. Response `200`:
+
+```json
+{ "redirectUrl": "https://api.…/api/v1/auth/sso/google/start?link=…" }
+```
+
+- `404` if the provider is unknown or disabled.
+- The link code is single use and expires within minutes. Only its hash is stored.
+- No session is opened by this flow; the user stays signed in as before.
+
+**Callback results** (on the frontend settings URL)
+
+| Query | When |
+|---|---|
+| ✅ `linked={provider}` | Identity linked, or was already linked to this user |
+| 🚫 `error=IDENTITY_IN_USE` | That `(issuer, subject)` is already linked to a different user |
+| ⌛ `error=LINK_EXPIRED` | Link code unknown, used or expired |
+
+### `DELETE /api/v1/auth/identities/{id}`
+
+Disconnects a provider. `204`.
+
+- `404` if the identity isn't the caller's.
+- `409 LAST_SIGN_IN_METHOD` if it's the user's only way to sign in (no password, no other identity).
+- Existing sessions opened with it stay signed in; sign them out from [Devices](#-devices) if needed.
+
+---
+
+## 🔮 Future improvements
+
+| | Idea | Notes |
 |---|---|---|
-| 🆕 | **SSO first login:** create the user on the spot, or match an existing user by email? | Affects `user_credentials` unique constraints (e.g. unique `(type, provider_key)`). |
-| 🏷️ | **`credential_id` on `user_sessions`** | Lets the devices list show *"Signed in with Shibboleth"*. |
-| 💤 | **Idle timeout** | `last_active_at` exists but isn't updated or enforced. Should normal sessions also expire after inactivity? How often to write it (e.g. at most once a minute)? |
-| 🚩 | **Feature flags** | Where they come from (config, per role, per user) and their shape in `/session`. |
+| 🚩 | **Feature flags in `GET /auth/session`** | A `featureFlags` object in the response once the first real flag exists. To settle then: source (global config, per role, per user) and shape. Fine in `/session` while small and global; own endpoint if they grow large or page-specific. |
+| 💤 | **Idle timeout** | `last_active_at` is already tracked, so an idle rule (e.g. for kiosk / non-persistent sessions) can be added later without a schema change. |
+| 🚪 | **SSO single logout** | Signing out at the identity provider too. Sessions would then need the provider's `issuer`, since `auth_provider` is only a display name. |
+| 🧹 | **Session cleanup** | Revoked and expired `user_sessions` rows, and expired `sso_codes`, are never removed. A periodic purge (e.g. daily, keeping a short audit window) keeps the tables small. |
+| 🚦 | **Login rate limit per IP** | Lockout is per account, so one password tried against many accounts isn't slowed down. A per-IP limit on `POST /auth/login` covers that. |

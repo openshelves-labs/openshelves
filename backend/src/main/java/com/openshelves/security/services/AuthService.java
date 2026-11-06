@@ -1,13 +1,14 @@
 package com.openshelves.security.services;
 
 import com.openshelves.common.model.SessionPrincipal;
-import com.openshelves.security.entity.UserCredentialEntity;
 import com.openshelves.security.entity.UserEntity;
+import com.openshelves.security.entity.UserPasswordEntity;
 import com.openshelves.security.entity.UserSessionEntity;
+import com.openshelves.security.model.DeviceInfo;
 import com.openshelves.security.model.LoginRequest;
 import com.openshelves.security.model.LoginResponse;
 import com.openshelves.security.model.SessionResponse;
-import com.openshelves.security.repository.UserCredentialRepository;
+import com.openshelves.security.repository.UserPasswordRepository;
 import com.openshelves.security.repository.UserSessionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,11 +37,14 @@ public class AuthService {
     private static final Duration SESSION_TTL = Duration.ofHours(24);
     private static final Duration REMEMBER_ME_SESSION_TTL = Duration.ofDays(30);
 
+    /// A session's `last_active_at` is written at most once per this window.
+    private static final Duration ACTIVITY_WRITE_INTERVAL = Duration.ofMinutes(1);
+
     private final PasswordService passwordService;
     private final TokenService tokenService;
     private final LockoutService lockoutService;
 
-    private final UserCredentialRepository credentialRepository;
+    private final UserPasswordRepository passwordRepository;
     private final UserSessionRepository sessionRepository;
 
 
@@ -50,43 +54,47 @@ public class AuthService {
 
     /// Verifies the login credentials and opens a new session for the user.
     /// The session lasts 24 hours, or 30 days when a persistent ("remember me") login is requested.
-    public LoginResponse createSession(LoginRequest request) {
+    ///
+    /// @param request the login credentials
+    /// @param device  the device the login comes from, recorded on the session
+    public LoginResponse createSession(LoginRequest request, DeviceInfo device) {
 
-        // Find the password credential for the email or institutional ID, ignoring stray whitespace
+        // Find the password for the email or institutional ID, ignoring stray whitespace
         String identifier = request.getIdentifier().strip();
-        Optional<UserCredentialEntity> credential = credentialRepository.findByLoginIdentifier(identifier);
+        Optional<UserPasswordEntity> userPassword = passwordRepository.findByLoginIdentifier(identifier);
 
         // Reject locked accounts before the password is checked, so a lock can't be used
         // to test guesses, and attempts made while locked don't count
-        credential.ifPresent(lockoutService::ensureCredentialNotLocked);
+        userPassword.ifPresent(lockoutService::ensurePasswordNotLocked);
 
         // Verify the password before the account's status, so a wrong one never reveals it.
         // It runs even for an unknown identifier, so both cases take just as long.
-        String passwordHash = credential.map(UserCredentialEntity::getPasswordHash).orElse(null);
+        String passwordHash = userPassword.map(UserPasswordEntity::getPasswordHash).orElse(null);
         boolean passwordMatches = passwordService.verifyPassword(passwordHash, request.getPassword());
 
-        if (credential.isEmpty() || !passwordMatches) {
+        if (userPassword.isEmpty() || !passwordMatches) {
             // Count the failure towards a lock; unknown identifiers have nothing to count against
-            credential.ifPresent(c -> lockoutService.recordFailedAttempt(c.getId()));
+            userPassword.ifPresent(p -> lockoutService.recordFailedAttempt(p.getId()));
 
             // Same message for an unknown identifier and a wrong password, so neither reveals which it was
             throw new BadCredentialsException("Invalid identifier or password. Repeated failures will temporarily lock your account.");
         }
 
-        UserCredentialEntity userCredential = credential.get();
+        UserEntity user = userPassword.get().getUserProfile();
 
         // Reject disabled accounts (deleted ones were never matched)
-        if (!userCredential.getUserProfile().isActive()) {
+        if (!user.isActive()) {
             throw new DisabledException("This account is disabled.");
         }
 
         // Clear any failures now that the login has succeeded
-        lockoutService.recordSuccessfulLogin(userCredential.getId());
+        lockoutService.recordSuccessfulLogin(userPassword.get().getId());
 
-        // Open the session; only the token's hash is stored
+        // Open the session; only the token's hash is stored.
+        // No auth provider: this session was opened with a password.
         String token = tokenService.generateToken();
 
-        UserSessionEntity session = buildSession(userCredential.getUserProfile(), token, request.isPersistent());
+        UserSessionEntity session = buildSession(user, token, request.isPersistent(), device, null);
         sessionRepository.save(session);
 
         log.debug("Session opened [sessionId={}, persistent={}]", session.getId(), request.isPersistent());
@@ -98,13 +106,13 @@ public class AuthService {
     }
 
     /// Revokes the session with the given ID, signing that device out.
-    /// Revoking a session that no longer exists does nothing.
+    /// Revoking a session that no longer exists, or is already revoked, does nothing.
     public void revokeSession(Long sessionId) {
 
         Optional<UserSessionEntity> session = sessionRepository.findById(sessionId);
 
         // Nothing to revoke
-        if (session.isEmpty()) {
+        if (session.isEmpty() || session.get().getRevokedAt() != null) {
             return;
         }
 
@@ -119,13 +127,13 @@ public class AuthService {
     // Session Details
     // -----------------------------------------------------------------------
 
-    /// Returns basic details of the user signed in with the given session.
+    /// Returns the current session and the app-shell details of its user.
     public SessionResponse getSessionDetails(Long sessionId) {
 
         UserSessionEntity session = sessionRepository.findWithUserProfileById(sessionId)
             .orElseThrow(() -> new AuthenticationCredentialsNotFoundException("Session not found."));
 
-        return toSessionResponse(session.getUserProfile());
+        return toSessionResponse(session);
     }
 
 
@@ -148,6 +156,8 @@ public class AuthService {
             return Optional.empty();
         }
 
+        recordActivity(session.get());
+
         return Optional.of(buildAuthentication(session.get()));
     }
 
@@ -161,18 +171,45 @@ public class AuthService {
     /// @param user the user signing in
     /// @param token the raw session token; only its hash is kept
     /// @param persistent whether a long-lived ("remember me") session was requested
+    /// @param device the device the login comes from
+    /// @param authProvider display name of the identity provider used, or `null` for a password
     /// @return the session, ready to be saved
-    private UserSessionEntity buildSession(UserEntity user, String token, boolean persistent) {
+    private UserSessionEntity buildSession(UserEntity user, String token, boolean persistent, DeviceInfo device, String authProvider) {
         Instant now = Instant.now();
         Duration ttl = persistent ? REMEMBER_ME_SESSION_TTL : SESSION_TTL;
 
         UserSessionEntity session = new UserSessionEntity();
         session.setUserProfile(user);
         session.setSessionTokenHash(tokenService.hashToken(token));
+
+        // Device
+        session.setIpAddress(device.ipAddress());
+        session.setUserAgent(device.userAgent());
+        session.setDeviceName(device.deviceName());
         session.setLastActiveAt(now);
+
+        // Sign-in method and lifetime
+        session.setAuthProvider(authProvider);
+        session.setPersistent(persistent);
         session.setExpiresAt(now.plus(ttl));
 
         return session;
+    }
+
+    /// Records that the session was just used, for the devices list.
+    ///
+    /// Written at most once per [#ACTIVITY_WRITE_INTERVAL], so busy sessions don't cause a write per request.
+    /// The in-memory check skips the query when it can't update anything; the conditional update
+    /// keeps parallel requests from writing more than once.
+    ///
+    /// @param session the active session the request was authenticated with
+    private void recordActivity(UserSessionEntity session) {
+        Instant now = Instant.now();
+        Instant threshold = now.minus(ACTIVITY_WRITE_INTERVAL);
+
+        if (session.getLastActiveAt().isBefore(threshold)) {
+            sessionRepository.touchLastActiveAt(session.getId(), now, threshold);
+        }
     }
 
     /// Checks whether a session can still be used to authenticate.
@@ -201,19 +238,24 @@ public class AuthService {
         return UsernamePasswordAuthenticationToken.authenticated(principal, null, List.of());
     }
 
-    /// Maps the signed-in user to the session details response.
+    /// Maps the current session and its user to the session details response.
     ///
-    /// @param user the user the session belongs to
-    /// @return the basic user details for the frontend
-    private SessionResponse toSessionResponse(UserEntity user) {
-        return SessionResponse.builder()
+    /// @param session the current session, with its user loaded
+    /// @return the session details for the app shell
+    private SessionResponse toSessionResponse(UserSessionEntity session) {
+        UserEntity user = session.getUserProfile();
+
+        SessionResponse.User shellUser = SessionResponse.User.builder()
             .withDisplayName(user.getDisplayName())
-            .withEmail(user.getEmail())
-            .withInstitutionalId(user.getInstitutionalId())
-            .withDepartment(user.getDepartment())
             .withAvatarImageUrl(user.getAvatarImageUrl())
             .withLanguage(user.getLanguage())
             .withTimezone(user.getTimezone())
+            .build();
+
+        return SessionResponse.builder()
+            .withUser(shellUser)
+            .withExpiresAt(session.getExpiresAt())
+            .withPersistent(session.isPersistent())
             .build();
     }
 }

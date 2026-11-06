@@ -54,6 +54,9 @@ public class SecurityConfig {
                 // Login, since the caller has no token yet
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
 
+                // Logout, so a stale or missing token can still clear itself
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/logout").permitAll()
+
                 // Health checks for load balancers and probes
                 .requestMatchers("/actuator/health/**").permitAll()
 

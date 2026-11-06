@@ -1,5 +1,5 @@
 -- =======================================================
--- OpenShelves Schema (v1.1)
+-- OpenShelves Schema (v1.2)
 -- =======================================================
 
 
@@ -45,9 +45,9 @@ INSERT INTO lu_author_roles (code, label, description) VALUES
 
 
 -- -------------------------------------------------------
--- User Credential Types: lookup table
+-- Auth Provider Types: lookup table for SSO protocols
 -- -------------------------------------------------------
-CREATE TABLE lu_user_credential_types (
+CREATE TABLE lu_auth_provider_types (
     -- key
     code                VARCHAR(100)     NOT NULL,
 
@@ -56,12 +56,13 @@ CREATE TABLE lu_user_credential_types (
     description         TEXT,
 
     -- constraints
-    CONSTRAINT lu_user_credential_types_pk       PRIMARY KEY (code),
-    CONSTRAINT lu_user_credential_types_label_uk UNIQUE (label)
+    CONSTRAINT lu_auth_provider_types_pk       PRIMARY KEY (code),
+    CONSTRAINT lu_auth_provider_types_label_uk UNIQUE (label)
 );
 
-INSERT INTO lu_user_credential_types (code, label, description) VALUES
-    ('PASSWORD',   'Password',   'Standard Id-Password Login');
+INSERT INTO lu_auth_provider_types (code, label, description) VALUES
+    ('SAML',   'SAML',   'SAML 2.0 identity provider, e.g. Shibboleth'),
+    ('OIDC',   'OIDC',   'OpenID Connect identity provider, e.g. Google');
 
 
 -- -------------------------------------------------------
@@ -230,45 +231,108 @@ CREATE UNIQUE INDEX users_institutional_id_idx ON users (institutional_id);
 
 
 -- -------------------------------------------------------
--- User Credentials: how a user proves who they are
+-- Auth Providers: SSO identity providers, managed by library admins
 -- -------------------------------------------------------
-CREATE TABLE user_credentials (
+CREATE TABLE auth_providers (
     -- identity
     id                      BIGINT          NOT NULL GENERATED ALWAYS AS IDENTITY,
 
-    -- primary relationship
-    user_id                 BIGINT          NOT NULL,
+    -- core metadata
+    key                     TEXT            NOT NULL,              -- URL label, e.g. /sso/{key}/start
     type                    VARCHAR(100)    NOT NULL,
+    display_name            TEXT            NOT NULL,
 
-    -- metadata
-    metadata                JSONB,
+    -- sign-in page
+    enabled                 BOOLEAN         NOT NULL DEFAULT true,
+    sort_order              INT             NOT NULL DEFAULT 0,
 
-    -- secrets
-    password_hash           TEXT,
-    provider_key            TEXT,
+    -- provider identity
+    issuer                  TEXT            NOT NULL,              -- OIDC iss / SAML entityID
 
-    -- other details
-    failed_attempts         INT             NOT NULL DEFAULT 0,
-    locked_until            TIMESTAMPTZ,
-    last_used_at            TIMESTAMPTZ,
-    password_changed_at     TIMESTAMPTZ,
+    -- configuration
+    settings                JSONB           NOT NULL DEFAULT '{}', -- client ID, metadata URL, attribute mapping
+    client_secret           TEXT,                                  -- encrypted; key comes from the deployment environment
 
     -- audit
     created_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
     updated_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
 
     -- constraints
-    CONSTRAINT user_credentials_pk      PRIMARY KEY (id),
-    CONSTRAINT user_credentials_user_fk
-        FOREIGN KEY (user_id)           REFERENCES users (id) ON DELETE CASCADE,
-    CONSTRAINT user_credentials_type_fk
-        FOREIGN KEY (type)              REFERENCES lu_user_credential_types (code) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT user_credentials_password_chk
-        CHECK (type != 'PASSWORD' OR password_hash IS NOT NULL)
+    CONSTRAINT auth_providers_pk        PRIMARY KEY (id),
+    CONSTRAINT auth_providers_key_uk    UNIQUE (key),
+    CONSTRAINT auth_providers_issuer_uk UNIQUE (issuer),
+    CONSTRAINT auth_providers_type_fk
+        FOREIGN KEY (type)              REFERENCES lu_auth_provider_types (code) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE INDEX user_credentials_user_idx      ON user_credentials (user_id);
-CREATE UNIQUE INDEX user_credentials_password_idx ON user_credentials (user_id) WHERE type = 'PASSWORD';
+
+-- -------------------------------------------------------
+-- User Passwords: the password a user signs in with (at most one)
+-- -------------------------------------------------------
+CREATE TABLE user_passwords (
+    -- identity
+    id                      BIGINT          NOT NULL GENERATED ALWAYS AS IDENTITY,
+
+    -- primary relationship
+    user_id                 BIGINT          NOT NULL,
+
+    -- secret
+    password_hash           TEXT            NOT NULL,
+    password_changed_at     TIMESTAMPTZ,
+
+    -- lockout
+    failed_attempts         INT             NOT NULL DEFAULT 0,
+    locked_until            TIMESTAMPTZ,
+
+    -- usage
+    last_used_at            TIMESTAMPTZ,
+
+    -- audit
+    created_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
+    updated_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
+
+    -- constraints
+    CONSTRAINT user_passwords_pk        PRIMARY KEY (id),
+    CONSTRAINT user_passwords_user_uk   UNIQUE (user_id),
+    CONSTRAINT user_passwords_user_fk
+        FOREIGN KEY (user_id)           REFERENCES users (id) ON DELETE CASCADE
+);
+
+
+-- -------------------------------------------------------
+-- User Identities: SSO accounts a user has connected
+-- -------------------------------------------------------
+-- Matched to auth_providers by issuer, deliberately without a foreign key,
+-- so deleting and re-adding a provider keeps its users linked.
+CREATE TABLE user_identities (
+    -- identity
+    id                      BIGINT          NOT NULL GENERATED ALWAYS AS IDENTITY,
+
+    -- primary relationship
+    user_id                 BIGINT          NOT NULL,
+
+    -- identity at the provider
+    issuer                  TEXT            NOT NULL,              -- OIDC iss / SAML entityID
+    subject                 TEXT            NOT NULL,              -- OIDC sub / SAML NameID
+
+    -- metadata
+    metadata                JSONB,                                 -- display hints, e.g. email or name at the provider
+
+    -- usage
+    last_used_at            TIMESTAMPTZ,
+
+    -- audit
+    created_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
+    updated_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
+
+    -- constraints
+    CONSTRAINT user_identities_pk       PRIMARY KEY (id),
+    CONSTRAINT user_identities_uk       UNIQUE (issuer, subject),
+    CONSTRAINT user_identities_user_fk
+        FOREIGN KEY (user_id)           REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE INDEX user_identities_user_idx      ON user_identities (user_id);
 
 
 -- -------------------------------------------------------
@@ -291,7 +355,11 @@ CREATE TABLE user_sessions (
     device_location         TEXT,
     last_active_at          TIMESTAMPTZ       NOT NULL DEFAULT now(),
 
+    -- how it was opened (snapshot, no FK)
+    auth_provider           TEXT,                                  -- provider display name; null = password
+
     -- timeouts
+    is_persistent           BOOLEAN           NOT NULL DEFAULT false,  -- "keep me signed in"
     expires_at              TIMESTAMPTZ       NOT NULL,
     revoked_at              TIMESTAMPTZ,
 
@@ -306,3 +374,46 @@ CREATE TABLE user_sessions (
 
 CREATE INDEX user_sessions_user_idx                ON user_sessions (user_id);
 CREATE UNIQUE INDEX user_sessions_token_hash_idx   ON user_sessions (session_token_hash);
+
+
+-- -------------------------------------------------------
+-- SSO Codes: short-lived, single-use codes for SSO round-trips
+-- -------------------------------------------------------
+-- LOGIN: bridges the SSO callback and POST /sso/exchange.
+-- LINK:  starts connecting a provider from settings.
+-- Rows are deleted when used; expired ones are purged.
+CREATE TABLE sso_codes (
+    -- identity
+    id                      BIGINT          NOT NULL GENERATED ALWAYS AS IDENTITY,
+
+    -- primary relationship
+    user_id                 BIGINT          NOT NULL,
+    provider_key            TEXT            NOT NULL,
+
+    -- code (SHA-256 hashed)
+    purpose                 VARCHAR(10)     NOT NULL,
+    code_hash               TEXT            NOT NULL,
+
+    -- session options
+    is_persistent           BOOLEAN,                               -- LOGIN only
+
+    -- timeouts
+    expires_at              TIMESTAMPTZ       NOT NULL,
+
+    -- audit
+    created_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),
+
+    -- constraints
+    CONSTRAINT sso_codes_pk          PRIMARY KEY (id),
+    CONSTRAINT sso_codes_user_fk
+        FOREIGN KEY (user_id)           REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT sso_codes_provider_fk
+        FOREIGN KEY (provider_key)      REFERENCES auth_providers (key) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT sso_codes_purpose_chk
+        CHECK (purpose IN ('LOGIN', 'LINK')),
+    CONSTRAINT sso_codes_persistent_chk
+        CHECK ((purpose = 'LOGIN') = (is_persistent IS NOT NULL))
+);
+
+CREATE UNIQUE INDEX sso_codes_code_hash_idx        ON sso_codes (code_hash);
+CREATE INDEX sso_codes_expires_idx                 ON sso_codes (expires_at);

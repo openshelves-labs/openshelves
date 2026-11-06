@@ -1,7 +1,7 @@
 package com.openshelves.security.services;
 
-import com.openshelves.security.entity.UserCredentialEntity;
-import com.openshelves.security.repository.UserCredentialRepository;
+import com.openshelves.security.entity.UserPasswordEntity;
+import com.openshelves.security.repository.UserPasswordRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.LockedException;
@@ -12,9 +12,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-/// Service for tracking failed logins and locking credentials after repeated failures.
+/// Service for tracking failed logins and locking passwords after repeated failures.
 ///
-/// Every 5 consecutive failures lock the credential, for longer each time:
+/// Every 5 consecutive failures lock the password, for longer each time:
 /// 15 minutes, then 30 minutes, then 24 hours for every lock after that.
 /// Locks always expire on their own; a successful login clears the count.
 @Slf4j
@@ -31,24 +31,24 @@ public class LockoutService {
         Duration.ofHours(24)
     );
 
-    private final UserCredentialRepository credentialRepository;
+    private final UserPasswordRepository passwordRepository;
 
 
     // -----------------------------------------------------------------------
     // Lock Check
     // -----------------------------------------------------------------------
 
-    /// Rejects a login to a credential that is currently locked.
+    /// Rejects a login to a password that is currently locked.
     ///
     /// Called before the password is checked, so a locked account answers the same way
     /// whatever password is sent, and attempts made while locked don't count.
     ///
-    /// @param credential the credential the user is signing in with
-    /// @throws LockedException if the credential is locked
-    public void ensureCredentialNotLocked(UserCredentialEntity credential) {
-        if (isLocked(credential)) {
+    /// @param userPassword the password the user is signing in with
+    /// @throws LockedException if the password is locked
+    public void ensurePasswordNotLocked(UserPasswordEntity userPassword) {
+        if (isLocked(userPassword)) {
             // The message is shown to the user, so it includes the time left until the lock expires
-            String message = buildLockedMessage(credential.getLockedUntil());
+            String message = buildLockedMessage(userPassword.getLockedUntil());
             throw new LockedException(message);
         }
     }
@@ -58,52 +58,52 @@ public class LockoutService {
     // Attempt Tracking
     // -----------------------------------------------------------------------
 
-    /// Counts a failed login, and locks the credential when the count reaches the next threshold.
+    /// Counts a failed login, and locks the password when the count reaches the next threshold.
     ///
     /// Runs in its own transaction, so the count is saved even though the login itself fails.
     ///
-    /// @param credentialId the credential whose password was wrong
+    /// @param passwordId the password that was entered wrong
     @Transactional
-    public void recordFailedAttempt(Long credentialId) {
+    public void recordFailedAttempt(Long passwordId) {
 
         // Lock the row, so parallel failures can't overwrite each other's count
-        UserCredentialEntity credential = credentialRepository.findAndLockById(credentialId).orElseThrow();
+        UserPasswordEntity userPassword = passwordRepository.findAndLockById(passwordId).orElseThrow();
 
         // Locked by a parallel request since this one started; attempts made while locked don't count
-        if (isLocked(credential)) {
+        if (isLocked(userPassword)) {
             return;
         }
 
-        int failedAttempts = credential.getFailedAttempts() + 1;
-        credential.setFailedAttempts(failedAttempts);
+        int failedAttempts = userPassword.getFailedAttempts() + 1;
+        userPassword.setFailedAttempts(failedAttempts);
 
-        // Every FAILURES_PER_LOCK-th failure locks the credential
+        // Every FAILURES_PER_LOCK-th failure locks the password
         if (failedAttempts % FAILURES_PER_LOCK == 0) {
             Duration lockDuration = lockDurationFor(failedAttempts);
-            credential.setLockedUntil(Instant.now().plus(lockDuration));
+            userPassword.setLockedUntil(Instant.now().plus(lockDuration));
 
-            log.warn("Credential locked [credentialId={}, failedAttempts={}, duration={}]", credentialId, failedAttempts, lockDuration);
+            log.warn("Password locked [passwordId={}, failedAttempts={}, duration={}]", passwordId, failedAttempts, lockDuration);
         }
 
-        credentialRepository.save(credential);
+        passwordRepository.save(userPassword);
     }
 
     /// Clears the failure count and any lock after a successful login, and records when it was used.
     ///
-    /// @param credentialId the credential the user signed in with
-    /// @throws LockedException if a parallel request locked the credential since this login started
+    /// @param passwordId the password the user signed in with
+    /// @throws LockedException if a parallel request locked the password since this login started
     @Transactional
-    public void recordSuccessfulLogin(Long credentialId) {
-        UserCredentialEntity credential = credentialRepository.findAndLockById(credentialId).orElseThrow();
+    public void recordSuccessfulLogin(Long passwordId) {
+        UserPasswordEntity userPassword = passwordRepository.findAndLockById(passwordId).orElseThrow();
 
         // Locked by a parallel request since this one started; a correct password mustn't lift the lock
-        ensureCredentialNotLocked(credential);
+        ensurePasswordNotLocked(userPassword);
 
-        credential.setFailedAttempts(0);
-        credential.setLockedUntil(null);
-        credential.setLastUsedAt(Instant.now());
+        userPassword.setFailedAttempts(0);
+        userPassword.setLockedUntil(null);
+        userPassword.setLastUsedAt(Instant.now());
 
-        credentialRepository.save(credential);
+        passwordRepository.save(userPassword);
     }
 
 
@@ -111,7 +111,7 @@ public class LockoutService {
     // Helper Methods
     // -----------------------------------------------------------------------
 
-    /// Returns how long to lock the credential for, based on how many locks it has had in a row.
+    /// Returns how long to lock the password for, based on how many locks it has had in a row.
     ///
     /// @param failedAttempts the failure count that triggered this lock (a multiple of [#FAILURES_PER_LOCK])
     /// @return 15 minutes for the 1st lock, 30 for the 2nd, and 24 hours from the 3rd on
@@ -122,16 +122,16 @@ public class LockoutService {
         return LOCK_DURATIONS.get(index);
     }
 
-    /// Checks whether the credential is locked right now.
+    /// Checks whether the password is locked right now.
     ///
-    /// @param credential the credential to check
+    /// @param userPassword the password to check
     /// @return `true` if it has a lock that hasn't expired yet
-    private boolean isLocked(UserCredentialEntity credential) {
-        Instant lockedUntil = credential.getLockedUntil();
+    private boolean isLocked(UserPasswordEntity userPassword) {
+        Instant lockedUntil = userPassword.getLockedUntil();
         return lockedUntil != null && lockedUntil.isAfter(Instant.now());
     }
 
-    /// Builds the message shown for a locked credential, with the time left until it unlocks.
+    /// Builds the message shown for a locked password, with the time left until it unlocks.
     ///
     /// The time is rounded up, in minutes below an hour and in hours above,
     /// e.g. "Try again in 12 minutes." or "Try again in 24 hours."

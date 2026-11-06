@@ -4,28 +4,41 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import java.time.Instant;
+
 /// Response body for `GET /api/v1/auth/session`.
 ///
-/// Basic details of the signed-in user.
+/// The small set of data every page needs to render the app shell. Called on every app load,
+/// so it stays small; the full profile belongs to the profile endpoints.
 @Value
 @Builder(setterPrefix = "with")
 @Jacksonized
 public class SessionResponse {
 
-    String displayName;
+    /// Only what the app shell displays or formats with.
+    User user;
 
-    String email;
+    /// When the session expires, in UTC.
+    Instant expiresAt;
 
-    /// Library card or student ID.
-    String institutionalId;
+    /// Whether this is a long-lived ("keep me signed in") session.
+    boolean persistent;
 
-    String department;
 
-    String avatarImageUrl;
+    /// The signed-in user, as shown in the app shell.
+    @Value
+    @Builder(setterPrefix = "with")
+    @Jacksonized
+    public static class User {
 
-    /// ISO language code.
-    String language;
+        String displayName;
 
-    /// IANA time zone, e.g. `Asia/Kolkata`.
-    String timezone;
+        String avatarImageUrl;
+
+        /// ISO language code.
+        String language;
+
+        /// IANA time zone, e.g. `Asia/Kolkata`.
+        String timezone;
+    }
 }

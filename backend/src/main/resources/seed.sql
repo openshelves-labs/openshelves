@@ -16,6 +16,6 @@ WITH sample_user AS (
     VALUES ('Admin', 'admin@openshelves.local', 'ADMIN001', 'Library Services', 'en', 'Asia/Kolkata')
     RETURNING id
 )
-INSERT INTO user_credentials (user_id, type, password_hash)
-SELECT id, 'PASSWORD', '{bcrypt}$2a$10$vVW7vinVLdMacWhhaTEFpuN8funosORsqrVD119id6KZWhHKRLOGK'
+INSERT INTO user_passwords (user_id, password_hash)
+SELECT id, '{bcrypt}$2a$10$vVW7vinVLdMacWhhaTEFpuN8funosORsqrVD119id6KZWhHKRLOGK'
 FROM sample_user;

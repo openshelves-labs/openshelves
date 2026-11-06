@@ -58,13 +58,28 @@ public class UserSessionEntity extends BaseEntity<Long> {
     @Column(name = "device_location")
     private String deviceLocation;
 
+    /// Last request made with this session; written at most once a minute.
     @Column(name = "last_active_at", nullable = false)
     private Instant lastActiveAt;
 
 
     // -------------------------------------------------------------------------
+    // Sign-in method
+    // -------------------------------------------------------------------------
+
+    /// Display name of the identity provider the session was opened with, or `null` for a password.
+    /// A snapshot taken at sign-in, so later provider changes don't affect it.
+    @Column(name = "auth_provider", updatable = false)
+    private String authProvider;
+
+
+    // -------------------------------------------------------------------------
     // Timeouts
     // -------------------------------------------------------------------------
+
+    /// Whether this is a long-lived ("keep me signed in") session.
+    @Column(name = "is_persistent", nullable = false, updatable = false)
+    private boolean persistent;
 
     @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;

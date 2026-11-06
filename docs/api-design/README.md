@@ -18,7 +18,7 @@ It was worked out screen by screen from the [demo site](../poc/demo-site/README.
 
 | # | | Group | What it covers | Base path |
 |---|---|---|---|---|
-| 01 | 🔐 | [Auth & Sessions](./01-auth-sessions.md) | Sign in/out, current session, signed-in devices, SSO | `/auth` |
+| 01 | 🔐 | [Auth & Sessions](./01-auth-sessions.md) | Sign in/out, current session, signed-in devices, SSO, sign-in methods | `/auth` |
 | 02 | 👤 | [Profile & Settings](./02-profile-settings.md) | Who you are, and how the app behaves for you | `/profile`, `/settings` |
 | 03 | 🔎 | [Catalog & Discovery](./03-catalog-discovery.md) | Search, book detail, new arrivals, recommendations | `/books` |
 | 04 | 🔄 | [Circulation](./04-circulation.md) | Loans, renewals, holds, branches, borrowing status | `/loans`, `/holds`, `/branches` |

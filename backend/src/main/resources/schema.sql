@@ -250,8 +250,8 @@ CREATE TABLE auth_providers (
     issuer                  TEXT            NOT NULL,              -- OIDC iss / SAML entityID
 
     -- configuration
-    settings                JSONB           NOT NULL DEFAULT '{}', -- client ID, metadata URL, attribute mapping
-    client_secret           TEXT,                                  -- encrypted; key comes from the deployment environment
+    settings                JSONB           NOT NULL DEFAULT '{}', -- client ID, IdP metadata, attribute mapping, SAML SP certificate
+    secret                  TEXT,                                  -- encrypted: OIDC client secret or SAML SP private key; key comes from the deployment environment
 
     -- audit
     created_at              TIMESTAMPTZ       NOT NULL DEFAULT now(),

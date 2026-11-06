@@ -50,6 +50,19 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration   # No default in-memory user; auth uses our own bearer tokens
+      - org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientAutoConfiguration                       # SSO providers come from the auth_providers table, never from config
+      - org.springframework.boot.security.oauth2.client.autoconfigure.servlet.OAuth2ClientWebSecurityAutoConfiguration
+      - org.springframework.boot.security.saml2.autoconfigure.Saml2RelyingPartyAutoConfiguration
+
+# OpenShelves Configuration
+openshelves:
+  # Frontend base URL; the browser is sent back here at the end of an SSO round-trip
+  frontend-url: ${OPENSHELVES_FRONTEND_URL:http://localhost:3000}
+
+  security:
+    # AES-256 key (32 bytes, Base64) encrypting provider secrets and SSO cookies. Needed only for SSO.
+    # Generate with: openssl rand -base64 32
+    secret-key: ${OPENSHELVES_SECRET_KEY:}
 
 # Logging Configuration
 logging:

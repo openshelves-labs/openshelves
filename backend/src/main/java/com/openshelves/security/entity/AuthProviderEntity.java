@@ -13,6 +13,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 
 /// Entity representing an SSO identity provider (SAML or OIDC), managed by library admins.
 @Entity
@@ -63,14 +64,14 @@ public class AuthProviderEntity extends BaseEntity<Long> {
     @Column(name = "issuer", nullable = false)
     private String issuer;
 
-    /// Client ID, metadata URL, attribute mapping, etc.
+    /// Client ID, IdP metadata, attribute mapping, and for SAML our SP certificate (public).
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "settings", nullable = false)
     private Map<String, Object> settings;
 
-    /// OIDC client secret, encrypted.
-    @Column(name = "client_secret")
-    private String clientSecret;
+    /// Encrypted secret, by type: the OIDC client secret, or our SAML SP private key.
+    @Column(name = "secret")
+    private String secret;
 
 
     // -------------------------------------------------------------------------
@@ -84,4 +85,33 @@ public class AuthProviderEntity extends BaseEntity<Long> {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+
+    // -------------------------------------------------------------------------
+    // Settings Access
+    // -------------------------------------------------------------------------
+
+    /// Reads a top-level text setting, e.g. `clientId` or `metadataUrl`.
+    ///
+    /// @return the value, or empty if it's missing or blank
+    public Optional<String> setting(String name) {
+        return Optional.ofNullable(settings)
+            .map(s -> s.get(name))
+            .map(Object::toString)
+            .filter(value -> !value.isBlank());
+    }
+
+    /// Reads which provider attribute holds a field, from `settings.attributeMapping`,
+    /// e.g. `attributeMapping.subject = "urn:oid:1.3.6.1.4.1.5923.1.1.1.6"`.
+    ///
+    /// @param field `subject`, `email` or `name`
+    /// @return the attribute name, or empty to use the protocol's default
+    public Optional<String> mappedAttribute(String field) {
+        return Optional.ofNullable(settings)
+            .map(s -> s.get("attributeMapping"))
+            .filter(Map.class::isInstance)
+            .map(mapping -> ((Map<?, ?>) mapping).get(field))
+            .map(Object::toString)
+            .filter(value -> !value.isBlank());
+    }
 }

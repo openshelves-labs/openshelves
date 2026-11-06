@@ -58,8 +58,8 @@ erDiagram
         boolean enabled
         int sort_order
         text issuer "unique, OIDC iss / SAML entityID"
-        jsonb settings "client ID, metadata URL, attribute mapping"
-        text client_secret "encrypted"
+        jsonb settings "client ID, IdP metadata, attribute mapping, SP certificate"
+        text secret "encrypted: OIDC client secret / SAML SP private key"
     }
     USER_IDENTITIES {
         bigint id
@@ -97,7 +97,8 @@ erDiagram
 - 🏷️ Naming: `/auth/session` is always *the current one*; all of a user's sessions are exposed as **devices**.
 - 🏛️ An SSO identity is **`(issuer, subject)`**, as OIDC and SAML define it: the provider's own ID (OIDC `iss`, SAML `entityID`) plus the user's ID there. Unique together, so two providers can never collide. The provider key used in URLs (`campus-shibboleth`) is only a label.
 - 🏛️ Identity providers live in **`auth_providers`**, so library admins can add, edit or disable them without a redeploy. Identities match a provider by `issuer`, not a foreign key, so deleting and re-adding a provider keeps its users linked.
-- 🔐 Provider secrets (OIDC client secret, SAML signing keys) are **encrypted** in the table. The encryption key comes from the deployment environment, never the database.
+- 🔐 Each provider has one **encrypted** `secret`: the OIDC client secret, or for SAML our own private key. The encryption key comes from the deployment environment, never the database; it's the only auth secret kept outside it.
+- 🗝️ Every SAML provider gets **its own key pair**, generated when the provider is added. We sign requests and decrypt assertions with it; its certificate goes in `settings` and in that provider's [metadata](#get-apiv1authssoprovidermetadata). Keys rotate one IdP at a time, and deleting a provider removes its key.
 - 🔒 Lockout lives on `user_passwords` only. For SSO, the identity provider handles it.
 - 📝 Each session records **how** it was opened in `auth_provider`: `null` for a password, otherwise the provider's display name. A snapshot taken at sign-in, not a foreign key. Unlinking an identity or renaming a provider doesn't touch existing sessions.
 - 🎟️ `sso_codes` holds short-lived, single-use codes: `LOGIN` bridges the SSO callback and `POST /sso/exchange`, `LINK` starts [connecting a provider](#-sign-in-methods). A row is deleted when it's used. The session is only opened at exchange, so `user_sessions` holds nothing but signed-in devices.
@@ -145,7 +146,8 @@ flowchart LR
 | | `DELETE` | `/api/v1/auth/devices` | 🔒 Bearer | Sign out all *other* devices |
 | 🏛️ SSO | `GET` | `/api/v1/auth/providers` | 🌐 Public | Options for the login dropdown |
 | | `GET` | `/api/v1/auth/sso/{provider}/start` | 🌐 Public | Redirect to the identity provider |
-| | `GET` / `POST` | `/api/v1/auth/sso/{provider}/callback` | 🌐 Public | Identity provider returns here |
+| | `GET` | `/api/v1/auth/sso/{provider}/oidc-callback` | 🌐 Public | OIDC provider returns here |
+| | `POST` | `/api/v1/auth/sso/{provider}/saml-callback` | 🌐 Public | SAML provider returns here (ACS) |
 | | `POST` | `/api/v1/auth/sso/exchange` | 🌐 Public | One-time code → token |
 | | `GET` | `/api/v1/auth/sso/{provider}/metadata` | 🌐 Public | SAML service-provider metadata for the university's IT |
 | 🔗 Sign-in methods | `GET` | `/api/v1/auth/identities` | 🔒 Bearer | Providers I've connected |
@@ -352,15 +354,16 @@ sequenceDiagram
     participant IdP as 🏛️ Identity Provider
 
     U->>BE: GET /auth/sso/{provider}/start?persistent=…&returnTo=…
-    BE-->>U: 302 → IdP (persistent + returnTo in state / RelayState)
+    BE->>BE: Context (persistent, returnTo) → encrypted cookie
+    BE-->>U: 302 → IdP (pending request in a second encrypted cookie)
     U->>IdP: Sign in at the university
-    IdP-->>BE: callback (OIDC: GET · SAML: POST to ACS)
+    IdP-->>BE: GET oidc-callback · POST saml-callback
     BE->>BE: Verify assertion → find user_identities row by (issuer, subject)
     alt identity not linked / user disabled
         BE-->>U: 302 → {frontend}/auth/callback?error=IDENTITY_NOT_LINKED or ACCOUNT_DISABLED
     else found & active
         BE->>BE: Store LOGIN code hash in sso_codes (~60 s, with provider_key + persistent)
-        BE-->>U: 302 → {frontend}/auth/callback?code=…
+        BE-->>U: 302 → {frontend}/auth/callback?code=…&returnTo=…
     end
     U->>FE: Load callback page
     FE->>BE: POST /auth/sso/exchange { code }
@@ -370,8 +373,8 @@ sequenceDiagram
 
 | Endpoint | What it does |
 |---|---|
-| `GET /sso/{provider}/start` | Redirects to the identity provider. Carries `persistent` and `returnTo` through the round-trip, or a `link` code when [connecting a provider](#-sign-in-methods). `404` if the provider is unknown or disabled. |
-| `GET` / `POST /sso/{provider}/callback` | Identity provider returns here (OIDC `GET`, SAML ACS `POST`). Signs the user in, or redirects with `error` (see below). |
+| `GET /sso/{provider}/start` | Redirects to the identity provider. Carries `persistent` and `returnTo` through the round-trip, or a `link` code when [connecting a provider](#-sign-in-methods). `404` if the provider is unknown or disabled. Reached by browser navigation, never `fetch`. |
+| `GET /sso/{provider}/oidc-callback` · `POST /sso/{provider}/saml-callback` | Identity provider returns here: one path per protocol, so each is handled by its own Spring Security filter. Signs the user in, or redirects with `error` (see below). An unknown provider, or one of the other protocol, counts as a failed sign-in. |
 | `POST /sso/exchange` | Swaps the one-time code for `{ token, expiresAt }`, same shape as login. Deletes the code and opens the session. `401 INVALID_CREDENTIALS` if the code is unknown, used or expired. |
 
 **Callback errors** (sent as `?error=` on the frontend callback URL, nothing in the URL reveals the user)
@@ -380,10 +383,11 @@ sequenceDiagram
 |---|---|
 | 🚪 `IDENTITY_NOT_LINKED` | No identity matches `(issuer, subject)`. The user must sign in another way and [connect the provider](#-sign-in-methods) first. SSO never creates users. |
 | 🚫 `ACCOUNT_DISABLED` | Identity found, but `users.is_active = false` |
+| ⚠️ `SSO_FAILED` | The round-trip itself failed: cancelled at the provider, an invalid response, or it took longer than 10 minutes |
 
 ### `GET /api/v1/auth/sso/{provider}/metadata`
 
-SAML only. Returns OpenShelves' **service-provider metadata** (XML): entity ID, ACS URL (the callback) and signing certificate. The university's IT imports it into their IdP to register OpenShelves.
+SAML only. Returns OpenShelves' **service-provider metadata** (XML): entity ID, ACS URL (`/sso/{provider}/saml-callback`) and **this provider's** certificate, used for both signing and encryption. The university's IT imports it into their IdP to register OpenShelves.
 
 - `404` for an unknown, disabled or OIDC provider.
 - Served by Spring Security's SAML2 metadata filter, mapped to this path.
@@ -392,7 +396,8 @@ SAML only. Returns OpenShelves' **service-provider metadata** (XML): entity ID, 
 
 - 🚪 **No JIT creation:** SSO only signs in users who already [connected that provider](#-sign-in-methods) from settings. No matching by email, so an identity provider can't claim an existing account just by asserting its email.
 - 🙈 **One-time code, not the token, in the URL:** URLs end up in browser history, logs and `Referer` headers.
-- ✅ **`returnTo` is validated** against the allowed frontend origins (no open redirects).
+- ✅ **`returnTo` is a frontend path** (e.g. `/books/42`), handed back on the callback URL for the frontend to open after exchange. Anything that isn't a plain path is dropped, so it can't redirect elsewhere.
+- 🍪 **No server session:** the round-trip state lives in two short-lived, encrypted, `HttpOnly` cookies scoped to `/api/v1/auth/sso` (`SameSite=Lax` for OIDC, `None` for SAML, which posts back from the provider's site). The frontend never touches them.
 - 🧱 **Built on Spring Security's SAML2 / OAuth2 *login* support**, not the resource-server support that bearer auth deliberately avoids.
 
 ---
@@ -449,7 +454,7 @@ sequenceDiagram
     BE->>BE: Check link code, delete it
     BE-->>U: 302 → IdP (user ID in state / RelayState)
     U->>IdP: Sign in at the provider
-    IdP-->>BE: callback
+    IdP-->>BE: oidc-callback or saml-callback
     BE->>BE: Verify assertion
     alt (issuer, subject) linked to another user
         BE-->>U: 302 → {frontend}/settings/sign-in-methods?error=IDENTITY_IN_USE

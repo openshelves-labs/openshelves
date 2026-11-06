@@ -31,6 +31,16 @@ java {
 
 repositories {
     mavenCentral()
+
+    // OpenSAML (needed by Spring's SAML2 support) is published only on Shibboleth's repository.
+    // Limited to its groups, so nothing else is resolved from there.
+    maven {
+        url = 'https://build.shibboleth.net/maven/releases'
+        content {
+            includeGroupByRegex 'org\\.opensaml.*'
+            includeGroupByRegex 'net\\.shibboleth.*'
+        }
+    }
 }
 
 configurations {
@@ -49,6 +59,8 @@ dependencies {
 
     // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'    // OIDC sign-in
+    implementation 'org.springframework.boot:spring-boot-starter-security-saml2'            // SAML sign-in
 
     // Bean Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'

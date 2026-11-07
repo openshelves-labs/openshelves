@@ -9,6 +9,7 @@ import com.openshelves.security.repository.AuthProviderRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -50,7 +51,10 @@ public class SsoCallbackHandler implements AuthenticationSuccessHandler, Authent
     private final AuthProviderRepository providerRepository;
 
     /// What the verified response says about the user.
-    private record VerifiedIdentity(String subject, Map<String, Object> metadata) {
+    @Value
+    private static class VerifiedIdentity {
+        String subject;
+        Map<String, Object> metadata;
     }
 
 
@@ -81,10 +85,10 @@ public class SsoCallbackHandler implements AuthenticationSuccessHandler, Authent
             VerifiedIdentity identity = identityOf(authentication, provider);
 
             if (context.get().isLink()) {
-                ssoService.completeLink(context.get().getLinkUserId(), provider.getIssuer(), identity.subject(), identity.metadata());
+                ssoService.completeLink(context.get().getLinkUserId(), provider.getIssuer(), identity.getSubject(), identity.getMetadata());
                 redirect(response, context.get().getFrontendRedirectUrl(), "linked", providerKey);
             } else {
-                String code = ssoService.completeLogin(providerKey, provider.getIssuer(), identity.subject(), context.get().isPersistent(), context.get().getCodeChallenge());
+                String code = ssoService.completeLogin(providerKey, provider.getIssuer(), identity.getSubject(), context.get().isPersistent(), context.get().getCodeChallenge());
                 redirect(response, context.get().getFrontendRedirectUrl(), "code", code);
             }
         } catch (AuthenticationException e) {

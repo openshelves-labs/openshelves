@@ -166,6 +166,28 @@ flowchart LR
 | | `POST` | `/api/v1/auth/password/reset-request` | 🌐 Public | Email me a link to set a new password |
 | | `POST` | `/api/v1/auth/password/reset` | 🌐 Public | Set a new password with the emailed link |
 
+### 🚦 Rate limits
+
+Limited **per client IP, per minute**. Endpoints that check credentials or send email have their own limits: lockout only slows down guesses against one account, these also slow down one client trying many. They're generous enough for a campus where many users share a few IPs.
+
+| Requests | Per IP per minute |
+|---|---|
+| `POST /auth/login` | 60 |
+| `POST /auth/sso/exchange` | 60 |
+| `POST /auth/password/reset-request` | 5 |
+| `POST /auth/password/reset` | 10 |
+| Any other request without a valid token | 300, shared (catches floods) |
+
+Signed-in requests and health checks (`/actuator/health`) aren't limited. Over a limit: `429 Too Many Requests` with a `Retry-After` header (seconds). Counts are per app instance, kept in memory.
+
+---|---|
+| `POST /auth/login` | 10 |
+| `POST /auth/sso/exchange` | 10 |
+| `POST /auth/password/reset-request` | 5 |
+| `POST /auth/password/reset` | 10 |
+
+Over the limit: `429 Too Many Requests` with a `Retry-After` header (seconds). Counts are per app instance, kept in memory.
+
 ---
 
 ## 🔑 Sign in & out
@@ -601,4 +623,3 @@ Sets the password and returns `204`. The user then signs in normally.
 | 💤 | **Idle timeout** | `last_active_at` is already tracked, so an idle rule (e.g. for kiosk / non-persistent sessions) can be added later without a schema change. |
 | 🚪 | **SSO single logout** | Signing out at the identity provider too. Sessions would then need the provider's `issuer`, since `auth_provider` is only a display name. |
 | 🧹 | **Session cleanup** | Revoked and expired `user_sessions` rows, and expired `sso_codes`, are never removed. A periodic purge (e.g. daily, keeping a short audit window) keeps the tables small. |
-| 🚦 | **Login rate limit per IP** | Lockout is per account, so one password tried against many accounts isn't slowed down. A per-IP limit on `POST /auth/login` covers that. |

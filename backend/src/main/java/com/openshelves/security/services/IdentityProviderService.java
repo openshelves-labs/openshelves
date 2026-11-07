@@ -5,6 +5,7 @@ import com.openshelves.security.entity.AuthProviderEntity;
 import com.openshelves.security.enums.AuthProviderType;
 import com.openshelves.security.repository.AuthProviderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
@@ -74,11 +75,17 @@ public class IdentityProviderService {
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
-    private record Cached<T>(T registration, Instant loadedAt) {
+    @Value
+    private static class Cached<T> {
+        T registration;
+        Instant loadedAt;
     }
 
     /// One SAML provider's key pair.
-    private record SamlKeys(PrivateKey privateKey, X509Certificate certificate) {
+    @Value
+    private static class SamlKeys {
+        PrivateKey privateKey;
+        X509Certificate certificate;
     }
 
 
@@ -103,8 +110,8 @@ public class IdentityProviderService {
     /// Returns a cached registration, or loads the provider and builds a fresh one.
     private <T> T find(String providerKey, AuthProviderType type, Map<String, Cached<T>> cache, Function<AuthProviderEntity, T> builder) {
         Cached<T> cached = cache.get(providerKey);
-        if (cached != null && cached.loadedAt().plus(CACHE_TTL).isAfter(Instant.now())) {
-            return cached.registration();
+        if (cached != null && cached.getLoadedAt().plus(CACHE_TTL).isAfter(Instant.now())) {
+            return cached.getRegistration();
         }
 
         Optional<AuthProviderEntity> provider = providerRepository.findByKeyAndEnabledTrue(providerKey)
@@ -174,8 +181,8 @@ public class IdentityProviderService {
         SamlKeys keys = loadOrCreateSamlKeys(provider);
 
         return builder
-            .signingX509Credentials(credentials -> credentials.add(Saml2X509Credential.signing(keys.privateKey(), keys.certificate())))
-            .decryptionX509Credentials(credentials -> credentials.add(Saml2X509Credential.decryption(keys.privateKey(), keys.certificate())))
+            .signingX509Credentials(credentials -> credentials.add(Saml2X509Credential.signing(keys.getPrivateKey(), keys.getCertificate())))
+            .decryptionX509Credentials(credentials -> credentials.add(Saml2X509Credential.decryption(keys.getPrivateKey(), keys.getCertificate())))
             .build();
     }
 
@@ -195,8 +202,8 @@ public class IdentityProviderService {
         }
 
         SamlKeys generated = generateSamlKeys(provider.getKey());
-        String encryptedKey = cipher.encryptString(toPem("PRIVATE KEY", generated.privateKey().getEncoded()));
-        String certificatePem = toPem("CERTIFICATE", encoded(generated.certificate()));
+        String encryptedKey = cipher.encryptString(toPem("PRIVATE KEY", generated.getPrivateKey().getEncoded()));
+        String certificatePem = toPem("CERTIFICATE", encoded(generated.getCertificate()));
 
         if (providerRepository.storeSamlKeysIfAbsent(provider.getId(), encryptedKey, certificatePem) == 1) {
             log.info("Generated SAML key pair [key={}]", provider.getKey());

@@ -58,6 +58,20 @@ spring:
 
 # OpenShelves Configuration
 openshelves:
+  # Per-IP request limits (RateLimitFilter). Endpoints that check credentials or send email get their own:
+  # lockout slows guesses against one account, these slow one client trying many. Generous enough for a
+  # campus where many users share a few IPs. Other unauthenticated requests share one limit that only
+  # catches floods. Signed-in requests and exempt paths aren't limited.
+  rate-limit:
+    unauthenticated-per-minute: 300
+    exempt-paths:
+      - /actuator/health
+    endpoints:
+      - { method: POST, path: /api/v1/auth/login, per-minute: 60 }
+      - { method: POST, path: /api/v1/auth/sso/exchange, per-minute: 60 }
+      - { method: POST, path: /api/v1/auth/password/reset-request, per-minute: 5 }
+      - { method: POST, path: /api/v1/auth/password/reset, per-minute: 10 }
+
   security:
     # AES-256 key (32 bytes, Base64) encrypting provider secrets and SSO cookies.
     # The default is for local development only; always set OPENSHELVES_SECRET_KEY elsewhere.

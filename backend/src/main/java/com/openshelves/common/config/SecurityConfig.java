@@ -1,5 +1,7 @@
 package com.openshelves.common.config;
 
+import com.openshelves.common.filter.RateLimitFilter;
+import com.openshelves.common.filter.RateLimitProperties;
 import com.openshelves.security.filter.BearerTokenFilter;
 import com.openshelves.security.services.AuthService;
 import com.openshelves.security.services.IdentityProviderService;
@@ -10,6 +12,7 @@ import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +38,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(RateLimitProperties.class)
 public class SecurityConfig {
 
     @Value("${spring.cors.allowed-origins}")
@@ -46,8 +50,12 @@ public class SecurityConfig {
                                                    IdentityProviderService identityProviderService,
                                                    SsoCookieStore ssoCookieStore,
                                                    RelyingPartyRegistrationRepository samlRegistrations,
-                                                   SsoCallbackHandler ssoCallbackHandler) throws Exception {
+                                                   SsoCallbackHandler ssoCallbackHandler,
+                                                   RateLimitProperties rateLimitProperties) throws Exception {
         Filter authFilter = new BearerTokenFilter(authService);
+
+        // Per-IP rate limits, from openshelves.rate-limit in application.yml
+        Filter rateLimitFilter = new RateLimitFilter(rateLimitProperties);
 
         http
             // CORS configuration
@@ -87,8 +95,9 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // Auth Filter
+            // Bearer token authentication, then rate limits (which need to know who's signed in)
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(rateLimitFilter, BearerTokenFilter.class)
 
             // SSO with OIDC: providers from auth_providers, pending request in a cookie, our own callback handling.
             // Start is our controller (/sso/{provider}/start), which redirects to the authorize endpoint below.

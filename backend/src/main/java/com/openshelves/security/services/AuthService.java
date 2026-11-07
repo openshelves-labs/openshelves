@@ -194,9 +194,9 @@ public class AuthService {
         session.setSessionTokenHash(tokenService.hashToken(token));
 
         // Device
-        session.setIpAddress(device.ipAddress());
-        session.setUserAgent(device.userAgent());
-        session.setDeviceName(device.deviceName());
+        session.setIpAddress(device.getIpAddress());
+        session.setUserAgent(device.getUserAgent());
+        session.setDeviceName(device.getDeviceName());
         session.setLastActiveAt(now);
 
         // Sign-in method and lifetime

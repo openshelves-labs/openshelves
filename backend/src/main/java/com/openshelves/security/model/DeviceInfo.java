@@ -1,15 +1,24 @@
 package com.openshelves.security.model;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Builder;
+import lombok.Value;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 
 /// The device a login comes from, as recorded on its session.
-///
-/// @param ipAddress  the client IP address
-/// @param userAgent  the raw `User-Agent` header
-/// @param deviceName a readable name derived from the user agent, e.g. "Chrome on macOS"; `null` if unrecognised
-public record DeviceInfo(String ipAddress, String userAgent, String deviceName) {
+@Value
+@Builder(setterPrefix = "with")
+public class DeviceInfo {
+
+    /// The client IP address.
+    String ipAddress;
+
+    /// The raw `User-Agent` header.
+    String userAgent;
+
+    /// A readable name derived from the user agent, e.g. "Chrome on macOS"; `null` if unrecognised.
+    String deviceName;
 
     /// Reads the device details from the login request.
     ///
@@ -18,7 +27,11 @@ public record DeviceInfo(String ipAddress, String userAgent, String deviceName) 
     public static DeviceInfo from(HttpServletRequest request) {
         String userAgent = StringUtils.trimToNull(request.getHeader(HttpHeaders.USER_AGENT));
 
-        return new DeviceInfo(request.getRemoteAddr(), userAgent, describe(userAgent));
+        return DeviceInfo.builder()
+            .withIpAddress(request.getRemoteAddr())
+            .withUserAgent(userAgent)
+            .withDeviceName(describe(userAgent))
+            .build();
     }
 
 

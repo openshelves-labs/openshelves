@@ -45,13 +45,20 @@ public class SecurityConfig {
     private List<String> allowedOrigins;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   AuthService authService,
-                                                   IdentityProviderService identityProviderService,
-                                                   SsoCookieStore ssoCookieStore,
-                                                   RelyingPartyRegistrationRepository samlRegistrations,
-                                                   SsoCallbackHandler ssoCallbackHandler,
-                                                   RateLimitProperties rateLimitProperties) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+
+            // Services for authentication and SSO handling
+            AuthService authService,
+            SsoCookieStore ssoCookieStore,
+            SsoCallbackHandler ssoCallbackHandler,
+            IdentityProviderService identityProviderService,
+            RelyingPartyRegistrationRepository samlRegistrations,
+
+            // Configuration properties for rate limiting
+            RateLimitProperties rateLimitProperties
+    ) {
+
         Filter authFilter = new BearerTokenFilter(authService);
 
         // Per-IP rate limits, from openshelves.rate-limit in application.yml
@@ -139,8 +146,8 @@ public class SecurityConfig {
 
     /// SAML providers from `auth_providers`, as a bean: the SAML metadata endpoint looks it up from the context.
     @Bean
-    public RelyingPartyRegistrationRepository samlRegistrations(IdentityProviderService identityProviderService) {
-        return identityProviderService::findSaml;
+    public RelyingPartyRegistrationRepository samlRegistrations(IdentityProviderService idpService) {
+        return idpService::findSaml;
     }
 
     @Bean

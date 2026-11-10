@@ -180,14 +180,6 @@ Limited **per client IP, per minute**. Endpoints that check credentials or send 
 
 Signed-in requests and health checks (`/actuator/health`) aren't limited. Over a limit: `429 Too Many Requests` with a `Retry-After` header (seconds). Counts are per app instance, kept in memory.
 
----|---|
-| `POST /auth/login` | 10 |
-| `POST /auth/sso/exchange` | 10 |
-| `POST /auth/password/reset-request` | 5 |
-| `POST /auth/password/reset` | 10 |
-
-Over the limit: `429 Too Many Requests` with a `Retry-After` header (seconds). Counts are per app instance, kept in memory.
-
 ---
 
 ## 🔑 Sign in & out

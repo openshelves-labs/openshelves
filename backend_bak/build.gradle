@@ -1,0 +1,162 @@
+plugins {
+    id 'org.springframework.boot' version '4.1.2'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+
+    // Dependency Updater
+    id 'io.github.ben-manes.versions' version '0.67.0'
+
+    // IDEs
+    id 'idea'
+}
+
+group = 'com.openshelves'
+version = '0.0.1-alpha'
+
+description = 'Modernizing the university library experience. OpenShelves turns complex academic catalogs ' +
+    'into intuitive, open discovery platforms for the digital age.'
+
+
+// Requires Java 25 from Azul Systems
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+        vendor = JvmVendorSpec.AZUL
+    }
+}
+
+
+// Dependency management and Repository configuration
+
+repositories {
+    mavenCentral()
+
+    // OpenSAML (needed by Spring's SAML2 support) is published only on Shibboleth's repository.
+    // Limited to its groups, so nothing else is resolved from there.
+    maven {
+        url = 'https://build.shibboleth.net/maven/releases'
+        content {
+            includeGroupByRegex 'org\\.opensaml.*'
+            includeGroupByRegex 'net\\.shibboleth.*'
+        }
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    // Spring Web
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+    // Spring JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'    // OIDC sign-in
+    implementation 'org.springframework.boot:spring-boot-starter-security-saml2'            // SAML sign-in
+    implementation 'org.bouncycastle:bcpkix-jdk18on'                                        // Self-signed certificates for SAML key pairs
+
+    // Bean Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Actuator (health, metrics)
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // HTTP Client
+    implementation 'com.squareup.okhttp3:okhttp'
+    implementation 'com.jayway.jsonpath:json-path'
+
+    // Resilience4j for fault tolerance
+    implementation 'io.github.resilience4j:resilience4j-ratelimiter'
+    implementation 'io.github.resilience4j:resilience4j-retry'
+
+    // Apache Commons Libraries
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'commons-codec:commons-codec'
+
+    // Annotation processors
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Testing dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:4.1.2'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.4'
+        mavenBom 'org.springdoc:springdoc-openapi-bom:3.2.0'
+        mavenBom 'com.squareup.okhttp3:okhttp-bom:5.5.1'
+        mavenBom 'io.github.resilience4j:resilience4j-bom:2.4.0'
+        mavenBom 'org.testcontainers:testcontainers-bom:2.0.5'
+    }
+}
+
+
+// Java compilation and testing configuration
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += [
+        '-parameters',          // Preserves parameter names for reflection
+        '-Xlint:unchecked',     // Enables unchecked operation warnings
+        '-Xlint:deprecation'    // Enables deprecation warnings
+    ]
+}
+
+test {
+    useJUnitPlatform()      // Using JUnit Platform for testing
+    jvmArgs += [
+        '-XX:+EnableDynamicAgentLoading',  // Required for dynamic agent loading in newer JDK versions
+    ]
+}
+
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+tasks.register('downloadDependencies') {
+    group = 'build setup'
+    description = 'Downloads all dependencies to the local Gradle cache.'
+
+    doFirst {
+        println 'Downloading dependencies for all configurations...'
+        configurations.asMap.each { name, configuration ->
+            if (configuration.canBeResolved) {
+                try {
+                    configuration.resolve()
+                    println "Resolved configuration: $name"
+                } catch (Exception e) {
+                    println "Failed to resolve configuration: $name - ${e.message}"
+                }
+            }
+        }
+    }
+}
+
+tasks.named('dependencyUpdates').configure {
+    gradleReleaseChannel = 'current'
+
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
+}
+
+wrapper {
+    gradleVersion = 'latest'
+    distributionType = Wrapper.DistributionType.BIN
+}

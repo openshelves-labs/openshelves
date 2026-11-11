@@ -1,0 +1,19 @@
+${AnsiColor.BRIGHT_GREEN}
+ ██████╗ ██████╗ ███████╗███╗   ██╗███████╗██╗  ██╗███████╗██╗    ██╗   ██╗███████╗███████╗
+██╔═══██╗██╔══██╗██╔════╝████╗  ██║██╔════╝██║  ██║██╔════╝██║    ██║   ██║██╔════╝██╔════╝
+██║   ██║██████╔╝█████╗  ██╔██╗ ██║███████╗███████║█████╗  ██║    ██║   ██║█████╗  ███████╗
+██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║╚════██║██╔══██║██╔══╝  ██║    ╚██╗ ██╔╝██╔══╝  ╚════██║
+╚██████╔╝██║     ███████╗██║ ╚████║███████║██║  ██║███████╗███████╗╚████╔╝ ███████╗███████║
+ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝ ╚═══╝  ╚══════╝╚══════╝
+${AnsiColor.BRIGHT_WHITE}
+  Somewhere in every university, the answer to someone's question already sits on a shelf.
+                     OpenShelves exists so it can be found.
+
+  --------------------------------------------------------
+  :: Version      ::  ${application.version:${git.build.version:n/a}}
+  :: Profile      ::  ${spring.profiles.active:default}
+  :: Git Revision ::  ${git.branch:local} @ ${git.commit.id.abbrev:none}
+  --------------------------------------------------------
+
+  Powered by Spring Boot ${spring-boot.version} • Java ${java.specification.version} (${java.vendor}) • ${os.name} ${os.version} (${os.arch})
+${AnsiStyle.NORMAL}

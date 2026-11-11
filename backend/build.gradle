@@ -3,8 +3,9 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
 
-    // Dependency Updater
+    // Build tools
     id 'io.github.ben-manes.versions' version '0.67.0'
+    id 'com.gorylenko.gradle-git-properties' version '4.0.1'
 
     // IDEs
     id 'idea'

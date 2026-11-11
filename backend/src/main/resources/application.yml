@@ -1,0 +1,89 @@
+# Default configuration for the OpenShelves
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# Spring Configuration
+spring:
+  application:
+    name: openshelves-api
+
+  # CORS Configuration
+  cors:
+    # Also where SSO may send the browser back to with a one-time sign-in code (`frontendRedirectUrl`),
+    # so list only our own frontends; a broad pattern would let any matching site receive sign-ins.
+    allowed-origins: http://localhost:3000
+
+  # DataSource Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/openshelves
+    username: admin
+    password: admin123
+
+  # Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  # Migration Configuration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  # JSON Configuration
+  jackson:
+    default-property-inclusion: non_null    # Exclude null or empty fields from the output JSON
+
+    deserialization:
+      fail-on-unknown-properties: false     # Prevent crashing when API receives unrecognized fields
+
+  # Auto-configuration exclusions
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration   # No default in-memory user; auth uses our own bearer tokens
+      - org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientAutoConfiguration                       # SSO providers come from the auth_providers table, never from config
+      - org.springframework.boot.security.oauth2.client.autoconfigure.servlet.OAuth2ClientWebSecurityAutoConfiguration
+      - org.springframework.boot.security.saml2.autoconfigure.Saml2RelyingPartyAutoConfiguration
+
+  # Git Properties Configuration
+  config:
+    import: optional:classpath:git.properties
+
+# OpenShelves Configuration
+openshelves:
+  # Per-IP request limits (RateLimitFilter). Endpoints that check credentials or send email get their own:
+  # lockout slows guesses against one account, these slow one client trying many. Generous enough for a
+  # campus where many users share a few IPs. Other unauthenticated requests share one limit that only
+  # catches floods. Signed-in requests and exempt paths aren't limited.
+  rate-limit:
+    unauthenticated-per-minute: 300
+    exempt-paths:
+      - /actuator/health
+    endpoints:
+      - { method: POST, path: /api/v1/auth/login, per-minute: 60 }
+      - { method: POST, path: /api/v1/auth/sso/exchange, per-minute: 60 }
+      - { method: POST, path: /api/v1/auth/password/reset-request, per-minute: 5 }
+      - { method: POST, path: /api/v1/auth/password/reset, per-minute: 10 }
+
+  security:
+    # AES-256 key (32 bytes, Base64) encrypting provider secrets and SSO cookies.
+    # The default is for local development only; always set OPENSHELVES_SECRET_KEY elsewhere.
+    # Generate with: openssl rand -base64 32
+    secret-key: ${OPENSHELVES_SECRET_KEY:pO5PBAj5dwfm81R1ugSeqHIi5p3xfWi0bX+SniqcZ+M=}
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.openshelves: DEBUG

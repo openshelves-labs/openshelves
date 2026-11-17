@@ -56,6 +56,10 @@ spring:
       - org.springframework.boot.security.oauth2.client.autoconfigure.servlet.OAuth2ClientWebSecurityAutoConfiguration
       - org.springframework.boot.security.saml2.autoconfigure.Saml2RelyingPartyAutoConfiguration
 
+  # Git Properties Configuration
+  config:
+    import: optional:classpath:git.properties
+
 # OpenShelves Configuration
 openshelves:
   # Per-IP request limits (RateLimitFilter). Endpoints that check credentials or send email get their own:

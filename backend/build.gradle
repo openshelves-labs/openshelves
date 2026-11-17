@@ -3,15 +3,16 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
 
-    // Dependency Updater
+    // Build tools
     id 'io.github.ben-manes.versions' version '0.67.0'
+    id 'com.gorylenko.gradle-git-properties' version '4.0.1'
 
     // IDEs
     id 'idea'
 }
 
 group = 'com.openshelves'
-version = '0.0.1-alpha'
+version = '0.0.1-SNAPSHOT'
 
 description = 'Modernizing the university library experience. OpenShelves turns complex academic catalogs ' +
     'into intuitive, open discovery platforms for the digital age.'
@@ -57,6 +58,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
 
+    // Database Migrations
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+
     // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'    // OIDC sign-in
@@ -87,6 +92,7 @@ dependencies {
 
     // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-flyway-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'

@@ -1,4 +1,4 @@
-package com.openshelves.shared.entity;
+package com.openshelves.core.persistence;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

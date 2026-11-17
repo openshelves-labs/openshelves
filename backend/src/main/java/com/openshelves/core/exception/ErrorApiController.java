@@ -1,6 +1,5 @@
-package com.openshelves.exception;
+package com.openshelves.core.exception;
 
-import com.openshelves.shared.model.ApiErrorResponse;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.openshelves.exception.GlobalExceptionHandler.buildErrorResponse;
+import static com.openshelves.core.exception.GlobalExceptionHandler.buildErrorResponse;
 
 /**
  * Controller to handle errors that occur outside the normal request handling flow,

@@ -1,4 +1,4 @@
-package com.openshelves.shared.model;
+package com.openshelves.core.exception;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonInclude;

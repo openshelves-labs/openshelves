@@ -1,6 +1,6 @@
-package com.openshelves.config;
+package com.openshelves.core.config;
 
-import com.openshelves.shared.model.SessionPrincipal;
+import com.openshelves.security.model.SessionPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.annotation.CreatedBy;

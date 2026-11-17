@@ -1,4 +1,4 @@
-package com.openshelves.filter;
+package com.openshelves.security.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

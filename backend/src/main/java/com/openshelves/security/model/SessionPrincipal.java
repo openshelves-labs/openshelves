@@ -1,4 +1,4 @@
-package com.openshelves.shared.model;
+package com.openshelves.security.model;
 
 import lombok.Builder;
 import lombok.Value;

@@ -1,6 +1,5 @@
-package com.openshelves.exception;
+package com.openshelves.core.exception;
 
-import com.openshelves.shared.model.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +43,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // -----------------------------------------------------------------------
     // Exception handlers for application-specific exceptions
     // -----------------------------------------------------------------------
+
+    @ExceptionHandler(TooManyRequestsException.class)
+    public ResponseEntity<ApiErrorResponse> handleTooManyRequests(TooManyRequestsException e, HttpServletRequest req) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Retry-After", String.valueOf(e.getRetryAfterSeconds()));
+
+        String detail = "Too many requests. Please try again later.";
+        return buildErrorResponse(HttpStatus.TOO_MANY_REQUESTS, null, detail, req.getRequestURI(), headers);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGenericException(Exception e, HttpServletRequest req) {

@@ -898,18 +898,14 @@ function buildSections() {
     return sections;
 }
 
-// ['backend', 'frontend', 'toolchain'] -> 'backend, frontend & toolchain'
-function areaList(areas) {
-    const a = [...new Set(areas)].sort();
-    return a.length > 1 ? `${a.slice(0, -1).join(', ')} & ${a.at(-1)}` : (a[0] || '');
-}
-
-function issueTitle(total, blocked, failed, areas, failedAreas) {
-    const broken = failed ? `⚠️ ${plural(failed, 'check')} failed in ${areaList(failedAreas)}` : '';
-    if (total)   return `⬆️ ${plural(total, 'dependency update')} in ${areaList(areas)}${broken ? ` · ${broken}` : ''}`;
-    if (failed)  return broken;
-    if (blocked) return `✅ Nothing to act on · ${blocked} blocked`;
-    return '✅ All dependencies are up to date';
+function issueTitle(total, blocked, failed) {
+    const broken = failed ? `⚠️ ${plural(failed, 'check')} failed` : '';
+    let status;
+    if (total)        status = `⬆️ ${plural(total, 'update')} available${broken ? ` · ${broken}` : ''}`;
+    else if (failed)  status = broken;
+    else if (blocked) status = `✅ No action needed · ${plural(blocked, 'update')} blocked`;
+    else              status = '✅ All up to date';
+    return `Dependencies: ${status}`;
 }
 
 function opening(total, blocked, failed) {
@@ -931,7 +927,7 @@ function opening(total, blocked, failed) {
 // section instead of stopping the whole run. Areas with nothing to report only
 // appear in the summary table.
 async function runChecks(core, runUrl) {
-    const report = { results: [], summary: [], labels: new Set(), failedAreas: new Set(), total: 0, blocked: 0, failed: 0,
+    const report = { results: [], summary: [], labels: new Set(), total: 0, blocked: 0, failed: 0,
                      state: { items: {}, failed: [] } };
 
     for (const { emoji, title, label, run } of buildSections()) {
@@ -960,7 +956,6 @@ async function runChecks(core, runUrl) {
 
             report.summary.push([name, '❌ Check failed']);
             report.results.push(md);
-            report.failedAreas.add(label);
             report.failed++;
             report.state.failed.push(title);
         }
@@ -1182,7 +1177,7 @@ module.exports = async ({ github, context, core }) => {
     const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
     const report = await runChecks(core, runUrl);
-    const title  = issueTitle(report.total, report.blocked, report.failed, report.labels, report.failedAreas);
+    const title  = issueTitle(report.total, report.blocked, report.failed);
     const body   = buildBody(report, context, runUrl);
     await core.summary.addRaw(body).write();
 

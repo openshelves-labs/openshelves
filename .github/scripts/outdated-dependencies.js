@@ -530,9 +530,11 @@ async function loadPom(g, a, v, depth) {
     const xml = (await httpGet(url)).replace(/<!--[\s\S]*?-->/g, '');
     const tag = (text, t) => (text.match(new RegExp(`<${t}>\\s*([^<]*?)\\s*</${t}>`)) || [])[1];
 
+    // A <parent> without full coordinates (e.g. only a relativePath) has nothing to fetch.
     const parent = xml.match(/<parent>([\s\S]*?)<\/parent>/)?.[1];
-    if (parent) {
-        const p = await pomInfo(tag(parent, 'groupId'), tag(parent, 'artifactId'), tag(parent, 'version'), depth + 1);
+    const [pg, pa, pv] = parent ? ['groupId', 'artifactId', 'version'].map(t => tag(parent, t)) : [];
+    if (pg && pa && pv) {
+        const p = await pomInfo(pg, pa, pv, depth + 1);
         Object.assign(props, p.props);
         p.managed.forEach(c => managed.add(c));
     }

@@ -82,6 +82,12 @@ const code     = v => `\`${v}\``;
 const majorNote   = (cur, latest) => (isMajorBump(cur, latest) ? ' _(major version, read the release notes first)_' : '');
 const bump        = (cur, latest) => `${cur} → **${latest}**${isMajorBump(cur, latest) ? ' _(major)_' : ''}`;
 const shortName   = coord => coord.split(':').pop();
+
+// Name linked to its registry page, with the full name on hover when it's shortened.
+const link      = (text, url, title) => `[${code(text)}](${url}${title ? ` "${title}"` : ''})`;
+const ver       = v => (v && v !== '?' ? `/${v}` : '');
+const mavenLink = (coord, v) => link(shortName(coord), `https://mvnrepository.com/artifact/${coord.replace(':', '/')}${ver(v)}`, coord);
+const npmLink   = (name, v) => link(name, `https://www.npmjs.com/package/${name}${v && v !== '?' ? `/v/${v}` : ''}`);
 const shell       = (...lines) => '```sh\n' + lines.join('\n') + '\n```';
 
 // "How to update" under a section. Several steps become bullets; continuation
@@ -341,7 +347,7 @@ async function checkGradleDeps(dir) {
 
     const parts = [];
     if (updatable.length) {
-        parts.push(table(['Dependency', 'Current → Latest'], updatable.map(d => [code(shortName(d.coord)), bump(d.cur, d.latest)])));
+        parts.push(table(['Dependency', 'Current → Latest'], updatable.map(d => [mavenLink(d.coord, d.latest), bump(d.cur, d.latest)])));
         const steps = updatable.map(d =>
             `In ${code(rel(d.file))}, change ${code(`${d.coord}:${d.cur}`)} to ${code(`${d.coord}:${d.latest}`)}.${majorNote(d.cur, d.latest)}`);
         steps.push('Check that everything still builds and re-run the check:\n'
@@ -355,7 +361,7 @@ async function checkGradleDeps(dir) {
         if (viaBom.length && undeclared.length) intro += ' The ones _not declared here_ come in through other dependencies.';
         parts.push(`${updatable.length ? '**Blocked:** ' : ''}${intro}${whereNote(viaBom.map(d => d.file), viaBom.length)}\n\n`
             + table(['Dependency', 'Current → Latest', 'Blocked by'],
-                blocked.map(d => [code(shortName(d.coord)), bump(d.cur, d.latest), d.by])) + '\n');
+                blocked.map(d => [mavenLink(d.coord, d.latest), bump(d.cur, d.latest), d.by])) + '\n');
     }
 
     const unresolved = data.unresolved?.count || 0;
@@ -408,7 +414,7 @@ async function checkGradlePlugins() {
             const latest = latestStable(
                 await mavenVersions(PLUGIN_PORTAL, id, `${id}.gradle.plugin`));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
-                rows.push([code(id), bump(cur, latest)]);
+                rows.push([link(id, `https://plugins.gradle.org/plugin/${id}/${latest}`), bump(cur, latest)]);
                 items.push({ name: id, from: cur, to: latest });
                 let step = `In ${code(rel(file))}, change ${code(`id '${id}' version '${cur}'`)} to ${code(`'${latest}'`)}.${majorNote(cur, latest)}`;
                 if (id === 'org.springframework.boot') {
@@ -444,7 +450,7 @@ async function checkBoms() {
         try {
             const latest = latestStable(await mavenVersions(MAVEN_CENTRAL, g, a));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
-                rows.push([code(a), bump(cur, latest)]);
+                rows.push([mavenLink(`${g}:${a}`, latest), bump(cur, latest)]);
                 items.push({ name: `${g}:${a}`, from: cur, to: latest });
                 steps.push(`In ${code(rel(file))}, change ${code(`mavenBom '${g}:${a}:${cur}'`)} to ${code(`'${g}:${a}:${latest}'`)}.${majorNote(cur, latest)}`);
             }
@@ -731,7 +737,7 @@ async function checkNpm(dir) {
         const rows = updatable.map(u => {
             const o = outdated.find(x => x.name === u.name);
             const note = o.blockedBy ? `<br><sub>${o.latest} is blocked by ${blockedBy(o.blockedBy)}</sub>` : '';
-            return [code(u.name), bump(u.cur, u.latest) + note];
+            return [npmLink(u.name, u.latest), bump(u.cur, u.latest) + note];
         });
         parts.push(table(['Package', 'Current → Latest'], rows) + '\n' + howTo(npmSteps(dir, updatable)));
     }
@@ -739,7 +745,7 @@ async function checkNpm(dir) {
         parts.push(`${updatable.length ? '**Blocked:** ' : ''}Other packages we use haven't caught up with ${blocked.length === 1 ? 'this one' : 'these'} yet.`
             + `${whereNote(manifest, blocked.length)}\n\n`
             + table(['Package', 'Current → Latest', 'Blocked by'],
-                blocked.map(o => [code(o.name), bump(o.cur, o.latest), blockedBy(o.blockedBy)])) + '\n');
+                blocked.map(o => [npmLink(o.name, o.latest), bump(o.cur, o.latest), blockedBy(o.blockedBy)])) + '\n');
     }
 
     return {
@@ -849,7 +855,8 @@ async function checkDocker() {
 
             if (better.length) {
                 const image = parsed.repo.replace(/^library\//, '');
-                rows.push([code(image), bump(parsed.tag, better[0].t)]);
+                const hub = parsed.repo.startsWith('library/') ? `_/${image}` : `r/${parsed.repo}`;
+                rows.push([link(image, `https://hub.docker.com/${hub}`), bump(parsed.tag, better[0].t)]);
                 items.push({ name: `${image} (${rel(file)})`, from: parsed.tag, to: better[0].t });
                 steps.push(`In ${code(rel(file))}, change ${code(`${image}:${parsed.tag}`)} to ${code(`${image}:${better[0].t}`)}.`
                     + majorNote(parsed.tag, better[0].t));

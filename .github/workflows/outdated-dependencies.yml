@@ -1,4 +1,4 @@
-name: Dependency Updates
+name: Outdated Dependencies
 
 on:
   push:
@@ -18,8 +18,8 @@ on:
       - '**/compose*.yaml'
       - '**/docker-compose*.yml'
       - '**/docker-compose*.yaml'
-      - '.github/workflows/dependency-updates.yml'
-      - '.github/scripts/dependency-updates.js'
+      - '.github/workflows/outdated-dependencies.yml'
+      - '.github/scripts/outdated-dependencies.js'
   schedule:
     - cron: "30 11 * * *"   # Daily 17:00 IST (cron is UTC-only: 11:30 UTC)
     # - cron: "30 11 * * 5"   # Fridays 17:00 IST (cron is UTC-only: 11:30 UTC)
@@ -51,5 +51,5 @@ jobs:
         uses: actions/github-script@v9
         with:
           script: |
-            const runScript = require('./.github/scripts/dependency-updates.js');
+            const runScript = require('./.github/scripts/outdated-dependencies.js');
             await runScript({ github, context, core });

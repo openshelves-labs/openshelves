@@ -1018,6 +1018,7 @@ const FALLBACK = {
 
 
 // One issue is reused for good and refreshed on every run, open or closed.
+// The first run always creates it, closed straight away if there's nothing to act on.
 // It's open while there's something to act on, closed when there isn't
 // (blocked updates may still be listed), and reopened when updates show up again.
 async function syncIssue(github, context, { title, body, managed, clean, state }) {
@@ -1028,11 +1029,15 @@ async function syncIssue(github, context, { title, body, managed, clean, state }
     const existing = issues.find(i => !i.pull_request); // Dependabot PRs share the label
 
     if (!existing) {
-        if (clean) return 'nothing to report, no issue created';
         const { data } = await github.rest.issues.create({
             ...context.repo, title, body, labels: [ISSUE_LABEL, ...managed],
         });
-        return `opened ${data.html_url}`;
+        if (!clean) return `opened ${data.html_url}`;
+        // Nothing to act on yet: keep the issue (and its saved state) but close it quietly.
+        await github.rest.issues.update({
+            ...context.repo, issue_number: data.number, state: 'closed', state_reason: 'completed',
+        });
+        return `opened and closed ${data.html_url}`;
     }
 
     // Keep labels added by hand; only the managed labels are recalculated.

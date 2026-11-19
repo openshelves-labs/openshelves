@@ -25,9 +25,14 @@ on:
     # - cron: "30 11 * * 5"   # Fridays 17:00 IST (cron is UTC-only: 11:30 UTC)
   workflow_dispatch:
 
+# Runs compare against the previous run's saved state, so queue them instead of overlapping.
+concurrency:
+  group: outdated-dependencies
+  cancel-in-progress: false
+
 jobs:
   report:
-    name: Report Available Updates
+    name: Check & Report
     # Reports on the default branch only; workflow_dispatch has no branch filter, so a run
     # started on another branch is skipped. Scheduled runs always use the default branch.
     if: github.event_name == 'schedule' || github.ref_name == github.event.repository.default_branch
@@ -43,11 +48,12 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - uses: actions/setup-node@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
         with:
           node-version-file: 'frontend/.nvmrc'
 
-      - name: Check for dependency updates
+      - name: Check dependencies & update issue
         uses: actions/github-script@v9
         with:
           script: |

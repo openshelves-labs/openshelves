@@ -77,20 +77,31 @@ function table(headers, rows) {
 }
 
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
-const allGood  = msg => `✅ ${msg} Nothing to do here.`;
 const code     = v => `\`${v}\``;
 
-const majorNote   = (cur, latest) => (isMajorBump(cur, latest) ? ' ⚠️ _major version, read the release notes first_' : '');
+const majorNote   = (cur, latest) => (isMajorBump(cur, latest) ? ' _(major version, read the release notes first)_' : '');
+const bump        = (cur, latest) => `${cur} → **${latest}**${isMajorBump(cur, latest) ? ' _(major)_' : ''}`;
+const shortName   = coord => coord.split(':').pop();
 const shell       = (...lines) => '```sh\n' + lines.join('\n') + '\n```';
 
-// Note box under a section: update steps plus details such as why an update is
-// blocked. Each item is one bullet; every line needs a '>' prefix to stay
-// inside GitHub's [!NOTE] alert.
-function noteBox(items) {
-    if (!items.length) return '';
-    const bullets = items.map(it => '- ' + it.split('\n').join('\n  '));
-    const lines = ['[!NOTE]', ...bullets.join('\n').split('\n')];
-    return '\n' + lines.map(l => (l ? `> ${l}` : '>')).join('\n') + '\n';
+// "How to update" under a section. Several steps become bullets; continuation
+// lines are indented so code blocks stay inside their bullet.
+function howTo(steps) {
+    if (!steps.length) return '';
+    if (steps.length === 1) {
+        // "**Java**: in …" reads as "**How to update Java:** in …".
+        const m = steps[0].match(/^\*\*([^*]+)\*\*: ([\s\S]*)$/);
+        const [what, rest] = m ? [` ${m[1]}`, m[2]] : ['', steps[0]];
+        return `\n**How to update${what}:** ${rest.replace(/^In /, 'in ')}\n`;
+    }
+    return '\n**How to update:**\n\n' + steps.map(st => '- ' + st.split('\n').join('\n  ')).join('\n') + '\n';
+}
+
+// " All are in `file`." when every item comes from the same file.
+function whereNote(files, n) {
+    const uniq = [...new Set(files.filter(Boolean).map(file => code(rel(file))))];
+    if (uniq.length !== 1) return '';
+    return ` ${n === 1 ? "It's" : n === 2 ? 'Both are' : 'All are'} in ${uniq[0]}.`;
 }
 
 function logBlock(log, runUrl) {
@@ -165,7 +176,8 @@ function npmProjects() {
 
 // ---------- check: toolchain (Java, Node.js, Gradle) ----------
 
-// Each check returns { md, count } for its report section, or null to skip it.
+// Each check returns { md, count, blocked, items, show } for its report section,
+// or null to skip it. Sections with nothing ready or blocked are left out unless `show` is set.
 // They are listed in the order they appear in the report.
 
 const JAVA_PIN_RES = [
@@ -183,9 +195,10 @@ async function javaReleases() {
 async function nodeReleases() {
     const list = JSON.parse(await httpGet('https://nodejs.org/dist/index.json'));
     const strip = r => r.version.replace(/^v/, '');
+    const stable = v => /^\d+\.\d+\.\d+$/.test(v);   // skip prereleases such as 27.0.0-alpha
     return {
-        lts:    newest(list.filter(r => r.lts).map(strip)),
-        latest: newest(list.map(strip)),
+        lts:    newest(list.filter(r => r.lts).map(strip).filter(stable)),
+        latest: newest(list.map(strip).filter(stable)),
     };
 }
 
@@ -197,10 +210,10 @@ async function gradleReleases() {
 // Java and Node.js are compared by major version, Gradle by full version.
 function toolStatus(pin, r, byMajor) {
     const key = v => (byMajor ? vkey(v).slice(0, 1) : vkey(v));
-    if (!vkey(pin).length) return { text: 'floating', outdated: false };
-    if (compareKeys(key(pin), key(r.latest)) >= 0) return { text: '✅ latest', outdated: false };
+    if (!vkey(pin).length) return { text: 'Floating', outdated: false };
+    if (compareKeys(key(pin), key(r.latest)) >= 0) return { text: '✅ Latest', outdated: false };
     if (r.lts && compareKeys(key(pin), key(r.lts)) === 0) return { text: '✅ LTS', outdated: false };
-    return { text: '⬆️ update', outdated: true };
+    return { text: '⬆️ Update', outdated: true };
 }
 
 function toolchainStep(tool, file, pin, r) {
@@ -260,26 +273,25 @@ async function checkToolchain() {
     }
 
     let count = 0;
-    const notes = [];
+    const steps = [];
     const items = [];
     const rows = pins.map(({ tool, file, pin }) => {
         const r = releases[tool];
-        if (!r) return [tool, pin, '?', '?', '⚠️ lookup failed', code(rel(file))];
+        if (!r) return [tool, `**${pin}**`, '–', '–', '⚠️ Lookup failed'];
         const st = toolStatus(pin, r, sources[tool].byMajor);
         if (st.outdated) {
             count++;
-            notes.push(toolchainStep(tool, file, pin, r));
+            steps.push(toolchainStep(tool, file, pin, r));
             items.push({ name: `${tool} (${rel(file)})`, from: pin, to: r.latest });
         }
-        return [tool, `**${pin}**`, r.lts ?? '—', r.latest, st.text, code(rel(file))];
+        return [tool, `**${pin}**`, r.lts ?? '–', r.latest, st.text];
     });
-    const intro = count
-        ? `${plural(count, 'tool is', 'tools are')} behind both the latest LTS and the latest release:`
-        : 'All pinned tools are on either the latest LTS or the latest release 👍';
+    // Always shown: it's also a reference for which versions we're on.
     return {
-        md: `${intro}\n\n` + table(['Tool', 'Pinned', 'Latest LTS', 'Latest', 'Status', 'Declared in'], rows) + '\n' + noteBox(notes),
+        md: table(['Tool', 'In use', 'Latest LTS', 'Latest', ''], rows) + '\n' + howTo(steps),
         count,
         items,
+        show: true,
     };
 }
 
@@ -306,23 +318,7 @@ function gradleReport(dir) {
     return JSON.parse(fs.readFileSync(path.join(dir, 'build/dependencyUpdates/report.json'), 'utf8'));
 }
 
-// Note lines explaining why BOM-managed and undeclared libraries can't be bumped here.
-function gradleBlockedNotes(viaBom, undeclared) {
-    const names = ds => ds.map(d => code(d.coord)).join(', ');
-    const notes = [];
 
-    if (viaBom.length) {
-        const one = viaBom.length === 1;
-        notes.push(`**Blocked:** ${names(viaBom)} ${one ? 'is' : 'are'} declared without a version, so ${one ? 'it gets its' : 'they get their'} `
-            + `version from one of the BOMs we import. ${one ? 'It moves' : 'They move'} when that BOM is bumped.`);
-    }
-    if (undeclared.length) {
-        const one = undeclared.length === 1;
-        notes.push(`**Blocked:** ${names(undeclared)} ${one ? "isn't" : "aren't"} declared in any build file this check reads, `
-            + 'so there is no version here to bump.');
-    }
-    return notes;
-}
 
 async function checkGradleDeps(dir) {
     const data = gradleReport(dir);
@@ -339,30 +335,41 @@ async function checkGradleDeps(dir) {
     const updatable  = outdated.filter(d => d.pinned);
     const viaBom     = outdated.filter(d => !d.pinned && d.file);
     const undeclared = outdated.filter(d => !d.file);
+    const blocked    = [...viaBom, ...undeclared];
+    for (const d of viaBom) d.by = (await bomFor(dir, d.coord)) || 'a BOM';
+    for (const d of undeclared) d.by = '_not declared here_';
 
-    const rows = outdated.map(d => [code(d.coord), d.cur, `**${d.latest}**`,
-        d.pinned ? 'UPDATABLE' : 'BLOCKED',
-        d.file ? code(rel(d.file)) : '_not found_']);
-    const parts = [rows.length
-        ? `${plural(rows.length, 'library has', 'libraries have')} a newer release out, ${updatable.length} updatable:\n\n`
-            + table(['Dependency', 'Current', 'Latest', 'Status', 'Declared in'], rows)
-        : allGood('Every library is already on its latest release.')];
+    const parts = [];
+    if (updatable.length) {
+        parts.push(table(['Dependency', 'Current → Latest'], updatable.map(d => [code(shortName(d.coord)), bump(d.cur, d.latest)])));
+        const steps = updatable.map(d =>
+            `In ${code(rel(d.file))}, change ${code(`${d.coord}:${d.cur}`)} to ${code(`${d.coord}:${d.latest}`)}.${majorNote(d.cur, d.latest)}`);
+        steps.push('Check that everything still builds and re-run the check:\n'
+            + shell(`cd ${rel(dir)}`, './gradlew build dependencyUpdates'));
+        parts.push(howTo(steps));
+    }
+    if (blocked.length) {
+        let intro = viaBom.length
+            ? 'Their versions come from BOMs we import, so they move when that BOM is bumped.'
+            : "They aren't declared in our build files; they come in through other dependencies.";
+        if (viaBom.length && undeclared.length) intro += ' The ones _not declared here_ come in through other dependencies.';
+        parts.push(`${updatable.length ? '**Blocked:** ' : ''}${intro}${whereNote(viaBom.map(d => d.file), viaBom.length)}\n\n`
+            + table(['Dependency', 'Current → Latest', 'Blocked by'],
+                blocked.map(d => [code(shortName(d.coord)), bump(d.cur, d.latest), d.by])) + '\n');
+    }
 
     const unresolved = data.unresolved?.count || 0;
     if (unresolved) {
-        parts.push(`\n> 🤷 ${plural(unresolved, 'dependency', 'dependencies')} couldn't be resolved, so I couldn't check them.`);
+        parts.push(`_${plural(unresolved, "dependency couldn't", "dependencies couldn't")} be resolved, so they weren't checked._\n`);
     }
 
-    const notes = updatable.map(d =>
-        `In ${code(rel(d.file))}, change ${code(`${d.coord}:${d.cur}`)} to ${code(`${d.coord}:${d.latest}`)}.${majorNote(d.cur, d.latest)}`);
-    if (notes.length) notes.push('Check that everything still builds and re-run the check:\n'
-        + shell(`cd ${rel(dir)}`, './gradlew build dependencyUpdates'));
-
-    notes.push(...gradleBlockedNotes(viaBom, undeclared));
-
-    parts.push(noteBox(notes));
-    return { md: parts.join('\n'), count: updatable.length,
-             items: updatable.map(d => ({ name: d.coord, from: d.cur, to: d.latest })) };
+    return {
+        md: parts.join('\n'),
+        count: updatable.length,
+        blocked: blocked.length,
+        items: updatable.map(d => ({ name: d.coord, from: d.cur, to: d.latest })),
+        show: unresolved > 0,
+    };
 }
 
 
@@ -394,31 +401,28 @@ async function checkGradlePlugins() {
     if (!found.length) return null;
 
     const rows = [];
-    const notes = [];
+    const steps = [];
     const items = [];
     for (const { file, id, cur } of found) {
         try {
             const latest = latestStable(
                 await mavenVersions(PLUGIN_PORTAL, id, `${id}.gradle.plugin`));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
-                rows.push([code(id), cur, `**${latest}**`, code(rel(file))]);
+                rows.push([code(id), bump(cur, latest)]);
                 items.push({ name: id, from: cur, to: latest });
                 let step = `In ${code(rel(file))}, change ${code(`id '${id}' version '${cur}'`)} to ${code(`'${latest}'`)}.${majorNote(cur, latest)}`;
                 if (id === 'org.springframework.boot') {
                     step += ' This also moves every library Spring Boot manages, so skim the '
                         + `[release notes](https://github.com/spring-projects/spring-boot/releases/tag/v${latest}).`;
                 }
-                notes.push(step);
+                steps.push(step);
             }
         } catch (e) {
             console.error(`plugin ${id}: ${e.message}`);
         }
     }
     return {
-        md: rows.length
-            ? `${plural(rows.length, 'plugin')} can be bumped:\n\n`
-                + table(['Plugin', 'Current', 'Latest', 'Declared in'], rows) + '\n' + noteBox(notes)
-            : allGood('All Gradle plugins are current.'),
+        md: table(['Plugin', 'Current → Latest'], rows) + '\n' + howTo(steps),
         count: rows.length,
         items,
     };
@@ -426,41 +430,138 @@ async function checkGradlePlugins() {
 
 async function checkBoms() {
     const found = [];
-    const re = /mavenBom\s*\(?\s*['"]([^:'"]+):([^:'"]+):([^'"]+)['"]/g;
     for (const file of findFiles(n => GRADLE_FILE.test(n))) {
-        for (const m of fs.readFileSync(file, 'utf8').matchAll(re)) {
+        for (const m of fs.readFileSync(file, 'utf8').matchAll(BOM_RE)) {
             found.push({ file, g: m[1], a: m[2], cur: m[3] });
         }
     }
     if (!found.length) return null;
 
     const rows = [];
-    const notes = [];
+    const steps = [];
     const items = [];
     for (const { file, g, a, cur } of found) {
         try {
             const latest = latestStable(await mavenVersions(MAVEN_CENTRAL, g, a));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
-                rows.push([code(`${g}:${a}`), cur, `**${latest}**`, code(rel(file))]);
+                rows.push([code(a), bump(cur, latest)]);
                 items.push({ name: `${g}:${a}`, from: cur, to: latest });
-                notes.push(`In ${code(rel(file))}, change ${code(`mavenBom '${g}:${a}:${cur}'`)} to ${code(`'${g}:${a}:${latest}'`)}.${majorNote(cur, latest)}`);
+                steps.push(`In ${code(rel(file))}, change ${code(`mavenBom '${g}:${a}:${cur}'`)} to ${code(`'${g}:${a}:${latest}'`)}.${majorNote(cur, latest)}`);
             }
         } catch (e) {
             console.error(`bom ${g}:${a}: ${e.message}`);
         }
     }
     return {
-        md: rows.length
-            ? `${plural(rows.length, 'BOM has', 'BOMs have')} a newer version. Bumping it also moves every library it manages:\n\n`
-                + table(['BOM', 'Current', 'Latest', 'Declared in'], rows) + '\n' + noteBox(notes)
-            : allGood('All BOMs are current.'),
+        md: 'Bumping a BOM also moves every library it manages.\n\n'
+            + table(['BOM', 'Current → Latest'], rows) + '\n' + howTo(steps),
         count: rows.length,
         items,
     };
 }
 
 
+// ---------- BOM lookup ----------
+
+// Fills the "Blocked by" column for libraries whose version comes from a BOM.
+// Reads each imported BOM's pom from Maven Central, following its parents and
+// the BOMs it imports. Best effort: anything unresolved shows as "a BOM".
+
+const BOM_RE = /mavenBom\s*\(?\s*['"]([^:'"]+):([^:'"]+):([^'"]+)['"]/g;
+const SPRING_BOOT_RE = /id\s*\(?\s*['"]org\.springframework\.boot['"]\s*\)?\s*version\s*['"]([^'"]+)['"]/;
+
+// BOMs in the order they apply. With the dependency-management plugin, the
+// Spring Boot plugin imports its BOM implicitly, and a later import wins.
+function declaredBoms(dir) {
+    const texts = allFiles()
+        .filter(f => f.startsWith(dir + path.sep) && GRADLE_FILE.test(path.basename(f)))
+        .map(f => fs.readFileSync(f, 'utf8'));
+    const boms = [];
+    for (const text of texts) {
+        const boot = text.match(SPRING_BOOT_RE);
+        if (boot && text.includes('io.spring.dependency-management')) {
+            boms.push({ g: 'org.springframework.boot', a: 'spring-boot-dependencies', v: boot[1] });
+        }
+    }
+    for (const text of texts) {
+        for (const m of text.matchAll(BOM_RE)) boms.push({ g: m[1], a: m[2], v: m[3] });
+    }
+    return boms;
+}
+
+// 'spring-boot-dependencies' -> 'Spring Boot', 'testcontainers-bom' -> 'Testcontainers'
+const bomName = a => a.replace(/-(dependencies|bom)$/, '').split('-')
+    .map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+
+async function bomFor(dir, coord) {
+    let found = null;
+    for (const b of declaredBoms(dir)) {
+        if ((await pomInfo(b.g, b.a, b.v)).managed.has(coord)) found = bomName(b.a);
+    }
+    return found;
+}
+
+const pomCache = new Map();
+
+function pomInfo(g, a, v, depth = 0) {
+    const key = `${g}:${a}:${v}`;
+    if (!pomCache.has(key)) {
+        pomCache.set(key, loadPom(g, a, v, depth).catch(e => {
+            console.error(`pom ${key}: ${e.message}`);
+            return { props: {}, managed: new Set() };
+        }));
+    }
+    return pomCache.get(key);
+}
+
+// { props, managed } for a pom: its properties and every group:artifact it manages.
+async function loadPom(g, a, v, depth) {
+    const props = {};
+    const managed = new Set();
+    if (depth > 5 || /\$\{/.test(v)) return { props, managed };
+
+    const url = `${MAVEN_CENTRAL}/${g.replace(/\./g, '/')}/${a}/${v}/${a}-${v}.pom`;
+    const xml = (await httpGet(url)).replace(/<!--[\s\S]*?-->/g, '');
+    const tag = (text, t) => (text.match(new RegExp(`<${t}>\\s*([^<]*?)\\s*</${t}>`)) || [])[1];
+
+    const parent = xml.match(/<parent>([\s\S]*?)<\/parent>/)?.[1];
+    if (parent) {
+        const p = await pomInfo(tag(parent, 'groupId'), tag(parent, 'artifactId'), tag(parent, 'version'), depth + 1);
+        Object.assign(props, p.props);
+        p.managed.forEach(c => managed.add(c));
+    }
+    const own = xml.match(/<properties>([\s\S]*?)<\/properties>/)?.[1] || '';
+    for (const m of own.matchAll(/<([\w.\-]+)>([^<]*)<\/\1>/g)) props[m[1]] = m[2].trim();
+    Object.assign(props, { 'project.groupId': g, 'project.artifactId': a, 'project.version': v });
+
+    const sub = text => {
+        for (let i = 0; i < 3; i++) text = (text || '').replace(/\$\{([^}]+)\}/g, (m, k) => props[k] ?? m);
+        return text;
+    };
+    const deps = xml.match(/<dependencyManagement>\s*<dependencies>([\s\S]*?)<\/dependencies>/)?.[1] || '';
+    const imports = [];
+    for (const [, dep] of deps.matchAll(/<dependency>([\s\S]*?)<\/dependency>/g)) {
+        const dg = sub(tag(dep, 'groupId'));
+        const da = sub(tag(dep, 'artifactId'));
+        if (tag(dep, 'scope') === 'import') imports.push(pomInfo(dg, da, sub(tag(dep, 'version')), depth + 1));
+        else managed.add(`${dg}:${da}`);
+    }
+    for (const i of await Promise.all(imports)) i.managed.forEach(c => managed.add(c));
+    return { props, managed };
+}
+
+
 // ---------- check: npm packages ----------
+
+// What a peer range allows, in words: '^8 || ^9' -> 'up to 9', '>=4.8.4 <6.1.0' -> 'below 6.1'.
+function rangeHint(range) {
+    const below = range.match(/<\s*(\d+(?:\.\d+)*)/);
+    if (below) return `below ${below[1].replace(/(\.0)+$/, '')}`;
+    const majors = range.split('||').map(p => vkey(p)[0]).filter(n => n !== undefined);
+    return majors.length ? `up to ${Math.max(...majors)}` : code(range);
+}
+
+const blockedBy = r => `${code(r.by)} (supports ${rangeHint(r.range)})`;
 
 // Packages the Next.js upgrade codemod moves together with `next`.
 const NEXT_FAMILY = new Set(['next', 'eslint-config-next', 'react', 'react-dom', '@types/react', '@types/react-dom']);
@@ -476,8 +577,8 @@ const PEER_CONFLICT_RES = [
 // Dry-runs `npm install name@version` with strict peer checks; nothing is written.
 // (Without --strict-peer-deps npm only warns and installs anyway.)
 // Returns { ok: true } if it would install cleanly, otherwise { ok: false, reason },
-// where `reason` says which package needs which range, or is null when npm
-// failed for some unrelated reason (network, an older conflict in the tree, ...).
+// where `reason` is { by, range } (which package needs which range), or null when
+// npm failed for some unrelated reason (network, an older conflict in the tree, ...).
 function npmProbe(dir, name, version) {
     const args = ['install', '--dry-run', '--no-save', '--strict-peer-deps',
         '--ignore-scripts', '--no-audit', '--no-fund', `${name}@${version}`];
@@ -488,7 +589,7 @@ function npmProbe(dir, name, version) {
     for (const re of PEER_CONFLICT_RES) {
         const m = err.match(re);
         // Only count it if the clash is about this package, not some older conflict in the tree.
-        if (m && m[1] === name) return { ok: false, reason: `${code(m[3])} needs ${code(`${name}@${m[2]}`)}` };
+        if (m && m[1] === name) return { ok: false, reason: { by: m[3].replace(/(.)@[^@]*$/, '$1'), range: m[2] } };
     }
 
     console.error(`npm dry-run of ${name}@${version} failed:\n${err}`);
@@ -519,7 +620,7 @@ function newestInstallable(dir, o) {
     return null;
 }
 
-// Update steps for the packages that can move now; the caller adds any blocked notes.
+// Update steps for the packages that can move now.
 function npmSteps(dir, outdated) {
     const pkg   = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
     const specs = { ...pkg.dependencies, ...pkg.devDependencies };
@@ -621,29 +722,30 @@ async function checkNpm(dir) {
     const updatable = outdated
         .map(o => (o.blockedBy ? { ...o, latest: o.fallback || o.wanted } : o))
         .filter(o => o.latest !== o.cur);
-    const target = o => updatable.find(u => u.name === o.name)?.latest;
+    const blocked  = outdated.filter(o => o.blockedBy && !updatable.some(u => u.name === o.name));
+    const manifest = [path.join(dir, 'package.json')];
 
-    const status = o => {
-        const to = target(o);
-        if (!to) return 'BLOCKED';
-        return to === o.latest ? 'UPDATABLE' : `UPDATABLE (to ${to})`;
-    };
-    const rows = outdated.map(o => [code(o.name), o.cur, o.wanted === o.cur ? '—' : o.wanted, `**${o.latest}**`,
-        status(o), manifestPath(dir)]);
-
-    // Why the blocked ones can't go to their latest version.
-    const notes = npmSteps(dir, updatable);
-    for (const o of outdated.filter(x => x.blockedBy)) {
-        const instead = o.fallback ? ` ${code(o.fallback)} is the newest release that installs.` : '';
-        notes.push(`**Blocked:** ${code(`${o.name}@${o.latest}`)} can't be installed yet: ${o.blockedBy}.${instead}`);
+    const parts = [];
+    if (updatable.length) {
+        // A package whose latest is blocked can still move to an older release that installs.
+        const rows = updatable.map(u => {
+            const o = outdated.find(x => x.name === u.name);
+            const note = o.blockedBy ? `<br><sub>${o.latest} is blocked by ${blockedBy(o.blockedBy)}</sub>` : '';
+            return [code(u.name), bump(u.cur, u.latest) + note];
+        });
+        parts.push(table(['Package', 'Current → Latest'], rows) + '\n' + howTo(npmSteps(dir, updatable)));
+    }
+    if (blocked.length) {
+        parts.push(`${updatable.length ? '**Blocked:** ' : ''}Other packages we use haven't caught up with ${blocked.length === 1 ? 'this one' : 'these'} yet.`
+            + `${whereNote(manifest, blocked.length)}\n\n`
+            + table(['Package', 'Current → Latest', 'Blocked by'],
+                blocked.map(o => [code(o.name), bump(o.cur, o.latest), blockedBy(o.blockedBy)])) + '\n');
     }
 
     return {
-        md: rows.length
-            ? `${plural(rows.length, 'package')} behind, ${updatable.length} updatable. _Compatible_ is what \`npm update\` would give you within the current range; _Latest_ may need a range change:\n\n`
-                + table(['Package', 'Current', 'Compatible', 'Latest', 'Status', 'Declared in'], rows) + '\n' + noteBox(notes)
-            : allGood('Every npm package is on its latest version.'),
+        md: parts.join('\n'),
         count: updatable.length,
+        blocked: blocked.length,
         items: updatable.map(o => ({ name: o.name, from: o.cur, to: o.latest })),
     };
 }
@@ -718,7 +820,7 @@ async function checkDocker() {
     if (!files.length) return null;
 
     const rows = [];
-    const notes = [];
+    const steps = [];
     const items = [];
     const seen = new Set();
     for (const file of files) {
@@ -747,18 +849,15 @@ async function checkDocker() {
 
             if (better.length) {
                 const image = parsed.repo.replace(/^library\//, '');
-                rows.push([code(image), parsed.tag, `**${better[0].t}**`, code(rel(file))]);
+                rows.push([code(image), bump(parsed.tag, better[0].t)]);
                 items.push({ name: `${image} (${rel(file)})`, from: parsed.tag, to: better[0].t });
-                notes.push(`In ${code(rel(file))}, change ${code(`${image}:${parsed.tag}`)} to ${code(`${image}:${better[0].t}`)}.`
+                steps.push(`In ${code(rel(file))}, change ${code(`${image}:${parsed.tag}`)} to ${code(`${image}:${better[0].t}`)}.`
                     + majorNote(parsed.tag, better[0].t));
             }
         }
     }
     return {
-        md: rows.length
-            ? `${plural(rows.length, 'image has', 'images have')} a newer tag on Docker Hub:\n\n`
-                + table(['Image', 'Current', 'Newer tag', 'Declared in'], rows) + '\n' + noteBox(notes)
-            : allGood('All pinned Docker Hub images are current.'),
+        md: table(['Image', 'Current → Newer tag'], rows) + '\n' + howTo(steps),
         count: rows.length,
         items,
     };
@@ -805,45 +904,61 @@ function areaList(areas) {
     return a.length > 1 ? `${a.slice(0, -1).join(', ')} & ${a.at(-1)}` : (a[0] || '');
 }
 
-function issueTitle(total, failed, areas, failedAreas) {
+function issueTitle(total, blocked, failed, areas, failedAreas) {
     const broken = failed ? `⚠️ ${plural(failed, 'check')} failed in ${areaList(failedAreas)}` : '';
-    if (total)  return `⬆️ ${plural(total, 'dependency update')} in ${areaList(areas)}${broken ? ` · ${broken}` : ''}`;
-    if (failed) return broken;
+    if (total)   return `⬆️ ${plural(total, 'dependency update')} in ${areaList(areas)}${broken ? ` · ${broken}` : ''}`;
+    if (failed)  return broken;
+    if (blocked) return `✅ Nothing to act on · ${blocked} blocked`;
     return '✅ All dependencies are up to date';
 }
 
-function opening(total, failed) {
-    if (!total && !failed) return 'Good news: everything is up to date. Nothing to do this time 🎉';
-    const parts = [];
-    if (total)  parts.push(`I found **${plural(total, 'update')}** worth a look`);
-    if (failed) parts.push(`**${plural(failed, 'check')}** didn't finish, so some areas couldn't be checked`);
-    return parts.join(', and ') + '. Details are below.';
+function opening(total, blocked, failed) {
+    const broken = failed ? ` ${plural(failed, 'check')} didn't finish, see below.` : '';
+    if (total) {
+        return `**${plural(total, 'update')} ready to go.**`
+            + (blocked ? ` ${blocked} more ${blocked === 1 ? 'is' : 'are'} blocked.` : '') + broken;
+    }
+    if (blocked) {
+        return `**Nothing to act on right now.** ${plural(blocked, 'newer version is', 'newer versions are')} out, `
+            + `but ${blocked === 1 ? "it's" : 'all of them are'} blocked.${broken}`;
+    }
+    if (failed) return `**${plural(failed, "check didn't", "checks didn't")} finish**, so some areas couldn't be checked.`;
+    return '**Everything is up to date.** Nothing to do this time 🎉';
 }
 
 
 // Runs every section's check. A check that throws is reported in its own
-// section instead of stopping the whole run.
+// section instead of stopping the whole run. Areas with nothing to report only
+// appear in the summary table.
 async function runChecks(core, runUrl) {
-    const report = { results: [], summary: [], labels: new Set(), failedAreas: new Set(), total: 0, failed: 0,
+    const report = { results: [], summary: [], labels: new Set(), failedAreas: new Set(), total: 0, blocked: 0, failed: 0,
                      state: { items: {}, failed: [] } };
 
     for (const { emoji, title, label, run } of buildSections()) {
-        const heading = `### ${emoji} ${title}`;
+        const name  = `${emoji} ${title}`;
+        const ready = n => (label === 'toolchain' ? plural(n, 'update') : `${n} ready`);
         try {
             const result = await run();
             if (!result) continue;
+            const { count, blocked = 0 } = result;
 
-            report.total += result.count;
+            report.total   += count;
+            report.blocked += blocked;
+            if (count) report.labels.add(label);
             for (const it of result.items || []) report.state.items[`${title}|${it.name}`] = { ...it, section: title };
-            if (result.count) report.labels.add(label);
-            report.summary.push([emoji, title, result.count ? `⬆️ ${result.count}` : '✅ 0']);
-            report.results.push(`${heading}\n\n${result.md}\n`);
+
+            const status = [count && `⬆️ ${ready(count)}`, blocked && `⚠️ ${blocked} blocked`].filter(Boolean);
+            report.summary.push([name, status.join(' · ') || '✅ Up to date']);
+
+            if (!count && !blocked && !result.show) continue;
+            const suffix = [count && ready(count), blocked && `${blocked} blocked`].filter(Boolean).join(', ');
+            report.results.push(`### ${name}${suffix ? `: ${suffix}` : ''}\n\n${result.md}\n`);
         } catch (e) {
             core.warning(`[${title}] failed: ${e.message}`);
-            let md = `${heading}\n\n⚠️ This check didn't finish: ${code(e.message)}\n`;
+            let md = `### ${name}: check failed\n\nThis check didn't finish: ${code(e.message)}\n`;
             if (e.log) md += logBlock(e.log, runUrl);
 
-            report.summary.push([emoji, title, '⚠️ failed']);
+            report.summary.push([name, '❌ Check failed']);
             report.results.push(md);
             report.failedAreas.add(label);
             report.failed++;
@@ -861,11 +976,11 @@ function checkedAt(now = new Date()) {
 }
 
 // The issue body: opening line, at-a-glance table, every section, footer.
-function buildBody({ results, summary, total, failed }, context, runUrl) {
+function buildBody({ results, summary, total, blocked, failed }, context, runUrl) {
     const trigger = {
-        schedule:          'the weekly schedule',
-        push:              `a push to \`${context.ref.replace('refs/heads/', '')}\``,
-        workflow_dispatch: 'a manual run',
+        schedule:          'scheduled run',
+        push:              `push to \`${context.ref.replace('refs/heads/', '')}\``,
+        workflow_dispatch: 'manual run',
     }[context.eventName] || context.eventName;
 
     // Scheduled runs may not carry repository details, so fall back to plain words.
@@ -873,20 +988,19 @@ function buildBody({ results, summary, total, failed }, context, runUrl) {
     const defaultBranch = branch ? `\`${branch}\`` : 'the default branch';
 
     const body = [
-        '## 👋 Dependency check-in',
+        '## 👋 Outdated dependencies check-in',
         '',
-        `${opening(total, failed)}`,
+        opening(total, blocked, failed),
         '',
-        `🕒 Checked on **${checkedAt()} IST**, triggered by ${trigger}.`,
+        `<sub>Checked ${checkedAt()} IST · ${trigger} · [view run](${runUrl})</sub>`,
         '',
         ...(summary.length
-            ? ['#### At a glance', '', table(['', 'Area', 'Updates'], summary), '', '---', '']
+            ? [table(['Area', 'Status'], summary), '']
             : ['_No toolchain pins or Gradle, npm or Docker files found in the repository._', '']),
-        // GitHub collapses blank lines, so <br> is what actually adds space.
-        results.join('\n<br>\n\n'),
+        results.join('\n'),
         '---',
         '',
-        `<sub>📝 This is an informational report; no branches or PRs are opened. It's refreshed on every relevant push to ${defaultBranch} and every evening. [View the run](${runUrl}).</sub>`,
+        `<sub>Informational only, no branches or PRs are opened. Refreshed on relevant pushes to ${defaultBranch} and every evening.</sub>`,
     ].join('\n');
 
     return body.length > MAX_BODY_CHARS
@@ -958,62 +1072,55 @@ function changeComment(d, action) {
     if (d.added.length === 1) {
         const it = d.added[0];
         parts.push(pick([
-            `Heads up, ${code(it.name)} has a new release out: ${code(it.from)} → ${code(it.to)}.`,
-            `Just spotted that ${code(it.name)} ${code(it.to)} is out. We're on ${code(it.from)}.`,
-            `New one: ${code(it.name)} can go from ${code(it.from)} to ${code(it.to)}.`,
+            `🆕 New update: ${code(it.name)} can move from ${code(it.from)} to ${code(it.to)}.`,
+            `🆕 ${code(it.name)} ${code(it.to)} is out; we're on ${code(it.from)}.`,
         ]));
     } else if (d.added.length) {
         parts.push(pick([
-            `A few new updates showed up since I last looked:`,
-            `Picked up ${d.added.length} new updates this time:`,
-            `Some fresh releases came in:`,
+            `🆕 ${d.added.length} new updates since the last check:`,
+            '🆕 New updates are available:',
         ]) + '\n\n' + bulletList(d.added.map(it => `${code(it.name)}: ${code(it.from)} → ${code(it.to)}`)));
     }
 
     if (d.moved.length) {
         const lines = d.moved.map(it => `${code(it.name)} is now at ${code(it.to)} (was ${code(it.was)})`);
         parts.push(d.moved.length === 1
-            ? (parts.length ? pick(['Also, ', 'And ', 'One more thing: ']) : 'Quick update: ') + lines[0] + '.'
-            : 'A few of the pending ones have moved on again:\n\n' + bulletList(lines));
+            ? `🔄 A newer release came out for a pending update: ${lines[0]}.`
+            : '🔄 Newer releases came out for some pending updates:\n\n' + bulletList(lines));
     }
 
     if (d.resolved.length) {
         const names = d.resolved.map(it => code(it.name));
         parts.push(d.resolved.length === 1
-            ? pick([
-                `${names[0]} is off the list now, nice.`,
-                `Looks like ${names[0]} got taken care of 👍`,
-                `${names[0]} is sorted, thanks!`,
-            ])
+            ? pick([`✅ ${names[0]} is up to date now.`, `✅ ${names[0]} has been updated, thanks.`])
             : d.resolved.length <= 4
-                ? pick([`${joinWords(names)} are all sorted now, nice work.`,
-                        `Good progress: ${joinWords(names)} are done.`])
-                : `Good progress, ${d.resolved.length} updates are done:\n\n` + bulletList(names));
+                ? pick([`✅ ${joinWords(names)} are up to date now.`, `✅ Updated since the last check: ${joinWords(names)}.`])
+                : `✅ ${d.resolved.length} updates are done:\n\n` + bulletList(names));
     }
 
     if (d.broke.length) {
-        parts.push(`The ${joinWords(d.broke)} ${d.broke.length > 1 ? 'checks' : 'check'} didn't finish this time, so I couldn't look there. The error is in the description.`);
+        parts.push(`⚠️ The ${joinWords(d.broke)} ${d.broke.length > 1 ? 'checks' : 'check'} didn't finish this time, `
+            + 'so that area wasn\'t checked. The error is in the description.');
     }
     if (d.fixed.length) {
-        parts.push(`The ${joinWords(d.fixed)} ${d.fixed.length > 1 ? 'checks are' : 'check is'} working again.`);
+        parts.push(`🔧 The ${joinWords(d.fixed)} ${d.fixed.length > 1 ? 'checks are' : 'check is'} working again.`);
     }
 
     if (action === 'close') {
         parts.push(pick([
-            "That's everything for now, so I'm closing this. I'll reopen it when something new comes up.",
-            "Nothing left to do, so I'll close this for now. I'll bring it back if new updates land.",
-            "All caught up! Closing this one; I'll reopen it once there's something new.",
+            "🎉 That's everything for now, so I'm closing this. I'll reopen it when new updates come in.",
+            "🎉 Nothing left to act on, so I'm closing this. It will reopen when new updates are available.",
         ]));
     } else if (action === 'reopen' && parts.length) {
-        parts.unshift(pick(['Reopening this one.', 'Opening this back up.', 'Back again!']));
+        parts.unshift('🔔 Reopening: there are updates to act on again.');
     }
     return parts.join('\n\n');
 }
 
 // Used when there's no saved state yet (first run with this version), so there's nothing to compare against.
 const FALLBACK = {
-    close:  "Everything's up to date now, so I'm closing this. I'll reopen it when something new comes up.",
-    reopen: 'Reopening this one, a few new updates showed up. Details are in the description.',
+    close:  "🎉 Nothing left to act on, so I'm closing this. I'll reopen it when new updates come in.",
+    reopen: '🔔 Reopening: new updates are available. Details are in the description.',
 };
 
 
@@ -1075,7 +1182,7 @@ module.exports = async ({ github, context, core }) => {
     const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
     const report = await runChecks(core, runUrl);
-    const title  = issueTitle(report.total, report.failed, report.labels, report.failedAreas);
+    const title  = issueTitle(report.total, report.blocked, report.failed, report.labels, report.failedAreas);
     const body   = buildBody(report, context, runUrl);
     await core.summary.addRaw(body).write();
 

@@ -261,6 +261,7 @@ async function checkToolchain() {
 
     let count = 0;
     const notes = [];
+    const items = [];
     const rows = pins.map(({ tool, file, pin }) => {
         const r = releases[tool];
         if (!r) return [tool, pin, '?', '?', '⚠️ lookup failed', code(rel(file))];
@@ -268,6 +269,7 @@ async function checkToolchain() {
         if (st.outdated) {
             count++;
             notes.push(toolchainStep(tool, file, pin, r));
+            items.push({ name: `${tool} (${rel(file)})`, from: pin, to: r.latest });
         }
         return [tool, `**${pin}**`, r.lts ?? '—', r.latest, st.text, code(rel(file))];
     });
@@ -277,6 +279,7 @@ async function checkToolchain() {
     return {
         md: `${intro}\n\n` + table(['Tool', 'Pinned', 'Latest LTS', 'Latest', 'Status', 'Declared in'], rows) + '\n' + noteBox(notes),
         count,
+        items,
     };
 }
 
@@ -358,7 +361,8 @@ async function checkGradleDeps(dir) {
     notes.push(...gradleBlockedNotes(viaBom, undeclared));
 
     parts.push(noteBox(notes));
-    return { md: parts.join('\n'), count: updatable.length };
+    return { md: parts.join('\n'), count: updatable.length,
+             items: updatable.map(d => ({ name: d.coord, from: d.cur, to: d.latest })) };
 }
 
 
@@ -391,12 +395,14 @@ async function checkGradlePlugins() {
 
     const rows = [];
     const notes = [];
+    const items = [];
     for (const { file, id, cur } of found) {
         try {
             const latest = latestStable(
                 await mavenVersions(PLUGIN_PORTAL, id, `${id}.gradle.plugin`));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
                 rows.push([code(id), cur, `**${latest}**`, code(rel(file))]);
+                items.push({ name: id, from: cur, to: latest });
                 let step = `In ${code(rel(file))}, change ${code(`id '${id}' version '${cur}'`)} to ${code(`'${latest}'`)}.${majorNote(cur, latest)}`;
                 if (id === 'org.springframework.boot') {
                     step += ' This also moves every library Spring Boot manages, so skim the '
@@ -414,6 +420,7 @@ async function checkGradlePlugins() {
                 + table(['Plugin', 'Current', 'Latest', 'Declared in'], rows) + '\n' + noteBox(notes)
             : allGood('All Gradle plugins are current.'),
         count: rows.length,
+        items,
     };
 }
 
@@ -429,11 +436,13 @@ async function checkBoms() {
 
     const rows = [];
     const notes = [];
+    const items = [];
     for (const { file, g, a, cur } of found) {
         try {
             const latest = latestStable(await mavenVersions(MAVEN_CENTRAL, g, a));
             if (latest && compareKeys(vkey(latest), vkey(cur)) > 0) {
                 rows.push([code(`${g}:${a}`), cur, `**${latest}**`, code(rel(file))]);
+                items.push({ name: `${g}:${a}`, from: cur, to: latest });
                 notes.push(`In ${code(rel(file))}, change ${code(`mavenBom '${g}:${a}:${cur}'`)} to ${code(`'${g}:${a}:${latest}'`)}.${majorNote(cur, latest)}`);
             }
         } catch (e) {
@@ -446,6 +455,7 @@ async function checkBoms() {
                 + table(['BOM', 'Current', 'Latest', 'Declared in'], rows) + '\n' + noteBox(notes)
             : allGood('All BOMs are current.'),
         count: rows.length,
+        items,
     };
 }
 
@@ -634,6 +644,7 @@ async function checkNpm(dir) {
                 + table(['Package', 'Current', 'Compatible', 'Latest', 'Status', 'Declared in'], rows) + '\n' + noteBox(notes)
             : allGood('Every npm package is on its latest version.'),
         count: updatable.length,
+        items: updatable.map(o => ({ name: o.name, from: o.cur, to: o.latest })),
     };
 }
 
@@ -708,6 +719,7 @@ async function checkDocker() {
 
     const rows = [];
     const notes = [];
+    const items = [];
     const seen = new Set();
     for (const file of files) {
         for (const ref of dockerRefs(file)) {
@@ -736,6 +748,7 @@ async function checkDocker() {
             if (better.length) {
                 const image = parsed.repo.replace(/^library\//, '');
                 rows.push([code(image), parsed.tag, `**${better[0].t}**`, code(rel(file))]);
+                items.push({ name: `${image} (${rel(file)})`, from: parsed.tag, to: better[0].t });
                 notes.push(`In ${code(rel(file))}, change ${code(`${image}:${parsed.tag}`)} to ${code(`${image}:${better[0].t}`)}.`
                     + majorNote(parsed.tag, better[0].t));
             }
@@ -747,6 +760,7 @@ async function checkDocker() {
                 + table(['Image', 'Current', 'Newer tag', 'Declared in'], rows) + '\n' + noteBox(notes)
             : allGood('All pinned Docker Hub images are current.'),
         count: rows.length,
+        items,
     };
 }
 
@@ -810,7 +824,8 @@ function opening(total, failed) {
 // Runs every section's check. A check that throws is reported in its own
 // section instead of stopping the whole run.
 async function runChecks(core, runUrl) {
-    const report = { results: [], summary: [], labels: new Set(), failedAreas: new Set(), total: 0, failed: 0 };
+    const report = { results: [], summary: [], labels: new Set(), failedAreas: new Set(), total: 0, failed: 0,
+                     state: { items: {}, failed: [] } };
 
     for (const { emoji, title, label, run } of buildSections()) {
         const heading = `### ${emoji} ${title}`;
@@ -819,6 +834,7 @@ async function runChecks(core, runUrl) {
             if (!result) continue;
 
             report.total += result.count;
+            for (const it of result.items || []) report.state.items[`${title}|${it.name}`] = { ...it, section: title };
             if (result.count) report.labels.add(label);
             report.summary.push([emoji, title, result.count ? `⬆️ ${result.count}` : '✅ 0']);
             report.results.push(`${heading}\n\n${result.md}\n`);
@@ -831,6 +847,7 @@ async function runChecks(core, runUrl) {
             report.results.push(md);
             report.failedAreas.add(label);
             report.failed++;
+            report.state.failed.push(title);
         }
     }
     return report;
@@ -869,7 +886,7 @@ function buildBody({ results, summary, total, failed }, context, runUrl) {
         results.join('\n<br>\n\n'),
         '---',
         '',
-        `<sub>📝 This is an informational report; no branches or PRs are opened. It's refreshed on every relevant push to ${defaultBranch} and every Friday evening. [View the run](${runUrl}).</sub>`,
+        `<sub>📝 This is an informational report; no branches or PRs are opened. It's refreshed on every relevant push to ${defaultBranch} and every evening. [View the run](${runUrl}).</sub>`,
     ].join('\n');
 
     return body.length > MAX_BODY_CHARS
@@ -891,10 +908,120 @@ async function ensureLabels(github, context) {
     }
 }
 
+// ---------- comments ----------
+
+// Last run's findings, kept in a hidden marker at the end of the issue body
+// so each run can tell what's new and what's gone since the previous one.
+const STATE_RE = /<!-- dependency-state:(.*?) -->/s;
+const stateMarker = state => `\n<!-- dependency-state:${JSON.stringify(state)} -->`;
+
+function readState(body) {
+    try { return JSON.parse((body || '').match(STATE_RE)?.[1]); } catch { return null; }
+}
+
+const pick = list => list[Math.floor(Math.random() * list.length)];
+
+// ['a', 'b', 'c'] -> 'a, b and c'
+const joinWords = list => (list.length > 1 ? `${list.slice(0, -1).join(', ')} and ${list.at(-1)}` : list[0]);
+
+// Bullet list, capped so a big first run doesn't produce a wall of text.
+function bulletList(lines, max = 8) {
+    const shown = lines.slice(0, max).map(l => `- ${l}`);
+    if (lines.length > max) shown.push(`- …and ${lines.length - max} more, see the description`);
+    return shown.join('\n');
+}
+
+// What changed since the last run. Items in a section that failed this time
+// aren't counted as resolved, since that section simply wasn't checked.
+function diffState(prev, cur) {
+    const curFailed = new Set(cur.failed);
+    const added = [], moved = [], resolved = [];
+    for (const [key, it] of Object.entries(cur.items)) {
+        const old = prev.items[key];
+        if (!old) added.push(it);
+        else if (old.to !== it.to) moved.push({ ...it, was: old.to });
+    }
+    for (const [key, it] of Object.entries(prev.items)) {
+        if (!cur.items[key] && !curFailed.has(it.section)) resolved.push(it);
+    }
+    return {
+        added, moved, resolved,
+        broke: cur.failed.filter(t => !prev.failed.includes(t)),
+        fixed: prev.failed.filter(t => !curFailed.has(t)),
+    };
+}
+
+// A short, conversational comment about what changed. Returns '' if nothing did.
+function changeComment(d, action) {
+    const parts = [];
+
+    if (d.added.length === 1) {
+        const it = d.added[0];
+        parts.push(pick([
+            `Heads up, ${code(it.name)} has a new release out: ${code(it.from)} → ${code(it.to)}.`,
+            `Just spotted that ${code(it.name)} ${code(it.to)} is out. We're on ${code(it.from)}.`,
+            `New one: ${code(it.name)} can go from ${code(it.from)} to ${code(it.to)}.`,
+        ]));
+    } else if (d.added.length) {
+        parts.push(pick([
+            `A few new updates showed up since I last looked:`,
+            `Picked up ${d.added.length} new updates this time:`,
+            `Some fresh releases came in:`,
+        ]) + '\n\n' + bulletList(d.added.map(it => `${code(it.name)}: ${code(it.from)} → ${code(it.to)}`)));
+    }
+
+    if (d.moved.length) {
+        const lines = d.moved.map(it => `${code(it.name)} is now at ${code(it.to)} (was ${code(it.was)})`);
+        parts.push(d.moved.length === 1
+            ? (parts.length ? pick(['Also, ', 'And ', 'One more thing: ']) : 'Quick update: ') + lines[0] + '.'
+            : 'A few of the pending ones have moved on again:\n\n' + bulletList(lines));
+    }
+
+    if (d.resolved.length) {
+        const names = d.resolved.map(it => code(it.name));
+        parts.push(d.resolved.length === 1
+            ? pick([
+                `${names[0]} is off the list now, nice.`,
+                `Looks like ${names[0]} got taken care of 👍`,
+                `${names[0]} is sorted, thanks!`,
+            ])
+            : d.resolved.length <= 4
+                ? pick([`${joinWords(names)} are all sorted now, nice work.`,
+                        `Good progress: ${joinWords(names)} are done.`])
+                : `Good progress, ${d.resolved.length} updates are done:\n\n` + bulletList(names));
+    }
+
+    if (d.broke.length) {
+        parts.push(`The ${joinWords(d.broke)} ${d.broke.length > 1 ? 'checks' : 'check'} didn't finish this time, so I couldn't look there. The error is in the description.`);
+    }
+    if (d.fixed.length) {
+        parts.push(`The ${joinWords(d.fixed)} ${d.fixed.length > 1 ? 'checks are' : 'check is'} working again.`);
+    }
+
+    if (action === 'close') {
+        parts.push(pick([
+            "That's everything for now, so I'm closing this. I'll reopen it when something new comes up.",
+            "Nothing left to do, so I'll close this for now. I'll bring it back if new updates land.",
+            "All caught up! Closing this one; I'll reopen it once there's something new.",
+        ]));
+    } else if (action === 'reopen' && parts.length) {
+        parts.unshift(pick(['Reopening this one.', 'Opening this back up.', 'Back again!']));
+    }
+    return parts.join('\n\n');
+}
+
+// Used when there's no saved state yet (first run with this version), so there's nothing to compare against.
+const FALLBACK = {
+    close:  "Everything's up to date now, so I'm closing this. I'll reopen it when something new comes up.",
+    reopen: 'Reopening this one, a few new updates showed up. Details are in the description.',
+};
+
+
 // One issue is reused for good and refreshed on every run, open or closed.
 // It's open while there's something to act on, closed when there isn't
 // (blocked updates may still be listed), and reopened when updates show up again.
-async function syncIssue(github, context, { title, body, managed, clean }) {
+async function syncIssue(github, context, { title, body, managed, clean, state }) {
+    body += stateMarker(state);
     const { data: issues } = await github.rest.issues.listForRepo({
         ...context.repo, labels: ISSUE_LABEL, state: 'all', sort: 'created', direction: 'desc', per_page: 20,
     });
@@ -913,13 +1040,17 @@ async function syncIssue(github, context, { title, body, managed, clean }) {
         .map(l => (typeof l === 'string' ? l : l.name))
         .filter(n => !MANAGED_LABELS.includes(n));
     const issue = { ...context.repo, issue_number: existing.number };
+    const wasOpen = existing.state === 'open';
+    const action  = clean ? (wasOpen ? 'close' : null) : (wasOpen ? null : 'reopen');
+
+    const prev = readState(existing.body);
+    const comment = prev ? changeComment(diffState(prev, state), action) : (FALLBACK[action] || '');
 
     if (clean) {
         await github.rest.issues.update({ ...issue, title, body, labels: kept });
-        if (existing.state === 'closed') return `refreshed ${existing.html_url}, stays closed`;
+        if (!wasOpen) return `refreshed ${existing.html_url}, stays closed`;
 
-        await github.rest.issues.createComment({ ...issue,
-            body: "✅ Nothing to act on right now, so I'm closing this. I'll keep it updated and reopen it when new updates show up." });
+        await github.rest.issues.createComment({ ...issue, body: comment });
         await github.rest.issues.update({ ...issue, state: 'closed', state_reason: 'completed' });
         return `closed ${existing.html_url}`;
     }
@@ -927,7 +1058,8 @@ async function syncIssue(github, context, { title, body, managed, clean }) {
     await github.rest.issues.update({
         ...issue, title, body, state: 'open', labels: [...new Set([...kept, ...managed])],
     });
-    return `${existing.state === 'closed' ? 'reopened' : 'updated'} ${existing.html_url}`;
+    if (comment) await github.rest.issues.createComment({ ...issue, body: comment });
+    return `${wasOpen ? 'updated' : 'reopened'} ${existing.html_url}${comment ? ', commented' : ''}`;
 }
 
 
@@ -946,7 +1078,7 @@ module.exports = async ({ github, context, core }) => {
     await ensureLabels(github, context);
 
     const outcome = await syncIssue(github, context, {
-        title, body, managed: [...report.labels].sort(), clean: !report.total && !report.failed,
+        title, body, managed: [...report.labels].sort(), clean: !report.total && !report.failed, state: report.state,
     });
     core.info(`Issue ${outcome} (${title})`);
 };

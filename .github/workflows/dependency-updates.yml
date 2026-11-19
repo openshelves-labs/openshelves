@@ -21,7 +21,8 @@ on:
       - '.github/workflows/dependency-updates.yml'
       - '.github/scripts/dependency-updates.js'
   schedule:
-    - cron: "30 11 * * 5"   # Fridays 17:00 IST (cron is UTC-only: 11:30 UTC)
+    - cron: "30 11 * * *"   # Daily 17:00 IST (cron is UTC-only: 11:30 UTC)
+    # - cron: "30 11 * * 5"   # Fridays 17:00 IST (cron is UTC-only: 11:30 UTC)
   workflow_dispatch:
 
 jobs:

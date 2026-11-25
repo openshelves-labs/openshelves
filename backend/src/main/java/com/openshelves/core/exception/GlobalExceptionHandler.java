@@ -44,14 +44,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // Exception handlers for application-specific exceptions
     // -----------------------------------------------------------------------
 
-    @ExceptionHandler(TooManyRequestsException.class)
-    public ResponseEntity<ApiErrorResponse> handleTooManyRequests(TooManyRequestsException e, HttpServletRequest req) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Retry-After", String.valueOf(e.getRetryAfterSeconds()));
-
-        String detail = "Too many requests. Please try again later.";
-        return buildErrorResponse(HttpStatus.TOO_MANY_REQUESTS, null, detail, req.getRequestURI(), headers);
-    }
+//    @ExceptionHandler(TooManyRequestsException.class)
+//    public ResponseEntity<ApiErrorResponse> handleTooManyRequests(TooManyRequestsException e, HttpServletRequest req) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Retry-After", String.valueOf(e.getRetryAfterSeconds()));
+//
+//        String detail = "Too many requests. Please try again later.";
+//        return buildErrorResponse(HttpStatus.TOO_MANY_REQUESTS, null, detail, req.getRequestURI(), headers);
+//    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGenericException(Exception e, HttpServletRequest req) {
@@ -129,7 +129,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         // WWW-Authenticate challenge (RFC 6750 §3.1)
         if (!containsHeader.test(HttpHeaders.WWW_AUTHENTICATE)) {
-            boolean hadToken = BearerTokenFilter.extractBearerToken(req).isPresent();
+            boolean hadToken = false; // BearerTokenFilter.extractBearerToken(req).isPresent();
 
             // 401 Unauthorized: Token missing or invalid
             if (status.isSameCodeAs(HttpStatus.UNAUTHORIZED)) {

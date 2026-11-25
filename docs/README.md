@@ -36,6 +36,7 @@ How the pieces are meant to fit together. Keep these in step with the code: if y
 | 🔌 | [API design](api-design/README.md) | Every endpoint, grouped by feature, plus the conventions they all share |
 | 🎨 | [Design system](Design%20System.md) | Colours, typography and components behind the web app |
 | 🖥️ | [Frontend architecture](Frontend%20Architecture.md) | How the Next.js app is structured, loads data and handles sign-in |
+| 🚦 | [Rate limiting](Rate%20Limiting.md) | What the app limits today, what's left to the reverse proxy, and what to add later |
 
 ---
 

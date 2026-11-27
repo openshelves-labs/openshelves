@@ -12,6 +12,7 @@ on:
       - '**/.nvmrc'
       - '**/.node-version'
       - '**/package.json'
+      - '**/package-lock.json'
       - '**/Dockerfile*'
       - '**/*.dockerfile'
       - '**/compose*.yml'
